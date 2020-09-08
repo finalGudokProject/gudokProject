@@ -1125,11 +1125,11 @@ public class BoardController {
 		// 게시글 삭제하기
 		int result1 = bService.deleteImage(bBoard_no);
 		int result2 = bService.deleteBoardImage(bBoard_no);
-		int result3 = bService.deleteBoard(bBoard_no);
-		int result4 = bService.deleteOneInquiryBoard(bBoard_no);
-		int result5 = bService.deleteInquiryBoard(bBoard_no);
+		int result3 = bService.deleteOneInquiryBoard(bBoard_no);
+		int result4 = bService.deleteInquiryBoard(bBoard_no);
+		int result5 = bService.deleteBoard(bBoard_no);
 
-		if (result1 > 0 && result2 > 0 && result3 > 0 && result4 > 0 && result5 > 0) {
+		if (result1 > 0 || result2 > 0 || result3 > 0 && result4 > 0 && result5 > 0) {
 			return "redirect:adminInquiryList.do";
 		} else {
 			throw new BoardException("게시물 삭제 실패!");
@@ -1165,13 +1165,13 @@ public class BoardController {
 			}
 			result1 = bService.deleteImage(InquriyArr[k]);
 			result2 = bService.deleteBoardImage(InquriyArr[k]);
-			result3 = bService.deleteBoard(InquriyArr[k]);
+			result3 = bService.deleteInquiryBoard(InquriyArr[k]);
 			result4 = bService.deleteOneInquiryBoard(InquriyArr[k]);
-			result5 = bService.deleteInquiryBoard(InquriyArr[k]);
+			result5 = bService.deleteBoard(InquriyArr[k]);
 
 		}
 
-		if (result1 > 0 && result2 > 0 && result3 > 0 && result4 > 0 && result5 > 0) {
+		if (result1 > 0 || result2 > 0 || result3 > 0 && result4 > 0 && result5 > 0) {
 
 			return "redirect:adminInquiryList.do";
 
