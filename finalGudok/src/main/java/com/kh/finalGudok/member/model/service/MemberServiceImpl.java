@@ -339,7 +339,7 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public ArrayList<AdminSecession> selectMemberSecession(Search s, PageInfo pi) {
-		return mDao.selectMemberSecessionCnt(s);
+		return mDao.selectMemberSecession(s,pi);
 	}
 
 	@Override
@@ -536,5 +536,22 @@ public class MemberServiceImpl implements MemberService {
 	public int imageDelete(int reviewNo) {
 		return mDao.imageDelete(reviewNo);
 	}
+
+	@Override
+	public int updateItemCmStatus(ArrayList<AdminSubscribe> dArr) {
+		return mDao.updateItemCmStatus(dArr);
+	}
+
+	@Override
+	public int updateMemberPoint(AdminSubscribe adminSubscribe) {
+		return mDao.updateMemberPoint(adminSubscribe);
+	}
+
+	@Override
+	public int selectPoint(int subscribeNo) {
+		return mDao.selectPoint(subscribeNo);
+	}
+
+
 
 }

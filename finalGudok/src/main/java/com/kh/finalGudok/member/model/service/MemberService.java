@@ -229,4 +229,10 @@ public interface MemberService {
 
 	int imageDelete(int reviewNo);
 
+	int updateItemCmStatus(ArrayList<AdminSubscribe> dArr);
+
+	int updateMemberPoint(AdminSubscribe adminSubscribe);
+
+	int selectPoint(int subscribeNo);
+
 }

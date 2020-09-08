@@ -62,32 +62,32 @@ input, select,textarea{
                     <table>
                         <thead>
                             <tr>
-                                <th><input type="checkbox" id="checkAll"></th>
-                                <th>이벤트 번호</th>
-                                <th id="td1">상품 번호</th>
-                                <th>상품명</th>
-                                <th>가격</th>
-                                <th>게시 상태</th>
+                                <th onclick='event.cancelBubble=true'><input type="checkbox" id="checkAll"></th>
+                                <th onclick='event.cancelBubble=true'>이벤트 번호</th>
+                                <th onclick='event.cancelBubble=true'>상품 번호</th>
+                                <th onclick='event.cancelBubble=true'>상품명</th>
+                                <th onclick='event.cancelBubble=true'>가격</th>
+                                <th onclick='event.cancelBubble=true'>게시 상태</th>
                              </tr>   
                          </thead>
                          <tbody>
                          <c:if test="${!empty list }">
                         	 <c:forEach var="i" items="${list }" varStatus="cnt">
                         	 <input type="hidden" id="eventNo" name="eventNo" value="${i.eventNo }">
-	                             <tr id="cursor">
-	                                <td><input type="checkbox" class="common" id="itemNo${cnt.index}" name="itemNo" value="${i.itemNo }"></td>
-	                                <td>${i.eventNo }
-	                                <td>${i.itemNo }</td>
-	                                <td>${i.itemName }</td>
-	                                <td>${i.itemPrice }</td>
-	                                <td>${i.itemDpStatus }</td>
+	                             <tr>
+	                                <td onclick='event.cancelBubble=true'><input type="checkbox" class="common" id="itemNo${cnt.index}" name="itemNo" value="${i.itemNo }"></td>
+	                                <td onclick='event.cancelBubble=true'>${i.eventNo }
+	                                <td onclick='event.cancelBubble=true'>${i.itemNo }</td>
+	                                <td  id="cursor">${i.itemName }</td>
+	                                <td onclick='event.cancelBubble=true'>${i.itemPrice }</td>
+	                                <td onclick='event.cancelBubble=true'>${i.itemDpStatus }</td>
 	                            </tr>
 	                         </c:forEach>
                          </c:if>
                          
                          <c:if test="${empty list }">
                          	<tr>
-                         		<td colspan="6">등록된 상품이 없습니다.</td>
+                         		<td onclick='event.cancelBubble=true' colspan="6">등록된 상품이 없습니다.</td>
                          	</tr>
                          </c:if>
                          </tbody>
@@ -166,6 +166,19 @@ input, select,textarea{
 
 		
 		<script>
+		//상품 상세보기 
+		  	$(function(){
+
+       	       		$("tr").on("click",function(){
+       	       			var eventNo=$(this).children().eq(1).text();
+       	       			var itemNo=$(this).children().eq(2).text();
+       	        		 var page=${pi.currentPage };   
+       	        		 var type='event';
+       	        	
+       	           		location.href="itemDetail.do?itemNo="+itemNo+"&page="+page+"&type="+type;
+       	       		})
+       	        	
+       	       	})
 		
 		   //선택 제외
     	function bannerItemDelete(){

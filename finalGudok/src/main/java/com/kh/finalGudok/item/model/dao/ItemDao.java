@@ -628,4 +628,8 @@ public class ItemDao {
 	public int insertInquiry() {
 		return sqlSessionTemplate.insert("itemMapper.insertInquiry");
 	}
+
+	public int updateItemEventStatusN(int[] dEventArr) {
+		return sqlSessionTemplate.update("adminItemMapper.updateItemEventStatusN",dEventArr);
+	}
 }

@@ -58,14 +58,14 @@
 	
 	<insert id="insertItem" parameterType="AdminItem">
 		INSERT INTO ITEM VALUES(
-		SEQ_IID.NEXTVAL,#{itemName},#{itemPrice},DEFAULT,DEFAULT,DEFAULT,DEFAULT,DEFAULT,SYSDATE,#{itemRecommend},#{categoryNo},#{itemMemo},DEFAULT,DEFAULT,#{imageOriginalName},#{imageRename},#{imagePath})
+		SEQ_ITEM_NO.NEXTVAL,#{itemName},#{itemPrice},DEFAULT,DEFAULT,DEFAULT,DEFAULT,DEFAULT,SYSDATE,#{itemRecommend},#{categoryNo},#{itemMemo},DEFAULT,DEFAULT,#{imageOriginalName},#{imageRename},#{imagePath})
 		
 	</insert>
 	
 	<insert id="insertItemImage" parameterType="AdminItem">
 		INSERT ALL
-		INTO IMAGE VALUES(SEQ_MID.NEXTVAL,#{imagePath},#{imageOriginalName},#{imageRename})
-		INTO ITEM_IMAGE VALUES(SEQ_IMID.NEXTVAL,SEQ_IID.CURRVAL,SEQ_MID.CURRVAL)
+		INTO IMAGE VALUES(SEQ_IMAGE_NO.NEXTVAL,#{imagePath},#{imageOriginalName},#{imageRename})
+		INTO ITEM_IMAGE VALUES(SEQ_IMID.NEXTVAL,SEQ_ITEM_NO.CURRVAL,SEQ_IMAGE_NO.CURRVAL)
 		SELECT *
 		FROM DUAL
 	</insert>
@@ -78,8 +78,8 @@
 	
 	<insert id="insertEventImg" parameterType="Event">
 		INSERT ALL
-		INTO IMAGE VALUES(SEQ_MID.NEXTVAL,#{imagePath},#{imageOriginalName},#{imageRename})
-		INTO BANNER_IMG VALUES(SEQ_BAID.NEXTVAL,SEQ_MID.CURRVAL,SEQ_EID.CURRVAL)
+		INTO IMAGE VALUES(SEQ_IMAGE_NO.NEXTVAL,#{imagePath},#{imageOriginalName},#{imageRename})
+		INTO BANNER_IMG VALUES(SEQ_BAID.NEXTVAL,SEQ_IMAGE_NO.CURRVAL,SEQ_EID.CURRVAL)
 		SELECT *
 		FROM DUAL
 	</insert>
@@ -271,10 +271,14 @@
 		FROM ITEM_IMAGE
 		WHERE ITEM_NO=#{itemNo}
 	</select>
-	<delete id="deleteBannerItem" parameterType="BannerItem">
+	<delete id="deleteBannerItem" parameterType="java.util.ArrayList">
 		DELETE
 		FROM EVENT_ITEM
-		WHERE ITEM_NO=#{itemNo}
+		
+		WHERE ITEM_NO in 
+		<foreach item="e" index="index" collection="array" open="(" separator="," close=")">
+		#{e}
+		</foreach>
 	</delete>
 	<select id="selectItemCountA" parameterType="object" resultType="_int">
 		SELECT COUNT(*)
@@ -330,15 +334,18 @@
         ORDER BY EVENT_NO DESC
 	</select>
 	<select id="selectItems" parameterType="string" resultMap="bannerItemResultSet">
+		select * 
+		from(
 		SELECT *
 		FROM ITEM
 		WHERE ITEM_EVENT_STATUS='N'
-		 <trim prefix="AND">
+		ORDER BY ITEM_NO DESC
+		)
+		<where>
 			<if test="value!=null">
 			CATEGORY_NO=#{value}
 			</if>
-		</trim> 
-		ORDER BY ITEM_NO DESC
+		</where> 
 	</select>
 	<select id="selectNonEventItemCnt" parameterType="string" resultType="_int">
 		SELECT COUNT(*)
@@ -408,7 +415,15 @@
 		where item_event_status='R'
 	</select>
 
+	<update id="updateItemEventStatusN" parameterType="java.util.ArrayList">
+		update item 
+		set item_event_status='N'
+		where item_no in
+	<foreach item="e" index="index" collection="array" open="(" separator="," close=")">
+		#{e}
+		</foreach>
 	
+	</update>
 	
 	
 	

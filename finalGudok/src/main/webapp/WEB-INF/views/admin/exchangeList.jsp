@@ -225,10 +225,10 @@ input, select,textarea{
            //검색
             function search(){
         
-        	 var categoryNo=$("#category").val();
+        	 var category=$("#category").val();
         	 var type=$("#type").val();
         	 var word=$("#word").val();
-        	 alert(categoryNo)
+        	 alert(category)
         	 alert(type)
         	 alert(word)
         	 
@@ -242,7 +242,7 @@ input, select,textarea{
         	 }
         	 
    			
-  			 location.href="exchangList.do?categoryNo="+categoryNo+"&type="+type+"&word="+word;
+  			 location.href="exchangList.do?category="+category+"&type="+type+"&word="+word;
         	
         	
         }

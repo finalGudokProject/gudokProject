@@ -278,7 +278,11 @@ input, select,textarea{
   			  $("#eventNo").change(function(){
   				  
   			 var eventNo=$("#eventNo option:checked").val();
-  			 alert(eventNo);
+  			if(eventNo.length==0){
+  				alert('이벤트를 선택해주세요.');
+  				return;
+  			}else{
+  				
   				  
   				$.ajax({
   					url:"selectItemDiscount.do",
@@ -300,6 +304,7 @@ input, select,textarea{
   		                           +"error: " + errorData);
   		                  }   
   				});
+  			}
   			 })
   			  
   		 })

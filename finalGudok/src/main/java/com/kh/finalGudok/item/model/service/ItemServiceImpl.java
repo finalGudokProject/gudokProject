@@ -653,4 +653,9 @@ public class ItemServiceImpl implements ItemService {
 		return iDao.insertInquiry();
 	}
 
+	@Override
+	public int updateItemEventStatusN(int[] dEventArr) {
+		return iDao.updateItemEventStatusN(dEventArr);
+	}
+
 }
