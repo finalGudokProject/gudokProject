@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd" >
+<configuration>
+	<settings>
+		<setting name="jdbcTypeForNull" value="NULL"/>
+	</settings>
+	
+	<typeAliases>
+		<typeAlias type="com.kh.finalGudok.item.model.vo.Item" alias="Item"/>
+		<typeAlias type="com.kh.finalGudok.item.model.vo.ItemListView" alias="ItemListView"/>
+		<typeAlias type="com.kh.finalGudok.item.model.vo.Review" alias="Review"/>
+		<typeAlias type="com.kh.finalGudok.item.model.vo.ReviewView" alias="ReviewView"/>
+		<typeAlias type="com.kh.finalGudok.item.model.vo.ReviewImage" alias="ReviewImage"/>
+		<typeAlias type="com.kh.finalGudok.item.model.vo.Heart" alias="Heart"/>
+		<typeAlias type="com.kh.finalGudok.item.model.vo.Board" alias="Board"/>
+		<typeAlias type="com.kh.finalGudok.item.model.vo.Cart" alias="Cart"/>
+		<typeAlias type="com.kh.finalGudok.item.model.vo.Image" alias="Image"/>
+		<typeAlias type="com.kh.finalGudok.member.model.vo.Member" alias="Member"/>
+		
+		<typeAlias type="com.kh.finalGudok.board.model.vo.Board" alias="bBoard"/>
+		<typeAlias type="com.kh.finalGudok.board.model.vo.secret" alias="Secret"/>
+		<typeAlias type="com.kh.finalGudok.board.model.vo.Inquiry" alias="Inquiry"/>
+		<typeAlias type="com.kh.finalGudok.board.model.vo.EventBoard" alias="EventBoard"/>
+		
+		<typeAlias type="com.kh.finalGudok.item.model.vo.AdminItem" alias="AdminItem"/>
+		<typeAlias type="com.kh.finalGudok.item.model.vo.Event" alias="Event"/>
+
+		<typeAlias type="com.kh.finalGudok.member.model.vo.Point" alias="Point"/>
+		<typeAlias type="com.kh.finalGudok.member.model.vo.Review" alias="mReview"/>
+		<typeAlias type="com.kh.finalGudok.member.model.vo.Exchange" alias="mExchange"/>
+		<typeAlias type="com.kh.finalGudok.member.model.vo.Delivery" alias="mDelivery"/>
+		<typeAlias type="com.kh.finalGudok.member.model.vo.Cart" alias="mCart"/>
+		<typeAlias type="com.kh.finalGudok.member.model.vo.Subscribe" alias="mSubscribe"/>
+		<typeAlias type="com.kh.finalGudok.member.model.vo.Heart" alias="mHeart"/>
+		<typeAlias type="com.kh.finalGudok.member.model.vo.DeleteHeart" alias="mDeleteHeart"/>
+		<typeAlias type="com.kh.finalGudok.member.model.vo.Reply" alias="mReply"/>
+		<typeAlias type="com.kh.finalGudok.member.model.vo.Cancle" alias="mCancle"/>
+		
+		<typeAlias type="com.kh.finalGudok.member.model.vo.Withdrawal" alias="Withdrawal"/>
+		<typeAlias type="com.kh.finalGudok.member.model.vo.Inquiry" alias="mInquiry"/>
+		
+		<typeAlias type="com.kh.finalGudok.item.model.vo.BannerItem" alias="BannerItem"/>
+		<typeAlias type="com.kh.finalGudok.member.model.vo.Grade" alias="Grade"/>
+		<typeAlias type="com.kh.finalGudok.member.model.vo.AdminMember" alias="AdminMember"/>
+		<typeAlias type="com.kh.finalGudok.member.model.vo.AdminPayment" alias="AdminPayment"/>
+		<typeAlias type="com.kh.finalGudok.member.model.vo.AdminSecession" alias="AdminSecession"/>
+		<typeAlias type="com.kh.finalGudok.member.model.vo.AdminSubscribe" alias="AdminSubscribe"/>
+      	<typeAlias type="com.kh.finalGudok.member.model.vo.AdminExchange" alias="AdminExchange"/>
+      	<typeAlias type="com.kh.finalGudok.member.model.vo.AdminBoard" alias="AdminBoard"/>
+	</typeAliases>
+	
+	<mappers>
+		<mapper resource="/mappers/item-mapper.xml"/>
+		<mapper resource="/mappers/itemList-mapper.xml"/>
+		<mapper resource="/mappers/review-mapper.xml"/>
+
+		<mapper resource="/mappers/member-mapper.xml"/>
+		<mapper resource="/mappers/adminItem-mapper.xml"/>
+
+		<mapper resource="/mappers/board-mapper.xml"/>
+
+		<mapper resource="/mappers/heart-mapper.xml"/>
+		<mapper resource="/mappers/cart-mapper.xml"/>
+	</mappers>
+
+</configuration>

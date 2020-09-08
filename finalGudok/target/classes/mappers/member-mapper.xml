@@ -1,0 +1,1218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="memberMapper">
+	<resultMap type="Member" id="memberResultSet">
+		<id property="memberNo" column="MEMBER_NO" />
+		<result property="memberId" column="MEMBER_ID" />
+		<result property="email" column="EMAIL" />
+		<result property="memberPwd" column="MEMBER_PWD" />
+		<result property="memberName" column="MEMBER_NAME" />
+		<result property="address1" column="ADDRESS_1" />
+		<result property="address2" column="ADDRESS_2" />
+		<result property="address3" column="ADDRESS_3" />
+		<result property="gender" column="GENDER" />
+		<result property="enrollDate" column="ENROLL_DATE" />
+		<result property="modifyDate" column="MODIFY_DATE" />
+		<result property="memberStatus" column="MEMBER_STATUS" />
+		<result property="emailStatus" column="EMAIL_STATUS" />
+		<result property="point" column="POINT" />
+		<result property="gradeNo" column="GRADE_NO" />
+	</resultMap>
+
+	<resultMap type="Point" id="pointResultSet">
+		<id property="pointNo" column="POINT_NO" />
+		<result property="subscribeNo" column="SUBSCRIBE_NO" />
+		<result property="subscribeDate" column="SUBCSRIBE_DATE" />
+		<result property="itemName" column="ITEM_NAME" />
+		<result property="point" column="POINT" />
+	</resultMap>
+
+	<resultMap type="mReview" id="reviewResultSet">
+		<id property="reviewNo" column="REVIEW_NO" />
+		<result property="itemNo" column="ITEM_NO" />
+		<result property="reviewContent" column="REVIEW_CONTENT" />
+		<result property="reviewDate" column="REVIEW_DATE" />
+	</resultMap>
+
+	<resultMap type="mExchange" id="exchangeResultSet">
+		<id property="exchangeNo" column="EXCHANGE_NO" />
+		<result property="exchangeStatus" column="EXCHANGE_STATUS" />
+		<result property="exchangeContent" column="EXCHANGE_CONTENT" />
+		<result property="exchangeDate" column="EXCHANGE_DATE" />
+		<result property="itemName" column="ITEM_NAME" />
+		<result property="subscribeNo" column="SUBSCRIBE_NO" />
+		<result property="exchangeCategory" column="EXCHANGE_CATEGORY" />
+	</resultMap>
+
+	<resultMap type="mDelivery" id="deliveryResultSet">
+		<id property="deliveryNo" column="DELIVERY_NO" />
+		<result property="deliveryStatus" column="DELIVERY_STATUS" />
+		<result property="subscribeNo" column="SUBSCRIBE_NO" />
+		<result property="itemName" column="ITEM_NAME" />
+		<result property="subscribeDate" column="SUBSCRIBE_DATE" />
+		<result property="exchangeStatus" column="EXCHANGE_STATUS" />
+	</resultMap>
+
+	<resultMap type="mCart" id="cartResultSet">
+		<id property="cartNo" column="CART_NO" />
+		<result property="itemNo" column="ITEM_NO" />
+		<result property="memberNo" column="MEMBER_NO" />
+		<result property="cartSubs" column="CART_SUBS" />
+		<result property="cartCount" column="CART_COUNT" />
+		<result property="itemName" column="ITEM_NAME" />
+		<result property="itemPrice" column="ITEM_PRICE" />
+		<result property="imagePath" column="IMAGE_PATH" />
+		<result property="imageRename" column="IMAGE_RENAME" />
+	</resultMap>
+
+	<resultMap type="mInquiry" id="inquiryResultSet">
+		<id property="boardNo" column="BOARD_NO" />
+		<result property="title" column="TITLE" />
+		<result property="content" column="CONTENT" />
+		<result property="writeDate" column="WRITE_DATE" />
+		<result property="boardCode" column="BOARD_CODE" />
+		<result property="memberNo" column="MEMBER_NO" />
+		<result property="memberId" column="MEMBER_ID" />
+		<result property="email" column="EMAIL" />
+		<result property="inquiryYN" column="INQUIRY_YN" />
+	</resultMap>
+
+	<resultMap type="mHeart" id="heartResultSet">
+		<id property="heartNo" column="HEART_NO" />
+		<result property="itemNo" column="ITEM_NO" />
+		<result property="memberNo" column="MEMBER_NO" />
+		<result property="itemPrice" column="ITEM_PRICE" />
+		<result property="imagePath" column="IMAGE_PATH" />
+		<result property="imageOriginalName"
+			column="IMAGE_ORIGINAL_NAME" />
+		<result property="imageRename" column="IMAGE_RENAME" />
+		<result property="itemName" column="ITEM_NAME" />
+	</resultMap>
+
+	<resultMap type="Item" id="itemResultSet">
+		<id property="itemNo" column="ITEM_NO" />
+		<result property="itemName" column="ITEM_NAME" />
+		<result property="itemPrice" column="ITEM_PRICE" />
+		<result property="itemCount" column="ITEM_COUNT" />
+		<result property="itemRate" column="ITEM_RATE" />
+		<result property="itemDpStatus" column="ITEM_DP_STATUS" />
+		<result property="itemCmSales" column="ITEM_CM_SALES" />
+		<result property="itemChoice" column="ITEM_CHOICE" />
+		<result property="itemDate" column="ITEM_DATE" />
+		<result property="itemRecommend" column="ITEM_RECOMMEND" />
+		<result property="categoryNo" column="CATEGORY_NO" />
+		<result property="eventNo" column="EVENT_NO" />
+		<result property="itemMemo" column="ITEM_MEMO" />
+	</resultMap>
+
+	<resultMap type="mReply" id="replyResultSet">
+		<id property="boardNo" column="BOARD_NO" />
+		<result property="inquiryYN" column="INQUIRY_YN" />
+		<result property="inquiryDate" column="INQUIRY_DATE" />
+		<result property="inquiryContent" column="INQUIRY_CONTENT" />
+		<result property="boardType" column="BOARD_TYPE" />
+	</resultMap>
+
+	<!-- 로그인 -->
+	<resultMap type="Grade" id="gradeResultSet">
+		<id property="gradeNo" column="GRADE_NO" />
+		<result property="gradeName" column="GRADE_NAME" />
+		<result property="gradeRate" column="GRADE_RATE" />
+		<result property="gradeMin" column="GRADE_MIN" />
+	</resultMap>
+
+	<resultMap type="AdminMember" id="adminMemberResultSet">
+		<id property="memberNo" column="MEMBER_NO" />
+		<result property="memberId" column="MEMBER_ID" />
+		<result property="email" column="EMAIL" />
+		<result property="memberPwd" column="MEMBER_PWD" />
+		<result property="memberName" column="MEMBER_NAME" />
+		<result property="address1" column="ADDRESS_1" />
+		<result property="address2" column="ADDRESS_2" />
+		<result property="address3" column="ADDRESS_3" />
+		<result property="gender" column="GENDER" />
+		<result property="enrollDate" column="ENROLL_DATE" />
+		<result property="modifyDate" column="MODIFY_DATE" />
+		<result property="memberStatus" column="MEMBER_STATUS" />
+		<result property="emailStatus" column="EMAIL_STATUS" />
+		<result property="point" column="POINT" />
+		<result property="gradeNo" column="GRADE_NO" />
+		<result property="totalPay" column="TOTAL_PAY" />
+		<result property="secessionDate" column="SECESSION_DATE" />
+		<result property="secessionContent" column="SECESSION_CONTENT" />
+	</resultMap>
+	<resultMap type="AdminPayment" id="adminPaymentResultSet">
+		<id property="paymentNo" column="PAYMENT_NO" />
+		<result property="itemNo" column="ITEM_NO" />
+		<result property="itemName" column="ITEM_NAME" />
+		<result property="itemPrice" column="ITEM_PRICE" />
+		<result property="amount" column="AMOUNT" />
+		<result property="point" column="POINT" />
+		<result property="subscribeNo" column="SUBSCRIBE_NO" />
+		<result property="paymentDate" column="PAYMENT_DATE" />
+		<result property="memberNo" column="MEMBER_NO" />
+		<result property="memberId" column="MEMBER_ID" />
+		<result property="email" column="EMAIL" />
+		<result property="totalPayment" column="TOTAL_PAYMENT" />
+	</resultMap>
+	<resultMap type="AdminSecession" id="adminSecessionResultSet">
+		<id property="secessionNo" column="SECESSION_NO" />
+		<result property="memberNo" column="MEMBER_NO" />
+		<result property="memberId" column="MEMBER_ID" />
+		<result property="email" column="EMAIL" />
+		<result property="secessionCategory"
+			column="SECESSION_CATEGORY" />
+		<result property="secessionContent" column="SECESSION_CONTENT" />
+		<result property="secessionDate" column="SECESSION_DATE" />
+		<result property="gradeNo" column="GRADE_NO" />
+		<result property="total" column="TOTAL" />
+	</resultMap>
+
+	<!-- admin -->
+	<resultMap type="AdminSubscribe" id="adminSubscribeResultSet">
+		<id property="subscribeNo" column="SUBSCRIBE_NO" />
+		<result property="itemNo" column="ITEM_NO" />
+		<result property="cycleNo" column="CYCLE_NO" />
+		<result property="subscribeStatus" column="SUBSCRIBE_STATUS" />
+		<result property="subscribeDate" column="SUBSCRIBE_DATE" />
+		<result property="amount" column="AMOUNT" />
+		<result property="memberNo" column="MEMBER_NO" />
+		<result property="memberId" column="MEMBER_ID" />
+		<result property="email" column="EMAIL" />
+		<result property="exchangeStatus" column="EXCHANGE_STATUS" />
+		<result property="itemName" column="ITEM_NAME" />
+		<result property="deliveryStatus" column="DELIVERY_STATUS" />
+		<result property="address1" column="ADDRESS_1" />
+		<result property="address2" column="ADDRESS_2" />
+		<result property="address3" column="ADDRESS_3" />
+	</resultMap>
+	<!-- admin -->
+	<resultMap type="AdminExchange" id="adminExchangeResultSet">
+		<id property="exchangeNo" column="EXCHANGE_NO" />
+		<result property="exchangeStatus" column="EXCHANGE_STATUS" />
+		<result property="exchangeContent" column="EXCHANGE_CONTENT" />
+		<result property="exchangeDate" column="EXCHANGE_DATE" />
+		<result property="itemName" column="ITEM_NAME" />
+		<result property="subscribeNo" column="SUBSCRIBE_NO" />
+		<result property="exchangeCategory" column="EXCHANGE_CATEGORY" />
+		<result property="memberId" column="MEMBER_ID" />
+		<result property="itemPrice" column="ITEM_PRICE" />
+
+	</resultMap>
+	<!-- admin -->
+	<resultMap type="AdminBoard" id="adminBoardResultSet">
+		<id property="bBoard_no" column="BOARD_NO" />
+		<result property="bMember_no" column="MEMBER_NO" />
+		<result property="bMember_id" column="MEMBER_ID" />
+		<result property="bTitle" column="TITLE" />
+		<result property="bContent" column="CONTENT" />
+		<result property="bWrite_date" column="WRITE_DATE" />
+		<result property="iInquiary_yn" column="INQUIRY_YN" />
+	</resultMap>
+
+	<resultMap type="mSubscribe" id="subscribeResultSet">
+		<id property="subscribeNo" column="SUBSCRIBE_NO" />
+		<result property="itemNo" column="ITEM_NO" />
+		<result property="cycleNo" column="CYCLE_NO" />
+		<result property="subscribeStatus" column="SUBSCRIBE_STATUS" />
+		<result property="subscribeDate" column="SUBSCRIBE_DATE" />
+		<result property="amount" column="AMOUNT" />
+		<result property="memberNo" column="MEMBER_NO" />
+		<result property="memberId" column="MEMBER_ID" />
+		<result property="email" column="EMAIL" />
+		<result property="exchangeStatus" column="EXCHANGE_STATUS" />
+		<result property="itemName" column="ITEM_NAME" />
+	</resultMap>
+
+	<resultMap type="mCancle" id="cancleResultSet">
+		<id property="cancelNo" column="CANCLE_NO" />
+		<result property="subscribeNo" column="SUBSCRIBE_NO" />
+		<result property="cancleCategory" column="CANCLE_CATEGORY" />
+		<result property="cancleContent" column="CANCLE_CONTENT" />
+		<result property="cancleDate" column="CANCLE_DATE" />
+	</resultMap>
+
+	<select id="selectOne" parameterType="Member"
+		resultMap="memberResultSet">
+		<!-- SELECT * FROM MEMBER WHERE MEMBER_ID=#{memberId} AND MEMBER_PWD=#{memberPwd} 
+			AND MEMBER_STATUS='N' -->
+
+		<!-- 암호화 처리 후 로그인 -->
+		SELECT *
+		FROM MEMBER
+		WHERE MEMBER_ID=#{memberId}
+		AND MEMBER_STATUS='N'
+	</select>
+
+	<select id="memberConfirm" parameterType="Member"
+		resultMap="memberResultSet">
+		SELECT *
+		FROM MEMBER
+		WHERE MEMBER_NO=#{memberNo}
+		AND MEMBER_STATUS='N'
+	</select>
+
+	<select id="pointList" parameterType="int"
+		resultMap="pointResultSet">
+		SELECT P.*, S.SUBSCRIBE_DATE, I.ITEM_NAME
+		FROM POINT P
+		JOIN SUBSCRIBE S ON (P.SUBSCRIBE_NO = S.SUBSCRIBE_NO)
+		JOIN ITEM I ON (I.ITEM_NO = S.ITEM_NO)
+		JOIN MEMBER M ON(S.MEMBER_NO = M.MEMBER_NO)
+		WHERE M.MEMBER_NO = #{memberNo}
+	</select>
+
+	<select id="reviewList" parameterType="int"
+		resultMap="reviewResultSet">
+		SELECT *
+		FROM REVIEW
+		WHERE MEMBER_NO=#{memberNo}
+		ORDER BY
+		REVIEW_DATE DESC
+	</select>
+
+	<select id="exchangeList" parameterType="int"
+		resultMap="exchangeResultSet">
+		SELECT E.*, I.ITEM_NAME
+		FROM EXCHANGE E
+		JOIN SUBSCRIBE S ON
+		(E.SUBSCRIBE_NO = S.SUBSCRIBE_NO)
+		JOIN MEMBER M ON (S.MEMBER_NO =
+		M.MEMBER_NO)
+		JOIN ITEM I ON (S.ITEM_NO = I.ITEM_NO)
+		WHERE S.MEMBER_NO =
+		#{memberNo}
+		ORDER BY E.EXCHANGE_DATE DESC
+	</select>
+
+	<select id="deliveryList" parameterType="int"
+		resultMap="deliveryResultSet">
+		SELECT D.*, I.ITEM_NAME, S.SUBSCRIBE_DATE, S.EXCHANGE_STATUS
+		FROM DELIVERY D
+		JOIN SUBSCRIBE S ON (D.SUBSCRIBE_NO = S.SUBSCRIBE_NO)
+		JOIN ITEM I ON (S.ITEM_NO = I.ITEM_NO)
+		WHERE MEMBER_NO = #{memberNo}
+	</select>
+
+	<select id="cartList" parameterType="int"
+		resultMap="cartResultSet">
+		SELECT C.*, I.IMAGE_PATH, I.IMAGE_RENAME
+		FROM CART C
+		LEFT JOIN
+		ITEM I ON (C.ITEM_NO = I.ITEM_NO)
+		WHERE MEMBER_NO = #{memberNo}
+	</select>
+
+	<insert id="insertExchange" parameterType="mExchange">
+		INSERT INTO EXCHANGE
+		VALUES(SEQ_EXCHANGE.NEXTVAL, DEFAULT, #{exchangeContent}, SYSDATE,
+		#{subscribeNo}, #{exchangeCategory})
+	</insert>
+
+	<update id="updateSubscribe" parameterType="_int">
+		UPDATE SUBSCRIBE
+		SET
+		EXCHANGE_STATUS = 'Y'
+		WHERE SUBSCRIBE_NO=#{subscribeNo}
+	</update>
+
+	<delete id="deleteReview" parameterType="_int">
+		DELETE FROM REVIEW
+		WHERE REVIEW_NO=#{reviewNo}
+	</delete>
+	
+	<select id="checkImage" resultType="_int">
+		SELECT COUNT(*)
+		FROM REVIEW_IMAGE
+		WHERE REVIEW_NO=#{reviewNo}
+	</select>
+	
+	<delete id="deleteReviewImage" parameterType="_int">
+		DELETE FROM REVIEW_IMAGE
+		WHERE REVIEW_NO=#{reviewNo}
+	</delete>
+	
+	<delete id="imageDelete" parameterType="_int">
+		DELETE FROM IMAGE I
+		WHERE I.IMAGE_NO = 
+		    (SELECT RI.R_IMAGE_NO
+		    FROM REVIEW_IMAGE RI
+		    WHERE I.IMAGE_NO = RI.R_IMAGE_NO 
+		    AND RI.REVIEW_NO=#{reviewNo})
+	</delete>
+
+	<update id="updateMember" parameterType="Member">
+		UPDATE MEMBER
+		SET EMAIL=#{email}, ADDRESS_1=#{address1}, ADDRESS_2=#{address2},
+		ADDRESS_3=#{address3}, MODIFY_DATE=SYSDATE
+		WHERE MEMBER_ID=#{memberId}
+	</update>
+
+	<update id="updateMemberStatus" parameterType="_int">
+		UPDATE MEMBER
+		SET MEMBER_STATUS='Y'
+		WHERE MEMBER_NO=#{memberNo}
+	</update>
+
+	<insert id="insertSecession" parameterType="Withdrawal">
+		INSERT INTO SECESSION
+		VALUES(SEQ_SECESSION.NEXTVAL, #{memberNo}, #{memberId}, #{email},
+		#{secessionCategory}, #{secessionContent}, DEFAULT)
+	</insert>
+
+	<select id="selectInquiryList" parameterType="int"
+		resultMap="inquiryResultSet">
+		SELECT *
+		FROM BOARD B
+		LEFT JOIN INQUIRY I ON (B.BOARD_NO =
+		I.BOARD_NO)
+		WHERE BOARD_CODE='O' AND MEMBER_NO=#{memberNo}
+	</select>
+
+	<select id="selectHeartList" parameterType="int"
+		resultMap="heartResultSet">
+		SELECT H.*, T.ITEM_PRICE, T.IMAGE_PATH,
+		T.IMAGE_RENAME,T.ITEM_NAME
+		FROM HEART H
+		LEFT JOIN ITEM T ON (H.ITEM_NO = T.ITEM_NO)
+		WHERE H.MEMBER_NO=#{memberNo}
+	</select>
+
+	<delete id="deleteHeart" parameterType="mDeleteHeart">
+		DELETE FROM HEART
+		WHERE
+		HEART_NO=#{heartNo} AND MEMBER_NO=#{memberNo}
+	</delete>
+
+	<select id="selectItem" parameterType="_int"
+		resultMap="itemResultSet">
+		SELECT *
+		FROM ITEM
+		WHERE ITEM_NO=#{itemNo}
+	</select>
+
+	<insert id="insertCart" parameterType="hashMap">
+		INSERT INTO CART VALUES
+		(SEQ_CART_NO.NEXTVAL
+		, #{item.itemNo}
+		, #{member.memberNo}
+		, #{member.memberId}
+		,
+		#{member.email}
+		, '1주'
+		, 1
+		, #{item.itemName}
+		, #{item.itemPrice})
+	</insert>
+
+	<select id="selectReply" parameterType="int"
+		resultMap="replyResultSet">
+		SELECT *
+		FROM INQUIRY
+		WHERE BOARD_NO=#{boardNo}
+	</select>
+
+	<!-- 아이디 중복확인 -->
+	<select id="idCheck" parameterType="String" resultType="_int">
+		SELECT COUNT(*) FROM MEMBER WHERE MEMBER_ID = #{memberId}
+	</select>
+
+	<!-- 회원가입 -->
+	<insert id="insertMember" parameterType="Member">
+		INSERT INTO MEMBER
+		VALUES(SEQ_MEMBER_NO.NEXTVAL, #{memberId}, #{email}, #{memberPwd},
+		#{memberName},
+		#{address1}, #{address2}, #{address3}, #{gender}, SYSDATE, SYSDATE, DEFAULT,
+		DEFAULT, DEFAULT, DEFAULT)
+	</insert>
+
+	<!-- 이메일 중복확인 -->
+	<select id="emailDupCheck" parameterType="String"
+		resultType="_int">
+		SELECT COUNT(*) FROM MEMBER WHERE EMAIL=#{email}
+	</select>
+
+	<select id="deleteCart" parameterType="hashMap">
+		DELETE FROM CART WHERE MEMBER_NO=#{memberNo} AND CART_NO=#{cartNo}
+	</select>
+
+	<update id="updatePassword" parameterType="Member">
+		UPDATE MEMBER
+		SET MEMBER_PWD=#{memberPwd}
+		WHERE MEMBER_ID=#{memberId}
+	</update>
+
+	<!-- 아이디 찾기 -->
+	<select id="findId" parameterType="Member" resultType="String">
+		SELECT
+		MEMBER_ID FROM MEMBER WHERE MEMBER_NAME=#{memberName} AND
+		EMAIL=#{email}
+	</select>
+
+	<!-- 비밀번호 찾기 전 회원 존재여부 확인 -->
+	<select id="checkMember" parameterType="Member"
+		resultType="_int">
+		SELECT COUNT(*) FROM MEMBER WHERE MEMBER_ID=#{memberId} AND
+		MEMBER_NAME=#{memberName} AND EMAIL=#{email}
+	</select>
+
+	<!-- 비밀번호 찾기 -->
+	<update id="changePwd" parameterType="Member">
+		UPDATE MEMBER SET
+		MEMBER_PWD=#{memberPwd} WHERE MEMBER_ID=#{memberId} AND
+		MEMBER_NAME=#{memberName} AND EMAIL=#{email}
+	</update>
+	<select id="selectGradeList" resultMap="gradeResultSet">
+		SELECT *
+		FROM GRADE
+		ORDER
+		BY GRADE_NO DESC
+	</select>
+	<select id="selectMemberCnt" resultType="_int">
+		SELECT COUNT(*)
+		FROM
+		MEMBER
+		WHERE MEMBER_STATUS='N'
+	</select>
+	<select id="selectGradeCnt" resultType="int">
+		SELECT COUNT(*)
+		FROM
+		(SELECT *
+		FROM MEMBER
+		WHERE MEMBER_STATUS='N')
+		GROUP BY GRADE_NO
+		HAVING GRADE_NO=#{gradeNo}
+	</select>
+	<select id="selectMemberN" resultMap="memberResultSet">
+		SELECT *
+		FROM MEMBER
+		WHERE
+		MEMBER_STATUS='N'
+		ORDER BY MEMBER_NO DESC
+	</select>
+	<update id="updateGradeRate" parameterType="java.util.List">
+		<foreach item="i" index="index" collection="list"
+			open="DECLARE BEGIN" separator=";" close="; END;">
+			UPDATE GRADE
+			SET
+			GRADE_RATE=${i.gradeRate}
+			WHERE GRADE_NO=${i.gradeNo}
+		</foreach>
+	</update>
+	<update id="updateGradeMin" parameterType="java.util.List">
+		<foreach item="i" index="index" collection="list"
+			open="DECLARE BEGIN" separator=";" close="; END;">
+			UPDATE GRADE
+			SET
+			GRADE_MIN=${i.gradeMin}
+			WHERE GRADE_NO=${i.gradeNo}
+		</foreach>
+	</update>
+	<select id="selectOneMember" parameterType="_int"
+		resultMap="adminMemberResultSet">
+		SELECT *
+		FROM MEMBER M
+		LEFT JOIN SECESSION S
+		ON(M.MEMBER_NO=S.MEMBER_NO)
+		WHERE M.MEMBER_NO=#{memberNo}
+	</select>
+	<select id="selectMemberPay" parameterType="_int"
+		resultMap="adminPaymentResultSet">
+		SELECT PAYMENT_DATE, ITEM_NAME, AMOUNT,
+		((ITEM_PRICE*AMOUNT)-POINT) AS TOTAL_PAYMENT
+		FROM PAYLIST
+		WHERE
+		MEMBER_NO=#{memberNo}
+	</select>
+	<select id="selectMemberPayCnt" parameterType="_int"
+		resultType="_int">
+		SELECT COUNT(*)
+		FROM PAYLIST
+		WHERE MEMBER_NO=#{memberNo}
+	</select>
+
+	<update id="updateMemberA" parameterType="AdminMember">
+		UPDATE MEMBER
+		SET
+		EMAIL=#{email}, ADDRESS_1=#{address1}, ADDRESS_2=#{address2},
+		ADDRESS_3=#{address3},POINT=#{point}
+		WHERE MEMBER_ID=#{memberId}
+	</update>
+	<delete id="deleteMemberA" parameterType="int">
+		DELETE
+		FROM MEMBER
+		WHERE
+		MEMBER_NO=#{memberNo}
+	</delete>
+	<delete id="deleteMemberSecession" parameterType="int">
+		DELETE
+		FROM
+		SECESSION
+		WHERE MEMBER_NO=#{memberNo}
+	</delete>
+	<delete id="deleteMemberBoard" parameterType="int">
+		DELETE
+		FROM BOARD
+		WHERE MEMBER_NO=#{memberNo}
+	</delete>
+	<delete id="deleteMemberHeart" parameterType="int">
+		DELETE
+		FROM HEART
+		WHERE MEMBER_NO=#{memberNo}
+	</delete>
+	<delete id="deleteMemberCart" parameterType="int">
+		DELETE
+		FROM CART
+		WHERE MEMBER_NO=#{memberNo}
+	</delete>
+	<delete id="deleteMemberReview" parameterType="int">
+		DELETE
+		FROM REVIEW
+		WHERE MEMBER_NO=#{memberNo}
+	</delete>
+	<delete id="deleteMemberPayment" parameterType="int">
+		DELETE
+		FROM
+		PAYMENT
+		WHERE MEMBER_NO=#{memberNo}
+	</delete>
+	<delete id="deleteMemberSubscribe" parameterType="int">
+		DELETE
+		FROM
+		SUBSCRIBE
+		WHERE MEMBER_NO=#{memberNo}
+	</delete>
+	<select id="selectSecessionCnt" parameterType="AdminSecession"
+		resultType="int">
+		SELECT COUNT(*) AS TOTAL
+		FROM SECESSION
+		GROUP BY
+		SECESSION_CATEGORY
+		HAVING SECESSION_CATEGORY=#{secessionCategory}
+	</select>
+	<select id="selectMemberSecessionCnt"
+		parameterType="AdminSecession" resultType="int">
+		SELECT COUNT(*) AS TOTAL
+		FROM SECESSION S
+		LEFT JOIN MEMBER M ON(S.MEMBER_NO=M.MEMBER_NO)
+		GROUP BY
+		GRADE_NO
+		HAVING GRADE_NO=#{gradeNo}
+	</select>
+	<select id="selectMemberSecession"
+		resultMap="adminSecessionResultSet">
+		SELECT S.*,M.GRADE_NO
+		FROM SECESSION S
+		LEFT JOIN MEMBER M
+		ON(S.MEMBER_NO=M.MEMBER_NO)
+	</select>
+
+	<select id="selectSubscribeList" resultMap="subscribeResultSet"
+		parameterType="int">
+		SELECT S.*, I.ITEM_NAME
+		FROM SUBSCRIBE S
+		JOIN ITEM I ON
+		(S.ITEM_NO = I.ITEM_NO)
+		WHERE MEMBER_NO=#{memberNo} AND
+		SUBSCRIBE_STATUS='N'
+	</select>
+
+	<select id="selectOrderList" resultMap="adminSubscribeResultSet">
+		select *
+		from(
+		SELECT *
+		FROM SUBSCRIBE S
+		LEFT JOIN ITEM I ON(S.ITEM_NO=I.ITEM_NO)
+		LEFT JOIN DELIVERY D ON(S.SUBSCRIBE_NO=D.SUBSCRIBE_NO)
+		LEFT JOIN PAYMENT P ON(S.SUBSCRIBE_NO=P.SUBSCRIBE_NO)
+		<where>
+			<if test="category1 !=null">
+				DELIVERY_STATUS=#{category1}
+			</if>
+
+		</where>
+		ORDER BY SUBSCRIBE_DATE DESC
+		)
+		<where>
+			<if test="subscribeNo!=null">
+				subscribe_no=#{subscribeNo}
+			</if>
+			<if test="itemName!=null">
+				or item_name=#{itemName}
+			</if>
+			<if test="memberId!=null">
+				or member_id=#{memberId}
+			</if>
+		</where>
+	</select>
+
+	<select id="selectOrderCnt" resultType="_int">
+		select count(*)
+		from(
+		SELECT S.SUBSCRIBE_NO, I.ITEM_NAME, S.MEMBER_ID
+		FROM SUBSCRIBE S
+		LEFT JOIN DELIVERY D ON(S.SUBSCRIBE_NO=D.SUBSCRIBE_NO)
+		LEFT JOIN ITEM I ON(S.ITEM_NO=I.ITEM_NO)
+		<where>
+			<if test="category1 !=null">
+				d.DELIVERY_STATUS=#{category1}
+			</if>
+		</where>
+		)
+		<where>
+			<if test="subscribeNo!=null">
+				subscribe_no=#{subscribeNo}
+			</if>
+			<if test="itemName!=null">
+				or item_name=#{itemName}
+			</if>
+			<if test="memberId!=null">
+				or member_id=#{memberId}
+			</if>
+		</where>
+	</select>
+
+	<update id="updateDelivery" parameterType="java.util.ArrayList">
+		<foreach item="i" collection="list" open="DECLARE BEGIN"
+			separator=";" close="; END;">
+			UPDATE DELIVERY
+			SET
+			DELIVERY_STATUS=#{i.deliveryStatus}
+			WHERE
+			SUBSCRIBE_NO=#{i.subscribeNo}
+		</foreach>
+	</update>
+
+	<select id="selectOrder" parameterType="int"
+		resultMap="adminSubscribeResultSet">
+		SELECT S.*,I.*,M.ADDRESS_1,M.ADDRESS_2,M.ADDRESS_3,D.*
+		FROM SUBSCRIBE S
+		LEFT JOIN ITEM I ON(S.ITEM_NO=I.ITEM_NO)
+		LEFT JOIN MEMBER M ON(S.MEMBER_NO=M.MEMBER_NO)
+		LEFT JOIN DELIVERY D ON(S.SUBSCRIBE_NO=D.SUBSCRIBE_NO)
+		LEFT JOIN PAYMENT P ON(S.SUBSCRIBE_NO=P.SUBSCRIBE_NO)
+		WHERE S.SUBSCRIBE_NO=#{subscribeNo}
+	</select>
+
+	<select id="selectPayment" parameterType="_int"
+		resultMap="adminPaymentResultSet">
+		SELECT *
+		FROM PAYMENT P
+		LEFT JOIN ITEM I ON(P.ITEM_NO=I.ITEM_NO)
+		WHERE SUBSCRIBE_NO=#{subscribeNo}
+	</select>
+
+	<select id="selectTotalPayment" parameterType="_int"
+		resultType="int">
+		SELECT SUM((ITEM_PRICE*AMOUNT)-POINT) AS TOTAL_PAYMENT
+		FROM
+		PAYMENT P
+		LEFT JOIN ITEM I ON(P.ITEM_NO=I.ITEM_NO)
+		GROUP BY SUBSCRIBE_NO
+		HAVING
+		SUBSCRIBE_NO=#{subscribeNo}
+	</select>
+
+	<select id="selectItemTotalP" parameterType="_int"
+		resultType="int">
+		SELECT SUM(ITEM_PRICE*AMOUNT) AS TOTAL_PAYMENT
+		FROM PAYMENT
+		P
+		LEFT JOIN ITEM I ON(P.ITEM_NO=I.ITEM_NO)
+		GROUP BY SUBSCRIBE_NO
+		HAVING
+		SUBSCRIBE_NO=#{subscribeNo}
+	</select>
+
+	<update id="updateSubscribeA" parameterType="int">
+		UPDATE SUBSCRIBE
+		SET
+		SUBSCRIBE_STATUS='Y'
+		WHERE SUBSCRIBE_NO=#{subscribeNo}
+	</update>
+
+	<select id="selectExchangeChart" parameterType="object"
+		resultType="int">
+		SELECT COUNT(*)
+		FROM (SELECT *
+		FROM EXCHANGE
+             <![CDATA[
+            WHERE EXCHANGE_DATE >= #{lastDay} AND EXCHANGE_DATE < #{startDay}
+             ]]>
+		)
+		GROUP BY EXCHANGE_CATEGORY
+		HAVING EXCHANGE_CATEGORY=#{temp1}
+	</select>
+
+	<select id="selectExchangeCnt" resultType="_int">
+		SELECT COUNT(*)
+		FROM(
+		SELECT E.*,S.MEMBER_ID,I.ITEM_NAME
+		FROM EXCHANGE E
+		LEFT JOIN SUBSCRIBE S ON (E.SUBSCRIBE_NO=S.SUBSCRIBE_NO)
+		LEFT JOIN ITEM I ON (S.ITEM_NO=I.ITEM_NO)
+		<where>
+			<if test="category1!=null">
+				e.exchange_status=#{category1}
+			</if>
+		</where>
+		ORDER BY E.EXCHANGE_DATE DESC
+		)
+		<where>
+			<if test="subscribeNo!=null">
+				subscribe_no=#{subscribeNo}
+			</if>
+			<if test="word!=null">
+				or exchange_content=#{word}
+			</if>
+			<if test="memberId!=null">
+				or member_Id=#{memberId}
+			</if>
+		</where>
+
+	</select>
+
+	<select id="selectExchangeList" parameterType="object"
+		resultMap="adminExchangeResultSet">
+		select *
+		from(
+		SELECT e.*,i.item_name,s.member_id
+		FROM EXCHANGE E
+		LEFT JOIN SUBSCRIBE S ON(E.SUBSCRIBE_NO=S.SUBSCRIBE_NO)
+		LEFT JOIN ITEM I ON (S.ITEM_NO=I.ITEM_NO)
+		LEFT JOIN MEMBER M ON (S.MEMBER_NO=M.MEMBER_NO)
+		<where>
+			<if test="category1!=null">
+				e.exchange_status=#{category1}
+			</if>
+		</where>
+		ORDER BY EXCHANGE_NO DESC
+		)
+		<where>
+			<if test="subscribeNo!=null">
+				subscribe_no=#{subscribeNo}
+			</if>
+			<if test="word!=null">
+				or exchange_content=#{word}
+			</if>
+			<if test="memberId!=null">
+				or member_Id=#{memberId}
+			</if>
+		</where>
+	</select>
+
+	<update id="updateExchangeStatus" parameterType="java.util.List">
+		<foreach item="i" index="index" collection="list"
+			open="DECLARE BEGIN" separator=";" close="; END;">
+			UPDATE EXCHANGE
+			SET EXCHANGE_STATUS=#{i.exchangeStatus}
+			WHERE EXCHANGE_NO=#{i.exchangeNo}
+		</foreach>
+	</update>
+
+	<select id="selectDateList" parameterType="object"
+		resultType="string">
+		SELECT TO_CHAR(TO_DATE(#{startDay},'YYYY-MM-DD') + LEVEL-1,
+		'YYYY-MM-DD') AS "SEARCHDATE"
+		FROM DUAL
+		<![CDATA[
+		CONNECT BY LEVEL <= (TO_DATE(#{lastDay})+1) - TO_DATE(#{startDay})
+		]]>
+	</select>
+
+	<select id="selectPaymentList" parameterType="java.util.List"
+		resultMap="adminPaymentResultSet">
+		SELECT TO_CHAR(PAYMENT_DATE,'yyyy-mm-dd') AS
+		PAYMENT_DATE,NVL(SUM(ITEM_PRICE*AMOUNT),0) AS TOTAL_PAYMENT,COUNT(*)
+		AS TOTAL_COUNT
+		FROM PAYMENT P
+		LEFT JOIN ITEM I ON(P.ITEM_NO=I.ITEM_NO)
+		GROUP BY TO_CHAR(PAYMENT_DATE,'yyyy-mm-dd')
+		HAVING TO_CHAR(PAYMENT_DATE,'yyyy-mm-dd') IN
+		<foreach item="i" index="index" collection="list" open="("
+			separator="," close=")">
+			#{i}
+		</foreach>
+		ORDER BY PAYMENT_DATE DESC
+	</select>
+
+	<select id="selectSalesCnt" parameterType="object"
+		resultType="_int">
+		SELECT COUNT(*)
+		FROM(SELECT PAYMENT_DATE,COUNT(*)
+		FROM PAYMENT P
+		GROUP BY PAYMENT_DATE
+			    <![CDATA[
+			    HAVING PAYMENT_DATE >= #{startDay} AND PAYMENT_DATE <= #{lastDay})
+			    ]]>
+	</select>
+
+	<select id="selectYearList" parameterType="object"
+		resultType="string">
+		SELECT TO_CHAR(#{lastDay})-LEVEL+1 AS "SEARCHDATE"
+		FROM DUAL 
+			<![CDATA[
+			CONNECT BY LEVEL <= ((TO_CHAR(#{lastDay})+1)-TO_CHAR(#{startDay}))
+			]]>
+	</select>
+
+	<select id="selectSalesYearCnt" parameterType="object"
+		resultType="_int">
+		SELECT COUNT(*)
+		FROM(
+		SELECT TO_CHAR(PAYMENT_DATE,'yyyy') AS
+		PAYMENT_DATE,NVL(SUM(ITEM_PRICE*AMOUNT),0) AS TOTAL_PAYMENT,COUNT(*)
+		AS TOTAL_COUNT
+		FROM PAYMENT P
+		LEFT JOIN ITEM I ON(P.ITEM_NO=I.ITEM_NO)
+		GROUP BY TO_CHAR(PAYMENT_DATE,'yyyy')
+		HAVING
+		<foreach item="i" index="index" collection="list" open="("
+			separator="or" close=")">
+			TO_CHAR(PAYMENT_DATE,'yyyy') LIKE #{i}
+		</foreach>
+		ORDER BY PAYMENT_DATE DESC)
+	</select>
+
+	<select id="selectPaymentYearsList"
+		parameterType="java.util.List" resultMap="adminPaymentResultSet">
+		SELECT TO_DATE(TO_CHAR(PAYMENT_DATE,'yyyy'),'yyyy') AS
+		PAYMENT_DATE,NVL(SUM(ITEM_PRICE*AMOUNT),0) AS TOTAL_PAYMENT,COUNT(*)
+		AS TOTAL_COUNT
+		FROM PAYMENT P
+		LEFT JOIN ITEM I ON(P.ITEM_NO=I.ITEM_NO)
+		GROUP BY TO_CHAR(PAYMENT_DATE,'yyyy')
+		HAVING
+		<foreach item="i" index="index" collection="list" open="("
+			separator="or" close=")">
+			TO_CHAR(PAYMENT_DATE,'yyyy') LIKE #{i}
+		</foreach>
+		ORDER BY PAYMENT_DATE DESC
+	</select>
+
+	<select id="selectSalesMonthsCnt" parameterType="object"
+		resultType="_int">
+		SELECT COUNT(*)
+		FROM(
+		SELECT TO_CHAR(PAYMENT_DATE,'yyyy-MM') AS
+		PAYMENT_DATE,NVL(SUM(ITEM_PRICE*AMOUNT),0) AS TOTAL_PAYMENT,COUNT(*)
+		AS TOTAL_COUNT
+		FROM PAYMENT P
+		LEFT JOIN ITEM I ON(P.ITEM_NO=I.ITEM_NO)
+		GROUP BY TO_CHAR(PAYMENT_DATE,'yyyy-MM')
+		HAVING
+		<foreach item="i" index="index" collection="list" open="("
+			separator="or" close=")">
+			TO_CHAR(PAYMENT_DATE,'yyyy-MM') LIKE #{i}
+		</foreach>
+		ORDER BY PAYMENT_DATE DESC)
+	</select>
+
+	<select id="selectPaymentMonthsList"
+		parameterType="java.util.List" resultMap="adminPaymentResultSet">
+		SELECT TO_DATE(TO_CHAR(PAYMENT_DATE,'yyyy-MM'),'yyyy-MM') AS
+		PAYMENT_DATE,NVL(SUM(ITEM_PRICE*AMOUNT),0) AS TOTAL_PAYMENT,COUNT(*)
+		AS TOTAL_COUNT
+		FROM PAYMENT P
+		LEFT JOIN ITEM I ON(P.ITEM_NO=I.ITEM_NO)
+		GROUP BY TO_CHAR(PAYMENT_DATE,'yyyy-MM')
+		HAVING
+		<foreach item="i" index="index" collection="list" open="("
+			separator="or" close=")">
+			TO_CHAR(PAYMENT_DATE,'yyyy-MM') LIKE #{i}
+		</foreach>
+		ORDER BY PAYMENT_DATE DESC
+	</select>
+
+	<select id="selectMonthList" parameterType="object"
+		resultType="string">
+		SELECT *
+		FROM(SELECT TO_CHAR(TO_DATE(#{startDay},'YYYY-MM') + LEVEL-1, 'YYYY-MM') AS
+		"SEARCHDATE"
+		FROM DUAL
+                <![CDATA[
+                CONNECT BY LEVEL <= (TO_DATE(#{lastDay},'YYYY-MM')+1) - TO_DATE(#{startDay},'YYYY-MM'))
+                ]]>
+		GROUP BY SEARCHDATE
+		ORDER BY SEARCHDATE DESC
+	</select>
+
+	<select id="selectMemberCntY" parameterType="object"
+		resultType="_int">
+		SELECT COUNT(*)
+		FROM(SELECT M.*,S.SECESSION_CONTENT
+		FROM MEMBER M
+		LEFT JOIN SECESSION S ON(M.MEMBER_NO=S.MEMBER_NO)
+		WHERE MEMBER_STATUS='Y'
+		<trim prefix="AND">
+			<if test="category1!=null">
+				SECESSION_CATEGORY=#{category1}
+			</if>
+		</trim>
+		)
+		<where>
+			<if test="memberNo!=null">
+        		 <![CDATA[
+		        MEMBER_NO LIKE '%${memberNo}%'  
+		        ]]>
+			</if>
+			<if test="memberId!=null">
+        		<![CDATA[
+		        OR MEMBER_ID LIKE '%${memberId}%' 
+		         ]]>
+			</if>
+			<if test="memberName!=null">
+				<![CDATA[
+		        OR MEMBER_NAME LIKE '%${memberName}%' 
+		        ]]>
+			</if>
+			<if test="category2!=null">
+				<![CDATA[
+		        OR SECESSION_CONTENT LIKE '%${category2}%'
+		        ]]>
+			</if>
+		</where>
+	</select>
+
+	<select id="selectPaymentCategoryList" parameterType="object"
+		resultMap="adminPaymentResultSet">
+
+		SELECT CATEGORY_NO,NVL(SUM(ITEM_PRICE*AMOUNT),0) AS
+		TOTAL_PAYMENT,COUNT(*) AS TOTAL_COUNT
+		FROM(
+		SELECT
+		I.*,P.PAYMENT_NO,P.AMOUNT,P.POINT,P.SUBSCRIBE_NO,P.PAYMENT_DATE,P.MEMBER_NO,P.MEMBER_ID,P.EMAIL
+		FROM PAYMENT P
+		LEFT JOIN ITEM I ON (I.ITEM_NO=P.ITEM_NO)
+		WHERE P.PAYMENT_DATE <![CDATA[>= ]]>#{startDay}
+		AND P.PAYMENT_DATE <![CDATA[ <= ]]>#{lastDay}
+		AND CATEGORY_NO=#{category1}
+
+		)
+		GROUP BY CATEGORY_NO
+	</select>
+
+	<select id="selectSalesDetailCnt" parameterType="object"
+		resultType="_int">
+
+		select count(*)
+		from (
+		SELECT *
+		FROM payment p
+		left join item i on(i.item_no=p.item_no)
+		where
+
+		p.PAYMENT_DATE <![CDATA[>= ]]>
+		#{startDay}
+
+		and p.PAYMENT_DATE <![CDATA[<]]>
+		#{lastDay}
+		)
+
+		<where>
+			<if test="subscribeNo!=null">
+				or subscribe_no = #{subscribeNo}
+			</if>
+			<if test="itemNo!=null">
+				or item_no = #{itemNo}
+			</if>
+			<if test="itemName!=null">
+				or item_name = #{itemName}
+			</if>
+			<if test="memberId!=null">
+				or member_id = #{memberId}
+			</if>
+		</where>
+		order by payment_date desc
+
+	</select>
+
+	<select id="selectPaymentDetail" parameterType="object"
+		resultMap="adminPaymentResultSet">
+		select *
+		from(
+		SELECT
+		I.*,P.PAYMENT_DATE,P.PAYMENT_NO,P.AMOUNT,P.POINT,P.SUBSCRIBE_NO,P.MEMBER_NO,P.MEMBER_ID,P.EMAIL,(i.ITEM_PRICE*p.AMOUNT-p.POINT)
+		AS TOTAL_PAYMENT
+		FROM PAYMENT P
+		LEFT JOIN ITEM I ON (I.ITEM_NO=P.ITEM_NO)
+		WHERE P.PAYMENT_DATE <![CDATA[>= ]]>
+		to_date(#{startDay},'yyyy-mm-dd') AND P.PAYMENT_DATE <![CDATA[<]]>
+		to_date(#{lastDay},'yyyy-mm-dd')
+		<if test="categoryNo!=null">
+			<trim prefix="AND">
+				CATEGORY_NO=#{categoryNo}
+			</trim>
+		</if>
+		order by p.payment_date
+		)
+		<where>
+
+			<if test="subscribeNo!=null">
+				or subscribe_no = #{subscribeNo}
+			</if>
+			<if test="itemNo!=null">
+				or item_no = #{itemNo}
+			</if>
+			<if test="itemName!=null">
+				or item_name = #{itemName}
+			</if>
+			<if test="memberId!=null">
+				or member_id = #{memberId}
+			</if>
+		</where>
+		order by payment_date desc
+	</select>
+
+	<insert id="insertVisitor" parameterType="object">
+		INSERT INTO VISITOR
+		VALUES(SEQ_VID.NEXTVAL,#{visitIp},SYSDATE,#{visitRefer},#{visitAgent})
+	</insert>
+
+	<select id="getVisitTodayCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM
+		VISITOR
+		WHERE
+		TO_DATE(VISIT_TIME,'yyyy-mm-dd')=TO_DATE(SYSDATE,'yyyy-mm-dd')
+	</select>
+	<select id="getVisitTotalCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM
+		VISITOR
+	</select>
+	<select id="selectTodayMember" resultType="_int">
+		SELECT COUNT(*)
+		FROM
+		MEMBER
+		WHERE ENROLL_DATE=#{value}
+	</select>
+	<select id="selectTodayVisitor" resultType="_int">
+		SELECT count(*)
+		FROM
+		VISITOR
+		WHERE TO_CHAR(VISIT_TIME,'yyyy-mm-dd') = #{value}
+	</select>
+
+	<select id="selectPaymentMainList"
+		resultMap="adminPaymentResultSet">
+		SELECT TO_CHAR(PAYMENT_DATE,'yyyy-mm-dd') AS
+		PAYMENT_DATE,NVL(SUM(ITEM_PRICE*AMOUNT),0) AS TOTAL_PAYMENT,COUNT(*)
+		AS TOTAL_COUNT
+		FROM PAYMENT P
+		LEFT JOIN ITEM I ON(P.ITEM_NO=I.ITEM_NO)
+		GROUP BY TO_CHAR(PAYMENT_DATE,'yyyy-mm-dd')
+		HAVING TO_CHAR(PAYMENT_DATE,'yyyy-mm-dd') IN
+
+		#{value}
+
+		ORDER BY PAYMENT_DATE desc
+	</select>
+
+	<select id="selectExchangeMain"
+		resultMap="adminExchangeResultSet">
+		SELECT *
+		FROM(
+		SELECT *
+		FROM EXCHANGE
+		WHERE EXCHANGE_STATUS='N'
+		ORDER BY EXCHANGE_NO ASC
+		)
+             <![CDATA[
+         WHERE ROWNUM<5
+         ]]>
+
+	</select>
+
+	<select id="selectDeliveryMain"
+		resultMap="adminSubscribeResultSet">
+		SELECT *
+		FROM(
+		SELECT *
+		FROM SUBSCRIBE S
+		LEFT JOIN DELIVERY D ON(S.SUBSCRIBE_NO=D.SUBSCRIBE_NO)
+		left join item i on(s.item_no=i.item_no)
+		WHERE S.SUBSCRIBE_STATUS='N' AND S.SUBSCRIBE_STATUS='N'
+		ORDER BY S.SUBSCRIBE_NO ASC
+		)
+                    <![CDATA[
+                WHERE ROWNUM<5
+                ]]>
+	</select>
+
+	<select id="selectBoardMain" resultMap="adminBoardResultSet">
+		SELECT *
+		FROM(
+		SELECT *
+		FROM BOARD B
+
+		LEFT JOIN INQUIRY I ON(B.BOARD_NO=I.BOARD_NO)
+		WHERE I.INQUIRY_YN='N'
+		ORDER BY B.BOARD_NO ASC
+		)
+                     <![CDATA[
+                WHERE ROWNUM<5
+                  ]]>
+	</select>
+
+	<select id="selectNoticeMain" resultMap="adminBoardResultSet">
+		SELECT *
+		FROM(
+		SELECT *
+		FROM BOARD B
+		WHERE BOARD_CODE='N'
+		ORDER BY B.BOARD_NO DESC
+		)
+                     <![CDATA[
+                WHERE ROWNUM<5
+                  ]]>
+
+	</select>
+
+	<update id="changeCycle" parameterType="mSubscribe">
+		UPDATE SUBSCRIBE
+		SET
+		CYCLE_NO=#{cycleNo}
+		WHERE SUBSCRIBE_NO=#{subscribeNo}
+	</update>
+
+	<insert id="insertCancle" parameterType="mCancle">
+		INSERT INTO CANCLE
+		VALUES(SEQ_CANCLE.NEXTVAL, #{subscribeNo}, #{cancleCategory},
+		#{cancleContent}, SYSDATE)
+	</insert>
+
+	<update id="subscribeStatus" parameterType="_int">
+		UPDATE SUBSCRIBE
+		SET
+		SUBSCRIBE_STATUS='Y'
+		WHERE SUBSCRIBE_NO=#{subscribeNo}
+	</update>
+
+	<select id="subscribeCount" resultType="_int"
+		parameterType="_int">
+		SELECT COUNT(*)
+		FROM SUBSCRIBE
+		WHERE MEMBER_NO=#{memberNo}
+		AND SUBSCRIBE_STATUS='N'
+	</select>
+
+	<select id="cartCount" resultType="_int" parameterType="_int">
+		SELECT
+		COUNT(*)
+		FROM CART
+		WHERE MEMBER_NO=#{memberNo}
+	</select>
+
+	<select id="pointCount" resultType="_int" parameterType="_int">
+		SELECT
+		COUNT(*)
+		FROM POINT P
+		JOIN SUBSCRIBE S ON (P.SUBSCRIBE_NO =
+		S.SUBSCRIBE_NO)
+		JOIN ITEM I ON (I.ITEM_NO = S.ITEM_NO)
+		JOIN MEMBER M
+		ON(S.MEMBER_NO = M.MEMBER_NO)
+		WHERE M.MEMBER_NO = #{memberNo}
+	</select>
+</mapper>

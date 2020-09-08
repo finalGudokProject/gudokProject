@@ -1,0 +1,199 @@
+05-Aug-2020 17:08:29.565 정보 [main] org.apache.catalina.startup.VersionLoggerListener.log 서버 버전 이름:        Apache Tomcat/8.5.55
+05-Aug-2020 17:08:29.579 정보 [main] org.apache.catalina.startup.VersionLoggerListener.log Server 빌드 시각:          May 5 2020 22:10:54 UTC
+05-Aug-2020 17:08:29.580 정보 [main] org.apache.catalina.startup.VersionLoggerListener.log Server 버전 번호:         8.5.55.0
+05-Aug-2020 17:08:29.580 정보 [main] org.apache.catalina.startup.VersionLoggerListener.log 운영체제 이름:               Windows 10
+05-Aug-2020 17:08:29.580 정보 [main] org.apache.catalina.startup.VersionLoggerListener.log 운영체제 버전:            10.0
+05-Aug-2020 17:08:29.581 정보 [main] org.apache.catalina.startup.VersionLoggerListener.log 아키텍처:          amd64
+05-Aug-2020 17:08:29.581 정보 [main] org.apache.catalina.startup.VersionLoggerListener.log 자바 홈:             C:\Program Files\Java\jdk1.8.0_241\jre
+05-Aug-2020 17:08:29.581 정보 [main] org.apache.catalina.startup.VersionLoggerListener.log JVM 버전:           1.8.0_241-b07
+05-Aug-2020 17:08:29.581 정보 [main] org.apache.catalina.startup.VersionLoggerListener.log JVM 벤더:            Oracle Corporation
+05-Aug-2020 17:08:29.582 정보 [main] org.apache.catalina.startup.VersionLoggerListener.log CATALINA_BASE:         C:\kh\spring\workspace\dev\apache-tomcat-8.5.55
+05-Aug-2020 17:08:29.582 정보 [main] org.apache.catalina.startup.VersionLoggerListener.log CATALINA_HOME:         C:\kh\spring\workspace\dev\apache-tomcat-8.5.55
+05-Aug-2020 17:08:29.584 정보 [main] org.apache.catalina.startup.VersionLoggerListener.log 명령 행 아규먼트: -Djava.util.logging.config.file=C:\kh\spring\workspace\dev\apache-tomcat-8.5.55\conf\logging.properties
+05-Aug-2020 17:08:29.588 정보 [main] org.apache.catalina.startup.VersionLoggerListener.log 명령 행 아규먼트: -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager
+05-Aug-2020 17:08:29.600 정보 [main] org.apache.catalina.startup.VersionLoggerListener.log 명령 행 아규먼트: -Djdk.tls.ephemeralDHKeySize=2048
+05-Aug-2020 17:08:29.603 정보 [main] org.apache.catalina.startup.VersionLoggerListener.log 명령 행 아규먼트: -Djava.protocol.handler.pkgs=org.apache.catalina.webresources
+05-Aug-2020 17:08:29.605 정보 [main] org.apache.catalina.startup.VersionLoggerListener.log 명령 행 아규먼트: -Dignore.endorsed.dirs=
+05-Aug-2020 17:08:29.609 정보 [main] org.apache.catalina.startup.VersionLoggerListener.log 명령 행 아규먼트: -Dcatalina.base=C:\kh\spring\workspace\dev\apache-tomcat-8.5.55
+05-Aug-2020 17:08:29.614 정보 [main] org.apache.catalina.startup.VersionLoggerListener.log 명령 행 아규먼트: -Dcatalina.home=C:\kh\spring\workspace\dev\apache-tomcat-8.5.55
+05-Aug-2020 17:08:29.616 정보 [main] org.apache.catalina.startup.VersionLoggerListener.log 명령 행 아규먼트: -Djava.io.tmpdir=C:\kh\spring\workspace\dev\apache-tomcat-8.5.55\temp
+05-Aug-2020 17:08:29.623 정보 [main] org.apache.catalina.core.AprLifecycleListener.lifecycleEvent APR 버전 [1.7.0]을(를) 사용한, APR 기반 Apache Tomcat Native 라이브러리 [1.2.24]을(를) 로드했습니다.
+05-Aug-2020 17:08:29.628 정보 [main] org.apache.catalina.core.AprLifecycleListener.lifecycleEvent APR 용량정보들: IPv6 [true], sendfile [true], accept filters [false], random [true].
+05-Aug-2020 17:08:29.638 정보 [main] org.apache.catalina.core.AprLifecycleListener.lifecycleEvent APR/OpenSSL 설정: useAprConnector [false], useOpenSSL [true]
+05-Aug-2020 17:08:29.660 정보 [main] org.apache.catalina.core.AprLifecycleListener.initializeSSL OpenSSL이 성공적으로 초기화되었습니다: [OpenSSL 1.1.1g  21 Apr 2020]
+05-Aug-2020 17:08:29.934 정보 [main] org.apache.coyote.AbstractProtocol.init 프로토콜 핸들러 ["http-nio-8080"]을(를) 초기화합니다.
+05-Aug-2020 17:08:29.973 심각 [main] org.apache.catalina.core.StandardService.initInternal Failed to initialize connector [Connector[HTTP/1.1-8080]]
+	org.apache.catalina.LifecycleException: 프로토콜 핸들러 초기화가 실패했습니다.
+		at org.apache.catalina.connector.Connector.initInternal(Connector.java:1068)
+		at org.apache.catalina.util.LifecycleBase.init(LifecycleBase.java:136)
+		at org.apache.catalina.core.StandardService.initInternal(StandardService.java:552)
+		at org.apache.catalina.util.LifecycleBase.init(LifecycleBase.java:136)
+		at org.apache.catalina.core.StandardServer.initInternal(StandardServer.java:848)
+		at org.apache.catalina.util.LifecycleBase.init(LifecycleBase.java:136)
+		at org.apache.catalina.startup.Catalina.load(Catalina.java:639)
+		at org.apache.catalina.startup.Catalina.load(Catalina.java:662)
+		at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+		at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+		at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+		at java.lang.reflect.Method.invoke(Method.java:498)
+		at org.apache.catalina.startup.Bootstrap.load(Bootstrap.java:303)
+		at org.apache.catalina.startup.Bootstrap.main(Bootstrap.java:473)
+	Caused by: java.net.BindException: Address already in use: bind
+		at sun.nio.ch.Net.bind0(Native Method)
+		at sun.nio.ch.Net.bind(Net.java:433)
+		at sun.nio.ch.Net.bind(Net.java:425)
+		at sun.nio.ch.ServerSocketChannelImpl.bind(ServerSocketChannelImpl.java:223)
+		at sun.nio.ch.ServerSocketAdaptor.bind(ServerSocketAdaptor.java:74)
+		at org.apache.tomcat.util.net.NioEndpoint.bind(NioEndpoint.java:221)
+		at org.apache.tomcat.util.net.AbstractEndpoint.init(AbstractEndpoint.java:1118)
+		at org.apache.tomcat.util.net.AbstractJsseEndpoint.init(AbstractJsseEndpoint.java:222)
+		at org.apache.coyote.AbstractProtocol.init(AbstractProtocol.java:587)
+		at org.apache.coyote.http11.AbstractHttp11Protocol.init(AbstractHttp11Protocol.java:74)
+		at org.apache.catalina.connector.Connector.initInternal(Connector.java:1066)
+		... 13 more
+05-Aug-2020 17:08:29.984 정보 [main] org.apache.catalina.startup.Catalina.load Initialization processed in 1300 ms
+05-Aug-2020 17:08:30.063 정보 [main] org.apache.catalina.core.StandardService.startInternal 서비스 [Catalina]을(를) 시작합니다.
+05-Aug-2020 17:08:30.073 정보 [main] org.apache.catalina.core.StandardEngine.startInternal Starting Servlet Engine: Apache Tomcat/8.5.55
+05-Aug-2020 17:08:30.127 정보 [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployWAR 웹 애플리케이션 아카이브 [C:\kh\spring\workspace\dev\apache-tomcat-8.5.55\webapps\realSpringProject.war]을(를) 배치합니다.
+05-Aug-2020 17:08:36.565 정보 [localhost-startStop-1] org.apache.jasper.servlet.TldScanner.scanJars 적어도 하나의 JAR가 TLD들을 찾기 위해 스캔되었으나 아무 것도 찾지 못했습니다. 스캔했으나 TLD가 없는 JAR들의 전체 목록을 보시려면, 로그 레벨을 디버그 레벨로 설정하십시오. 스캔 과정에서 불필요한 JAR들을 건너뛰면, 시스템 시작 시간과 JSP 컴파일 시간을 단축시킬 수 있습니다.
+05-Aug-2020 17:08:39.524 경고 [localhost-startStop-1] org.apache.catalina.util.SessionIdGeneratorBase.createSecureRandom [SHA1PRNG] 알고리즘을 사용하여, 세션 ID를 생성하기 위한 SecureRandom 객체를 생성하는데, [213] 밀리초가 소요됐습니다.
+05-Aug-2020 17:08:43.313 정보 [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployWAR 웹 애플리케이션 아카이브 [C:\kh\spring\workspace\dev\apache-tomcat-8.5.55\webapps\realSpringProject.war]의 배치가 [13,186] 밀리초에 완료되었습니다.
+05-Aug-2020 17:08:43.321 정보 [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory 웹 애플리케이션 디렉토리 [C:\kh\spring\workspace\dev\apache-tomcat-8.5.55\webapps\docs]을(를) 배치합니다.
+05-Aug-2020 17:08:43.377 정보 [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory 웹 애플리케이션 디렉토리 [C:\kh\spring\workspace\dev\apache-tomcat-8.5.55\webapps\docs]에 대한 배치가 [56] 밀리초에 완료되었습니다.
+05-Aug-2020 17:08:43.386 정보 [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory 웹 애플리케이션 디렉토리 [C:\kh\spring\workspace\dev\apache-tomcat-8.5.55\webapps\examples]을(를) 배치합니다.
+05-Aug-2020 17:08:44.562 정보 [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory 웹 애플리케이션 디렉토리 [C:\kh\spring\workspace\dev\apache-tomcat-8.5.55\webapps\examples]에 대한 배치가 [1,177] 밀리초에 완료되었습니다.
+05-Aug-2020 17:08:44.563 정보 [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory 웹 애플리케이션 디렉토리 [C:\kh\spring\workspace\dev\apache-tomcat-8.5.55\webapps\host-manager]을(를) 배치합니다.
+05-Aug-2020 17:08:44.633 정보 [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory 웹 애플리케이션 디렉토리 [C:\kh\spring\workspace\dev\apache-tomcat-8.5.55\webapps\host-manager]에 대한 배치가 [70] 밀리초에 완료되었습니다.
+05-Aug-2020 17:08:44.634 정보 [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory 웹 애플리케이션 디렉토리 [C:\kh\spring\workspace\dev\apache-tomcat-8.5.55\webapps\manager]을(를) 배치합니다.
+05-Aug-2020 17:08:44.703 정보 [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory 웹 애플리케이션 디렉토리 [C:\kh\spring\workspace\dev\apache-tomcat-8.5.55\webapps\manager]에 대한 배치가 [69] 밀리초에 완료되었습니다.
+05-Aug-2020 17:08:44.713 정보 [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory 웹 애플리케이션 디렉토리 [C:\kh\spring\workspace\dev\apache-tomcat-8.5.55\webapps\ROOT]을(를) 배치합니다.
+05-Aug-2020 17:08:44.779 정보 [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory 웹 애플리케이션 디렉토리 [C:\kh\spring\workspace\dev\apache-tomcat-8.5.55\webapps\ROOT]에 대한 배치가 [66] 밀리초에 완료되었습니다.
+05-Aug-2020 17:08:44.794 정보 [main] org.apache.catalina.startup.Catalina.start Server startup in 14807 ms
+05-Aug-2020 17:10:14.241 정보 [main] org.apache.catalina.startup.VersionLoggerListener.log 서버 버전 이름:        Apache Tomcat/8.5.55
+05-Aug-2020 17:10:14.251 정보 [main] org.apache.catalina.startup.VersionLoggerListener.log Server 빌드 시각:          May 5 2020 22:10:54 UTC
+05-Aug-2020 17:10:14.251 정보 [main] org.apache.catalina.startup.VersionLoggerListener.log Server 버전 번호:         8.5.55.0
+05-Aug-2020 17:10:14.252 정보 [main] org.apache.catalina.startup.VersionLoggerListener.log 운영체제 이름:               Windows 10
+05-Aug-2020 17:10:14.252 정보 [main] org.apache.catalina.startup.VersionLoggerListener.log 운영체제 버전:            10.0
+05-Aug-2020 17:10:14.252 정보 [main] org.apache.catalina.startup.VersionLoggerListener.log 아키텍처:          amd64
+05-Aug-2020 17:10:14.252 정보 [main] org.apache.catalina.startup.VersionLoggerListener.log 자바 홈:             C:\Program Files\Java\jdk1.8.0_241\jre
+05-Aug-2020 17:10:14.253 정보 [main] org.apache.catalina.startup.VersionLoggerListener.log JVM 버전:           1.8.0_241-b07
+05-Aug-2020 17:10:14.253 정보 [main] org.apache.catalina.startup.VersionLoggerListener.log JVM 벤더:            Oracle Corporation
+05-Aug-2020 17:10:14.253 정보 [main] org.apache.catalina.startup.VersionLoggerListener.log CATALINA_BASE:         C:\kh\spring\workspace\dev\apache-tomcat-8.5.55
+05-Aug-2020 17:10:14.253 정보 [main] org.apache.catalina.startup.VersionLoggerListener.log CATALINA_HOME:         C:\kh\spring\workspace\dev\apache-tomcat-8.5.55
+05-Aug-2020 17:10:14.255 정보 [main] org.apache.catalina.startup.VersionLoggerListener.log 명령 행 아규먼트: -Djava.util.logging.config.file=C:\kh\spring\workspace\dev\apache-tomcat-8.5.55\conf\logging.properties
+05-Aug-2020 17:10:14.257 정보 [main] org.apache.catalina.startup.VersionLoggerListener.log 명령 행 아규먼트: -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager
+05-Aug-2020 17:10:14.259 정보 [main] org.apache.catalina.startup.VersionLoggerListener.log 명령 행 아규먼트: -Djdk.tls.ephemeralDHKeySize=2048
+05-Aug-2020 17:10:14.270 정보 [main] org.apache.catalina.startup.VersionLoggerListener.log 명령 행 아규먼트: -Djava.protocol.handler.pkgs=org.apache.catalina.webresources
+05-Aug-2020 17:10:14.273 정보 [main] org.apache.catalina.startup.VersionLoggerListener.log 명령 행 아규먼트: -Dignore.endorsed.dirs=
+05-Aug-2020 17:10:14.275 정보 [main] org.apache.catalina.startup.VersionLoggerListener.log 명령 행 아규먼트: -Dcatalina.base=C:\kh\spring\workspace\dev\apache-tomcat-8.5.55
+05-Aug-2020 17:10:14.277 정보 [main] org.apache.catalina.startup.VersionLoggerListener.log 명령 행 아규먼트: -Dcatalina.home=C:\kh\spring\workspace\dev\apache-tomcat-8.5.55
+05-Aug-2020 17:10:14.279 정보 [main] org.apache.catalina.startup.VersionLoggerListener.log 명령 행 아규먼트: -Djava.io.tmpdir=C:\kh\spring\workspace\dev\apache-tomcat-8.5.55\temp
+05-Aug-2020 17:10:14.289 정보 [main] org.apache.catalina.core.AprLifecycleListener.lifecycleEvent APR 버전 [1.7.0]을(를) 사용한, APR 기반 Apache Tomcat Native 라이브러리 [1.2.24]을(를) 로드했습니다.
+05-Aug-2020 17:10:14.292 정보 [main] org.apache.catalina.core.AprLifecycleListener.lifecycleEvent APR 용량정보들: IPv6 [true], sendfile [true], accept filters [false], random [true].
+05-Aug-2020 17:10:14.296 정보 [main] org.apache.catalina.core.AprLifecycleListener.lifecycleEvent APR/OpenSSL 설정: useAprConnector [false], useOpenSSL [true]
+05-Aug-2020 17:10:14.311 정보 [main] org.apache.catalina.core.AprLifecycleListener.initializeSSL OpenSSL이 성공적으로 초기화되었습니다: [OpenSSL 1.1.1g  21 Apr 2020]
+05-Aug-2020 17:10:14.542 정보 [main] org.apache.coyote.AbstractProtocol.init 프로토콜 핸들러 ["http-nio-8090"]을(를) 초기화합니다.
+05-Aug-2020 17:10:14.977 정보 [main] org.apache.tomcat.util.net.NioSelectorPool.getSharedSelector Using a shared selector for servlet write/read
+05-Aug-2020 17:10:15.020 정보 [main] org.apache.catalina.startup.Catalina.load Initialization processed in 1551 ms
+05-Aug-2020 17:10:15.177 정보 [main] org.apache.catalina.core.StandardService.startInternal 서비스 [Catalina]을(를) 시작합니다.
+05-Aug-2020 17:10:15.196 정보 [main] org.apache.catalina.core.StandardEngine.startInternal Starting Servlet Engine: Apache Tomcat/8.5.55
+05-Aug-2020 17:10:15.277 정보 [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployWAR 웹 애플리케이션 아카이브 [C:\kh\spring\workspace\dev\apache-tomcat-8.5.55\webapps\realSpringProject.war]을(를) 배치합니다.
+05-Aug-2020 17:10:20.917 정보 [localhost-startStop-1] org.apache.jasper.servlet.TldScanner.scanJars 적어도 하나의 JAR가 TLD들을 찾기 위해 스캔되었으나 아무 것도 찾지 못했습니다. 스캔했으나 TLD가 없는 JAR들의 전체 목록을 보시려면, 로그 레벨을 디버그 레벨로 설정하십시오. 스캔 과정에서 불필요한 JAR들을 건너뛰면, 시스템 시작 시간과 JSP 컴파일 시간을 단축시킬 수 있습니다.
+05-Aug-2020 17:10:27.041 정보 [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployWAR 웹 애플리케이션 아카이브 [C:\kh\spring\workspace\dev\apache-tomcat-8.5.55\webapps\realSpringProject.war]의 배치가 [11,762] 밀리초에 완료되었습니다.
+05-Aug-2020 17:10:27.052 정보 [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory 웹 애플리케이션 디렉토리 [C:\kh\spring\workspace\dev\apache-tomcat-8.5.55\webapps\docs]을(를) 배치합니다.
+05-Aug-2020 17:10:27.120 정보 [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory 웹 애플리케이션 디렉토리 [C:\kh\spring\workspace\dev\apache-tomcat-8.5.55\webapps\docs]에 대한 배치가 [69] 밀리초에 완료되었습니다.
+05-Aug-2020 17:10:27.130 정보 [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory 웹 애플리케이션 디렉토리 [C:\kh\spring\workspace\dev\apache-tomcat-8.5.55\webapps\examples]을(를) 배치합니다.
+05-Aug-2020 17:10:27.826 정보 [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory 웹 애플리케이션 디렉토리 [C:\kh\spring\workspace\dev\apache-tomcat-8.5.55\webapps\examples]에 대한 배치가 [696] 밀리초에 완료되었습니다.
+05-Aug-2020 17:10:27.835 정보 [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory 웹 애플리케이션 디렉토리 [C:\kh\spring\workspace\dev\apache-tomcat-8.5.55\webapps\host-manager]을(를) 배치합니다.
+05-Aug-2020 17:10:27.917 정보 [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory 웹 애플리케이션 디렉토리 [C:\kh\spring\workspace\dev\apache-tomcat-8.5.55\webapps\host-manager]에 대한 배치가 [82] 밀리초에 완료되었습니다.
+05-Aug-2020 17:10:27.926 정보 [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory 웹 애플리케이션 디렉토리 [C:\kh\spring\workspace\dev\apache-tomcat-8.5.55\webapps\manager]을(를) 배치합니다.
+05-Aug-2020 17:10:27.987 정보 [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory 웹 애플리케이션 디렉토리 [C:\kh\spring\workspace\dev\apache-tomcat-8.5.55\webapps\manager]에 대한 배치가 [61] 밀리초에 완료되었습니다.
+05-Aug-2020 17:10:27.997 정보 [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory 웹 애플리케이션 디렉토리 [C:\kh\spring\workspace\dev\apache-tomcat-8.5.55\webapps\ROOT]을(를) 배치합니다.
+05-Aug-2020 17:10:28.046 정보 [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory 웹 애플리케이션 디렉토리 [C:\kh\spring\workspace\dev\apache-tomcat-8.5.55\webapps\ROOT]에 대한 배치가 [49] 밀리초에 완료되었습니다.
+05-Aug-2020 17:10:28.066 정보 [main] org.apache.coyote.AbstractProtocol.start 프로토콜 핸들러 ["http-nio-8090"]을(를) 시작합니다.
+05-Aug-2020 17:10:28.097 정보 [main] org.apache.catalina.startup.Catalina.start Server startup in 13070 ms
+05-Aug-2020 17:10:28.112 심각 [main] org.apache.catalina.core.StandardServer.await StandardServer.await: create[localhost:8005]: 
+	java.net.BindException: Address already in use: JVM_Bind
+		at java.net.DualStackPlainSocketImpl.bind0(Native Method)
+		at java.net.DualStackPlainSocketImpl.socketBind(DualStackPlainSocketImpl.java:106)
+		at java.net.AbstractPlainSocketImpl.bind(AbstractPlainSocketImpl.java:387)
+		at java.net.PlainSocketImpl.bind(PlainSocketImpl.java:190)
+		at java.net.ServerSocket.bind(ServerSocket.java:375)
+		at java.net.ServerSocket.<init>(ServerSocket.java:237)
+		at org.apache.catalina.core.StandardServer.await(StandardServer.java:421)
+		at org.apache.catalina.startup.Catalina.await(Catalina.java:776)
+		at org.apache.catalina.startup.Catalina.start(Catalina.java:722)
+		at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+		at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+		at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+		at java.lang.reflect.Method.invoke(Method.java:498)
+		at org.apache.catalina.startup.Bootstrap.start(Bootstrap.java:343)
+		at org.apache.catalina.startup.Bootstrap.main(Bootstrap.java:474)
+05-Aug-2020 17:10:28.118 정보 [main] org.apache.coyote.AbstractProtocol.pause 프로토콜 핸들러 ["http-nio-8090"]을(를) 일시 정지 중
+05-Aug-2020 17:10:28.389 정보 [main] org.apache.catalina.core.StandardService.stopInternal 서비스 [Catalina]을(를) 중지시킵니다.
+05-Aug-2020 17:10:28.473 정보 [main] org.apache.coyote.AbstractProtocol.stop 프로토콜 핸들러 ["http-nio-8090"]을(를) 중지시킵니다.
+05-Aug-2020 17:10:28.487 정보 [main] org.apache.coyote.AbstractProtocol.destroy 프로토콜 핸들러 ["http-nio-8090"]을(를) 소멸시킵니다.
+05-Aug-2020 17:10:48.521 심각 [main] org.apache.catalina.startup.Catalina.stopServer Could not contact [localhost:8005]. Tomcat may not be running.
+05-Aug-2020 17:10:48.537 심각 [main] org.apache.catalina.startup.Catalina.stopServer Catalina.stop: 
+	java.net.ConnectException: Connection refused: connect
+		at java.net.DualStackPlainSocketImpl.connect0(Native Method)
+		at java.net.DualStackPlainSocketImpl.socketConnect(DualStackPlainSocketImpl.java:79)
+		at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:350)
+		at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:206)
+		at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:188)
+		at java.net.PlainSocketImpl.connect(PlainSocketImpl.java:172)
+		at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:392)
+		at java.net.Socket.connect(Socket.java:606)
+		at java.net.Socket.connect(Socket.java:555)
+		at java.net.Socket.<init>(Socket.java:451)
+		at java.net.Socket.<init>(Socket.java:228)
+		at org.apache.catalina.startup.Catalina.stopServer(Catalina.java:504)
+		at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+		at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+		at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+		at java.lang.reflect.Method.invoke(Method.java:498)
+		at org.apache.catalina.startup.Bootstrap.stopServer(Bootstrap.java:389)
+		at org.apache.catalina.startup.Bootstrap.main(Bootstrap.java:479)
+05-Aug-2020 17:10:56.965 정보 [main] org.apache.catalina.startup.VersionLoggerListener.log 서버 버전 이름:        Apache Tomcat/8.5.55
+05-Aug-2020 17:10:56.977 정보 [main] org.apache.catalina.startup.VersionLoggerListener.log Server 빌드 시각:          May 5 2020 22:10:54 UTC
+05-Aug-2020 17:10:56.977 정보 [main] org.apache.catalina.startup.VersionLoggerListener.log Server 버전 번호:         8.5.55.0
+05-Aug-2020 17:10:56.978 정보 [main] org.apache.catalina.startup.VersionLoggerListener.log 운영체제 이름:               Windows 10
+05-Aug-2020 17:10:56.978 정보 [main] org.apache.catalina.startup.VersionLoggerListener.log 운영체제 버전:            10.0
+05-Aug-2020 17:10:56.978 정보 [main] org.apache.catalina.startup.VersionLoggerListener.log 아키텍처:          amd64
+05-Aug-2020 17:10:56.979 정보 [main] org.apache.catalina.startup.VersionLoggerListener.log 자바 홈:             C:\Program Files\Java\jdk1.8.0_241\jre
+05-Aug-2020 17:10:56.979 정보 [main] org.apache.catalina.startup.VersionLoggerListener.log JVM 버전:           1.8.0_241-b07
+05-Aug-2020 17:10:56.979 정보 [main] org.apache.catalina.startup.VersionLoggerListener.log JVM 벤더:            Oracle Corporation
+05-Aug-2020 17:10:56.979 정보 [main] org.apache.catalina.startup.VersionLoggerListener.log CATALINA_BASE:         C:\kh\spring\workspace\dev\apache-tomcat-8.5.55
+05-Aug-2020 17:10:56.980 정보 [main] org.apache.catalina.startup.VersionLoggerListener.log CATALINA_HOME:         C:\kh\spring\workspace\dev\apache-tomcat-8.5.55
+05-Aug-2020 17:10:56.983 정보 [main] org.apache.catalina.startup.VersionLoggerListener.log 명령 행 아규먼트: -Djava.util.logging.config.file=C:\kh\spring\workspace\dev\apache-tomcat-8.5.55\conf\logging.properties
+05-Aug-2020 17:10:56.987 정보 [main] org.apache.catalina.startup.VersionLoggerListener.log 명령 행 아규먼트: -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager
+05-Aug-2020 17:10:56.998 정보 [main] org.apache.catalina.startup.VersionLoggerListener.log 명령 행 아규먼트: -Djdk.tls.ephemeralDHKeySize=2048
+05-Aug-2020 17:10:57.000 정보 [main] org.apache.catalina.startup.VersionLoggerListener.log 명령 행 아규먼트: -Djava.protocol.handler.pkgs=org.apache.catalina.webresources
+05-Aug-2020 17:10:57.006 정보 [main] org.apache.catalina.startup.VersionLoggerListener.log 명령 행 아규먼트: -Dignore.endorsed.dirs=
+05-Aug-2020 17:10:57.011 정보 [main] org.apache.catalina.startup.VersionLoggerListener.log 명령 행 아규먼트: -Dcatalina.base=C:\kh\spring\workspace\dev\apache-tomcat-8.5.55
+05-Aug-2020 17:10:57.014 정보 [main] org.apache.catalina.startup.VersionLoggerListener.log 명령 행 아규먼트: -Dcatalina.home=C:\kh\spring\workspace\dev\apache-tomcat-8.5.55
+05-Aug-2020 17:10:57.018 정보 [main] org.apache.catalina.startup.VersionLoggerListener.log 명령 행 아규먼트: -Djava.io.tmpdir=C:\kh\spring\workspace\dev\apache-tomcat-8.5.55\temp
+05-Aug-2020 17:10:57.024 정보 [main] org.apache.catalina.core.AprLifecycleListener.lifecycleEvent APR 버전 [1.7.0]을(를) 사용한, APR 기반 Apache Tomcat Native 라이브러리 [1.2.24]을(를) 로드했습니다.
+05-Aug-2020 17:10:57.033 정보 [main] org.apache.catalina.core.AprLifecycleListener.lifecycleEvent APR 용량정보들: IPv6 [true], sendfile [true], accept filters [false], random [true].
+05-Aug-2020 17:10:57.036 정보 [main] org.apache.catalina.core.AprLifecycleListener.lifecycleEvent APR/OpenSSL 설정: useAprConnector [false], useOpenSSL [true]
+05-Aug-2020 17:10:57.051 정보 [main] org.apache.catalina.core.AprLifecycleListener.initializeSSL OpenSSL이 성공적으로 초기화되었습니다: [OpenSSL 1.1.1g  21 Apr 2020]
+05-Aug-2020 17:10:57.272 정보 [main] org.apache.coyote.AbstractProtocol.init 프로토콜 핸들러 ["http-nio-8090"]을(를) 초기화합니다.
+05-Aug-2020 17:10:57.592 정보 [main] org.apache.tomcat.util.net.NioSelectorPool.getSharedSelector Using a shared selector for servlet write/read
+05-Aug-2020 17:10:57.627 정보 [main] org.apache.catalina.startup.Catalina.load Initialization processed in 1345 ms
+05-Aug-2020 17:10:57.700 정보 [main] org.apache.catalina.core.StandardService.startInternal 서비스 [Catalina]을(를) 시작합니다.
+05-Aug-2020 17:10:57.708 정보 [main] org.apache.catalina.core.StandardEngine.startInternal Starting Servlet Engine: Apache Tomcat/8.5.55
+05-Aug-2020 17:10:57.745 정보 [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployWAR 웹 애플리케이션 아카이브 [C:\kh\spring\workspace\dev\apache-tomcat-8.5.55\webapps\realSpringProject.war]을(를) 배치합니다.
+05-Aug-2020 17:11:02.323 정보 [localhost-startStop-1] org.apache.jasper.servlet.TldScanner.scanJars 적어도 하나의 JAR가 TLD들을 찾기 위해 스캔되었으나 아무 것도 찾지 못했습니다. 스캔했으나 TLD가 없는 JAR들의 전체 목록을 보시려면, 로그 레벨을 디버그 레벨로 설정하십시오. 스캔 과정에서 불필요한 JAR들을 건너뛰면, 시스템 시작 시간과 JSP 컴파일 시간을 단축시킬 수 있습니다.
+05-Aug-2020 17:11:08.316 정보 [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployWAR 웹 애플리케이션 아카이브 [C:\kh\spring\workspace\dev\apache-tomcat-8.5.55\webapps\realSpringProject.war]의 배치가 [10,569] 밀리초에 완료되었습니다.
+05-Aug-2020 17:11:08.324 정보 [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory 웹 애플리케이션 디렉토리 [C:\kh\spring\workspace\dev\apache-tomcat-8.5.55\webapps\docs]을(를) 배치합니다.
+05-Aug-2020 17:11:08.365 정보 [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory 웹 애플리케이션 디렉토리 [C:\kh\spring\workspace\dev\apache-tomcat-8.5.55\webapps\docs]에 대한 배치가 [41] 밀리초에 완료되었습니다.
+05-Aug-2020 17:11:08.374 정보 [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory 웹 애플리케이션 디렉토리 [C:\kh\spring\workspace\dev\apache-tomcat-8.5.55\webapps\examples]을(를) 배치합니다.
+05-Aug-2020 17:11:09.080 정보 [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory 웹 애플리케이션 디렉토리 [C:\kh\spring\workspace\dev\apache-tomcat-8.5.55\webapps\examples]에 대한 배치가 [706] 밀리초에 완료되었습니다.
+05-Aug-2020 17:11:09.089 정보 [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory 웹 애플리케이션 디렉토리 [C:\kh\spring\workspace\dev\apache-tomcat-8.5.55\webapps\host-manager]을(를) 배치합니다.
+05-Aug-2020 17:11:09.190 정보 [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory 웹 애플리케이션 디렉토리 [C:\kh\spring\workspace\dev\apache-tomcat-8.5.55\webapps\host-manager]에 대한 배치가 [101] 밀리초에 완료되었습니다.
+05-Aug-2020 17:11:09.201 정보 [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory 웹 애플리케이션 디렉토리 [C:\kh\spring\workspace\dev\apache-tomcat-8.5.55\webapps\manager]을(를) 배치합니다.
+05-Aug-2020 17:11:09.276 정보 [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory 웹 애플리케이션 디렉토리 [C:\kh\spring\workspace\dev\apache-tomcat-8.5.55\webapps\manager]에 대한 배치가 [76] 밀리초에 완료되었습니다.
+05-Aug-2020 17:11:09.287 정보 [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory 웹 애플리케이션 디렉토리 [C:\kh\spring\workspace\dev\apache-tomcat-8.5.55\webapps\ROOT]을(를) 배치합니다.
+05-Aug-2020 17:11:09.349 정보 [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory 웹 애플리케이션 디렉토리 [C:\kh\spring\workspace\dev\apache-tomcat-8.5.55\webapps\ROOT]에 대한 배치가 [62] 밀리초에 완료되었습니다.
+05-Aug-2020 17:11:09.370 정보 [main] org.apache.coyote.AbstractProtocol.start 프로토콜 핸들러 ["http-nio-8090"]을(를) 시작합니다.
+05-Aug-2020 17:11:09.406 정보 [main] org.apache.catalina.startup.Catalina.start Server startup in 11775 ms

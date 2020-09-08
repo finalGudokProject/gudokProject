@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cartMapper">
+	
+	<resultMap type="Cart" id="cartResultSet">
+		<id property="cartNo" column="CART_NO"/>
+		<result property="itemNo" column="ITEM_NO"/>
+		<result property="memberNo" column="MEMBER_NO"/>
+		<result property="memberId" column="MEMBER_ID"/>
+		<result property="email" column="EMAIL"/>
+		<result property="cartSubs" column="CART_SUBS"/>
+		<result property="cartCount" column="CART_COUNT"/>
+		<result property="itemName" column="ITEM_NAME"/>
+		<result property="itemPrice" column="ITEM_PRICE"/>
+	</resultMap>
+
+	<insert id="insertCart" parameterType="Cart">
+		INSERT INTO CART
+		VALUES(SEQ_CART_NO.NEXTVAL
+			, #{itemNo}
+			, #{memberNo}
+			, #{memberId}
+			, #{email}
+			, #{cartSubs}
+			, #{cartCount}
+			, #{itemName}
+			, #{itemPrice})
+	</insert>
+	
+	<select id="selectCart" parameterType="int" resultMap="cartResultSet">
+		SELECT *
+		FROM CART
+		WHERE MEMBER_NO=#{memberNo}
+		ORDER BY CART_NO DESC
+	</select>
+	
+	<delete id="deleteCart" parameterType="Cart">
+		DELETE FROM CART
+		WHERE CART_NO=#{cartNo}
+			AND MEMBER_ID=#{memberId}
+	</delete>
+</mapper>

@@ -1,0 +1,415 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="adminItemMapper">
+	<resultMap type="AdminItem" id="adminItemResultSet">
+		<id property="itemNo" column="ITEM_NO"/>
+		<result property="itemName" column="ITEM_NAME"/>
+		<result property="itemPrice" column="ITEM_PRICE"/>
+		<result property="itemCount" column="ITEM_COUNT"/>
+		<result property="itemRate" column="ITEM_RATE"/>
+		<result property="itemDpStatus" column="ITEM_DP_STATUS"/>
+		<result property="itemCmSales" column="ITEM_CM_SALES"/>
+		<result property="itemChoice" column="ITEM_CHOICE"/>
+		<result property="itemDate" column="ITEM_DATE"/>
+		<result property="itemRecommend" column="ITEM_RECOMMEND"/>
+		<result property="categoryNo" column="CATEGORY_NO"/>
+		<result property="itemMemo" column="ITEM_MEMO"/>
+		<result property="itemEventStatus" column="ITEM_EVENT_STATUS"/>
+		<result property="imageOriginalName" column="IMAGE_ORIGINAL_NAME"/>
+		<result property="imageRename" column="IMAGE_RENAME"/>
+		<result property="imagePath" column="IMAGE_PATH"/>
+	</resultMap>
+	
+	<resultMap type="Event" id="eventResultSet">
+		<id property="eventNo" column="EVENT_NO"/>
+		<result property="itemNo" column="ITEM_NO"/>
+		<result property="eventStatus" column="EVENT_STATUS"/>
+		<result property="eventName" column="EVENT_NAME"/>
+		<result property="itemDiscount" column="ITEM_DISCOUNT"/>
+		<result property="imageOriginalName" column="IMAGE_ORIGINAL_NAME"/>
+		<result property="imageRename" column="IMAGE_RENAME"/>
+		<result property="imagePath" column="IMAGE_PATH"/>
+	</resultMap>
+	
+	<resultMap type="BannerItem" id="bannerItemResultSet">
+		<id property="itemNo" column="ITEM_NO"/>
+		<result property="itemName" column="ITEM_NAME"/>
+		<result property="itemPrice" column="ITEM_PRICE"/>
+		<result property="itemCount" column="ITEM_COUNT"/>
+		<result property="itemRate" column="ITEM_RATE"/>
+		<result property="itemDpStatus" column="ITEM_DP_STATUS"/>
+		<result property="itemCmSales" column="ITEM_CM_SALES"/>
+		<result property="itemChoice" column="ITEM_CHOICE"/>
+		<result property="itemDate" column="ITEM_DATE"/>
+		<result property="itemRecommend" column="ITEM_RECOMMEND"/>
+		<result property="categoryNo" column="CATEGORY_NO"/>
+		<result property="itemMemo" column="ITEM_MEMO"/>
+		<result property="itemEventStatus" column="ITEM_EVENT_STATUS"/>
+		<result property="imageOriginalName" column="IMAGE_ORIGINAL_NAME"/>
+		<result property="imageRename" column="IMAGE_RENAME"/>
+		<result property="imagePath" column="IMAGE_PATH"/>
+		<result property="eventStatus" column="EVENT_STATUS"/>
+		<result property="eventName" column="EVENT_NAME"/>
+		<result property="itemDiscount" column="ITEM_DISCOUNT"/>
+		<result property="eventNo" column="EVENT_NO"/>
+	</resultMap>
+
+	
+	
+	<insert id="insertItem" parameterType="AdminItem">
+		INSERT INTO ITEM VALUES(
+		SEQ_IID.NEXTVAL,#{itemName},#{itemPrice},DEFAULT,DEFAULT,DEFAULT,DEFAULT,DEFAULT,SYSDATE,#{itemRecommend},#{categoryNo},#{itemMemo},DEFAULT,DEFAULT,#{imageOriginalName},#{imageRename},#{imagePath})
+		
+	</insert>
+	
+	<insert id="insertItemImage" parameterType="AdminItem">
+		INSERT ALL
+		INTO IMAGE VALUES(SEQ_MID.NEXTVAL,#{imagePath},#{imageOriginalName},#{imageRename})
+		INTO ITEM_IMAGE VALUES(SEQ_IMID.NEXTVAL,SEQ_IID.CURRVAL,SEQ_MID.CURRVAL)
+		SELECT *
+		FROM DUAL
+	</insert>
+	
+	<insert id="insertEvent" parameterType="Event">
+		INSERT INTO EVENT VALUES(
+		SEQ_EID.NEXTVAL,#{eventName},'N')
+	</insert>
+	
+	
+	<insert id="insertEventImg" parameterType="Event">
+		INSERT ALL
+		INTO IMAGE VALUES(SEQ_MID.NEXTVAL,#{imagePath},#{imageOriginalName},#{imageRename})
+		INTO BANNER_IMG VALUES(SEQ_BAID.NEXTVAL,SEQ_MID.CURRVAL,SEQ_EID.CURRVAL)
+		SELECT *
+		FROM DUAL
+	</insert>
+	
+	<select id="selectEventCount" parameterType="string" resultType="_int">
+		SELECT COUNT(*)
+		FROM EVENT
+		<where>
+			<if test="value!=null">
+			<![CDATA[
+				EVENT_NAME LIKE '%${value}%'
+				OR EVENT_NO LIKE '%${value}%'
+			]]>
+			</if>
+		</where>
+	</select>
+	
+	<select id="selectEventList" resultMap="bannerItemResultSet">
+		SELECT EVENT_NO,EVENT_NAME,EVENT_STATUS, COUNT(*)
+		FROM EVENTLIST
+		WHERE EVENT_NO IS NOT NULL
+			<trim prefix="AND">
+				<if test="value!=null">
+				<![CDATA[
+					EVENT_NAME LIKE '%${value}%'
+					OR EVENT_NO LIKE '%${value}%'
+				]]>
+				</if>
+			</trim>
+		GROUP BY EVENT_NO, EVENT_NAME,EVENT_STATUS
+        ORDER BY EVENT_NO DESC
+	</select>
+	
+	<select id="selectEventListCount" parameterType="java.util.List" resultType="int">
+		SELECT COUNT(*)
+        FROM ITEM I
+        LEFT JOIN EVENT_ITEM E ON(I.ITEM_NO=E.ITEM_NO)
+        LEFT JOIN EVENT V ON(E.EVENT_NO=V.EVENT_NO)
+        GROUP BY E.EVENT_NO
+        HAVING E.EVENT_NO=#{value}
+	</select>
+
+	<delete id="deleteEvent" parameterType="_int">
+		DELETE 
+		FROM EVENT
+		WHERE EVENT_NO IN(#{dEventArr}) 
+	</delete>
+	
+	<delete id="deleteEventItem" parameterType="_int">
+		DELETE 
+		FROM EVENT_ITEM
+		WHERE EVENT_NO IN(#{i}) 
+	</delete>
+	
+	<delete id="deleteEventImg" parameterType="_int">
+		DELETE 
+		FROM IMAGE
+		WHERE IMAGE_NO IN
+        (SELECT BANNERIMAGE_NO
+        FROM BANNER_IMG
+        WHERE EVENT_NO IN(#{i}))
+	</delete>
+	<delete id="deleteEventBannerImg" parameterType="_int">
+		DELETE 
+		FROM BANNER_IMG
+		WHERE EVENT_NO IN(#{i}) 
+	</delete>
+	
+	<select id="selectDeleteEvent" parameterType="_int" resultMap="eventResultSet">
+		SELECT *
+		FROM EIMAGE
+		WHERE EVENT_NO IN(#{i}) 
+	</select>
+	<update id="updateEventStatusY" parameterType="java.util.ArrayList">
+		UPDATE EVENT
+		SET EVENT_STATUS='Y'
+		WHERE EVENT_NO IN
+	
+			<foreach item="e" index="index" collection="list" open="(" separator="," close=")">
+				#{e.eventNo}
+			</foreach>
+	
+	</update>
+	<update id="updateEventStatusN" parameterType="java.util.ArrayList">
+		UPDATE EVENT
+		SET EVENT_STATUS='N'
+		WHERE EVENT_NO IN
+	
+			<foreach item="e" index="index" collection="list" open="(" separator="," close=")">
+				#{e.eventNo}
+			</foreach>
+	
+	</update>
+	<select id="selectBannerItemCount" parameterType="_int" resultType="_int">
+		SELECT COUNT(*)
+		FROM EILIST
+		WHERE EVENT_NO=${value}
+	
+	</select>
+	
+	<select id="selectBannerList" parameterType="_int" resultMap="bannerItemResultSet">
+		SELECT *
+		FROM EILIST
+		WHERE EVENT_NO=${value}
+	</select>
+	
+	<select id="selectItemListA" parameterType="object" resultMap="bannerItemResultSet">
+		SELECT * 
+		FROM ITEM I
+        LEFT JOIN EVENT_ITEM E ON(I.ITEM_NO=E.ITEM_NO)
+		<choose>
+			<when test="itemName==itemNo">
+					 <where>
+			        	<if test="categoryNo!=null">
+				        	I.CATEGORY_NO=#{categoryNo} 
+				        </if>
+				        <if test="itemName!=null">
+				         <![CDATA[
+				        	AND I.ITEM_NAME LIKE '%${itemName}%'
+			        	]]>
+				        </if>
+				        <if test="itemNo!=null">
+				          <![CDATA[
+				        	OR I.ITEM_NO LIKE '%${itemNo}%'
+				        ]]>
+				        </if>
+			        </where>
+			</when>
+			<otherwise>
+					 <where>
+			        	<if test="categoryNo!=null">
+				        	I.CATEGORY_NO=#{categoryNo} 
+				        </if>
+				        <if test="itemName!=null">
+				         <![CDATA[
+				        	AND I.ITEM_NAME LIKE '%${itemName}%'
+			        	]]>
+				        </if>
+				        <if test="itemNo!=null">
+				          <![CDATA[
+				        	AND I.ITEM_NO LIKE '%${itemNo}%'
+				        ]]>
+				        </if>
+			        </where>
+			 </otherwise>
+        </choose>
+        ORDER BY I.ITEM_NO DESC
+	</select>
+	
+	
+	
+	<update id="updateItemStatusY" parameterType="java.util.ArrayList">
+		UPDATE ITEM
+        SET ITEM_DP_STATUS='Y'
+        WHERE ITEM_NO IN 
+        	<foreach item="i" index="index" collection="list" open="(" separator="," close=")">
+				#{i.itemNo}
+			</foreach>
+	</update>
+	
+	<update id="updateItemStatusN" parameterType="java.util.ArrayList">
+		UPDATE ITEM
+        SET ITEM_DP_STATUS='N'
+        WHERE ITEM_NO IN 
+        	<foreach item="i" index="index" collection="list" open="(" separator="," close=")">
+				#{i.itemNo}
+			</foreach>
+	</update>
+	<select id="selectAdminItem" parameterType="_int" resultMap="bannerItemResultSet">
+		SELECT I.*,V.*,E.item_discount
+        FROM item I
+        LEFT JOIN event_item E ON(I.item_no=E.item_no)
+        LEFT JOIN event V ON(E.event_no=V.event_no)
+        WHERE I.item_no IN #{itemNo}
+	</select>
+	<update id="updateItem" parameterType="BannerItem">
+		UPDATE ITEM
+        SET ITEM_NAME=#{itemName},ITEM_PRICE=${itemPrice},ITEM_DP_STATUS=#{itemDpStatus},ITEM_RECOMMEND=#{itemRecommend},ITEM_MEMO=#{itemMemo}
+        WHERE ITEM_NO=${itemNo}
+	</update>
+	
+	<update id="updateItemImg" parameterType="BannerItem">
+		UPDATE IMAGE 
+		SET IMAGE_ORIGINAL_NAME=#{imageOriginalName},IMAGE_RENAME=#{imageRename}
+		WHERE IMAGE_NO=#{itemNo}
+	</update>
+	<select id="selectImageNo" parameterType="BannerItem" resultType="int">
+		SELECT I_IMAGE_NO
+		FROM ITEM_IMAGE
+		WHERE ITEM_NO=#{itemNo}
+	</select>
+	<delete id="deleteBannerItem" parameterType="BannerItem">
+		DELETE
+		FROM EVENT_ITEM
+		WHERE ITEM_NO=#{itemNo}
+	</delete>
+	<select id="selectItemCountA" parameterType="object" resultType="_int">
+		SELECT COUNT(*)
+		FROM ITEM
+        <where>
+        	<if test="categoryNo!=null">
+	        	CATEGORY_NO=#{categoryNo} 
+	        </if>
+	        <if test="itemName!=null">
+	         <![CDATA[
+	        	AND ITEM_NAME LIKE '%${itemName}%'
+        	]]>
+	        </if>
+	        <if test="itemNo!=null">
+	          <![CDATA[
+	        	AND ITEM_NO LIKE '%${itemNo}%'
+	        ]]>
+	        </if>
+        </where>
+	</select>
+	<select id="selectDeleteItem" parameterType="_int" resultMap="bannerItemResultSet">
+		SELECT *
+		FROM AILIST
+		WHERE ITEM_NO=#{i}
+	</select>
+	<delete id="deleteItemImgA" parameterType="_int">
+		DELETE 
+		FROM ITEM_IMAGE
+		WHERE ITEM_NO IN(#{i}) 
+	</delete>
+	<delete id="deleteImgA" parameterType="_int">
+		DELETE 
+		FROM IMAGE
+		WHERE IMAGE_NO IN
+        (SELECT I_IMAGE_NO
+        FROM ITEM_IMAGE
+        WHERE ITEM_NO IN(#{i}))
+	</delete>
+	<delete id="deleteItemA" parameterType="_int">
+		DELETE 
+		FROM ITEM
+		WHERE ITEM_NO IN(#{i}) 
+	</delete>
+	
+	<delete id="deleteItemEvent" parameterType="_int">
+		DELETE 
+		FROM EVENT_ITEM
+		WHERE ITEM_NO IN(#{i}) 
+	</delete>
+	<select id="selectEventOption" resultMap="bannerItemResultSet">
+		SELECT *
+		FROM EVENT
+        ORDER BY EVENT_NO DESC
+	</select>
+	<select id="selectItems" parameterType="string" resultMap="bannerItemResultSet">
+		SELECT *
+		FROM ITEM
+		WHERE ITEM_EVENT_STATUS='N'
+		 <trim prefix="AND">
+			<if test="value!=null">
+			CATEGORY_NO=#{value}
+			</if>
+		</trim> 
+		ORDER BY ITEM_NO DESC
+	</select>
+	<select id="selectNonEventItemCnt" parameterType="string" resultType="_int">
+		SELECT COUNT(*)
+		FROM ITEM
+		WHERE ITEM_EVENT_STATUS='N'
+		<if test="value!=null">
+		AND CATEGORY_NO=#{value}
+		</if>
+	</select>
+	<update id="updateItemEventStatus" parameterType="_int">
+		UPDATE ITEM
+		SET ITEM_EVENT_STATUS='Y'
+		WHERE ITEM_NO=#{i}
+	</update>
+	<insert id="insertEventItem" parameterType="BannerItem">
+		INSERT INTO EVENT_ITEM 
+		VALUES(#{itemNo},#{itemDiscount},#{eventNo})
+	</insert>
+	<delete id="deleteEventItemBefore" parameterType="BannerItem">
+		DELETE
+		FROM EVENT_ITEM
+		WHERE ITEM_NO IN #{itemNo}
+	</delete>
+	<select id="selectItemDiscount" parameterType="_int" resultType="int">
+		SELECT MIN(ITEM_DISCOUNT)
+		FROM EVENT E
+        LEFT JOIN EVENT_ITEM I ON (E.EVENT_NO=I.EVENT_NO)
+		GROUP BY E.EVENT_NO
+        HAVING E.EVENT_NO=#{value}
+	</select>
+	<select id="selectItemImg" parameterType="_int" resultMap="bannerItemResultSet">
+		SELECT *
+        FROM IMAGE M
+        LEFT JOIN ITEM_IMAGE I ON(I.I_IMAGE_NO=M.IMAGE_NO)
+        WHERE ITEM_NO=#{value}
+	</select>
+	<select id="selectEventMain" resultMap="bannerItemResultSet">
+		SELECT *
+            FROM(SELECT EVENT_NO,EVENT_NAME,COUNT(*) AS ITEM_COUNT
+               FROM(SELECT I.ITEM_NO,I.ITEM_DISCOUNT,I.EVENT_NO,E.EVENT_NAME,E.EVENT_STATUS
+                   FROM EVENT_ITEM I
+                   LEFT JOIN EVENT E ON(E.EVENT_NO=I.EVENT_NO) 
+                   WHERE E.EVENT_STATUS='Y' )
+               GROUP BY EVENT_NAME, EVENT_NO     
+               ORDER BY EVENT_NO DESC )
+               <![CDATA[
+            WHERE ROWNUM<5
+	]]>
+	</select>
+	<select id="selectRecommendCnt" resultType="_int">
+		SELECT COUNT(*)
+		FROM ITEM
+		WHERE ITEM_EVENT_STATUS='R'
+	</select>
+	<update id="updateItemRecommend" parameterType="java.util.List">
+		UPDATE ITEM
+		SET ITEM_EVENT_STATUS='R'
+		WHERE ITEM_NO IN 
+			<foreach item="e" index="index" collection="array" open="(" separator="," close=")">
+				#{e}
+			</foreach>
+	
+	</update>
+	<select id="selectRecommendList" resultMap="bannerItemResultSet">
+		select *
+		from item
+		where item_event_status='R'
+	</select>
+
+	
+	
+	
+	
+</mapper>

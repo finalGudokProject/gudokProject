@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="heartMapper">
+	
+	<resultMap type="Heart" id="heartResultSet">
+		<id property="heartNo" column="HEART_NO"/>
+		<result property="itemNo" column="ITEM_NO"/>
+		<result property="memberNo" column="MEMBER_NO"/>
+		<result property="memberId" column="MEMBER_ID"/>
+		<result property="email" column="EMAIL"/>
+	</resultMap>
+	
+	<insert id="insertChoice" parameterType="Heart">
+		INSERT INTO HEART
+		VALUES(SEQ_HEART_NO.NEXTVAL
+		    , #{itemNo}
+		    , #{memberNo}
+		    , #{memberId}
+		    , #{email})
+	</insert>
+	
+	<delete id="deleteChoice" parameterType="Heart">
+		DELETE FROM HEART
+		WHERE ITEM_NO=#{itemNo} 
+			AND MEMBER_NO=#{memberNo}
+		    AND MEMBER_ID=#{memberId}
+		    AND EMAIL=#{email}
+	</delete>
+	
+	<select id="selectHeart" parameterType="int" resultMap="heartResultSet">
+		SELECT *
+		FROM HEART
+		WHERE ITEM_NO=#{itemNo}
+	</select>
+	
+</mapper>

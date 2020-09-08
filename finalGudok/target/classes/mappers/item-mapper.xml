@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="itemMapper">
+	
+	<resultMap type="Item" id="itemResultSet">
+		<id property="itemNo" column="ITEM_NO"/>
+		<result property="itemName" column="ITEM_NAME"/>
+		<result property="itemPrice" column="ITEM_PRICE"/>
+		<result property="itemCount" column="ITEM_COUNT"/>
+		<result property="itemRate" column="ITEM_RATE"/>
+		<result property="itemDpStatus" column="ITEM_DP_STATUS"/>
+		<result property="itemCmSales" column="ITEM_CM_SALES"/>
+		<result property="itemChoice" column="ITEM_CHOICE"/>
+		<result property="itemDate" column="ITEM_DATE"/>
+		<result property="itemRecommend" column="ITEM_RECOMMEND"/>
+		<result property="categoryNo" column="CATEGORY_NO"/>
+		<result property="itemMemo" column="ITEM_MEMO"/>
+		<result property="itemEventStatus" column="ITEM_EVENT_STATUS"/>
+		<result property="sortNo" column="SORT_NO"/>
+		<result property="imageOriginalName" column="IMAGE_ORIGINAL_NAME"/>
+		<result property="imageRename" column="IMAGE_RENAME"/>
+		<result property="imagePath" column="IMAGE_PATH"/>
+		
+	</resultMap>
+	
+	<select id="getBestCount" resultType="_int">
+		<![CDATA[
+		SELECT COUNT(*)
+		FROM ITEM
+		WHERE ITEM_CM_SALES>=30
+		]]>
+	</select>
+	
+	<update id="getDetailCount" parameterType="_int">
+		UPDATE ITEM
+		SET ITEM_COUNT=ITEM_COUNT+1
+		WHERE ITEM_NO=#{itemNo}
+	</update>
+	
+	<insert id="insertInquired" parameterType="Board">
+		INSERT INTO BOARD
+		VALUES(SEQ_BOARD_NO.NEXTVAL
+		    , #{title}
+		    , #{content}
+		    , SYSDATE
+		    , DEFAULT
+		    , 'O'
+		    , #{memberNo}
+		    , #{memberId}
+		    , #{email}
+		    , #{itemNo}
+		    )
+	</insert>
+	
+	<insert id="insertOneInquiry" parameterType="_int">
+		INSERT INTO ONE_INQUIRY
+		VALUES((SELECT MAX(BOARD_NO)
+		        FROM BOARD)
+		        , 'Y'
+		        , DEFAULT)
+	</insert>
+	<insert id="insertInquiry" parameterType="_int">
+		INSERT INTO INQUIRY
+		VALUES((SELECT MAX(BOARD_NO)
+		        FROM BOARD)
+		        , DEFAULT
+		        , DEFAULT
+		        , DEFAULT
+		        , 'OPI')
+	</insert>
+	
+	<update id="updatePChoice" parameterType="_int">
+		UPDATE ITEM
+		SET ITEM_CHOICE = ITEM_CHOICE+1
+		WHERE ITEM_NO=#{itemNo}
+	</update>
+	
+	<update id="updateMChoice" parameterType="_int">
+		UPDATE ITEM
+		SET ITEM_CHOICE = ITEM_CHOICE-1
+		WHERE ITEM_NO=#{itemNo}
+	</update>
+	
+	<select id="reviewItemName" parameterType="_int" resultMap="itemResultSet">
+		SELECT *
+		FROM ITEM
+		WHERE ITEM_NO=#{itemNo}
+	</select>
+	
+	
+</mapper>

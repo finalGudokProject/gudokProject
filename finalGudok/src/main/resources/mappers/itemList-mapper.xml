@@ -1,0 +1,448 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="itemListMapper">
+
+	<resultMap type="ItemListView" id="itemListResultSet">
+		<id property="itemNo" column="ITEM_NO"/>
+		<result property="categoryName" column="CATEGORY_NAME"/>
+		<result property="categoryNo" column="CATEGORY_NO"/>
+		<result property="itemDate" column="ITEM_DATE"/>
+		<result property="itemName" column="ITEM_NAME"/>
+		<result property="itemMemo" column="ITEM_MEMO"/>
+		<result property="itemPath" column="ITEM_PATH"/>
+		<result property="itemOriginal" column="ITEM_ORIGINAL"/>
+		<result property="itemRename" column="ITEM_RENAME"/>
+		<result property="imagePath" column="IMAGE_PATH"/>
+		<result property="imageOriginalName" column="IMAGE_ORIGINAL_NAME"/>
+		<result property="imageRename" column="IMAGE_RENAME"/>
+		<result property="itemPrice" column="ITEM_PRICE"/>
+		<result property="itemDiscount" column="ITEM_DISCOUNT"/>
+		<result property="itemRate" column="ITEM_RATE"/>
+		<result property="reviewCount" column="REVIEW_COUNT"/>
+		<result property="itemChoice" column="ITEM_CHOICE"/>
+		<result property="heartNo" column="HEART_NO"/>
+		<result property="sortName" column="SORT_NAME"/>
+	</resultMap>
+	
+	<select id="getItemCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM ITEM_LIST_VIEW ILV
+		JOIN ITEM I ON(ILV.ITEM_NO = I.ITEM_NO)
+		WHERE I.CATEGORY_NO LIKE 'F%'
+		AND ITEM_DP_STATUS = 'Y'
+	</select>
+	
+	<select id="getItemLivingCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM ITEM_LIST_VIEW ILV
+		JOIN ITEM I ON(ILV.ITEM_NO = I.ITEM_NO)
+		WHERE I.CATEGORY_NO LIKE 'L%'
+		AND ITEM_DP_STATUS = 'Y'
+	</select>
+	
+	<select id="getItemList" resultMap="itemListResultSet">
+		SELECT *
+		FROM ITEM_LIST_VIEW ILV
+		JOIN ITEM I ON(ILV.ITEM_NO = I.ITEM_NO)
+		WHERE I.CATEGORY_NO LIKE 'F%'
+		AND ITEM_DP_STATUS = 'Y'
+		ORDER BY ILV.ITEM_NO DESC
+	</select>
+	
+	<select id="getItemLivingList" resultMap="itemListResultSet">
+		SELECT *
+		FROM ITEM_LIST_VIEW ILV
+		JOIN ITEM I ON(ILV.ITEM_NO = I.ITEM_NO)
+		WHERE I.CATEGORY_NO LIKE 'L%'
+		AND ITEM_DP_STATUS = 'Y'
+		ORDER BY ILV.ITEM_NO DESC
+	</select>
+	
+	
+	<select id="selectOne" parameterType="int" resultMap="itemListResultSet">
+		SELECT *
+		FROM ITEM_LIST_VIEW ILV
+		LEFT JOIN ITEM I ON(ILV.ITEM_NO = I.ITEM_NO)
+		WHERE ILV.ITEM_NO=#{itemNo} AND ITEM_DP_STATUS='Y'
+	</select>
+	
+	<select id="newCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM ITEM_LIST_VIEW ILV
+		LEFT JOIN ITEM I ON(ILV.ITEM_NO = I.ITEM_NO)
+		WHERE ITEM_DP_STATUS='Y' AND ILV.ITEM_DATE BETWEEN SYSDATE-30 AND SYSDATE
+	</select>
+	
+	<select id="selectNewList" resultMap="itemListResultSet">
+		SELECT *
+		FROM ITEM_LIST_VIEW ILV
+		LEFT JOIN ITEM I ON(ILV.ITEM_NO = I.ITEM_NO)
+		WHERE ITEM_DP_STATUS='Y' AND ILV.ITEM_DATE BETWEEN SYSDATE-30 AND SYSDATE
+	</select>
+	
+	
+	<select id="getItemEventCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM ITEM_LIST_VIEW ILV
+		LEFT JOIN ITEM I ON(ILV.ITEM_NO = I.ITEM_NO)
+		WHERE ITEM_DP_STATUS='Y' AND ITEM_EVENT_STATUS='Y'
+	</select>
+	
+	<select id="getItemEventList" resultMap="itemListResultSet">
+		SELECT *
+		FROM ITEM_LIST_VIEW ILV
+		LEFT JOIN ITEM I ON(ILV.ITEM_NO = I.ITEM_NO)
+		WHERE ITEM_DP_STATUS='Y' AND ITEM_EVENT_STATUS='Y'
+	</select>
+	
+	<select id="getItemBestList" resultMap="itemListResultSet">
+		<![CDATA[
+		SELECT *
+		FROM ITEM_LIST_VIEW ILV
+		LEFT JOIN ITEM I ON(ILV.ITEM_NO = I.ITEM_NO)
+		WHERE ITEM_DP_STATUS='Y' AND ITEM_CM_SALES>=30 AND I.ITEM_RATE>=4 AND ROWNUM <=12
+        ORDER BY I.ITEM_RATE DESC
+		]]>
+	</select>
+	
+	<select id="dListCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM ITEM_LIST_VIEW ILV
+		LEFT JOIN ITEM I ON(ILV.ITEM_NO = I.ITEM_NO)
+		WHERE ITEM_DP_STATUS='Y' AND ILV.CATEGORY_NO='F1'
+	</select>
+	<select id="mListCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM ITEM_LIST_VIEW ILV
+		LEFT JOIN ITEM I ON(ILV.ITEM_NO = I.ITEM_NO)
+		WHERE ITEM_DP_STATUS='Y' AND ILV.CATEGORY_NO='F2'
+	</select>
+	<select id="bListCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM ITEM_LIST_VIEW ILV
+		LEFT JOIN ITEM I ON(ILV.ITEM_NO = I.ITEM_NO)
+		WHERE ITEM_DP_STATUS='Y' AND ILV.CATEGORY_NO='F3'
+	</select>
+	<select id="sListCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM ITEM_LIST_VIEW ILV
+		LEFT JOIN ITEM I ON(ILV.ITEM_NO = I.ITEM_NO)
+		WHERE ITEM_DP_STATUS='Y' AND ILV.CATEGORY_NO='F4'
+	</select>
+	<select id="hListCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM ITEM_LIST_VIEW ILV
+		LEFT JOIN ITEM I ON(ILV.ITEM_NO = I.ITEM_NO)
+		WHERE ITEM_DP_STATUS='Y' AND ILV.CATEGORY_NO='F5'
+	</select>
+	<select id="diListCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM ITEM_LIST_VIEW ILV
+		LEFT JOIN ITEM I ON(ILV.ITEM_NO = I.ITEM_NO)
+		WHERE ITEM_DP_STATUS='Y' AND ILV.CATEGORY_NO='F6'
+	</select>
+	
+	
+	<select id="selectDList" resultMap="itemListResultSet">
+		SELECT *
+		FROM ITEM_LIST_VIEW ILV
+		LEFT JOIN ITEM I ON(ILV.ITEM_NO = I.ITEM_NO)
+		WHERE ITEM_DP_STATUS='Y' AND ILV.CATEGORY_NO='F1'
+		ORDER BY ILV.ITEM_NO DESC
+	</select>
+	<select id="selectDLists" parameterType="map" resultMap="itemListResultSet">
+		SELECT *
+		FROM ITEM_LIST_VIEW ILV
+		LEFT JOIN ITEM I ON(ILV.ITEM_NO = I.ITEM_NO)
+		WHERE ITEM_DP_STATUS='Y' AND ILV.CATEGORY_NO='F1'
+		<choose>
+			<when test="test=='S1'">
+				ORDER BY I.ITEM_DATE DESC
+			</when>
+			<when test="test=='S2'">
+				ORDER BY I.ITEM_RATE DESC
+			</when>
+			<when test="test=='S3'">
+				ORDER BY I.ITEM_PRICE DESC
+			</when>
+			<otherwise>
+				ORDER BY I.ITEM_PRICE ASC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="selectMList" resultMap="itemListResultSet">
+		SELECT *
+		FROM ITEM_LIST_VIEW ILV
+		LEFT JOIN ITEM I ON(ILV.ITEM_NO = I.ITEM_NO)
+		WHERE ITEM_DP_STATUS='Y' AND ILV.CATEGORY_NO='F2'
+		ORDER BY ILV.ITEM_NO DESC
+	</select>
+	<select id="selectMLists" parameterType="map" resultMap="itemListResultSet">
+		SELECT *
+		FROM ITEM_LIST_VIEW ILV
+		LEFT JOIN ITEM I ON(ILV.ITEM_NO = I.ITEM_NO)
+		WHERE ITEM_DP_STATUS='Y' AND ILV.CATEGORY_NO='F2'
+		<choose>
+			<when test="test=='S1'">
+				ORDER BY I.ITEM_DATE DESC
+			</when>
+			<when test="test=='S2'">
+				ORDER BY I.ITEM_RATE DESC
+			</when>
+			<when test="test=='S3'">
+				ORDER BY I.ITEM_PRICE DESC
+			</when>
+			<otherwise>
+				ORDER BY I.ITEM_PRICE ASC
+			</otherwise>
+		</choose>
+	</select>
+	<select id="selectBList" resultMap="itemListResultSet">
+		SELECT *
+		FROM ITEM_LIST_VIEW ILV
+		LEFT JOIN ITEM I ON(ILV.ITEM_NO = I.ITEM_NO)
+		WHERE ITEM_DP_STATUS='Y' AND ILV.CATEGORY_NO='F3'
+		ORDER BY ILV.ITEM_NO DESC
+	</select>
+	<select id="selectBLists" parameterType="map" resultMap="itemListResultSet">
+		SELECT *
+		FROM ITEM_LIST_VIEW ILV
+		LEFT JOIN ITEM I ON(ILV.ITEM_NO = I.ITEM_NO)
+		WHERE ITEM_DP_STATUS='Y' AND ILV.CATEGORY_NO='F3'
+		<choose>
+			<when test="test=='S1'">
+				ORDER BY I.ITEM_DATE DESC
+			</when>
+			<when test="test=='S2'">
+				ORDER BY I.ITEM_RATE DESC
+			</when>
+			<when test="test=='S3'">
+				ORDER BY I.ITEM_PRICE DESC
+			</when>
+			<otherwise>
+				ORDER BY I.ITEM_PRICE ASC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="selectSList" resultMap="itemListResultSet">
+		SELECT *
+		FROM ITEM_LIST_VIEW ILV
+		LEFT JOIN ITEM I ON(ILV.ITEM_NO = I.ITEM_NO)
+		WHERE ITEM_DP_STATUS='Y' AND ILV.CATEGORY_NO='F4'
+		ORDER BY ILV.ITEM_NO DESC
+	</select>
+	<select id="selectSLists" parameterType="map" resultMap="itemListResultSet">
+		SELECT *
+		FROM ITEM_LIST_VIEW ILV
+		LEFT JOIN ITEM I ON(ILV.ITEM_NO = I.ITEM_NO)
+		WHERE ITEM_DP_STATUS='Y' AND ILV.CATEGORY_NO='F4'
+		<choose>
+			<when test="test=='S1'">
+				ORDER BY I.ITEM_DATE DESC
+			</when>
+			<when test="test=='S2'">
+				ORDER BY I.ITEM_RATE DESC
+			</when>
+			<when test="test=='S3'">
+				ORDER BY I.ITEM_PRICE DESC
+			</when>
+			<otherwise>
+				ORDER BY I.ITEM_PRICE ASC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="selectHList" resultMap="itemListResultSet">
+		SELECT *
+		FROM ITEM_LIST_VIEW ILV
+		LEFT JOIN ITEM I ON(ILV.ITEM_NO = I.ITEM_NO)
+		WHERE ITEM_DP_STATUS='Y' AND ILV.CATEGORY_NO='F5'
+		ORDER BY ILV.ITEM_NO DESC
+	</select>
+	<select id="selectHLists" parameterType="map" resultMap="itemListResultSet">
+		SELECT *
+		FROM ITEM_LIST_VIEW ILV
+		LEFT JOIN ITEM I ON(ILV.ITEM_NO = I.ITEM_NO)
+		WHERE ITEM_DP_STATUS='Y' AND ILV.CATEGORY_NO='F5'
+		<choose>
+			<when test="test=='S1'">
+				ORDER BY I.ITEM_DATE DESC
+			</when>
+			<when test="test=='S2'">
+				ORDER BY I.ITEM_RATE DESC
+			</when>
+			<when test="test=='S3'">
+				ORDER BY I.ITEM_PRICE DESC
+			</when>
+			<otherwise>
+				ORDER BY I.ITEM_PRICE ASC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="selectDiList" resultMap="itemListResultSet">
+		SELECT *
+		FROM ITEM_LIST_VIEW ILV
+		LEFT JOIN ITEM I ON(ILV.ITEM_NO = I.ITEM_NO)
+		WHERE ITEM_DP_STATUS='Y' AND ILV.CATEGORY_NO='F6'
+		ORDER BY ILV.ITEM_NO DESC
+	</select>
+	<select id="selectDiLists" parameterType="map" resultMap="itemListResultSet">
+		SELECT *
+		FROM ITEM_LIST_VIEW ILV
+		LEFT JOIN ITEM I ON(ILV.ITEM_NO = I.ITEM_NO)
+		WHERE ITEM_DP_STATUS='Y' AND ILV.CATEGORY_NO='F6'
+		<choose>
+			<when test="test=='S1'">
+				ORDER BY I.ITEM_DATE DESC
+			</when>
+			<when test="test=='S2'">
+				ORDER BY I.ITEM_RATE DESC
+			</when>
+			<when test="test=='S3'">
+				ORDER BY I.ITEM_PRICE DESC
+			</when>
+			<otherwise>
+				ORDER BY I.ITEM_PRICE ASC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="livingCount" parameterType="string" resultType="_int">
+		SELECT COUNT(*)
+		FROM ITEM_LIST_VIEW ILV
+		JOIN ITEM I ON(ILV.ITEM_NO = I.ITEM_NO)
+		WHERE ITEM_DP_STATUS='Y'
+		AND I.CATEGORY_NO =#{categoryNo}
+	</select>
+	
+	<select id="livingCateList" parameterType="map" resultMap="itemListResultSet">
+		SELECT *
+		FROM ITEM_LIST_VIEW ILV
+		LEFT JOIN ITEM I ON(ILV.ITEM_NO = I.ITEM_NO)
+		WHERE ITEM_DP_STATUS='Y' AND I.CATEGORY_NO=#{categoryNo}
+		<choose>
+			<when test="sortNo=='S1'">
+				ORDER BY I.ITEM_DATE DESC
+			</when>
+			<when test="sortNo=='S2'">
+				ORDER BY I.ITEM_RATE DESC
+			</when>
+			<when test="sortNo=='S3'">
+				ORDER BY I.ITEM_PRICE DESC
+			</when>
+			<otherwise>
+				ORDER BY I.ITEM_PRICE ASC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="selectSortNewList" parameterType="map" resultMap="itemListResultSet">
+		SELECT *
+		FROM ITEM_LIST_VIEW ILV
+		LEFT JOIN ITEM I ON(ILV.ITEM_NO = I.ITEM_NO)
+		WHERE ITEM_DP_STATUS='Y' AND ILV.ITEM_DATE BETWEEN SYSDATE-30 AND SYSDATE
+		<choose>
+			<when test="sortNo=='S1'">
+				ORDER BY I.ITEM_DATE DESC
+			</when>
+			<when test="sortNo=='S2'">
+				ORDER BY I.ITEM_RATE DESC
+			</when>
+			<when test="sortNo=='S3'">
+				ORDER BY I.ITEM_PRICE DESC
+			</when>
+			<otherwise>
+				ORDER BY I.ITEM_PRICE ASC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="selectSortEventList" parameterType="map" resultMap="itemListResultSet">
+		SELECT *
+		FROM ITEM_LIST_VIEW ILV
+		LEFT JOIN ITEM I ON(ILV.ITEM_NO = I.ITEM_NO)
+		WHERE ITEM_DP_STATUS='Y' AND ITEM_EVENT_STATUS='Y'
+		<choose>
+			<when test="sortNo=='S1'">
+				ORDER BY I.ITEM_DATE DESC
+			</when>
+			<when test="sortNo=='S2'">
+				ORDER BY I.ITEM_RATE DESC
+			</when>
+			<when test="sortNo=='S3'">
+				ORDER BY I.ITEM_PRICE DESC
+			</when>
+			<otherwise>
+				ORDER BY I.ITEM_PRICE ASC
+			</otherwise>
+		</choose>
+	</select>
+	<select id="selectSortLivingList" parameterType="map" resultMap="itemListResultSet">
+		SELECT *
+		FROM ITEM_LIST_VIEW ILV
+		LEFT JOIN ITEM I ON(ILV.ITEM_NO = I.ITEM_NO)
+		WHERE ITEM_DP_STATUS='Y' AND I.CATEGORY_NO LIKE 'L%'
+		<choose>
+			<when test="sortNo=='S1'">
+				ORDER BY I.ITEM_DATE DESC
+			</when>
+			<when test="sortNo=='S2'">
+				ORDER BY I.ITEM_RATE DESC
+			</when>
+			<when test="sortNo=='S3'">
+				ORDER BY I.ITEM_PRICE DESC
+			</when>
+			<otherwise>
+				ORDER BY I.ITEM_PRICE ASC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="selectSortFoodList" parameterType="map" resultMap="itemListResultSet">
+		SELECT *
+		FROM ITEM_LIST_VIEW ILV
+		LEFT JOIN ITEM I ON(ILV.ITEM_NO = I.ITEM_NO)
+		WHERE ITEM_DP_STATUS='Y' AND I.CATEGORY_NO LIKE 'F%'
+		<choose>
+			<when test="sortNo=='S1'">
+				ORDER BY I.ITEM_DATE DESC
+			</when>
+			<when test="sortNo=='S2'">
+				ORDER BY I.ITEM_RATE DESC
+			</when>
+			<when test="sortNo=='S3'">
+				ORDER BY I.ITEM_PRICE DESC
+			</when>
+			<otherwise>
+				ORDER BY I.ITEM_PRICE ASC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="selectSortBestList" parameterType="map" resultMap="itemListResultSet">
+		<![CDATA[
+		SELECT *
+		FROM ITEM_LIST_VIEW ILV
+		LEFT JOIN ITEM I ON(ILV.ITEM_NO = I.ITEM_NO)
+		WHERE ITEM_DP_STATUS='Y' AND ITEM_CM_SALES >= 30
+		]]>
+		<choose>
+			<when test="sortNo=='S1'">
+				ORDER BY I.ITEM_DATE DESC
+			</when>
+			<when test="sortNo=='S2'">
+				ORDER BY I.ITEM_RATE DESC
+			</when>
+			<when test="sortNo=='S3'">
+				ORDER BY I.ITEM_PRICE DESC
+			</when>
+			<otherwise>
+				ORDER BY I.ITEM_PRICE ASC
+			</otherwise>
+		</choose>
+	</select>
+	
+</mapper>
