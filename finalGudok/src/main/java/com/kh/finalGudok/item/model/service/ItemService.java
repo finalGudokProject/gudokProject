@@ -258,4 +258,6 @@ public interface ItemService {
 	
 
 	int updateItemEventStatusN(int[] dEventArr);
+
+	int updateRecommendStatusN(Integer itemNo);
 }

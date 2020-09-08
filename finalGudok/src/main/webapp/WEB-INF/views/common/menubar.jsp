@@ -165,7 +165,15 @@ display:inline-block !important;
 		</c:if>
 		<c:if test="${!empty sessionScope.loginUser }">
 			<ul class="menu-list">
-				<li><c:out value="${loginUser.memberName }님 환영합니다" /></li>
+				<c:if test="${loginUser.memberId ne 'admin' }">
+					<li><c:out value="${loginUser.memberName }님 환영합니다" /></li>
+				</c:if>
+				<c:if test="${loginUser.memberId eq 'admin' }">
+					<li><c:out value="${loginUser.memberName }님 환영합니다" /></li>
+					<li><a href='aMain.do'>관리자 페이지</a></li>
+				</c:if>
+				
+				
 				<c:url var="slist" value="subscribeView.do">
 					<c:param name="memberNo" value="${loginUser.memberNo}"/>
 				</c:url> 

@@ -127,7 +127,7 @@ public class MemberController {
 			session.setAttribute("pointCount", pointCount);
 
 			if (loginUser.getMemberId().equalsIgnoreCase("admin")) {
-				mv.setViewName("admin/main");
+				mv.setViewName("redirect:aMain.do");
 			} else {
 				mv.setViewName("home");
 			}

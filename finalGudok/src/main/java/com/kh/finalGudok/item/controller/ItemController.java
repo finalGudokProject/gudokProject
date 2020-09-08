@@ -1810,16 +1810,21 @@ public class ItemController {
 	
 	//추천상품 취소하기--admin
 	@RequestMapping("cancelRecommend.do")
-	public void cancelRecommendStatus(HttpServletResponse response,Integer itemNo) {
+	public void cancelRecommendStatus(HttpServletResponse response,Integer itemNo) throws IOException {
 		
 		//추천 status 변경 (R->N)
+		int result=iService.updateRecommendStatusN(itemNo);
+		
 		ArrayList<BannerItem> rList = new ArrayList<>();
-
+				
+				
+		//리스트 가져오기
 		if (result > 0) {
 
 			rList = iService.selectRecommendList();
 
 		}
+		System.out.println("여기왔고"+rList);
 
 		response.setContentType("application/json;charset=utf-8");
 		JSONArray jarr = new JSONArray();

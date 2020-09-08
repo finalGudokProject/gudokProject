@@ -398,11 +398,11 @@
 	<select id="selectRecommendCnt" resultType="_int">
 		SELECT COUNT(*)
 		FROM ITEM
-		WHERE ITEM_EVENT_STATUS='R'
+		WHERE ITEM_recommend='R'
 	</select>
 	<update id="updateItemRecommend" parameterType="java.util.List">
 		UPDATE ITEM
-		SET ITEM_EVENT_STATUS='R'
+		SET ITEM_recommend='R'
 		WHERE ITEM_NO IN 
 			<foreach item="e" index="index" collection="array" open="(" separator="," close=")">
 				#{e}
@@ -412,7 +412,7 @@
 	<select id="selectRecommendList" resultMap="bannerItemResultSet">
 		select *
 		from item
-		where item_event_status='R'
+		where item_recommend='R'
 	</select>
 
 	<update id="updateItemEventStatusN" parameterType="java.util.ArrayList">
@@ -424,7 +424,10 @@
 		</foreach>
 	
 	</update>
-	
-	
+	<update id="updateRecommendStatusN" parameterType="int">
+		UPDATE ITEM
+	    SET ITEM_RECOMMEND='C'
+	    WHERE ITEM_NO=#{value}
+	</update>
 	
 </mapper>
