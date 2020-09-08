@@ -46,6 +46,7 @@ import com.kh.finalGudok.item.model.vo.ReviewImage;
 import com.kh.finalGudok.item.model.vo.ReviewView;
 import com.kh.finalGudok.item.model.vo.SearchItem;
 import com.kh.finalGudok.member.model.vo.Member;
+import com.kh.finalGudok.member.model.vo.Subscribe;
 import com.siot.IamportRestClient.IamportClient;
 import com.siot.IamportRestClient.exception.IamportResponseException;
 import com.siot.IamportRestClient.request.AgainPaymentData;
@@ -406,11 +407,13 @@ public class ItemController {
 	@RequestMapping("basket.do")
 	@ResponseBody
 	public String insertCart(HttpServletRequest request, Cart c) {
-		int result = iService.insertCart(c);
-		if (result > 0) {
+		int search = iService.selectCart(c);
+		System.out.println("search : " + search);
+		if(search == 0) {
+			iService.insertCart(c);
 			return "success";
-		} else {
-			throw new ItemException("추가 실패");
+		}else {
+			return "fail";
 		}
 	}
 
@@ -776,46 +779,69 @@ public class ItemController {
 	}
 
 	// 리뷰 쓰기
-	@RequestMapping(value = "reviewInsert.do", method = RequestMethod.POST)
-	public String reviewInsert(Review r, Image i, ReviewImage ri, HttpServletRequest request,
-			@RequestParam(value = "page", required = false) Integer page,
-			@RequestParam(value = "memberNo", required = false) int memberNo,
-			@RequestParam(value = "itemNo", required = false) int itemNo,
-			@RequestParam(value = "uploadFile1", required = false) MultipartFile file1,
-			@RequestParam(value = "uploadFile2", required = false) MultipartFile file2) {
-		int currentPage = page;
+		@RequestMapping(value = "reviewInsert.do", method = RequestMethod.POST)
+		@ResponseBody
+		public String reviewInsert(Review r, Image i, ReviewImage ri, HttpServletRequest request,
+				@RequestParam(value = "page", required = false) Integer page,
+				@RequestParam(value = "memberNo", required = false) int memberNo,
+				@RequestParam(value = "itemNo", required = false) int itemNo,
+				@RequestParam(value = "uploadFile1", required = false) MultipartFile file1,
+				@RequestParam(value = "uploadFile2", required = false) MultipartFile file2) {
+			Subscribe scb = new Subscribe();
+			scb.setMemberNo(memberNo);
+			scb.setItemNo(itemNo);
+			int currentPage = page;
 
-		int result = iService.insertReview(r);
-		int updateResult = iService.updateReviewRate(itemNo);
-
-		if (!file1.getOriginalFilename().equals("")) {
-			String renameFileName1 = saveFile(file1, request);
-			i.setImageOriginalName(file1.getOriginalFilename());
-			i.setImageRename(renameFileName1);
-			int imgResult1 = iService.insertReviewImage1(i);
-			if (imgResult1 > 0) {
-				iService.insertRI(ri);
+			int deliveryChk = iService.selectDelChk(scb);
+			int reviewChk = iService.selectReviewChk(scb);
+			System.out.println("del값 확인 : " + deliveryChk);
+			if(deliveryChk > 0 && reviewChk == 0) {
+				int result = iService.insertReview(r);
+				int updateResult = iService.updateReviewRate(itemNo);
+		
+				if (!file1.getOriginalFilename().equals("")) {
+					String renameFileName1 = saveFile(file1, request);
+					i.setImageOriginalName(file1.getOriginalFilename());
+					i.setImageRename(renameFileName1);
+					int imgResult1 = iService.insertReviewImage1(i);
+					if (imgResult1 > 0) {
+						iService.insertRI(ri);
+					}
+				}else {
+					
+				}
+		
+				if (!file2.getOriginalFilename().equals("")) {
+					String renameFileName2 = saveFile(file2, request);
+					i.setImageOriginalName(file2.getOriginalFilename());
+					i.setImageRename(renameFileName2);
+					int imgResult2 = iService.insertReviewImage2(i);
+					if (imgResult2 > 0) {
+						iService.insertRI(ri);
+					}
+				}else {
+					
+				}
+		
+				System.out.println("review result : " + result);
+				if (result > 0 && updateResult > 0) {
+					return "success";
+				} else {
+					throw new ItemException("리뷰 등록 실패");
+				}
+			}else {
+				if(deliveryChk == 0) {
+					int delStatus = iService.selectDelStatus(scb);
+					if(delStatus == 0) {
+						return "noDelFail";
+					}else {
+						return "delFail";
+					}
+				}else {
+					return "reviewFail";
+				}
 			}
 		}
-
-		if (!file2.getOriginalFilename().equals("")) {
-			String renameFileName2 = saveFile(file2, request);
-			i.setImageOriginalName(file2.getOriginalFilename());
-			i.setImageRename(renameFileName2);
-			int imgResult2 = iService.insertReviewImage2(i);
-			if (imgResult2 > 0) {
-				iService.insertRI(ri);
-			}
-		}
-
-		System.out.println("review result : " + result);
-		if (result > 0 && updateResult > 0) {
-			return "redirect:idetail.do?itemNo=" + itemNo + "&page=" + currentPage + "&memberNo=" + memberNo
-					+ "#reviewPI";
-		} else {
-			throw new ItemException("리뷰 등록 실패");
-		}
-	}
 
 	private String saveFile(MultipartFile file, HttpServletRequest request) {
 		String root = request.getSession().getServletContext().getRealPath("resources");
@@ -1810,16 +1836,16 @@ public class ItemController {
 	
 	//추천상품 취소하기--admin
 	@RequestMapping("cancelRecommend.do")
-	public void cancelRecommendStatus(HttpServletResponse response,Integer itemNo) {
+	public void cancelRecommendStatus(HttpServletResponse response,Integer itemNo) throws IOException {
 		
 		//추천 status 변경 (R->N)
 		ArrayList<BannerItem> rList = new ArrayList<>();
-
-		if (result > 0) {
+		
+//		if (result > 0) {
 
 			rList = iService.selectRecommendList();
 
-		}
+//		}
 
 		response.setContentType("application/json;charset=utf-8");
 		JSONArray jarr = new JSONArray();
@@ -1846,5 +1872,7 @@ public class ItemController {
 		
 		
 	}
+	
+	
 
 }

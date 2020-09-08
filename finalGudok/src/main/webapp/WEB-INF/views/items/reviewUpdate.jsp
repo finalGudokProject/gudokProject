@@ -61,7 +61,7 @@
 	}
 	
 	
-	input[type=button]{
+	input[type=submit]{
 	background:#6AAED9;
 	color:white;
 	border-radius:5px;
@@ -72,7 +72,7 @@
   	border:1px solid #6AAED9;
 	margin-bottom:2%;
 	}
-	input[type=button]:hover{
+	input[type=submit]:hover{
 	  background:#11538C;
 	  color:#white;
 	  border:1px solid #11538C;

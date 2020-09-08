@@ -450,13 +450,13 @@
 							<div id="ratePercentId" style="position:absolute;"><span>${i.itemDiscount }%</span></div>
 							<img src="resources/images/sale.png" class="saleImg">
 						</div>
-						<img src="resources/images/breadLogo.jpg" class="card-img-top mainImg" alt="..." style="position:relative;">
+						<img src="${contextPath}/resources/uploadFiles/${i.itemRename}" class="card-img-top mainImg" alt="..." style="position:relative;">
 					</div>
 					</c:if>
 					
 					<c:if test="${i.itemDiscount == 0}">
 					<div class="cardHeader">
-					<img src="resources/images/kimchi.png" class="card-img-top mainImg" alt="...">
+					<img src="${contextPath}/resources/uploadFiles/${i.itemRename}" class="card-img-top mainImg" alt="...">
 					</div>
 					</c:if>
 					<div class="cardBody">
