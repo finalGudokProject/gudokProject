@@ -2614,7 +2614,7 @@ public class BoardController {
 		int result4 = bService.deleteInquiryBoard(bBoard_no);
 		int result5 = bService.deleteBoard(bBoard_no);
 
-		if (result1 > 0 || result2 > 0 || result3 > 0 && result4 > 0 && result5 > 0) {
+		if (result1 > 0 && result2 > 0 && result3 > 0 && result4 > 0 && result5 > 0) {
 			return "redirect:sinquiryList.do";
 		} else {
 			throw new BoardException("게시물 삭제 실패!");
