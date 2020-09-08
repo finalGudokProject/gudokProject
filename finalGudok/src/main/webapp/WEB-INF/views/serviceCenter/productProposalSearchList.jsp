@@ -132,18 +132,19 @@
         	<form action="searchsProposalList.do" method="post" enctype="multipart/form-data">
           <div class="input-group">
             <select class="custom-select" id="inputGroupSelect04" id="searchType" name="searchType" style="margin-left: 500px; width:100px">
-              <option value="All">모두</option>
-                <option value="title">제목</option>
-                <option value="content">내용</option>          
-                <option value="user">작성자</option>
+                <option value="All"<c:if test="${searchType eq 'All' }">selected='selected'</c:if> >모두</option>             
+                <option value="title"<c:if test="${searchType eq 'title' }">selected='selected'</c:if> >제목</option>
+                <option value="content"<c:if test="${searchType eq 'content' }">selected='selected'</c:if> >내용</option>
+                <option value="user"<c:if test="${searchType eq 'user' }">selected='selected'</c:if> >작성자</option>
             </select>
-            <input type="text" class="form-control" id="keyword" name="keyword" value="" style="float:right; width:170px;height: 38px;">
+            <input type="text" class="form-control" id="keyword" name="keyword" value="${keyword }" style="float:right; width:170px;height: 38px;">
             <div class="input-group-append" style="float:right; width: 55px; height: 38px;">
               <input type="submit" value="검색" id="searchBtn" name="searchBtn" class="btn btn-primary">
             </div>
             </div>
             </form>
-         
+         	<input type="hidden" name="searchType" value="${searchType }">
+            <input type="hidden" name="keyword" value="${keyword }">
         
         <table style="text-align: center; margin-top:15px">
       <thead>
@@ -198,8 +199,10 @@
 						   </svg></a></li>
                   		</c:if>
                    		<c:if test="${pi.currentPage gt 1 }">
-                     		<c:url var="blistBack" value="productProposalList.do">
+                     		<c:url var="blistBack" value="searchsProposalList.do">
                         		<c:param name="page" value="${pi.currentPage-1 }"/>
+                        		<c:param name="searchType" value="${searchType }"/>
+                        		<c:param name="keyword" value="${keyword }"/>
                      		</c:url>
                             <li class="page-item-t">
                             <a class="page-link-t" href="${blistBack }">
@@ -216,8 +219,10 @@
                      </c:if>
                      
                            <c:if test="${p ne pi.currentPage }">
-                              <c:url var="blistCheck" value=" productProposalList.do">
+                              <c:url var="blistCheck" value=" searchsProposalList.do">
                                  <c:param name="page" value="${p }"/>
+                                 <c:param name="searchType" value="${searchType }"/>
+                        		 <c:param name="keyword" value="${keyword }"/>
                               </c:url>
                               <li class="page-item-t"><a class="page-link-t" href="${blistCheck }">${p } <span class="sr-only"></span></a>
                               </li>
@@ -233,8 +238,10 @@
 						   </svg></a></li>
                   		</c:if>
                    		<c:if test="${pi.currentPage lt pi.maxPage }">
-                     		<c:url var="blistAfter" value=" productProposalList.do">
+                     		<c:url var="blistAfter" value=" searchsProposalList.do">
                         		<c:param name="page" value="${pi.currentPage+1 }"/>
+                        		<c:param name="searchType" value="${searchType }"/>
+                        		<c:param name="keyword" value="${keyword }"/>
                      		</c:url>
                             <li class="page-item-t">
                             <a class="page-link-t" href="${blistAfter }">

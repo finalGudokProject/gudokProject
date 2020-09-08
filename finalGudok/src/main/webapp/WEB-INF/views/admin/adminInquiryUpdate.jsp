@@ -38,7 +38,7 @@
 	        <div style="font-size: 30px;">1:1 문의</div>
 	        <hr style="border-color:rgb(0, 125, 255);">
 
-		 	<form action="aInquiryUpdate.do" method="post" enctype="multipart/form-data">
+		 	<form action="aInquiryUpdate.do" method="post" enctype="multipart/form-data" onsubmit="return validate();">
 		          	<input type="hidden" name="page" value="${currentPage }">
 					<input type="hidden" name="bBoard_no" value="${board.bBoard_no }">
 					<input type="hidden" name="iBoard_no" value="${inquiry.iBoard_no }">
@@ -123,6 +123,21 @@
     </div><!--하얀박스 있는부분 끝-->
   </div><!--회색바탕 div-->
   
+   <script>
+   
+   function validate(){
+   	  
+ 	   if($("#iInquiry_content").val().trim().length == 0){
+            alert("답변을 입력하세요");
+            $("#iInquiry_content").focus();
+            return false;
+ 	   }
+ 	   else{
+         	alert("답변이 등록되었습니다!");           
+         }
+      }
+   
+   </script>
 
    
 

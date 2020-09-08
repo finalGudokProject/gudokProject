@@ -130,7 +130,9 @@
       </div>
       <div class="col-9">
         
-          <form action="ProductProposalInsert.do" method="post" enctype="multipart/form-data">
+          <form action="ProductProposalInsert.do" method="post" enctype="multipart/form-data" onsubmit="return validate();">
+          <input type="hidden" name="bMember_id" value=${loginUser.memberId }>
+          <input type="hidden" name="bEmail" value=${loginUser.email }>
             <div style="font-size: 30px;">상품제안</div>
             <hr style="border-color:rgb(0, 125, 255);">
             <table style="text-align: center; margin-top:15px">
@@ -138,11 +140,11 @@
                     <tr>
                         <th style="width:10%; padding:20px;">제목</th>
                         <td style="width: 39%;" colspan="3">
-                            <textarea class="form-control" rows="1" style="resize: none;  margin-left:10%;width:550px;" name="bTitle"></textarea>
+                            <textarea class="form-control" rows="1" style="resize: none;  margin-left:10%;width:550px;" name="bTitle" id="bTitle"></textarea>
                         </td>
                     </tr>
                     <tr>
-                        <th style="padding:20px;">내용</th><td colspan="3"><textarea class="form-control" rows="20" style="resize: none;" name="bContent"></textarea></td>
+                        <th style="padding:20px;">내용</th><td colspan="3"><textarea class="form-control" rows="20" style="resize: none;" name="bContent" id="bContent"></textarea></td>
                     </tr>
                     <tr>
                         <th style="padding:20px;">이미지</th><td colspan="3"><div class="filebox bs3-primary preview-image">
@@ -168,6 +170,29 @@
 			</footer>
             
             <script>
+            
+            
+            function validate(){
+          	  
+         	   if($("#bTitle").val().trim().length == 0){
+                    alert("제목을 입력하세요");
+                    $("#bTitle").focus();
+                    return false;
+         	   }
+         	   else if($("#bContent").val().trim().length == 0){
+         		   alert("내용을 입력하세요");
+                    $("#bContent").focus();
+                    return false;
+         	   }
+         	   else{
+                 	alert("상품제안이 등록되었습니다!");           
+                 }
+              }
+            
+            
+            
+            
+            
         $(document).ready(function(){
         var fileTarget = $('.filebox .upload-hidden');
 

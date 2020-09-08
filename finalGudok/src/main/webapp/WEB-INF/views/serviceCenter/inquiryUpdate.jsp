@@ -138,7 +138,7 @@
       </div>
       <div class="col-9">
         
-          <form action="rInquiryUpdate.do" method="post" enctype="multipart/form-data">
+          <form action="rInquiryUpdate.do" method="post" enctype="multipart/form-data" onsubmit="return validate();">
           	<input type="hidden" name="page" value="${currentPage }">
 			<input type="hidden" name="bBoard_no" value="${board.bBoard_no }">
 			<input type="hidden" name="iBoard_no" value="${inquiry.iBoard_no }">
@@ -154,7 +154,6 @@
                         <td style="width: 39%;" colspan="3">
                         <c:if test="${inquiry.iBoard_type eq 'OPI' }">
                             <select name="iBoard_type" style="float:left; margin-left:35%; height:30px ;width:200px;" id="iBoard_type" name="iBoard_type">
-                                <option value="">문의유형을 선택 해주세요</option>
                                 <option value="OPI" selected>상품정보문의</option>
                                 <option value="OEC">교환문의</option>
                                 <option value="OAL">제휴</option>
@@ -164,7 +163,6 @@
                         </c:if>
                         <c:if test="${inquiry.iBoard_type eq 'OEC' }">
                             <select name="iBoard_type" style="float:left; margin-left:35%; height:30px ;width:200px;" id="iBoard_type" name="iBoard_type">
-                                <option value="">문의유형을 선택 해주세요</option>
                                 <option value="OPI">상품정보문의</option>
                                 <option value="OEC" selected>교환문의</option>
                                 <option value="OAL">제휴</option>
@@ -174,7 +172,6 @@
                         </c:if>
                         <c:if test="${inquiry.iBoard_type eq 'OAL' }">
                             <select name="iBoard_type" style="float:left; margin-left:35%; height:30px ;width:200px;" id="iBoard_type" name="iBoard_type">
-                                <option value="">문의유형을 선택 해주세요</option>
                                 <option value="OPI">상품정보문의</option>
                                 <option value="OEC">교환문의</option>
                                 <option value="OAL" selected>제휴</option>
@@ -184,7 +181,6 @@
                         </c:if>
                         <c:if test="${inquiry.iBoard_type eq 'ODL' }">
                             <select name="iBoard_type" style="float:left; margin-left:35%; height:30px ;width:200px;" id="iBoard_type" name="iBoard_type">
-                                <option value="">문의유형을 선택 해주세요</option>
                                 <option value="OPI">상품정보문의</option>
                                 <option value="OEC">교환문의</option>
                                 <option value="OAL">제휴</option>
@@ -194,7 +190,6 @@
                         </c:if>
                         <c:if test="${inquiry.iBoard_type eq 'OETC' }">
                             <select name="iBoard_type" style="float:left; margin-left:35%; height:30px ;width:200px;" id="iBoard_type" name="iBoard_type">
-                                <option value="">문의유형을 선택 해주세요</option>
                                 <option value="OPI">상품정보문의</option>
                                 <option value="OEC">교환문의</option>
                                 <option value="OAL">제휴</option>
@@ -207,7 +202,7 @@
                     <tr>
                         <th style="width:10%; padding:20px;">제목</th>
                         <td style="width: 39%;" colspan="3">
-                            <textarea class="form-control" rows="1" style="resize: none;  margin-left:10%;width:550px;" name="bTitle">${board.bTitle }</textarea>
+                            <textarea class="form-control" rows="1" style="resize: none;  margin-left:10%;width:550px;" name="bTitle" id="bTitle">${board.bTitle }</textarea>
                         </td>
                     </tr>
                     <tr>
@@ -232,7 +227,7 @@
                     <tr>
                         <th style="padding:20px;">내용</th>
                         <td colspan="3">
-                        <textarea class="form-control" rows="20" style="resize: none;" name="bContent">${board.bContent }</textarea>
+                        <textarea class="form-control" rows="20" style="resize: none;" name="bContent" id="bContent">${board.bContent }</textarea>
                         <br><br>
                         <c:if test="${!empty board.originalFileName }">
                         	<center>
@@ -265,6 +260,49 @@
 				<jsp:include page="../common/footer.jsp" />
 			</footer>
         <script>
+        
+        
+        
+        
+        $("input[name='oSecret']").change(function(){
+       	   
+     	   if($("input[name='oSecret']:checked").val()=='Y'){
+     		   $("#oSecret_pwd").prop( "disabled", true );
+     		   $("#oSecret_pwd").val("");
+				
+     	   }else if($("input[name='oSecret']:checked").val()=='N'){
+     		   $("#oSecret_pwd").prop( "disabled", false );
+     	   }
+        })
+        
+        
+           
+ 		function validate(){
+     	  
+     	   if($("#bTitle").val().trim().length == 0){
+                alert("제목을 입력하세요");
+                $("#bTitle").focus();
+                return false;
+     	   }
+     	   else if($("input[name='oSecret']:checked").val()=='N' && $("#oSecret_pwd").val().trim().length == 0){
+     		   console.log("d");
+     		   alert("비밀번호를 입력하세요");
+                $("#oSecret_pwd").focus();
+                return false;
+     	   }
+     	   else if($("#bContent").val().trim().length == 0){
+     		   alert("내용을 입력하세요");
+                $("#bContent").focus();
+                return false;
+     	   }
+     	   else{
+             	alert("1:1문의가 수정되었습니다!");           
+             }
+          }
+        
+        
+        
+        
         $(document).ready(function(){
         var fileTarget = $('.filebox .upload-hidden');
 

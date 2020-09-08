@@ -89,11 +89,11 @@
           <table style="text-align: center; margin-top:15px">
         <thead>
           <tr>
-            <th><input type="checkbox" id="checkAll">
-            </th><th style="width:10%">번호</th>
-            <th style="width:55%">제목</th>
-            <th style="width:20%">작성일</th>
-            <th style="width:10%">조회수</th>
+            <th onclick='event.cancelBubble=true'><input type="checkbox" id="checkAll"></th>
+            <th onclick='event.cancelBubble=true' style="width:10%">번호</th>
+            <th onclick='event.cancelBubble=true' style="width:55%">제목</th>
+            <th onclick='event.cancelBubble=true' style="width:20%">작성일</th>
+            <th onclick='event.cancelBubble=true' style="width:10%">조회수</th>
           </tr>
         </thead>
         <tbody >
@@ -101,7 +101,7 @@
 		      			<c:when test="${fn:length(list)>0 }">
 					        <c:forEach var="b" items="${list }">
 					          <tr>
-					          		<td><input type="checkbox" class="common" id="noticeNo${cnt.index}" name="noticeNo" value="${b.bBoard_no }"></td>
+					          		<td onclick='event.cancelBubble=true'><input type="checkbox" class="common" id="noticeNo${cnt.index}" name="noticeNo" value="${b.bBoard_no }"></td>
 					          		<td align="center">${b.rownum }</td>
 									<td align="center">
 										<c:url var="adminNoticeDetail" value="adminNoticeDetail.do">
@@ -122,9 +122,10 @@
         </tbody>
       </table>
             <br><br>
+            <c:if test="${loginUser.memberId eq 'admin' }">
             &nbsp;&nbsp;<a href="adminNoticeInsert.do" type="button" class="btn btn-primary" style="float:right;">글쓰기</a> 
             <input type="button" value="삭제" style="float:right; margin-right: 10px;"" class="btn btn-primary" onclick="nDelete()">
-  
+  			</c:if>
             <br><br><br>
                   
                   
@@ -132,6 +133,8 @@
                   
       			<!------페이징 처리----->
                 <div class="page-center">
+                	<c:choose>
+		      		<c:when test="${!empty list }">
                     <ul class="pagination-t">
                        <!-- 이전 -->
                         <c:if test="${pi.currentPage eq 1 }">
@@ -191,6 +194,11 @@
 							</svg></a></li>
                   		</c:if>
                     </ul>
+                    </c:when>
+                    <c:otherwise>
+                    
+                    </c:otherwise>
+                    </c:choose>
                 </div>
 
     </div><!--하얀박스 있는부분 끝-->
@@ -219,7 +227,7 @@
 			    				traditional:true,
 			    				data:{"sendArr":sendArr},
 			    				success:function(data){
-			    					alert("선택한 이벤트들을 삭제합니다");
+			    					alert("선택한 공지들을 삭제합니다");
 			    					getNoticeList();
 			    				},
 			    				error:function(request, status, errorData){

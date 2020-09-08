@@ -274,9 +274,9 @@
 		<div style="margin:0 0 3% 2%">
 			<table style="display:block;" class="cateTableC">
 				<tr>
-					<td style="width:10%;" id="foodLife" class="sortCate"><input type="hidden" value="L1">생활용품</td>
-					<td style="width:10%;" id="foodBody" class="sortCate"><input type="hidden" value="L2">바디케어</td>
 					<td style="width:10%;" id="foodDeco" class="sortCate"><input type="hidden" value="L3">홈데코</td>
+					<td style="width:10%;" id="foodBody" class="sortCate"><input type="hidden" value="L2">바디케어</td>
+					<td style="width:10%;" id="foodLife" class="sortCate"><input type="hidden" value="L1">생활용품</td>
 				</tr>
 			</table>
 			<div style="display:none;"><input type="text" name="categoryNo" id="categoryInput"></div>

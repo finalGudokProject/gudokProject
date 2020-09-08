@@ -97,12 +97,12 @@
           <table style="text-align: center; margin-top:15px">
         <thead>
           <tr>
-            <th><input type="checkbox" id="checkAll"></th>
-            <th style="width:10%">번호</th>
-          <th style="width: 35%;">제목</th>
-          <th style="width: 20%;">작성자</th>          
-          <th style="width: 20%;">작성일</th>
-          <th style="width: 20%;">답변상태</th>
+          <th onclick='event.cancelBubble=true'><input type="checkbox" id="checkAll"></th>
+          <th onclick='event.cancelBubble=true' style="width:10%">번호</th>
+          <th onclick='event.cancelBubble=true' style="width: 35%;">제목</th>
+          <th onclick='event.cancelBubble=true' style="width: 20%;">작성자</th>          
+          <th onclick='event.cancelBubble=true' style="width: 20%;">작성일</th>
+          <th onclick='event.cancelBubble=true' style="width: 20%;">답변상태</th>
           </tr>
         </thead>
         <tbody>
@@ -110,7 +110,7 @@
 	      			<c:when test="${fn:length(list1)>0}">
 			        	<c:forEach var="b" items="${list1 }" varStatus="cnt">
 							<tr>
-								<td><input type="checkbox" class="common" id="inquriyNo${cnt.index}" name="inquriyNo" value="${b.bBoard_no }"></td>
+								<td onclick='event.cancelBubble=true'><input type="checkbox" class="common" id="inquriyNo${cnt.index}" name="inquriyNo" value="${b.bBoard_no }"></td>
 								<td align="center">${b.rownum }</td>
 								<td align="center">
 									<c:url var="adminInquiryDetail" value="adminInquiryDetail.do">
@@ -148,11 +148,14 @@
 	      </tbody>
       	</table>
             <br><br>
+            <c:if test="${loginUser.memberId eq 'admin' }">
             <input type="button" value="삭제" style="float:right; margin-right: 10px;"" class="btn btn-primary" onclick="iDelete()">
+            </c:if>
             <br><br><br>
 
                     <div class="page-center">
-   					
+   					<c:choose>
+		      		<c:when test="${!empty list1 }">
                     <ul class="pagination-t">
                     
                        <!-- 이전 -->
@@ -216,7 +219,11 @@
 							</svg></a></li>
                   		</c:if>
                     </ul>
+					</c:when>
+					<c:otherwise>
 					
+					</c:otherwise>
+					</c:choose>
                 </div>
                 <br><br><br>
 
@@ -247,7 +254,7 @@
 			    				traditional:true,
 			    				data:{"sendArr":sendArr},
 			    				success:function(data){
-			    					alert("선택한 이벤트들을 삭제합니다");
+			    					alert("선택한 1:1 문의들을 삭제합니다");
 			    					getInquiryList();
 			    				},
 			    				error:function(request, status, errorData){

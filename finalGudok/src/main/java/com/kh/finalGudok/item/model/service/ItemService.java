@@ -4,12 +4,10 @@ import java.util.ArrayList;
 
 import com.kh.finalGudok.item.model.vo.AdminItem;
 import com.kh.finalGudok.item.model.vo.BannerItem;
-import com.kh.finalGudok.item.model.vo.Event;
-
 import com.kh.finalGudok.item.model.vo.Board;
 import com.kh.finalGudok.item.model.vo.Cart;
+import com.kh.finalGudok.item.model.vo.Event;
 import com.kh.finalGudok.item.model.vo.Heart;
-
 import com.kh.finalGudok.item.model.vo.Image;
 import com.kh.finalGudok.item.model.vo.Item;
 import com.kh.finalGudok.item.model.vo.ItemListView;
@@ -18,7 +16,7 @@ import com.kh.finalGudok.item.model.vo.Review;
 import com.kh.finalGudok.item.model.vo.ReviewImage;
 import com.kh.finalGudok.item.model.vo.ReviewView;
 import com.kh.finalGudok.item.model.vo.SearchItem;
-import com.kh.finalGudok.member.model.vo.Member;
+import com.kh.finalGudok.member.model.vo.Subscribe;
 
 public interface ItemService {
 
@@ -253,7 +251,15 @@ public interface ItemService {
 
 	int insertInquiry();
 	
+	ArrayList<ItemListView> selectPN(Integer memberNo);
 
+	int selectCart(Cart c);
+
+	int selectDelChk(Subscribe scb);
+
+	int selectReviewChk(Subscribe scb);
+
+	int selectDelStatus(Subscribe scb);
 	
 	
 

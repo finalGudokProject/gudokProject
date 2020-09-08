@@ -143,7 +143,9 @@
     <div class="content">
       <div class="container box">
 
-            <form action="insertFAQ.do" method="post" enctype="multipart/form-data">
+            <form action="insertFAQ.do" method="post" enctype="multipart/form-data" onsubmit="return validate();">
+            <input type="hidden" name="bMember_id" value=${loginUser.memberId }>
+          	<input type="hidden" name="bEmail" value=${loginUser.email }>
                 <div style="font-size: 30px;">FAQ</div><br>
                 <hr style="border-color:rgb(0, 125, 255);">
                 <table style="text-align: center; margin-top:15px">
@@ -151,12 +153,12 @@
                         <tr>
                             <th style="padding:20px;" >제목</th>
                             <td>
-                                <textarea class="form-control" rows="1" style="resize: none;width:907px;" name="bTitle"></textarea>
+                                <textarea class="form-control" rows="1" style="resize: none;width:907px;" name="bTitle" id="bTitle"></textarea>
                             </td>
                         </tr>
                         <tr>
                             <th style="padding:20px;">내용</th>
-                            <td><textarea class="form-control" rows="22" style="resize: none; width:907px" name="bContent"></textarea></td>
+                            <td><textarea class="form-control" rows="22" style="resize: none; width:907px" name="bContent" id="bContent"></textarea></td>
                         </tr>
                     </tbody>
                   </table>
@@ -169,6 +171,27 @@
     </div><!--하얀박스 있는부분 끝-->
   </div><!--회색바탕 div-->
  
+ 
+ 	<script>
+ 	
+ 	function validate(){
+    	  
+  	   if($("#bTitle").val().trim().length == 0){
+             alert("제목을 입력하세요");
+             $("#bTitle").focus();
+             return false;
+  	   }
+  	   else if($("#bContent").val().trim().length == 0){
+  		   alert("내용을 입력하세요");
+             $("#bContent").focus();
+             return false;
+  	   }
+  	   else{
+          	alert("FAQ가 등록되었습니다!");           
+          }
+       }
+ 	
+ 	</script>
    
 
 

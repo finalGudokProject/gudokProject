@@ -138,7 +138,7 @@
       </div>
       <div class="col-9">
         
-          <form action="proposalUpdate.do" method="post" enctype="multipart/form-data">
+          <form action="proposalUpdate.do" method="post" enctype="multipart/form-data" onsubmit="return validate();">
           	<input type="hidden" name="page" value="${currentPage }">
 			<input type="hidden" name="bBoard_no" value="${board.bBoard_no }">
 			<input type="hidden" name="renameFileName" value="${board.renameFileName }">
@@ -150,12 +150,12 @@
                     <tr>
                         <th style="width:10%; padding:20px;">제목</th>
                         <td style="width: 39%;" colspan="3">
-                            <textarea class="form-control" rows="1" style="resize: none;  margin-left:10%;width:550px;" name="bTitle">${board.bTitle }</textarea>
+                            <textarea class="form-control" rows="1" style="resize: none;  margin-left:10%;width:550px;" name="bTitle" id="bTitle">${board.bTitle }</textarea>
                         </td>
                     </tr>
                     <tr>
                         <th style="padding:20px;">내용</th>
-                        <td colspan="3"><textarea class="form-control" rows="20" style="resize: none;" name="bContent">${board.bContent }</textarea>
+                        <td colspan="3"><textarea class="form-control" rows="20" style="resize: none;" name="bContent" id="bContent">${board.bContent }</textarea>
                     	<br><br>
 	                        <c:if test="${!empty board.originalFileName }">
 		                        <center>
@@ -189,7 +189,31 @@
             <footer class="page-footer font-small indigo">
 				<jsp:include page="../common/footer.jsp" />
 			</footer>
+			
             <script>
+            
+            function validate(){
+            	  
+          	   if($("#bTitle").val().trim().length == 0){
+                     alert("제목을 입력하세요");
+                     $("#bTitle").focus();
+                     return false;
+          	   }
+          	   else if($("#bContent").val().trim().length == 0){
+          		   alert("내용을 입력하세요");
+                     $("#bContent").focus();
+                     return false;
+          	   }
+          	   else{
+                  	alert("상품제안이 수정되었습니다!");           
+                  }
+               }
+            
+            
+            
+            
+            
+            
         $(document).ready(function(){
         var fileTarget = $('.filebox .upload-hidden');
 

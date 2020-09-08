@@ -94,11 +94,11 @@
           <table style="text-align: center; margin-top:15px">
         <thead>
           <tr>
-            <th><input type="checkbox" id="checkAll">
-            </th><th style="width:10%">번호</th>
-            <th style="width:55%">제목</th>
-            <th style="width:15%">조회수</th>
-            <th style="width:15%">게시여부</th>
+            <th onclick='event.cancelBubble=true'><input type="checkbox" id="checkAll"></th>
+            <th onclick='event.cancelBubble=true' style="width:10%">번호</th>
+            <th onclick='event.cancelBubble=true' style="width:55%">제목</th>
+            <th onclick='event.cancelBubble=true' style="width:15%">조회수</th>
+            <th onclick='event.cancelBubble=true' style="width:15%">게시여부</th>
           </tr>
         </thead>
         <tbody >
@@ -106,7 +106,7 @@
 		      			<c:when test="${fn:length(list1)>0 }">
 					        <c:forEach var="b" items="${list1 }" varStatus="cnt">
 					          <tr>
-					          		<td><input type="checkbox" class="common" id="eventNo${cnt.index}" name="eventNo" value="${b.bBoard_no }"></td>
+					          		<td onclick='event.cancelBubble=true'><input type="checkbox" class="common" id="eventNo${cnt.index}" name="eventNo" value="${b.bBoard_no }"></td>
 					          		<td align="center">${b.rownum }</td>
 									<td align="center">
 										<c:url var="adminEventDetail" value="adminEventDetail.do">
@@ -136,12 +136,14 @@
         </tbody>
       </table>
             <br><br>
+            <c:if test="${loginUser.memberId eq 'admin' }">
             &nbsp;&nbsp;<a href="adminEventInsert.do" type="button" class="btn btn-primary" style="float:right;">글쓰기</a> 
             <div style="float:right; margin-right: 10px;">
             <input type="button" value="게시" class="btn btn-primary" onclick="eStatusY()">
             <input type="button" value="중지" class="btn btn-primary" onclick="eStatusN()">
             <input type="button" value="삭제" class="btn btn-primary" onclick="eDelete()">
     		</div>
+            </c:if>
 
             <br><br><br>
                   
@@ -150,6 +152,8 @@
                   
       			<!------페이징 처리----->
                 <div class="page-center">
+                <c:choose>
+		      			<c:when test="${!empty list1 }">
                     <ul class="pagination-t">
                        <!-- 이전 -->
                         <c:if test="${pi.currentPage eq 1 }">
@@ -203,6 +207,11 @@
 							</svg></a></li>
                   		</c:if>
                     </ul>
+                    </c:when>
+                	<c:otherwise>
+                	
+                	</c:otherwise>    
+                </c:choose>
                 </div>
 		
     </div><!--하얀박스 있는부분 끝-->

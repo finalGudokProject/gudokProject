@@ -138,7 +138,7 @@
       <div class="container box">
 
        
-            <form action="eventUpdate.do" method="post" enctype="Multipart/form-data">
+            <form action="eventUpdate.do" method="post" enctype="Multipart/form-data" onsubmit="return validate();">
             	<input type="hidden" name="page" value="${currentPage }">
 				<input type="hidden" name="bBoard_no" value="${board.bBoard_no }">
 				<input type="hidden" name="renameFileName" value="${board.renameFileName }">
@@ -150,12 +150,12 @@
                         <tr>
                             <th style="width:10%; padding:20px;">제목</th>
                             <td style="width: 40%;" colspan="3">
-                                <textarea class="form-control" rows="1" name="bTitle" style="resize: none;width:907px;">${board.bTitle }</textarea>
+                                <textarea class="form-control" rows="1" id="bTitle" name="bTitle" style="resize: none;width:907px;">${board.bTitle }</textarea>
                             </td>
                         </tr>
                         <tr>
                             <th style="padding:20px;">내용</th>
-                            <td colspan="3"><textarea class="form-control" rows="15" name="bContent" style="resize: none;">${board.bContent }</textarea>
+                            <td colspan="3"><textarea class="form-control" rows="15" id="bContent" name="bContent" style="resize: none;">${board.bContent }</textarea>
                         	<br><br>
 	                        <c:if test="${!empty board.originalFileName }">
 		                        <center>
@@ -197,6 +197,28 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
   
     <script>
+    
+    function validate(){
+    	  
+	  	   if($("#bTitle").val().trim().length == 0){
+	             alert("제목을 입력하세요");
+	             $("#bTitle").focus();
+	             return false;
+	  	   }
+	  	   else if($("#bContent").val().trim().length == 0){
+	  		   alert("내용을 입력하세요");
+	             $("#bContent").focus();
+	             return false;
+	  	   }
+	  	   else{
+	          	alert("이벤트 내용이 수정되었습니다!");           
+	          }
+	       }
+    
+    
+    
+    
+    
         $(document).ready(function(){
         var fileTarget = $('.filebox .upload-hidden');
     

@@ -15,8 +15,8 @@
 	<!-- sweetalert끝 -->
 <style>
 	.basketImg{
-		width:30%;
-		height:30%;
+		width:20rem;
+		height:20rem;
 	}
 	.listChk{
 		width:5%;
@@ -93,38 +93,58 @@
 	<div class="container">
 		<div class="row" style="text-align:center;">
 			<c:if test="${!empty list }">
-			<table style="border:1px solid black; text-align:center; padding:10%;" align="center">
+			<table style="border:1px solid black; text-align:center; padding:10%; width:100%;" align="center">
 				<thead>
 				<tr style="border-bottom:1px solid lightgray; vertical-align:middle;">
 					<th class="listChk"  style="width:3%;"><input type="checkbox" id="allChk"></th>
-					<th style="width:7%;"><label for="chk" style="display:block;margin:0px;text-align:center;">전체선택(<span id="frontCount">0</span>/<span id="afterCount">${list.size() }</span>)</label></th>
-					<th colspan="2">상품정보</th>
-					<th style="width:15%;">수량</th>
-					<th style="width:10%;">구독주기</th>
-					<th style="width:10%;">상품가격</th>
+					<th style="width:7%;"><label for="chk" style="display:block;margin:0px;text-align:left;">전체선택(<span id="frontCount">0</span>/<span id="afterCount">${list.size() }</span>)</label></th>
+					<th colspan="2" style="width:35%;text-align:left;">상품정보</th>
+					<th style="width:18%;">수량</th>
+					<th style="width:8%;">구독주기</th>
+					<th style="width:19%;">상품가격</th>
 				</tr>
 				
 				</thead>
 				<tbody id="tbody">
 				
 				<c:forEach var="c" items="${list }" varStatus="vs">
+				<fmt:formatNumber var="discountPrice" value="${(c.itemPrice - c.itemPrice*(c.itemDiscount/100)) * c.cartCount}" type="number"/>
 				<fmt:formatNumber var="itemPrice" value="${c.itemPrice * c.cartCount }" type="number"/>
 				<tr style="border-bottom:1px solid lightgray;vertical-align:middle;">
-					<td class="listChk"><input type="checkbox" class="chk" value="${c.itemPrice * c.cartCount}" data-cartNo="${c.cartNo }"></td>
-					<td colspan="2" style="width:30%;"><img src="${contextPath }/resources/images/breadLogo.jpg" class="basketImg"></td>
-					<td><input type="hidden" id="totalPriceInput">${c.itemName }</td>
-					<td class="countTd">
-					<c:if test="${c.cartCount == 1 }">
-					<img src="${contextPath }/resources/images/XSIGN.png" class="signImgM" id="signM">
+					<td class="listChk">
+					<c:if test="${c.itemDiscount == 0 }">
+					<input type="checkbox" class="chk" value="${c.itemPrice * c.cartCount}" data-cartNo="${c.cartNo }">
 					</c:if>
-					<c:if test="${c.cartCount != 1 }">
-					<img src="${contextPath }/resources/images/minus.png" class="signImgM" id="signM">
+					<c:if test="${c.itemDiscount != 0 }">
+					<input type="checkbox" class="chk" value="${(c.itemPrice - c.itemPrice*(c.itemDiscount/100)) * c.cartCount}" data-cartNo="${c.cartNo }">
+					<input type="hidden" class="chk" value="${c.itemPrice * c.cartCount}" data-cartNo="${c.cartNo }">
 					</c:if>
-					<input type="hidden">
-					<input type="hidden" value="${c.itemPrice }">
-					<input type="text" readonly class="amountT" value="${c.cartCount }" style="width:50px;text-align:center;">
-					<img src="${contextPath }/resources/images/plus.png" class="signImgP" id="signP"></td>
-					<td>
+					</td>
+					<td colspan="2" style="width:25rem;text-align:center;">
+						<img src="${contextPath }/resources/uploadFiles/${c.itemRename}" class="basketImg">
+					</td>
+					<td><input type="hidden" id="totalPriceInput" class="totalPriceInput" style="width:10rem;">${c.itemName }</td>
+					<td class="countTd" style="width:20rem;">
+						<c:if test="${c.cartCount == 1 }">
+						<img src="${contextPath }/resources/images/XSIGN.png" class="signImgM" id="signM">
+						</c:if>
+						<c:if test="${c.cartCount != 1 }">
+						<img src="${contextPath }/resources/images/minus.png" class="signImgM" id="signM">
+						</c:if>
+						
+						<input type="hidden">
+						
+						<c:if test="${c.itemDiscount != 0}">
+		                	<input type="hidden" value="${c.itemPrice - c.itemPrice*(c.itemDiscount/100)}">
+						</c:if>
+						<c:if test="${c.itemDiscount == 0}">
+							<input type="hidden" value="${c.itemPrice }">
+						</c:if>
+						<input type="text" readonly class="amountT" value="${c.cartCount }" style="width:50px;text-align:center;">
+						<img src="${contextPath }/resources/images/plus.png" class="signImgP" id="signP">
+						<input type="hidden" value="${c.itemDiscount }">
+					</td>
+					<td style="width:10rem;">
 					<c:choose>
 						<c:when test="${c.cartSubs == 1 }">
 							<select style="width:80px;height:30px;" name="cartSubs">
@@ -152,7 +172,7 @@
 						</c:when>
 						<c:otherwise>
 							<select style="width:80px;height:30px;" name="cartSubs">
-								<option value="1" selected>1주일</option>
+								<option value="1">1주일</option>
 								<option value="2">2주일</option>
 								<option value="3">3주일</option>
 								<option value="4" selected>4주일</option>
@@ -160,7 +180,14 @@
 						</c:otherwise>
 					</c:choose>
 					</td>
-					<td>${itemPrice}원</td>
+					<td style="width:50px;">
+						<c:if test="${c.itemDiscount != 0}">
+		                	<s style="color:red;">${itemPrice }원</s><br>↓<br>${discountPrice }원
+						</c:if>
+						<c:if test="${c.itemDiscount == 0}">
+							${itemPrice }원
+						</c:if>
+					</td>
 				</tr>
 				</c:forEach>
 				</tbody>
@@ -276,10 +303,8 @@
 						var varPrice = $(this).prev().prev().prev().val();
 	
 						$(this).parent().next("td").next("td").text("");
-						$(this).parent().prev("td").find("input").val(varPrice);
+						$(this).parent().prev("td").find(".totalPriceInput").val(varPrice);
 						$(this).parent().prev().prev().prev("td").find("input").val(varPrice);
-						
-						
 						$(this).parent().next("td").next("td").text(addComma(varPrice)+"원");
 						
 						if(amount > 1){
@@ -307,8 +332,7 @@
 							$(this).parent().prev().prev().prev("td").find("input").val(varPrice);
 							$(this).parent().next("td").next("td").text(addComma(varPrice)+"원");
 							/* $("#totalPriceTd").text("총 주문 금액 : " + addComma(varPrice) + "원"); */
-							console.log(valChk);
-							if(amount < 2){
+							if(amount == 1){
 								$(this).attr("src","${contextPath }/resources/images/XSIGN.png");
 							}
 							

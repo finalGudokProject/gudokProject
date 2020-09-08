@@ -1,124 +1,133 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+	integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+	crossorigin="anonymous">
 <title></title>
 <style>
-    .list{
-        margin:20px;
-        list-style-type: none;
-    }
-    
-  
-  #list a{
-    color:black;
-    text-decoration: none;
-  }
-  button{
-      background-color: rgb(0, 125, 255);
-  }
-  table {
-    width: 100%;
-    border: 1px solid #CCCCCC !important;
-    border-collapse: collapse;
-  }
-  th, td {
-    border: 1px solid #CCCCCC !important;
-  }
-        body {margin: 10px;}
-.where {
-  display: block;
-  margin: 25px 15px;
-  font-size: 11px;
-  color: #000;
-  text-decoration: none;
-  font-family: verdana;
-  font-style: italic;
-} 
-
-.filebox input[type="file"] {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip:rect(0,0,0,0);
-    border: 0;
-}
-
-.filebox label {
-    display: inline-block;
-    padding: .5em .75em;
-    color: #999;
-    font-size: inherit;
-    line-height: normal;
-    vertical-align: middle;
-    background-color: #fdfdfd;
-    cursor: pointer;
-    border: 1px solid #ebebeb;
-    border-bottom-color: #e2e2e2;
-    border-radius: .25em;
-}
-
-/* named upload */
-.filebox .upload-name {
-    display: inline-block;
-    padding: .5em .75em;
-    font-size: inherit;
-    font-family: inherit;
-    line-height: normal;
-    vertical-align: middle;
-    background-color: #f5f5f5;
-  border: 1px solid #ebebeb;
-  border-bottom-color: #e2e2e2;
-  border-radius: .25em;
-  -webkit-appearance: none; /* 네이티브 외형 감추기 */
-  -moz-appearance: none;
-  appearance: none;
-}
-
-/* imaged preview */
-.filebox .upload-display {
-    margin-bottom: 5px;
-}
-
-@media(min-width: 768px) {
-    .filebox .upload-display {
-        display: inline-block;
-        margin-right: 5px;
-        margin-bottom: 0;
-    }
-}
-
-.filebox .upload-thumb-wrap {
-    display: inline-block;
-    width: 54px;
-    padding: 2px;
-    vertical-align: middle;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    background-color: #fff;
-}
-
-.filebox .upload-display img {
-    display: block;
-    max-width: 100%;
-    width: 100% \9;
-    height: auto;
-}
-
-.filebox.bs3-primary label {
-  color: #fff;
-  background-color: rgb(0, 125, 255);
-    border-color:  rgb(0, 125, 255);
-    margin-bottom:0px;
-}
+	.list {
+		margin: 20px;
+		list-style-type: none;
+	}
+	
+	#list a {
+		color: black;
+		text-decoration: none;
+	}
+	
+	button {
+		background-color: rgb(0, 125, 255);
+	}
+	
+	table {
+		width: 100%;
+		border: 1px solid #CCCCCC !important;
+		border-collapse: collapse;
+	}
+	
+	th, td {
+		border: 1px solid #CCCCCC !important;
+	}
+	
+	body {
+		margin: 10px;
+	}
+	
+	.where {
+		display: block;
+		margin: 25px 15px;
+		font-size: 11px;
+		color: #000;
+		text-decoration: none;
+		font-family: verdana;
+		font-style: italic;
+	}
+	
+	.filebox input[type="file"] {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		padding: 0;
+		margin: -1px;
+		overflow: hidden;
+		clip: rect(0, 0, 0, 0);
+		border: 0;
+	}
+	
+	.filebox label {
+		display: inline-block;
+		padding: .5em .75em;
+		color: #999;
+		font-size: inherit;
+		line-height: normal;
+		vertical-align: middle;
+		background-color: #fdfdfd;
+		cursor: pointer;
+		border: 1px solid #ebebeb;
+		border-bottom-color: #e2e2e2;
+		border-radius: .25em;
+	}
+	
+	/* named upload */
+	.filebox .upload-name {
+		display: inline-block;
+		padding: .5em .75em;
+		font-size: inherit;
+		font-family: inherit;
+		line-height: normal;
+		vertical-align: middle;
+		background-color: #f5f5f5;
+		border: 1px solid #ebebeb;
+		border-bottom-color: #e2e2e2;
+		border-radius: .25em;
+		-webkit-appearance: none; /* 네이티브 외형 감추기 */
+		-moz-appearance: none;
+		appearance: none;
+	}
+	
+	/* imaged preview */
+	.filebox .upload-display {
+		margin-bottom: 5px;
+	}
+	
+	@media ( min-width : 768px) {
+		.filebox .upload-display {
+			display: inline-block;
+			margin-right: 5px;
+			margin-bottom: 0;
+		}
+	}
+	
+	.filebox .upload-thumb-wrap {
+		display: inline-block;
+		width: 54px;
+		padding: 2px;
+		vertical-align: middle;
+		border: 1px solid #ddd;
+		border-radius: 5px;
+		background-color: #fff;
+	}
+	
+	.filebox .upload-display img {
+		display: block;
+		max-width: 100%;
+		width: 100% \9;
+		height: auto;
+	}
+	
+	.filebox.bs3-primary label {
+		color: #fff;
+		background-color: rgb(0, 125, 255);
+		border-color: rgb(0, 125, 255);
+		margin-bottom: 0px;
+	}
 </style>
 </head>
 <body>
@@ -139,6 +148,8 @@
       <div class="col-9">
         
           <form action="oInquiryInsert.do" method="post" enctype="multipart/form-data" onsubmit="return validate();">
+          <input type="hidden" name="bMember_id" value=${loginUser.memberId }>
+          <input type="hidden" name="bEmail" value=${loginUser.email }>
             <div style="font-size: 30px;">1:1 문의</div>
             <hr style="border-color:rgb(0, 125, 255);">
             <table style="text-align: center; margin-top:15px">
@@ -163,7 +174,7 @@
                     </tr>
                     <tr>
                         <th style="width:15%; padding:20px;">비밀글 설정</th>
-                        <td style="width: 39%;" >
+                        <td style="width: 39%;">
                             <input type="radio" name="oSecret" id="open" value="Y" checked="checked">공개글
                             &nbsp;
                             <input type="radio" name="oSecret" id="close" value="N">비밀글
@@ -172,7 +183,7 @@
                         <td style="width: 39%;"><input type="password" id="oSecret_pwd" name="oSecret_pwd" disabled></td>
                     </tr>
                     <tr>
-                        <th style="padding:20px;">내용</th><td colspan="3"><textarea class="form-control" rows="20" style="resize: none;" name="bContent" id=""></textarea></td>
+                        <th style="padding:20px;">내용</th><td colspan="3"><textarea class="form-control" rows="20" style="resize: none;" name="bContent" id="bContent"></textarea></td>
                     </tr>
                     <tr>
                         <th style="padding:20px;">이미지</th><td colspan="3"><div class="filebox bs3-primary preview-image">
@@ -183,35 +194,95 @@
                     </tr>
                 </tbody>
               </table>
-      
 
-           
-            <br><br><br>
-            &nbsp;&nbsp;<a href="javascript:history.go(-1)" type="button" class="btn btn-primary" style="float:right;">이전으로</a>
-            <input type="submit" value="작성하기" class="btn btn-primary" style="float:right; margin-right: 10px;">
-            </form>
-            </div>
-            </div>
-            </div>
-        
-            <br><br><br>
-            <footer class="page-footer font-small indigo">
-				<jsp:include page="../common/footer.jsp" />
-			</footer>
-            
-        <script>
+				<form action="oInquiryInsert.do" method="post"
+					enctype="multipart/form-data" onsubmit="return validate();">
+					<input type="hidden" name="bMember_id" value=${loginUser.memberId }>
+					<input type="hidden" name="bEmail" value=${loginUser.email }>
+					<div style="font-size: 30px;">1:1 문의</div>
+					<hr style="border-color: rgb(0, 125, 255);">
+					<table style="text-align: center; margin-top: 15px">
+						<tbody>
+							<tr>
+								<th style="width: 10%; padding: 20px;">문의유형</th>
+								<td style="width: 39%;" colspan="3"><select
+									name="iBoard_type"
+									style="float: left; margin-left: 35%; height: 30px; width: 200px;"
+									id="iBoard_type" name="iBoard_type">
+										<option value="OPI">상품정보문의</option>
+										<option value="OEC">교환문의</option>
+										<option value="OAL">제휴</option>
+										<option value="ODL">배송문의</option>
+										<option value="OETC">기타문의</option>
+								</select></td>
+							</tr>
+							<tr>
+								<th style="width: 10%; padding: 20px;">제목</th>
+								<td style="width: 39%;" colspan="3"><textarea
+										class="form-control" rows="1"
+										style="resize: none; margin-left: 10%; width: 550px;"
+										name="bTitle" id="bTitle"></textarea></td>
+							</tr>
+							<tr>
+								<th style="width: 15%; padding: 20px;">비밀글 설정</th>
+								<td style="width: 39%;"><input type="radio" name="oSecret"
+									id="open" value="Y" checked="checked">공개글 &nbsp; <input
+									type="radio" name="oSecret" id="close" value="N">비밀글</td>
+								<th style="width: 15%; padding: 20px;">비밀번호</th>
+								<td style="width: 39%;"><input type="password"
+									id="oSecret_pwd" name="oSecret_pwd" disabled></td>
+							</tr>
+							<tr>
+								<th style="padding: 20px;">내용</th>
+								<td colspan="3"><textarea class="form-control" rows="20"
+										style="resize: none;" name="bContent" id=""></textarea></td>
+							</tr>
+							<tr>
+								<th style="padding: 20px;">이미지</th>
+								<td colspan="3"><div
+										class="filebox bs3-primary preview-image">
+										<input class="upload-name" value="파일선택" disabled="disabled"
+											style="width: 200px;"> <label for="input_file">업로드</label>
+										<input type="file" id="input_file" name="uploadInquiry"
+											class="upload-hidden">
+									</div>
+							</tr>
+						</tbody>
+					</table>
+
+
+
+					<br>
+					<br>
+					<br> &nbsp;&nbsp;<a href="javascript:history.go(-1)"
+						type="button" class="btn btn-primary" style="float: right;">이전으로</a>
+					<input type="submit" value="작성하기" class="btn btn-primary"
+						style="float: right; margin-right: 10px;">
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<br>
+	<br>
+	<br>
+	<footer class="page-footer font-small indigo">
+		<jsp:include page="../common/footer.jsp" />
+	</footer>
+
+	<script>
        
+        
+        
                $("input[name='oSecret']").change(function(){
       	   
             	   if($("input[name='oSecret']:checked").val()=='Y'){
             		   $("#oSecret_pwd").prop( "disabled", true );
             		   $("#oSecret_pwd").val("");
-
-            	   }else{
+					
+            	   }else if($("input[name='oSecret']:checked").val()=='N'){
             		   $("#oSecret_pwd").prop( "disabled", false );
-
             	   }
-            	   
                })
                
                
@@ -223,6 +294,12 @@
                        $("#bTitle").focus();
                        return false;
             	   }
+            	   else if($("input[name='oSecret']:checked").val()=='N' && $("#oSecret_pwd").val().trim().length == 0){
+            		   console.log("d");
+            		   alert("비밀번호를 입력하세요");
+                       $("#oSecret_pwd").focus();
+                       return false;
+            	   }
             	   else if($("#bContent").val().trim().length == 0){
             		   alert("내용을 입력하세요");
                        $("#bContent").focus();
@@ -232,17 +309,8 @@
                     	alert("1:1문의가 등록되었습니다!");           
                     }
                  }
-            	   
-               
-
-             
-        
-        
         
         $(document).ready(function(){
-        	
-        	
-        	
         	
         var fileTarget = $('.filebox .upload-hidden');
 

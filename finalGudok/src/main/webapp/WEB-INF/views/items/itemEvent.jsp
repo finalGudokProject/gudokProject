@@ -243,8 +243,8 @@
 	<div class="row">
 	<div class="col-md-12">
 		<div id="cateName" style="text-align:center;font-size:50px;">
-		<img src="${contextPath }/resources/images/event.png" style="width:70px;height:70px;">
-		<span>이벤트</span>
+		<img src="${contextPath }/resources/images/cateSale.png" style="width:70px;height:70px;">
+		<span>할인상품</span>
 		</div>
 			<div style="border-top:1px solid lightgray;border-bottom:1px solid lightgray;">
 			<table align="center" style="margin-bottom:1%;" class="sortTable">
@@ -351,12 +351,6 @@
 							<img src="resources/images/sale.png" class="saleImg">
 						</div>
 						<img src="${contextPath}/resources/uploadFiles/${i.itemRename}" class="card-img-top mainImg" alt="..." style="position:relative;">
-					</div>
-					</c:if>
-					
-					<c:if test="${i.itemDiscount == 0}">
-					<div class="cardHeader">
-					<img src="${contextPath}/resources/uploadFiles/${i.itemRename}" class="card-img-top mainImg" alt="...">
 					</div>
 					</c:if>
 					<div class="cardBody">

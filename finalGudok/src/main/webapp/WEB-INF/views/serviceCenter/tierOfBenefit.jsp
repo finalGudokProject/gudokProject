@@ -81,6 +81,10 @@
       </div>
     </div>
     </div>
-    <br><br><br><br><br><br><br>
+    <br><br><br><br>
+    <footer class="page-footer font-small indigo">
+		<jsp:include page="../common/footer.jsp" />
+	</footer>
+	<br><br><br><br><br>
 </body>
 </html>

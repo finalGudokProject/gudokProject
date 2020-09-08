@@ -412,16 +412,13 @@
 	          </div>
 	          <div class="subscribe">
 	            <div class="sub">
-	              <span class="title"><a href="#" style="color: black;">구독</a></span>
+	              <span class="title"><a href="${slist}" style="color: black;">구독</a></span>
 	              <br><br>
-	              <span class="count"><a href="#" style="color :#115D8C;">${subscribeCount}<span class="etc">&nbsp;건</span></a></span>
+	              <span class="count"><a href="${slist}" style="color :#115D8C;">${subscribeCount}<span class="etc">&nbsp;건</span></a></span>
 	            </div>
 	          </div>
 	          <div class="cart">
 	            <div class="sub">
-		            <c:url var="clist" value="cartList.do">
-						<c:param name="memberNo" value="${loginUser.memberNo}"/>
-					</c:url> 
 	              <span class="title"><a href="${clist}" style="color: black;">장바구니</a></span>
 	              <br><br>
 	              <span class="count"><a href="${clist}" style="color :#115D8C;">${cartCount}<span class="etc">&nbsp;건</span></a></span>
@@ -429,9 +426,6 @@
 	          </div>
 	          <div class="point">
 	            <div class="sub">
-	            	<c:url var="plist" value="pointList.do">
-						<c:param name="memberNo" value="${loginUser.memberNo}"/>
-					</c:url>
 	              <span class="title"><a href="${plist}" style="color: black;">적립금</a></span>
 	              <br><br>
 	              <span class="count"><a href="${plist}" style="color :#115D8C;">${pointCount}<span class="etc">&nbsp;건</span></a></span>
