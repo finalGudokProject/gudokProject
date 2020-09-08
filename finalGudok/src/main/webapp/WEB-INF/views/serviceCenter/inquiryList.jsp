@@ -157,7 +157,7 @@
       </thead>
 	      <tbody>
 	      		<c:choose>
-	      			<c:when test="${fn:length(list1)>0}">
+	      			<c:when test="${fn:length(list1)>0 }">
 			        	<c:forEach var="b" items="${list1 }" varStatus="cnt">
 							<tr>
 								<td align="center">${b.rownum }</td>
@@ -211,7 +211,7 @@
     <!------페이징 처리----->
    <div class="page-center">
    					<c:choose>
-		      		<c:when test="${fn:length(list1)>0 }">
+		      		<c:when test="${!empty list1 }">
                     <ul class="pagination-t">
                     
                        <!-- 이전 -->

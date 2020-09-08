@@ -854,14 +854,16 @@ public class BoardController {
 		}
 
 		if (result1 > 0 && result2 > 0 && result3 > 0) {
-
 			return "redirect:adminProductProposalList.do";
-
-		} else {
-			throw new BoardException("Proposal글 삭제 실패!");
+		
+		}else{
+				throw new BoardException("Proposal글 삭제 실패!");
 		}
-
-	}
+			
+		}
+		
+	
+		
 
 	// 삭제 후 바뀐 게시판 보기
 	@RequestMapping("proposalListChange.do")
@@ -2313,14 +2315,7 @@ public class BoardController {
 
 	// Inquiry List
 	@RequestMapping("sinquiryList")
-	public ModelAndView inquirylList(ModelAndView mv, @RequestParam(value = "page", required = false) Integer page) { // 기본
-																														// 자료형으로
-																														// 받을
-																														// 수
-																														// 없기
-																														// 때문에
-																														// Integer를
-																														// 쓴다
+	public ModelAndView inquirylList(ModelAndView mv, @RequestParam(value = "page", required = false) Integer page) { 
 		// 페이징 관련 처리부터 하자
 		int currentPage = 1;
 		if (page != null) {
@@ -2601,6 +2596,8 @@ public class BoardController {
 		}
 	}
 
+	
+	
 	@RequestMapping("inquiryDelete.do")
 	public String inquiryDelete(Integer bBoard_no, HttpServletRequest request) {
 		System.out.println(bBoard_no);
@@ -2613,17 +2610,19 @@ public class BoardController {
 		// 게시글 삭제하기
 		int result1 = bService.deleteImage(bBoard_no);
 		int result2 = bService.deleteBoardImage(bBoard_no);
-		int result3 = bService.deleteBoard(bBoard_no);
-		int result4 = bService.deleteOneInquiryBoard(bBoard_no);
-		int result5 = bService.deleteInquiryBoard(bBoard_no);
+		int result3 = bService.deleteOneInquiryBoard(bBoard_no);
+		int result4 = bService.deleteInquiryBoard(bBoard_no);
+		int result5 = bService.deleteBoard(bBoard_no);
 
-		if (result1 > 0 && result2 > 0 && result3 > 0 && result4 > 0 && result5 > 0) {
+		if (result1 > 0 || result2 > 0 || result3 > 0 && result4 > 0 && result5 > 0) {
 			return "redirect:sinquiryList.do";
 		} else {
 			throw new BoardException("게시물 삭제 실패!");
 		}
 	}
 
+	
+	// inquiry 검색
 	@RequestMapping("searchsInquiryList.do")
 	public ModelAndView searchsInquiryList(ModelAndView mv,
 			@RequestParam(value = "page", required = false) Integer page, @RequestParam("searchType") String searchType,
@@ -2673,14 +2672,7 @@ public class BoardController {
 	// event
 	// List
 	@RequestMapping("eventList.do")
-	public ModelAndView eventList(ModelAndView mv, @RequestParam(value = "page", required = false) Integer page) { // 기본
-																													// 자료형으로
-																													// 받을
-																													// 수
-																													// 없기
-																													// 때문에
-																													// Integer를
-																													// 쓴다
+	public ModelAndView eventList(ModelAndView mv, @RequestParam(value = "page", required = false) Integer page) { 
 		// 페이징 관련 처리부터 하자
 		int currentPage = 1;
 		if (page != null) {

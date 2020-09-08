@@ -143,7 +143,7 @@
     <div class="content">
       <div class="container box">
 
-            <form action="noticeInsert.do" method="post" enctype="multipart/form-data">
+            <form action="noticeInsert.do" method="post" enctype="multipart/form-data" onsubmit="return validate();">
             <input type="hidden" name="bMember_id" value=${loginUser.memberId }>
           	<input type="hidden" name="bEmail" value=${loginUser.email }>
                 <div style="font-size: 30px;">공지사항</div><br>
@@ -153,12 +153,12 @@
                         <tr>
                             <th style="padding:20px;" >제목</th>
                             <td>
-                                <textarea class="form-control" rows="1" style="resize: none;width:907px;" name="bTitle"></textarea>
+                                <textarea class="form-control" rows="1" style="resize: none;width:907px;" name="bTitle" id="bTitle"></textarea>
                             </td>
                         </tr>
                         <tr>
                             <th style="padding:20px;">내용</th>
-                            <td><textarea class="form-control" rows="22" style="resize: none; width:907px" name="bContent"></textarea></td>
+                            <td><textarea class="form-control" rows="22" style="resize: none; width:907px" name="bContent" id="bContent"></textarea></td>
                         </tr>
                         <tr>
                             <th style="padding:20px;">이미지</th><td><div class="filebox bs3-primary preview-image">
@@ -190,6 +190,26 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
   
     <script>
+    
+	    function validate(){
+	    	  
+	  	   if($("#bTitle").val().trim().length == 0){
+	             alert("제목을 입력하세요");
+	             $("#bTitle").focus();
+	             return false;
+	  	   }
+	  	   else if($("#bContent").val().trim().length == 0){
+	  		   alert("내용을 입력하세요");
+	             $("#bContent").focus();
+	             return false;
+	  	   }
+	  	   else{
+	          	alert("공지가 등록되었습니다!");           
+	          }
+	       }
+    
+    
+    
         $(document).ready(function(){
         var fileTarget = $('.filebox .upload-hidden');
     

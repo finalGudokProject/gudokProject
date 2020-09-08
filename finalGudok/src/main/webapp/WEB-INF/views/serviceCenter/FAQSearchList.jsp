@@ -182,7 +182,7 @@
     <!------페이징 처리----->
                 <div class="page-center">
                		<c:choose>
-		      		<c:when test="${fn:length(list1)>0 }">
+		      		<c:when test="${!empty list }">
                     <ul class="pagination-t">
                        <!-- 이전 -->
                         <c:if test="${pi.currentPage eq 1 }">

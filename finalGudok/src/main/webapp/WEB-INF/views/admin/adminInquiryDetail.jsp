@@ -117,10 +117,13 @@
             <a href="adminInquiryList.do" type="button" class="btn btn-primary" style="float:right;">목록으로</a>
             <c:if test="${loginUser.memberId eq 'admin' }">
             <c:if test="${inquiry.iInquiry_content eq null}">
-            <a href="${adminInquiryUpdateView }" type="button" class="btn btn-primary" style="float:right;margin-right:10px">답변</a>
             <a href="${adminIquiryDelete }" type="button" class="btn btn-primary" style="float:right;margin-right:10px">삭제</a>
+            <a href="${adminInquiryUpdateView }" type="button" class="btn btn-primary" style="float:right;margin-right:10px">답변</a>
             </c:if>
+            <c:if test="${inquiry.iInquiry_content != null}">
+            <a href="${adminIquiryDelete }" type="button" class="btn btn-primary" style="float:right;margin-right:10px">삭제</a>
             <a href="${adminInquiryUpdateView }" type="button" class="btn btn-primary" style="float:right;margin-right:10px">수정</a>
+            </c:if>
 			</c:if>
             <br><br><br>
 
