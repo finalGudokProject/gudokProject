@@ -79,8 +79,8 @@
     
     td{
       text-overflow: ellipsis;
-        overflow:hidden;
-		white-space:nowrap;
+      overflow:hidden;
+	  white-space:nowrap;
     }
    
    
@@ -102,10 +102,10 @@
     
     float:left;
     background-color: #E1F5FE;
-     font:12px;
+    font:12px;
     font-weight: 550;
-     margin-right:15px;
-      padding-left:5px;
+    margin-right:15px;
+    padding-left:5px;
     padding-right:5px;
 
     
@@ -207,7 +207,7 @@
                           <br>
                         
                     
-                        <div id="visitor_chart" style="width:500px;height:180px; background-color:red;">
+                        <div id="visitor_chart" style="height:180px;">
                             구글차트 삽입예정
                         </div>
                         </div>
@@ -227,7 +227,7 @@
                             <path fill-rule="evenodd" d="M4.5 8a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5z"/>
                             </svg></a></div> 
                         <br><br>
-                        <div  id="salesChart" style="width:900px;height:300px; background-color:red;">구글차트 삽입</div>
+                        <div  id="salesChart" style="height:300px;">구글차트 삽입</div>
                       
                        <table class="table" style="border:1px solid #E0E0E0;margin-top:30px;; width:100%">
                         <thead>

@@ -107,6 +107,8 @@ public class MemberController {
 
 	@RequestMapping(value = "login.do", method = RequestMethod.POST)
 	public ModelAndView memberLogin(Member m, HttpSession session, ModelAndView mv) {
+		
+		
 
 		Member loginUser = mService.loginMember(m);
 

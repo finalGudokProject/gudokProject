@@ -434,7 +434,8 @@ public class MemberDao {
 	}
 
 	public int insertVisitor(Visitor vo) {
-		return sqlSessionTemplate.insert("memberMapper.insertVisitor", vo);
+		System.out.println("dao에서"+vo);
+		return sqlSessionTemplate.insert("memberMapper.insertVisitor",vo);
 	}
 
 	public int getVisitTodayCount() {

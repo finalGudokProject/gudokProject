@@ -177,7 +177,7 @@ display:inline-block !important;
 				<c:url var="slist" value="subscribeView.do">
 					<c:param name="memberNo" value="${loginUser.memberNo}"/>
 				</c:url> 
-				<li><a href="${slist}">마이페이지</li>
+				<li><a href="${slist}">마이페이지</a></li>
 				<li><a href="logout.do">로그아웃</a></li>
 				<li><a href="noticeList.do">고객센터</a></li>
 				<li><a href="#">Who is JH?</a></li>
