@@ -254,7 +254,8 @@ input[type=button]:hover:before,input[type=button]:hover:after{
 </head>
 <body>
 	<jsp:include page="../common/menubar.jsp"/>
-	<fmt:formatNumber var="itemPrice" value="${ilv.itemPrice}" type="number"/>
+	<fmt:formatNumber var="discountPrice" value="${(ilv.itemPrice - ilv.itemPrice*(ilv.itemDiscount/100))}" type="number"/>
+    <fmt:formatNumber var="itemPrice" value="${ilv.itemPrice}" type="number"/>
 	<div class="container" style="margin-top:3%;">
 		<div class="row">
 			
@@ -335,7 +336,14 @@ input[type=button]:hover:before,input[type=button]:hover:after{
 								</c:otherwise>
 							</c:choose>
 						</div>
-					<div style="padding:5% 0 5% 0;margin-bottom:3%;font-size:30px;border-bottom:1px dotted lightgray;"><b>${itemPrice }원</b></div>
+					<div style="padding:5% 0 5% 0;margin-bottom:3%;font-size:30px;border-bottom:1px dotted lightgray;">
+					<c:if test="${ilv.itemDiscount != 0}">
+	                	<s style="color:red;"><b>${itemPrice }원</b></s><b>→${discountPrice }원</b>
+					</c:if>
+					<c:if test="${ilv.itemDiscount == 0}">
+						<b>${itemPrice }원</b>
+					</c:if>
+					</div>
 					<div class="amountDC">
 						<table style="vertical-align:middle;">
 							<tr class="countTr">
@@ -345,7 +353,14 @@ input[type=button]:hover:before,input[type=button]:hover:after{
 							</tr>
 						</table>
 						<br>
-						<div class="amountPriceDiv"><div style="margin-bottom:2%;padding-top:2%;font-weight:bold;" id="priceId">${itemPrice }원</div>
+						<div class="amountPriceDiv"><div style="margin-bottom:2%;padding-top:2%;font-weight:bold;" id="priceId">
+							<c:if test="${ilv.itemDiscount != 0}">
+			                	${discountPrice }원
+							</c:if>
+							<c:if test="${ilv.itemDiscount == 0}">
+								${itemPrice }원
+							</c:if>
+						</div>
 						<input type="hidden" value="${ilv.itemNo}" name="${ilv.itemNo}">
 						<input type="hidden" value="${loginUser.memberNo}" name="${loginUser.memberNo}">
 						<input type="hidden" value="${loginUser.memberId}" name="${loginUser.memberId}">
@@ -412,7 +427,7 @@ input[type=button]:hover:before,input[type=button]:hover:after{
 		<br>
 		
 		<!-- 리뷰 시작 -->
-		<form action="reviewInsert.do" method="post" enctype="multipart/form-data" id="reviewForm">
+		<form id="reviewForm">
 		<input type="hidden" name="page" value="${currentPage}">
 		<input type="hidden" name="itemNo" value="${ilv.itemNo }">
 		<input type="hidden" id="starValue" name="reviewRate" value="5">
@@ -499,11 +514,38 @@ input[type=button]:hover:before,input[type=button]:hover:after{
 							dangerMode : true,
 						}).then((result)=>{
 							if(result){
-								swal("상품평","등록 완료되었습니다.","success").then((result)=>{
+								$.ajax({
+									url : "reviewInsert.do",
+									data : new FormData($("#reviewForm")[0]),
+								    processData: false,
+								    contentType: false,
+									type : "post",
+									success : function(data){
+										if(data == "success"){
+											swal("상품평","등록 완료되었습니다.","success").then((result)=>{
+												if(result){
+													location.reload();
+												}
+											});
+										}else if(data == "delFail"){
+											swal("","배송 완료된 상품이 아닙니다.","error");
+										}else if(data == "reviewFail"){
+											swal("","이미 등록된 상품평이 존재합니다.","error");
+										}
+									}
+									,error:function(request, status, errorData){
+					                	alert("error code: " + request.status + "\n"
+					                	+"message: " + request.responseText
+					                	+"error: " + errorData);
+					               }
+									
+								})
+								
+								/* swal("상품평","등록 완료되었습니다.","success").then((result)=>{
 									if(result){
 										$("#reviewForm").submit();
 									}
-								});
+								}); */
 							}else{
 								$("#reviewTxt").focus();
 							}
@@ -518,11 +560,43 @@ input[type=button]:hover:before,input[type=button]:hover:after{
 							if(result){
 
 							}else{
-								swal("상품평","등록 완료되었습니다.","success").then((result)=>{
+								
+								$.ajax({
+									url : "reviewInsert.do",
+									data : new FormData($("#reviewForm")[0]),
+								    processData: false,
+								    contentType: false,
+									type : "post",
+									success : function(data){
+										if(data == "success"){
+											swal("상품평","등록 완료되었습니다.","success").then((result)=>{
+												if(result){
+													location.reload();
+												}
+											});
+										}
+										else if(data == "noDelFail"){
+											swal("","상품평 쓰기 권한이 없습니다.","error");
+										}
+										else if(data == "delFail"){
+											swal("","배송 완료된 상품이 아닙니다.","error");
+										}
+										else if(data == "reviewFail"){
+											swal("","이미 등록된 상품평이 존재합니다.","error");
+										}
+									}
+									,error:function(request, status, errorData){
+					                	alert("error code: " + request.status + "\n"
+					                	+"message: " + request.responseText
+					                	+"error: " + errorData);
+					               }
+									
+								})
+								/* swal("상품평","등록 완료되었습니다.","success").then((result)=>{
 									if(result){
 										$("#reviewForm").submit();
 									}
-								})
+								}) */
 								
 							}
 						})
@@ -738,7 +812,7 @@ input[type=button]:hover:before,input[type=button]:hover:after{
 										type : "POST",
 										  success:function(data){
 											  if(data == "success"){
-												  swal("","문의하신 내용은 어디서 확인하실 수 있습니다.","success").then((result)=>{
+												  swal("","문의하신 내용은 마이페이지에서 확인하실 수 있습니다.","success").then((result)=>{
 														if(result){
 															$("#inquiredText").val("");
 															modal.style.display = "none";
@@ -768,12 +842,23 @@ input[type=button]:hover:before,input[type=button]:hover:after{
 			$(function(){
 				
 				var amount = $(".amountT").val();
-				var total = ${ilv.itemPrice };
+				var real = ${ilv.itemPrice};
+				var total = 0;
+				var price = 0;
+				var discount = ${ilv.itemDiscount};
+				console.log("확인 : " + discount);
+				if(discount == 0){
+					total = ${ilv.itemPrice };
+					price = ${ilv.itemPrice };
+				}else{
+					total = real - real*(discount/100);
+					price = real - real*(discount/100);
+				}
 				$("#signP").click(function(){
 					amount = Number(amount) + 1;
 					/* console.log(amount); */
 					$(".amountT").val(amount);
-					total = total + ${ilv.itemPrice};
+					total = total + price;
 					console.log(total);
 					$("#priceId").text("");
 					$("#priceId").text(addComma(total)+"원");
@@ -787,7 +872,7 @@ input[type=button]:hover:before,input[type=button]:hover:after{
 						amount = Number(amount) - 1;
 						$(".amountT").val(amount);
 						/* console.log(amount); */
-						total = total - ${ilv.itemPrice};
+						total = total - price;
 						console.log(total);
 						$("#priceId").text("");
 						$("#priceId").text(addComma(total)+"원");
@@ -933,6 +1018,8 @@ input[type=button]:hover:before,input[type=button]:hover:after{
 												})
 											}	
 											})
+									}else if(data == "fail"){
+										swal("", itemName + "상품이 이미 장바구니에 존재합니다.","error");
 									}
 								},
 								  error:function(request, status, errorData){

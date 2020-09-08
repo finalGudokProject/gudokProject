@@ -17,11 +17,10 @@ import com.kh.finalGudok.item.model.vo.Item;
 import com.kh.finalGudok.item.model.vo.ItemListView;
 import com.kh.finalGudok.item.model.vo.PageInfo;
 import com.kh.finalGudok.item.model.vo.Review;
-
 import com.kh.finalGudok.item.model.vo.ReviewImage;
 import com.kh.finalGudok.item.model.vo.ReviewView;
 import com.kh.finalGudok.item.model.vo.SearchItem;
-import com.kh.finalGudok.member.model.vo.Member;
+import com.kh.finalGudok.member.model.vo.Subscribe;
 
 @Service("iService")
 public class ItemServiceImpl implements ItemService {
@@ -653,6 +652,31 @@ public class ItemServiceImpl implements ItemService {
 		return iDao.insertInquiry();
 	}
 
+	@Override
+	public ArrayList<ItemListView> selectPN(Integer memberNo) {
+		return iDao.selectPN(memberNo);
+	}
+
+	@Override
+	public int selectCart(Cart c) {
+		return iDao.selectCart(c);
+	}
+
+	@Override
+	public int selectDelChk(Subscribe scb) {
+		return iDao.selectDelChk(scb);
+	}
+
+	@Override
+	public int selectReviewChk(Subscribe scb) {
+		return iDao.selectReviewChk(scb);
+	}
+
+	@Override
+	public int selectDelStatus(Subscribe scb) {
+		return iDao.selectDelStatus(scb);
+	}
+	
 	@Override
 	public int updateItemEventStatusN(int[] dEventArr) {
 		return iDao.updateItemEventStatusN(dEventArr);

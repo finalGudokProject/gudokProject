@@ -10,12 +10,10 @@ import org.springframework.stereotype.Repository;
 
 import com.kh.finalGudok.item.model.vo.AdminItem;
 import com.kh.finalGudok.item.model.vo.BannerItem;
-import com.kh.finalGudok.item.model.vo.Event;
-
 import com.kh.finalGudok.item.model.vo.Board;
 import com.kh.finalGudok.item.model.vo.Cart;
+import com.kh.finalGudok.item.model.vo.Event;
 import com.kh.finalGudok.item.model.vo.Heart;
-
 import com.kh.finalGudok.item.model.vo.Image;
 import com.kh.finalGudok.item.model.vo.Item;
 import com.kh.finalGudok.item.model.vo.ItemListView;
@@ -24,6 +22,7 @@ import com.kh.finalGudok.item.model.vo.Review;
 import com.kh.finalGudok.item.model.vo.ReviewImage;
 import com.kh.finalGudok.item.model.vo.ReviewView;
 import com.kh.finalGudok.item.model.vo.SearchItem;
+import com.kh.finalGudok.member.model.vo.Subscribe;
 
 @Repository("iDao")
 public class ItemDao {
@@ -627,6 +626,26 @@ public class ItemDao {
 
 	public int insertInquiry() {
 		return sqlSessionTemplate.insert("itemMapper.insertInquiry");
+	}
+	
+	public ArrayList<ItemListView> selectPN(Integer memberNo) {
+		return (ArrayList)sqlSessionTemplate.selectList("itemListMapper.selectPN", memberNo);
+	}
+
+	public int selectCart(Cart c) {
+		return sqlSessionTemplate.selectOne("cartMapper.selectDupeCart", c);
+	}
+
+	public int selectDelChk(Subscribe scb) {
+		return sqlSessionTemplate.selectOne("reviewMapper.selectDelChk",scb);
+	}
+
+	public int selectReviewChk(Subscribe scb) {
+		return sqlSessionTemplate.selectOne("reviewMapper.selectReviewChk",scb);
+	}
+
+	public int selectDelStatus(Subscribe scb) {
+		return sqlSessionTemplate.selectOne("reviewMapper.selectDelStatus",scb);
 	}
 
 	public int updateItemEventStatusN(int[] dEventArr) {

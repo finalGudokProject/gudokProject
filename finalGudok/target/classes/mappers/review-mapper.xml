@@ -148,5 +148,23 @@
 		WHERE REVIEW_NO=#{reviewNo}
 	</delete>
 	
+	<select id="selectDelChk" resultType="_int">
+		SELECT COUNT(*)
+		FROM SUBSCRIBE S
+		JOIN DELIVERY D ON(S.SUBSCRIBE_NO = D.SUBSCRIBE_NO)
+		WHERE MEMBER_NO=#{memberNo} AND ITEM_NO=#{itemNo} AND DELIVERY_STATUS='Y' AND EXCHANGE_STATUS='N'
+	</select>
 	
+	<select id="selectReviewChk" resultType="_int">
+		SELECT COUNT(*)
+		FROM REVIEW
+		WHERE MEMBER_NO=#{memberNo} AND ITEM_NO=#{itemNo}
+	</select>
+	
+	<select id="selectDelStatus" resultType="_int">
+		SELECT COUNT(*)
+		FROM SUBSCRIBE S
+		JOIN DELIVERY D ON(S.SUBSCRIBE_NO = D.SUBSCRIBE_NO)
+		WHERE MEMBER_NO=#{memberNo} AND ITEM_NO=#{itemNo}
+	</select>
 </mapper>

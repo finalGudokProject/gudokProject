@@ -268,12 +268,12 @@
       <div style="margin:0 0 3% 2%">
          <table style="display:block;" class="cateTableC">
             <tr>
+               <td style="width:10%;" id="foodDrink" class="sortCate"><input type="hidden" value="F1">음료</td>
                <td style="width:10%;" id="foodMilk" class="sortCate"><input type="hidden" value="F2">유제품</td>
                <td style="width:10%;" id="foodBakery" class="sortCate"><input type="hidden" value="F3">베이커리</td>
-               <td style="width:10%;" id="foodDiet" class="sortCate"><input type="hidden" value="F6">다이어트 식단</td>
-               <td style="width:10%;" id="foodDrink" class="sortCate"><input type="hidden" value="F1">음료</td>
                <td style="width:10%;" id="foodSimple" class="sortCate"><input type="hidden" value="F4">간편식품</td>
                <td style="width:10%;" id="foodHealth" class="sortCate"><input type="hidden" value="F5">건강식품</td>
+               <td style="width:10%;" id="foodDiet" class="sortCate"><input type="hidden" value="F6">다이어트 식단</td>
             </tr>
          </table>
          <script>
