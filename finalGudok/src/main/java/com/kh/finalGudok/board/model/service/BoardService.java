@@ -151,45 +151,4 @@ public interface BoardService {
 
 	ArrayList<EventBoard> selectSearchListEvent2(bPageInfo pi, Search search);
 
-
-
-	
-
-	
-
-
-	
-
-	
-
-	
-
-
-	
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-	
-
-	
-
-	
-
-	
-
-
 }

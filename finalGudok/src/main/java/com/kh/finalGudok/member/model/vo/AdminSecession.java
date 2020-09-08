@@ -13,6 +13,7 @@ public class AdminSecession implements Serializable{
 	
 	private int secessionNo;
 	private int memberNo;
+	private String memberName;
 	private String memberId;
 	private String email;
 	private int secessionCategory;
@@ -25,11 +26,12 @@ public class AdminSecession implements Serializable{
 	public AdminSecession() {}
 
 
-	public AdminSecession(int secessionNo, int memberNo, String memberId, String email, int secessionCategory,
-			String secessionContent, Date secessionDate, int gradeNo, int total) {
+	public AdminSecession(int secessionNo, int memberNo, String memberName, String memberId, String email,
+			int secessionCategory, String secessionContent, Date secessionDate, int gradeNo, int total) {
 		super();
 		this.secessionNo = secessionNo;
 		this.memberNo = memberNo;
+		this.memberName = memberName;
 		this.memberId = memberId;
 		this.email = email;
 		this.secessionCategory = secessionCategory;
@@ -57,6 +59,16 @@ public class AdminSecession implements Serializable{
 
 	public void setMemberNo(int memberNo) {
 		this.memberNo = memberNo;
+	}
+
+
+	public String getMemberName() {
+		return memberName;
+	}
+
+
+	public void setMemberName(String memberName) {
+		this.memberName = memberName;
 	}
 
 
@@ -137,10 +149,10 @@ public class AdminSecession implements Serializable{
 
 	@Override
 	public String toString() {
-		return "AdminSecession [secessionNo=" + secessionNo + ", memberNo=" + memberNo + ", memberId=" + memberId
-				+ ", email=" + email + ", secessionCategory=" + secessionCategory + ", secessionContent="
-				+ secessionContent + ", secessionDate=" + secessionDate + ", gradeNo=" + gradeNo + ", total=" + total
-				+ "]";
+		return "AdminSecession [secessionNo=" + secessionNo + ", memberNo=" + memberNo + ", memberName=" + memberName
+				+ ", memberId=" + memberId + ", email=" + email + ", secessionCategory=" + secessionCategory
+				+ ", secessionContent=" + secessionContent + ", secessionDate=" + secessionDate + ", gradeNo=" + gradeNo
+				+ ", total=" + total + "]";
 	}
 
 

@@ -1255,7 +1255,4 @@
 		DELETE FROM INQUIRY 
 		WHERE BOARD_NO = #{bBoard_no}
 	</delete>
-
-	
-	
 </mapper>

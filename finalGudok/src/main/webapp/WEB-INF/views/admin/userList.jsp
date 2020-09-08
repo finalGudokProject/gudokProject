@@ -169,7 +169,7 @@ input, select,textarea{
 					          
 					        </div>
 					        <div class="modal-body">
-					          <table>
+					          <table  onclick="event.cancelBubble=true">
 					            <tr>
 					                <td onclick="event.cancelBubble=true">
 					                <input type="hidden" class="grade" name="grade" value="4">1등급</td>
@@ -211,13 +211,41 @@ input, select,textarea{
                 <!--모달 끝-->
 
                 <div style="margin-top:30px;margin-bottom:10px; float:left;">
+                	<c:if test="${categoryNo eq null }">
                 	 <select id="categoryNo" name="CategoryNo" style="width:150px">
 		                    <option value="" selected>전체</option>
 		                    <option value="memberNo">회원번호</option>
 		                    <option value="memberId">아이디</option>
 		                    <option value="memberName">이름</option>
 	                 </select>
-                    <input type="text" id="word" name="word" value="" style="width:200px;">
+	                </c:if> 
+	                <c:if test="${categoryNo eq 'memberNo' }">
+                	 <select id="categoryNo" name="CategoryNo" style="width:150px">
+		                    <option value="">전체</option>
+		                    <option value="memberNo" selected>회원번호</option>
+		                    <option value="memberId">아이디</option>
+		                    <option value="memberName">이름</option>
+	                 </select>
+	                </c:if> 
+	                <c:if test="${categoryNo eq 'memberId' }">
+                	 <select id="categoryNo" name="CategoryNo" style="width:150px">
+		                    <option value="">전체</option>
+		                    <option value="memberNo">회원번호</option>
+		                    <option value="memberId" selected>아이디</option>
+		                    <option value="memberName">이름</option>
+	                 </select>
+	                </c:if> 
+	                <c:if test="${categoryNo eq 'memberName' }">
+                	 <select id="categoryNo" name="CategoryNo" style="width:150px">
+		                    <option value="">전체</option>
+		                    <option value="memberNo">회원번호</option>
+		                    <option value="memberId">아이디</option>
+		                    <option value="memberName"  selected>이름</option>
+	                 </select>
+	                </c:if> 
+	                 
+	                 
+                    <input type="text" id="word" name="word" style="width:200px;"value="${word }">
                     <input type="button" class="btn" value="검색" onclick="search()">
                 </div>
 	              
@@ -232,7 +260,7 @@ input, select,textarea{
                              </tr>   
                          </thead>
                          <tbody id="tbody2">
-                         	<c:if test="${mList ne null }">
+                         	<c:if test="${!empty mList }">
                          	<c:forEach var="i" items="${mList }" varStatus="cnt">
 	                             <tr>
 	                                <td onclick="event.cancelBubble=true">${i.memberNo }</td>
@@ -248,9 +276,9 @@ input, select,textarea{
 	                            </tr>
                             </c:forEach>
                             </c:if>
-                            <c:if test="${mList eq null }">
+                            <c:if test="${empty mList}">
                             	<tr>
-                            	<td colspan="5">해당 회원이 없습니다.</td>
+                            	<td  onclick="event.cancelBubble=true" colspan="5">해당 회원이 없습니다.</td>
                             	</tr>
                             </c:if>
                          </tbody>
@@ -263,6 +291,7 @@ input, select,textarea{
             function search(){
             	var categoryNo=$("#categoryNo").val();
             	var word=$("#word").val();
+            
             	
             	 if(categoryNo=="memberNo"){
             		 if(word.replace(/[0-9]/g, "").length > 0) {

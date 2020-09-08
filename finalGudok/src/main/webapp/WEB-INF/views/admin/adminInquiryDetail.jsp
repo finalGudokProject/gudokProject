@@ -115,7 +115,6 @@
 			</c:url>
 			
             <a href="adminInquiryList.do" type="button" class="btn btn-primary" style="float:right;">목록으로</a>
-
             <c:if test="${loginUser.memberId eq 'admin' }">
             <c:if test="${inquiry.iInquiry_content eq null}">
             <a href="${adminIquiryDelete }" type="button" class="btn btn-primary" style="float:right;margin-right:10px">삭제</a>

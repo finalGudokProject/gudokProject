@@ -329,8 +329,6 @@ public class BoardDao {
 		
 		return (ArrayList)sqlSessionTemplate.selectList("boardMapper.selectSearchListsInquiry3", search, rowBounds);
 	}
-
-	
 	
 	// event
 	public ArrayList<Board> selectSearchListEvent1(bPageInfo pi, Search search) {
@@ -355,35 +353,5 @@ public class BoardDao {
 	public int getSearchListCountEventSearch(Search search) {
 		return sqlSessionTemplate.selectOne("boardMapper.getSearchListCountEventSearch", search);
 	}
-
-	
-
-
-
-	
-	
-
-	
-
-	
-
-	
-	
-
-	
-
-
-
-	
-	
-
-	
-
-
-
-	
-	
-
-
 
 }

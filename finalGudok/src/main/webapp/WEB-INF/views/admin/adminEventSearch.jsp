@@ -149,11 +149,8 @@
     		</c:if>
 
             <br><br><br>
-                  
-                  
-                  
-                  
-      			<!------페이징 처리----->
+            
+  			<!------페이징 처리----->
                 <div class="page-center">
                		<c:choose>
 		      		<c:when test="${!empty list1 }">

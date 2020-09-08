@@ -28,6 +28,7 @@ public class AdminSubscribe implements Serializable{
 	private String address2;
 	private String address3;
 	private int itemPrice;
+	private int point;
 	
 	
 	public AdminSubscribe() {
@@ -37,7 +38,7 @@ public class AdminSubscribe implements Serializable{
 
 	public AdminSubscribe(int subscribeNo, int itemNo, int cycleNo, String subscribeStatus, Date subscribeDate,
 			int amount, int memberNo, String memberId, String email, String exchangeStatus, String itemName,
-			String deliveryStatus, String address1, String address2, String address3, int itemPrice) {
+			String deliveryStatus, String address1, String address2, String address3, int itemPrice, int point) {
 		super();
 		this.subscribeNo = subscribeNo;
 		this.itemNo = itemNo;
@@ -55,6 +56,7 @@ public class AdminSubscribe implements Serializable{
 		this.address2 = address2;
 		this.address3 = address3;
 		this.itemPrice = itemPrice;
+		this.point = point;
 	}
 
 
@@ -218,6 +220,16 @@ public class AdminSubscribe implements Serializable{
 	}
 
 
+	public int getPoint() {
+		return point;
+	}
+
+
+	public void setPoint(int point) {
+		this.point = point;
+	}
+
+
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
@@ -229,7 +241,8 @@ public class AdminSubscribe implements Serializable{
 				+ ", subscribeStatus=" + subscribeStatus + ", subscribeDate=" + subscribeDate + ", amount=" + amount
 				+ ", memberNo=" + memberNo + ", memberId=" + memberId + ", email=" + email + ", exchangeStatus="
 				+ exchangeStatus + ", itemName=" + itemName + ", deliveryStatus=" + deliveryStatus + ", address1="
-				+ address1 + ", address2=" + address2 + ", address3=" + address3 + ", itemPrice=" + itemPrice + "]";
+				+ address1 + ", address2=" + address2 + ", address3=" + address3 + ", itemPrice=" + itemPrice
+				+ ", point=" + point + "]";
 	}
 
 
