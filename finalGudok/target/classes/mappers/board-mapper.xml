@@ -1030,7 +1030,7 @@
 			, SYSDATE
 			, DEFAULT
 			, 'N'
-			, 1
+			, #{bMember_no}
 			, #{bMember_id}
 			, #{bEmail}
 			, DEFAULT
@@ -1046,7 +1046,7 @@
 			, SYSDATE
 			, DEFAULT
 			, 'F'
-			, 1
+			, #{bMember_no}
 			, #{bMember_id}
 			, #{bEmail}
 			, DEFAULT
@@ -1062,7 +1062,7 @@
 			, SYSDATE
 			, DEFAULT
 			, 'P'
-			, 1
+			, #{bMember_no}
 			, #{bMember_id}
 			, #{bEmail}
 			, DEFAULT
@@ -1078,7 +1078,7 @@
 			, SYSDATE
 			, DEFAULT
 			, 'O'
-			, 1
+			, #{bMember_no}
 			, #{bMember_id}
 			, #{bEmail}
 			, DEFAULT
@@ -1112,7 +1112,7 @@
 			, SYSDATE
 			, DEFAULT
 			, 'E'
-			, 1
+			, #{bMember_no}
 			, #{bMember_id}
 			, #{bEmail}
 			, DEFAULT

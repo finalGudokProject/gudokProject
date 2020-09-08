@@ -165,7 +165,7 @@
                     </tr>
                     <tr>
                         <th style="width:15%; padding:20px;">비밀글 설정</th>
-                        <td style="width: 39%;" >
+                        <td style="width: 39%;">
                             <input type="radio" name="oSecret" id="open" value="Y" checked="checked">공개글
                             &nbsp;
                             <input type="radio" name="oSecret" id="close" value="N">비밀글
@@ -174,7 +174,7 @@
                         <td style="width: 39%;"><input type="password" id="oSecret_pwd" name="oSecret_pwd" disabled></td>
                     </tr>
                     <tr>
-                        <th style="padding:20px;">내용</th><td colspan="3"><textarea class="form-control" rows="20" style="resize: none;" name="bContent" id=""></textarea></td>
+                        <th style="padding:20px;">내용</th><td colspan="3"><textarea class="form-control" rows="20" style="resize: none;" name="bContent" id="bContent"></textarea></td>
                     </tr>
                     <tr>
                         <th style="padding:20px;">이미지</th><td colspan="3"><div class="filebox bs3-primary preview-image">
@@ -203,17 +203,17 @@
             
         <script>
        
+        
+        
                $("input[name='oSecret']").change(function(){
       	   
             	   if($("input[name='oSecret']:checked").val()=='Y'){
             		   $("#oSecret_pwd").prop( "disabled", true );
             		   $("#oSecret_pwd").val("");
-
-            	   }else{
+					
+            	   }else if($("input[name='oSecret']:checked").val()=='N'){
             		   $("#oSecret_pwd").prop( "disabled", false );
-
             	   }
-            	   
                })
                
                
@@ -223,6 +223,12 @@
             	   if($("#bTitle").val().trim().length == 0){
                        alert("제목을 입력하세요");
                        $("#bTitle").focus();
+                       return false;
+            	   }
+            	   else if($("input[name='oSecret']:checked").val()=='N' && $("#oSecret_pwd").val().trim().length == 0){
+            		   console.log("d");
+            		   alert("비밀번호를 입력하세요");
+                       $("#oSecret_pwd").focus();
                        return false;
             	   }
             	   else if($("#bContent").val().trim().length == 0){

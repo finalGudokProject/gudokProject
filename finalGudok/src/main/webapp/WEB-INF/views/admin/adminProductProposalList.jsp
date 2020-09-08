@@ -88,12 +88,12 @@
           <table style="text-align: center; margin-top:15px">
         <thead>
           <tr>
-            <th><input type="checkbox" id="checkAll"></th>
-            <th style="width:10%">번호</th>
-            <th style="width:45%">제목</th>
-            <th style="width:10%">작성자</th>
-            <th style="width:20%">작성일</th>
-            <th style="width:10%">조회수</th>
+            <th onclick='event.cancelBubble=true'><input type="checkbox" id="checkAll"></th>
+            <th onclick='event.cancelBubble=true' style="width:10%">번호</th>
+            <th onclick='event.cancelBubble=true' style="width:45%">제목</th>
+            <th onclick='event.cancelBubble=true' style="width:10%">작성자</th>
+            <th onclick='event.cancelBubble=true' style="width:20%">작성일</th>
+            <th onclick='event.cancelBubble=true' style="width:10%">조회수</th>
           </tr>
         </thead>
         <tbody>
@@ -101,7 +101,7 @@
 	      			<c:when test="${fn:length(list)>0 }">
 			        	<c:forEach var="b" items="${list }">
 							<tr>
-								<td><input type="checkbox" class="common" id="proposalNo${cnt.index}" name="proposalNo" value="${b.bBoard_no }"></td>
+								<td onclick='event.cancelBubble=true'><input type="checkbox" class="common" id="proposalNo${cnt.index}" name="proposalNo" value="${b.bBoard_no }"></td>
 								<td align="center">${b.rownum }</td>
 								<td align="center">
 									<c:url var="adminProductProposalDetail" value="adminProductProposalDetail.do">
@@ -131,6 +131,8 @@
 
                     <!------페이징 처리----->
                 <div class="page-center">
+                	<c:choose>
+		      		<c:when test="${!empty list }">
                     <ul class="pagination-t">
                        <!-- 이전 -->
                         <c:if test="${pi.currentPage eq 1 }">
@@ -184,6 +186,11 @@
 							</svg></a></li>
                   		</c:if>
                     </ul>
+                    </c:when>
+                    <c:otherwise>
+                    
+                    </c:otherwise>
+                    </c:choose>
                 </div>
                 
     </div><!--하얀박스 있는부분 끝-->

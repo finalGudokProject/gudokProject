@@ -2379,7 +2379,7 @@ public class BoardController {
 			
 		}
 		
-		// Inquiry 검색
+		// proposal 검색
 		@RequestMapping("searchsProposalList.do")
 		public ModelAndView searchsProposalList(ModelAndView mv,
 				@RequestParam(value="page", required=false) Integer page,
