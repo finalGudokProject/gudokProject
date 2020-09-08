@@ -131,6 +131,8 @@
       <div class="col-9">
         
           <form action="ProductProposalInsert.do" method="post" enctype="multipart/form-data">
+          <input type="hidden" name="bMember_id" value=${loginUser.memberId }>
+          <input type="hidden" name="bEmail" value=${loginUser.email }>
             <div style="font-size: 30px;">상품제안</div>
             <hr style="border-color:rgb(0, 125, 255);">
             <table style="text-align: center; margin-top:15px">

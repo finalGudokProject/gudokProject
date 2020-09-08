@@ -144,11 +144,14 @@
 	      </tbody>
       	</table>
             <br><br>
+            <c:if test="${loginUser.memberId eq 'admin' }">
             <input type="button" value="삭제" style="float:right; margin-right: 10px;"" class="btn btn-primary" onclick="iDelete()">
+            </c:if>
             <br><br><br>
 
                     <div class="page-center">
-   					
+   					<c:choose>
+		      		<c:when test="${fn:length(list1)>0 }">
                     <ul class="pagination-t">
                     
                        <!-- 이전 -->
@@ -203,7 +206,11 @@
 							</svg></a></li>
                   		</c:if>
                     </ul>
+					</c:when>
+					<c:otherwise>
 					
+					</c:otherwise>
+					</c:choose>
                 </div>
                 <br><br><br>
 

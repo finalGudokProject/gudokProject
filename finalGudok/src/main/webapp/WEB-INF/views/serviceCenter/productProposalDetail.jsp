@@ -94,8 +94,10 @@
 			</c:url>
 			
             <a href="productProposalList.do" type="button" class="btn btn-primary" style="float:right;">목록으로</a>
+            <c:if test="${loginUser.memberId eq board.bMember_id }">
             <a href="${proposalUpdateView }" type="button" class="btn btn-primary" style="float:right;margin-right:10px">수정</a>
             <a href="${proposalDelete }" type="button" class="btn btn-primary" style="float:right;margin-right:10px">삭제</a>
+            </c:if>
             </div>
             </div>
             </div>

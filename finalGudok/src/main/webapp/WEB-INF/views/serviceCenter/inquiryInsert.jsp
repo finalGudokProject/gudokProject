@@ -139,6 +139,8 @@
       <div class="col-9">
         
           <form action="oInquiryInsert.do" method="post" enctype="multipart/form-data" onsubmit="return validate();">
+          <input type="hidden" name="bMember_id" value=${loginUser.memberId }>
+          <input type="hidden" name="bEmail" value=${loginUser.email }>
             <div style="font-size: 30px;">1:1 문의</div>
             <hr style="border-color:rgb(0, 125, 255);">
             <table style="text-align: center; margin-top:15px">

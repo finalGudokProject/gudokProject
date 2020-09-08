@@ -148,11 +148,14 @@
 	      </tbody>
       	</table>
             <br><br>
+            <c:if test="${loginUser.memberId eq 'admin' }">
             <input type="button" value="삭제" style="float:right; margin-right: 10px;"" class="btn btn-primary" onclick="iDelete()">
+            </c:if>
             <br><br><br>
 
                     <div class="page-center">
-   					
+   					<c:choose>
+		      		<c:when test="${fn:length(list1)>0 }">
                     <ul class="pagination-t">
                     
                        <!-- 이전 -->
@@ -216,7 +219,11 @@
 							</svg></a></li>
                   		</c:if>
                     </ul>
+					</c:when>
+					<c:otherwise>
 					
+					</c:otherwise>
+					</c:choose>
                 </div>
                 <br><br><br>
 
@@ -247,7 +254,7 @@
 			    				traditional:true,
 			    				data:{"sendArr":sendArr},
 			    				success:function(data){
-			    					alert("선택한 이벤트들을 삭제합니다");
+			    					alert("선택한 1:1 문의들을 삭제합니다");
 			    					getInquiryList();
 			    				},
 			    				error:function(request, status, errorData){

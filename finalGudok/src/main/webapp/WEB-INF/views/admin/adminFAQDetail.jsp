@@ -72,9 +72,10 @@
 						<c:param name="bBoard_no" value="${board.bBoard_no }"/>
 			</c:url>
             &nbsp;&nbsp;<a href="adminFAQList.do" type="button" class="btn btn-primary" style="float:right;">목록으로</a>
+            <c:if test="${loginUser.memberId eq 'admin' }">
             <a href="${FAQUpdateView }" type="button" class="btn btn-primary" style="float:right;margin-right:10px">수정</a>
             <a href="${FAQDelete }" type="button" class="btn btn-primary" style="float:right;margin-right:10px">삭제</a>
-           
+            </c:if>
             <br><br><br>
             
 
