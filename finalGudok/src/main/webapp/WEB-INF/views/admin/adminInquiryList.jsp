@@ -138,7 +138,7 @@
 						</c:forEach>
 					</c:when>
 					<c:otherwise>
-						<td colspan="5">조회된 결과가 없습니다.</td>
+						<td colspan="6">조회된 결과가 없습니다.</td>
 					</c:otherwise>
 				</c:choose>
 	      </tbody>
