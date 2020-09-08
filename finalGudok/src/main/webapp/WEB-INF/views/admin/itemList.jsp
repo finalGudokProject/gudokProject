@@ -37,10 +37,10 @@ input, select,textarea{
 
 #recommendItem{
 
-width:25%; 
+width:23%; 
 height:200px; 
 float:left;
-margin-left:6%;
+margin-left:1.5%;
 margin-top:10px;
 
 }
@@ -80,9 +80,10 @@ margin-top:10px;
 		            			<br>
 		            			<div style="width:80%; float:left;text-align:left; padding-left:15px;">
 		            			<p style="margin-top:13px;">${i.itemNo }번  ${i.itemName }</p></div>
-		            			
+		            			<input type="hidden" id="itemNo" name="itemNo" value="${i.itemNo }">
 		            			<div style="width:20%; float:right;">
-		            			<input type="button" class="btn2" value="x" style="margin-top:13px;"></div>
+		            			<button class="btn2" id="rDelete" value="x" style="margin-top:13px;">x</button>
+		            			</div>
 	            			</div> 
 	            			</c:forEach>
             			</c:if> 
@@ -423,6 +424,80 @@ margin-top:10px;
         
         
         <script>
+        
+        //추천상품 취소하기
+        
+          	$(function(){
+
+       	       		$("button").on("click",function(){
+       	       			var itemNo=$(this).parent().parent().find("#itemNo").val();
+       	       	
+       	        
+       	        		$.ajax({
+       						url:"cancelRecommend.do",
+       						type:"post",
+       						traditional:true,
+       						data:{"itemNo":itemNo},
+       						dataType:"json",
+       						success:function(data){
+       							
+       					
+       					
+       							var html=$("#recommendArea");
+       							html.html("");
+       							
+       							
+       							for(var i in data.list){
+       							
+       							
+       							var div="";
+       						
+       								
+       						
+       							div+= '<div id="recommendItem">';
+       		            	  	div+='<img src="/finalGudok/resources/uploadFiles/'+data.list[i].imageRename+'"><br>';
+       		            		div+='<div style="width:80%; float:left;text-align:left; padding-left:15px;">';
+       		            		div+='<p  style="margin-top:13px;">'+data.list[i].itemNo+'번  '+data.list[i].itemName+'</p></div>';
+       		            		div+='<input type="hidden" id="itemNo" name="itemNo" value="'+data.list[i].itemNo+'">';
+       		            		div+='<div style="width:20%; float:right;">';
+       		            		div+='<button class="btn2" value="x"  style="margin-top:13px;">x</button></div></div>'; 
+       	        			 
+       						
+       	        				html.append(div);
+       							}
+       							
+       						},
+       						error:function(request, status, errorData){
+       		                    alert("error code: " + request.status + "\n"
+       			                           +"message: " + request.responseText
+       			                           +"error: " + errorData);
+       			                  }   
+       						
+       					});
+       		        	
+       	       		
+       	       		
+       	       		
+       	       		
+       	       		
+       	       		
+       	       		
+       	       		
+       	       		
+       	       		
+       	       		
+       	       		})
+       	        	
+       	       	})
+        
+        
+        
+        
+        
+        
+        
+        
+        
         //추천 상품 전 수량 확인
         
         function recommend(){
@@ -492,7 +567,7 @@ margin-top:10px;
 					dataType:"json",
 					success:function(data){
 						
-						alert("모야 왜 안돼")
+				
 				
 						var html=$("#recommendArea");
 						html.html("");
@@ -504,14 +579,14 @@ margin-top:10px;
 						var div="";
 					
 							
-						alert("오잉");
-						
+					
 						div+= '<div id="recommendItem">';
 	            	  	div+=	'<img src="/finalGudok/resources/uploadFiles/'+data.list[i].imageRename+'"><br>';
 	            		div+='<div style="width:80%; float:left;text-align:left; padding-left:15px;">';
 	            		div+='<p  style="margin-top:13px;">'+data.list[i].itemNo+'번  '+data.list[i].itemName+'</p></div>';
+	            		div+='<input type="hidden" id="itemNo" name="itemNo" value="'+data.list[i].itemNo+'">';
 	            		div+='<div style="width:20%; float:right;">';
-	            		div+='<input type="button" class="btn2" value="x"  style="margin-top:13px;"></div></div>'; 
+	            		div+='<button class="btn2" value="x"  style="margin-top:13px;">x</button></div></div>'; 
         			 
 					
         				html.append(div);
@@ -667,7 +742,7 @@ margin-top:10px;
        	 				$eventName=$("<td id='cursor'>").text(data.list[i].itemName);
        	 				$eventName.attr('id','test');
        	 				$eventCnt=$("<td onclick='event.cancelBubble=true'>").text(data.list[i].itemPrice+'원');
-       	 				$itemDiscount=$("<td  onclick='event.cancelBubble=true'>").text(data.list[i].itemDiscount+'%');
+       	 				$itemDiscount=$("<td onclick='event.cancelBubble=true'>").text(data.list[i].itemDiscount+'%');
        	 				$eventStatus=$("<td onclick='event.cancelBubble=true'>").text(data.list[i].itemDpStatus);
        	 				
        	 				

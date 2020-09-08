@@ -485,6 +485,7 @@ public class MemberDao {
 		return sqlSessionTemplate.selectOne("memberMapper.selectMemberSecessionCnt", s);
 	}
 
+
 	public int deleteReviewImage(int reviewNo) {
 		return sqlSessionTemplate.delete("memberMapper.deleteReviewImage", reviewNo);
 	}
@@ -495,5 +496,17 @@ public class MemberDao {
 
 	public int imageDelete(int reviewNo) {
 		return sqlSessionTemplate.delete("memberMapper.imageDelete", reviewNo);
+	}
+
+	public int updateItemCmStatus(ArrayList<AdminSubscribe> dArr) {
+		return sqlSessionTemplate.update("memberMapper.updateItemCmStatus",dArr);
+	}
+
+	public int updateMemberPoint(AdminSubscribe adminSubscribe) {
+		return sqlSessionTemplate.update("memberMapper.updateMemberPoint",adminSubscribe);
+	}
+
+	public int selectPoint(int subscribeNo) {
+		return sqlSessionTemplate.selectOne("memberMapper.selectPoint",subscribeNo);
 	}
 }

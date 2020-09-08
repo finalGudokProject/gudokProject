@@ -394,7 +394,7 @@
               title: '방문자 및 가입자 집계',
               subtitle: '일일 방문자 및 가입자 현황'
             },
-            width: 100%,
+            width: '100%',
             height: 200
           };
 
@@ -430,7 +430,7 @@
         ]);
 
         var materialOptions = {
-          width: 100%,
+          width: '100%',
           chart: {
           },
           series: {

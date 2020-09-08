@@ -245,8 +245,8 @@
             <li><a href="${ilist}"><img src="resources/images/inquiry.png"
                         style="width: 25%; height: 25%; margin-right: 4%;">1:1문의</a></li>
             <li>
-                <span><img src="resources/images/member_information.png"
-                        style="width: 25%; height: 25%; margin-right: 4%;">회원정보</span>
+                <a href="#about"><img src="resources/images/member_information.png"
+                        style="width: 25%; height: 25%; margin-right: 4%;">회원정보</a>
                 <ul>
                 	<c:url var="myInfo" value="myInfo.do">
 						<c:param name="memberNo" value="${loginUser.memberNo}"/>
@@ -280,8 +280,7 @@
 	              	<span class="grade">황금거위 <span class="etc">&nbsp;등급</span></span>
 	              </c:if>
 	              <br>
-	              <c:url var="grade" value="gradeView.do"></c:url> 
-	              <span><a href="${grade}" style="color: black; font-size: 0.8em;">등급 혜택보기</a></span>
+	              <span><a href="#" style="color: black; font-size: 0.8em;">등급 혜택보기</a></span>
 	            </div>
 	          </div>
 	          <div class="subscribe">

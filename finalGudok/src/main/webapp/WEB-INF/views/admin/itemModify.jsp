@@ -173,7 +173,8 @@ float:left;
     border: 1px solid #ddd;
     border-radius: 5px;
     background-color: #fff;
-    height:200px;
+    height:180px;
+    overflow-y:scroll;
 }
 
 .filebox .upload-display1 img {
@@ -391,7 +392,7 @@ float:left;
 						<td id="td1">상품 이미지</td>
                         <td colspan="3">
                             <div class="filebox preview-image1"> 
-                            	<div class="upload-display1"><div class="upload-thumb-wrap1"><img id="beforeImage" src="${contextPath }/resources/uploadFiles/${m[0].imageRename}"></div></div>
+                            	<div class="upload-display1"><div class="upload-thumb-wrap1"><img id="beforeImage" src="${contextPath }/resources/uploadFiles/${i.imageRename}"></div></div>
 	                                <input class="upload-name1" value="파일선택" disabled="disabled" > 
 	                                <label for="input-file1">업로드</label> 
 	                                <input type="file" id="input-file1" class="upload-hidden1" name="uploadFile" accept="image/*" title="이미지 파일만 업로드 가능"> 
@@ -405,7 +406,7 @@ float:left;
                         <td id="td1">상품 상세 설명</td>
                         <td colspan="3">
                             <div class="filebox preview-image2"> 
-                            	<div class="upload-display2"><div class="upload-thumb-wrap2"><img id="beforeImage" src="${contextPath }/resources/uploadFiles/${i.imageRename}"></div></div>
+                            	<div class="upload-display2"><div class="upload-thumb-wrap2"><img id="beforeImage" src="${contextPath }/resources/uploadFiles/${m[0].imageRename}"></div></div>
                                 <input class="upload-name2" value="파일선택" disabled="disabled" > 
                                 <label for="input-file2">업로드</label> 
                                 <input type="file" id="input-file2" class="upload-hidden2" name="uploadFile" accept="image/*" title="이미지 파일만 업로드 가능"> 
@@ -428,7 +429,14 @@ float:left;
 	                	</c:url>
 		                <input type="button" class="btn" value="목록" onclick="location.href='${goItemList}'">                
 	                </c:if>
-                
+	                <c:if test="${type eq 'event' }">
+	                	<c:url var="goItemList" value="bannerDetail.do">
+	                		<c:param name="page" value="${page }"/>
+	                		<c:param name="eventNo" value="${eventNo }"/>
+	                	</c:url>
+		                <input type="button" class="btn" value="목록" onclick="location.href='${goItemList}'">                
+	                </c:if>
+    
                 
                 
                 

@@ -159,33 +159,46 @@ cursor: pointer;
                     <table>
                         <thead>
                             <tr>
-                                <th><input type="checkbox" id="checkAll"></th>
-                                <th>주문 일자</th>
-                                <th>구독 번호</th>
-                                <th>상품명</th>
-                                <th>수량</th>
-                                <th>구매자</th>
-                                <th>배송상태</th>
+                                <th onclick='event.cancelBubble=true'><input type="checkbox" id="checkAll"></th>
+                                <th onclick='event.cancelBubble=true'>주문 일자</th>
+                                <th onclick='event.cancelBubble=true'>구독 번호</th>
+                                <th onclick='event.cancelBubble=true'>상품명</th>
+                                <th onclick='event.cancelBubble=true'>수량</th>
+                                <th onclick='event.cancelBubble=true'>구매자</th>
+                                <th onclick='event.cancelBubble=true'>배송상태</th>
                              </tr>   
                          </thead>
                          <tbody>
                             <c:if test="${!empty oList }">
 	                         	<c:forEach var="e" items="${oList }" varStatus="cnt">
 		                             <tr>
-		                                <td onclick="event.cancelBubble=true"><input type="checkbox" class="common" id="subscribeNo${cnt.index}" name="subscribeNo" value="${e.subscribeNo }"></td>
-		                                <td onclick="event.cancelBubble=true">${e.subscribeDate }</td>
-		                                <td id="cursor">${e.subscribeNo }</td>
-		                                <td onclick="event.cancelBubble=true">${e.itemName }</td>
-		                                <td onclick="event.cancelBubble=true">${e.amount }</td>
-		                                <td onclick="event.cancelBubble=true">${e.memberId }</td>
+		                                
 		                                	<c:choose>
 				                                <c:when test="${e.deliveryStatus eq 'N' }">
+				                                	<td onclick="event.cancelBubble=true"><input type="checkbox" class="common" id="subscribeNo${cnt.index}" name="subscribeNo" value="${e.subscribeNo }"></td>
+					                                <td onclick="event.cancelBubble=true">${e.subscribeDate }</td>
+					                                <td id="cursor">${e.subscribeNo }</td>
+					                                <td onclick="event.cancelBubble=true">${e.itemName }</td>
+					                                <td onclick="event.cancelBubble=true">${e.amount }</td>
+					                                <td onclick="event.cancelBubble=true">${e.memberId }</td>
 				                                	<td onclick="event.cancelBubble=true">배송 대기</td>
 				                                </c:when>
 				                                <c:when test="${e.deliveryStatus eq 'D' }">
+				                                	<td onclick="event.cancelBubble=true"><input type="checkbox" class="common" id="subscribeNo${cnt.index}" name="subscribeNo" value="${e.subscribeNo }"></td>
+					                                <td onclick="event.cancelBubble=true">${e.subscribeDate }</td>
+					                                <td id="cursor">${e.subscribeNo }</td>
+					                                <td onclick="event.cancelBubble=true">${e.itemName }</td>
+					                                <td onclick="event.cancelBubble=true">${e.amount }</td>
+					                                <td onclick="event.cancelBubble=true">${e.memberId }</td>
 				                                	<td onclick="event.cancelBubble=true">배송 중</td>
 				                                </c:when>
 				                                <c:when test="${e.deliveryStatus eq 'Y' }">
+					                                <td onclick="event.cancelBubble=true"><input type="checkbox" id="subscribeNo${cnt.index}" name="subscribeNo" value="${e.subscribeNo }" disabled></td>
+					                                <td onclick="event.cancelBubble=true">${e.subscribeDate }</td>
+					                                <td id="cursor">${e.subscribeNo }</td>
+					                                <td onclick="event.cancelBubble=true">${e.itemName }</td>
+					                                <td onclick="event.cancelBubble=true">${e.amount }</td>
+					                                <td onclick="event.cancelBubble=true">${e.memberId }</td>
 				                                	<td onclick="event.cancelBubble=true">배송 완료</td>
 				                                </c:when>
 				                            </c:choose>
@@ -285,6 +298,11 @@ cursor: pointer;
        <input type="hidden" id="word" name="word" value="${word }">
        
        <script>
+       
+   
+       
+       
+       
        //검색
        function search(){
     	   
@@ -346,12 +364,12 @@ cursor: pointer;
    
    
      
-  	//게시물 상세보기(ajax후)
+  	//게시물 상세보기
       
      	$(function(){
      		
      		$("tr").on("click",function(){
-     			var subscribeNo=$(this).children().eq(0).find(".common").val();
+     			var subscribeNo=$(this).children().eq(2).text();
      			var type="order";
       			 var page=${pi.currentPage };   
       				 alert(subscribeNo);
@@ -394,31 +412,53 @@ cursor: pointer;
    	 		
    	 				if(data.list!=null){
    	 	
-   	 			 	for(var i in data.list){
-   	 					
-   	 				
-   	 				$tr=$("<tr id='cursor'>");
-   	 				$td=$("<td onclick='event.cancelBubble=true'>");
-   	 				$checkBox=$("<input type='checkbox' class='common' name='subscribeNo'>").val(data.list[i].subscribeNo);     	 			
-   	 				$subscribeDate=$("<td onclick='event.cancelBubble=true'>").text(data.list[i].subscribeDate);     	 			
-   	 				$itemNo=$("<td>").text(data.list[i].subscribeNo);
-   	 				$itemName=$("<td onclick='event.cancelBubble=true'>").text(data.list[i].itemName);
-   	 				$amount=$("<td onclick='event.cancelBubble=true'>").text(data.list[i].amount);
-   	 				$memberId=$("<td onclick='event.cancelBubble=true'>").text(data.list[i].memberId);
-   	 				$deliveryStatus=$("<td onclick='event.cancelBubble=true'>").text(data.list[i].deliveryStatus);
-   	 				
-   	 				
-   	 				$td.append($checkBox);
-   	 				$tr.append($td);
-   	 				$tr.append($subscribeDate);
-   	 				$tr.append($itemNo);
-   	 				$tr.append($itemName);
-   	 				$tr.append($amount);
-   	 				$tr.append($memberId);
-   	 				$tr.append($deliveryStatus); 
-   	 				$tableBody.append($tr);
-   	 			 	}
-   	 			 
+	   	 			 	for(var i in data.list){
+	   	 			 		
+	   	 			 		
+	   	 				
+	   	 				if(data.list[i].deliveryStatus=="배송 완료"){
+	   	 					
+		   	 				$tr=$("<tr>");
+		   	 				$td=$("<td onclick='event.cancelBubble=true'>");
+		   	 				$checkBox=$("<input type='checkbox' name='subscribeNo' disabled>").val(data.list[i].subscribeNo);     	 			
+		   	 				$subscribeDate=$("<td onclick='event.cancelBubble=true'>").text(data.list[i].subscribeDate);     	 			
+		   	 				$itemNo=$("<td id='cursor'>").text(data.list[i].subscribeNo);
+		   	 				$itemName=$("<td onclick='event.cancelBubble=true'>").text(data.list[i].itemName);
+		   	 				$amount=$("<td onclick='event.cancelBubble=true'>").text(data.list[i].amount);
+		   	 				$memberId=$("<td onclick='event.cancelBubble=true'>").text(data.list[i].memberId);
+		   	 				$deliveryStatus=$("<td onclick='event.cancelBubble=true'>").text(data.list[i].deliveryStatus);
+		   	 				
+		   	 				
+		   	 				
+	   	 			 	}else{
+	   	 			 		
+		   	 			 	$tr=$("<tr>");
+		   	 				$td=$("<td onclick='event.cancelBubble=true'>");
+		   	 				$checkBox=$("<input type='checkbox' class='common' name='subscribeNo'>").val(data.list[i].subscribeNo);     	 			
+		   	 				$subscribeDate=$("<td onclick='event.cancelBubble=true'>").text(data.list[i].subscribeDate);     	 			
+		   	 				$itemNo=$("<td id='cursor'>").text(data.list[i].subscribeNo);
+		   	 				$itemName=$("<td onclick='event.cancelBubble=true'>").text(data.list[i].itemName);
+		   	 				$amount=$("<td onclick='event.cancelBubble=true'>").text(data.list[i].amount);
+		   	 				$memberId=$("<td onclick='event.cancelBubble=true'>").text(data.list[i].memberId);
+		   	 				$deliveryStatus=$("<td onclick='event.cancelBubble=true'>").text(data.list[i].deliveryStatus);
+	   	 			 		
+	   	 			 		
+	   	 			 		
+	   	 			 	}
+	   	 			 
+	   	 				
+		   	 				$td.append($checkBox);
+			 				$tr.append($td);
+			 				$tr.append($subscribeDate);
+			 				$tr.append($itemNo);
+			 				$tr.append($itemName);
+			 				$tr.append($amount);
+			 				$tr.append($memberId);
+			 				$tr.append($deliveryStatus); 
+			 				$tableBody.append($tr);
+			 				
+	   	 			 	}
+			
    	 			 	}else{
    	 				$tr=$("<tr>");
    	 				$td=$("<td colspan='7' onclick='event.cancelBubble=true'>").text("해당 조건의 구독 내역이 없습니다.");

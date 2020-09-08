@@ -174,12 +174,16 @@ float:left;
 .filebox .upload-thumb-wrap1 {
     display: inline-block;
     width: 350px;
+    height:200px;
     padding: 2px;
     vertical-align: middle;
     border: 1px solid #ddd;
     border-radius: 5px;
     background-color: #fff;
+    overflow-y:scroll;
 }
+
+
 
 .filebox .upload-display1 img {
     display: block;

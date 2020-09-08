@@ -142,30 +142,35 @@
 		<result property="secessionContent" column="SECESSION_CONTENT" />
 	</resultMap>
 	<resultMap type="AdminPayment" id="adminPaymentResultSet">
-		<id property="paymentNo" column="PAYMENT_NO" />
-		<result property="itemNo" column="ITEM_NO" />
-		<result property="itemName" column="ITEM_NAME" />
-		<result property="itemPrice" column="ITEM_PRICE" />
-		<result property="amount" column="AMOUNT" />
-		<result property="point" column="POINT" />
-		<result property="subscribeNo" column="SUBSCRIBE_NO" />
-		<result property="paymentDate" column="PAYMENT_DATE" />
-		<result property="memberNo" column="MEMBER_NO" />
-		<result property="memberId" column="MEMBER_ID" />
-		<result property="email" column="EMAIL" />
-		<result property="totalPayment" column="TOTAL_PAYMENT" />
+		<id property="paymentNo" column="PAYMENT_NO"/>
+		<result property="itemNo" column="ITEM_NO"/>
+		<result property="itemName" column="ITEM_NAME"/>
+		<result property="itemPrice" column="ITEM_PRICE"/>
+		<result property="amount" column="AMOUNT"/>
+		<result property="point" column="POINT"/>
+		<result property="subscribeNo" column="SUBSCRIBE_NO"/>
+		<result property="paymentDate" column="PAYMENT_DATE"/>
+		<result property="memberNo" column="MEMBER_NO"/>
+		<result property="memberId" column="MEMBER_ID"/>
+		<result property="email" column="EMAIL"/>
+		<result property="totalPayment" column="TOTAL_PAYMENT"/>
+		<result property="totalCount" column="TOTAL_COUNT"/>
+		<result property="categoryNo" column="CATEGORY_NO"/>
+	
 	</resultMap>
 	<resultMap type="AdminSecession" id="adminSecessionResultSet">
-		<id property="secessionNo" column="SECESSION_NO" />
-		<result property="memberNo" column="MEMBER_NO" />
-		<result property="memberId" column="MEMBER_ID" />
-		<result property="email" column="EMAIL" />
-		<result property="secessionCategory"
-			column="SECESSION_CATEGORY" />
-		<result property="secessionContent" column="SECESSION_CONTENT" />
-		<result property="secessionDate" column="SECESSION_DATE" />
-		<result property="gradeNo" column="GRADE_NO" />
-		<result property="total" column="TOTAL" />
+
+		<id property="secessionNo" column="SECESSION_NO"/>
+		<result property="memberNo" column="MEMBER_NO"/>
+		<result property="memberId" column="MEMBER_ID"/>
+		<result property="email" column="EMAIL"/>
+		<result property="secessionCategory" column="SECESSION_CATEGORY"/>
+		<result property="secessionContent" column="SECESSION_CONTENT"/>
+		<result property="secessionDate" column="SECESSION_DATE"/>
+		<result property="gradeNo" column="GRADE_NO"/>
+		<result property="total" column="TOTAL"/>
+		<result property="memberName" column="MEMBER_NAME"/>
+
 	</resultMap>
 
 	<!-- admin -->
@@ -185,8 +190,9 @@
 		<result property="address1" column="ADDRESS_1" />
 		<result property="address2" column="ADDRESS_2" />
 		<result property="address3" column="ADDRESS_3" />
+		<result property="point" column="POINT" />
 	</resultMap>
-	<!-- admin -->
+
 	<resultMap type="AdminExchange" id="adminExchangeResultSet">
 		<id property="exchangeNo" column="EXCHANGE_NO" />
 		<result property="exchangeStatus" column="EXCHANGE_STATUS" />
@@ -199,7 +205,7 @@
 		<result property="itemPrice" column="ITEM_PRICE" />
 
 	</resultMap>
-	<!-- admin -->
+
 	<resultMap type="AdminBoard" id="adminBoardResultSet">
 		<id property="bBoard_no" column="BOARD_NO" />
 		<result property="bMember_no" column="MEMBER_NO" />
@@ -465,14 +471,37 @@
 	<select id="selectGradeList" resultMap="gradeResultSet">
 		SELECT *
 		FROM GRADE
-		ORDER
-		BY GRADE_NO DESC
+
+		ORDER BY GRADE_NO DESC
+
 	</select>
 	<select id="selectMemberCnt" resultType="_int">
-		SELECT COUNT(*)
-		FROM
-		MEMBER
+
+		
+		SELECT count(*)
+		from(
+		select *
+		FROM MEMBER
 		WHERE MEMBER_STATUS='N'
+		)
+		 <where>
+        	<if test="memberNo!=null">
+        		 <![CDATA[
+		        MEMBER_NO LIKE '%${memberNo}%'  
+		        ]]>      	
+        	</if>
+        	<if test="memberId!=null">
+        		<![CDATA[
+		        OR MEMBER_ID LIKE '%${memberId}%' 
+		         ]]>
+        	</if>
+			<if test="memberName!=null">
+				<![CDATA[
+		        OR MEMBER_NAME LIKE '%${memberName}%' 
+		        ]]>
+			</if>
+			</where>
+		
 	</select>
 	<select id="selectGradeCnt" resultType="int">
 		SELECT COUNT(*)
@@ -483,12 +512,32 @@
 		GROUP BY GRADE_NO
 		HAVING GRADE_NO=#{gradeNo}
 	</select>
-	<select id="selectMemberN" resultMap="memberResultSet">
+	<select id="selectMemberN" resultMap="adminMemberResultSet">
+		select *
+		from(
 		SELECT *
 		FROM MEMBER
 		WHERE
 		MEMBER_STATUS='N'
 		ORDER BY MEMBER_NO DESC
+		)
+		 <where>
+        	<if test="memberNo!=null">
+        		 <![CDATA[
+		        MEMBER_NO LIKE '%${memberNo}%'  
+		        ]]>      	
+        	</if>
+        	<if test="memberId!=null">
+        		<![CDATA[
+		        OR MEMBER_ID LIKE '%${memberId}%' 
+		         ]]>
+        	</if>
+			<if test="memberName!=null">
+				<![CDATA[
+		        OR MEMBER_NAME LIKE '%${memberName}%' 
+		        ]]>
+			</if>
+			</where>
 	</select>
 	<update id="updateGradeRate" parameterType="java.util.List">
 		<foreach item="i" index="index" collection="list"
@@ -601,10 +650,42 @@
 	</select>
 	<select id="selectMemberSecession"
 		resultMap="adminSecessionResultSet">
-		SELECT S.*,M.GRADE_NO
+		select *
+		from(
+		SELECT S.*,M.GRADE_NO, m.member_name
 		FROM SECESSION S
-		LEFT JOIN MEMBER M
-		ON(S.MEMBER_NO=M.MEMBER_NO)
+		LEFT JOIN MEMBER M ON(S.MEMBER_NO=M.MEMBER_NO)
+		<where>
+		<trim prefix="AND">
+			<if test="category1!=null">
+				SECESSION_CATEGORY=#{category1}
+			</if>
+		</trim>
+		</where>
+		)
+		<where>
+			<if test="memberNo!=null">
+        		 <![CDATA[
+		        MEMBER_NO LIKE '%${memberNo}%'  
+		        ]]>
+			</if>
+			<if test="memberId!=null">
+        		<![CDATA[
+		        OR MEMBER_ID LIKE '%${memberId}%' 
+		         ]]>
+			</if>
+			<if test="memberName!=null">
+				<![CDATA[
+		        OR MEMBER_NAME LIKE '%${memberName}%' 
+		        ]]>
+			</if>
+			<if test="category2!=null">
+				<![CDATA[
+		        OR SECESSION_CONTENT LIKE '%${category2}%'
+		        ]]>
+			</if>
+		</where>
+		
 	</select>
 
 	<select id="selectSubscribeList" resultMap="subscribeResultSet"
@@ -702,8 +783,10 @@
 		WHERE SUBSCRIBE_NO=#{subscribeNo}
 	</select>
 
-	<select id="selectTotalPayment" parameterType="_int"
-		resultType="int">
+	
+	<select id="selectTotalPayment" parameterType="_int" resultType="integer">
+
+
 		SELECT SUM((ITEM_PRICE*AMOUNT)-POINT) AS TOTAL_PAYMENT
 		FROM
 		PAYMENT P
@@ -713,8 +796,15 @@
 		SUBSCRIBE_NO=#{subscribeNo}
 	</select>
 
-	<select id="selectItemTotalP" parameterType="_int"
-		resultType="int">
+	<select id="selectTotalPay" parameterType="_int" resultType="int">
+		SELECT SUM((ITEM_PRICE*AMOUNT)-POINT) AS TOTAL_PAYMENT
+		FROM PAYLIST
+		GROUP BY MEMBER_NO
+		HAVING MEMBER_NO=#{value}
+	</select> 
+	
+	<select id="selectItemTotalP" parameterType="_int" resultType="int">
+
 		SELECT SUM(ITEM_PRICE*AMOUNT) AS TOTAL_PAYMENT
 		FROM PAYMENT
 		P
@@ -760,20 +850,19 @@
 		)
 		<where>
 			<if test="subscribeNo!=null">
-				subscribe_no=#{subscribeNo}
+				subscribe_no like <![CDATA['%${subscribeNo}%']]>
 			</if>
 			<if test="word!=null">
-				or exchange_content=#{word}
+				or exchange_content LIKE <![CDATA['%${word}%']]>
 			</if>
 			<if test="memberId!=null">
-				or member_Id=#{memberId}
+				or member_Id  LIKE <![CDATA['%${memberId}%']]>
 			</if>
 		</where>
 
 	</select>
 
-	<select id="selectExchangeList" parameterType="object"
-		resultMap="adminExchangeResultSet">
+	<select id="selectExchangeList" parameterType="object" resultMap="adminExchangeResultSet">
 		select *
 		from(
 		SELECT e.*,i.item_name,s.member_id
@@ -790,13 +879,13 @@
 		)
 		<where>
 			<if test="subscribeNo!=null">
-				subscribe_no=#{subscribeNo}
+				subscribe_no like <![CDATA['%${subscribeNo}%']]>
 			</if>
 			<if test="word!=null">
-				or exchange_content=#{word}
+				or exchange_content LIKE <![CDATA['%${word}%']]>
 			</if>
 			<if test="memberId!=null">
-				or member_Id=#{memberId}
+				or member_Id  LIKE <![CDATA['%${memberId}%']]>
 			</if>
 		</where>
 	</select>
@@ -1214,5 +1303,33 @@
 		JOIN MEMBER M
 		ON(S.MEMBER_NO = M.MEMBER_NO)
 		WHERE M.MEMBER_NO = #{memberNo}
+	</select>
+	<update id="updateItemCmStatus" parameterType="java.util.ArrayList">
+		UPDATE ITEM
+            SET ITEM_CM_SALES=(ITEM_CM_SALES+1)
+            WHERE ITEM_NO in (SELECT I.ITEM_NO
+                            FROM SUBSCRIBE S
+                            LEFT JOIN ITEM I ON(S.ITEM_NO=I.ITEM_NO)
+                            WHERE S.SUBSCRIBE_NO=
+             <foreach item="i" index="index" collection="list"
+			open="(" separator="," close=")">               
+                            #{i.subscribeNo}
+             </foreach>       
+                            
+                            )
+	
+	</update>
+	<update id="updateMemberPoint" parameterType="object">
+		UPDATE MEMBER
+        SET POINT=#{point}
+        WHERE MEMBER_NO=(SELECT MEMBER_NO
+                        FROM SUBSCRIBE
+                        WHERE SUBSCRIBE_NO=#{subscribeNo})
+	</update>
+	<select id="selectPoint" parameterType="_int" resultType="int">
+		SELECT P.POINT
+        FROM SUBSCRIBE S
+        LEFT JOIN POINT P ON(S.SUBSCRIBE_NO=P.SUBSCRIBE_NO)
+        WHERE S.SUBSCRIBE_NO=#{value}
 	</select>
 </mapper>

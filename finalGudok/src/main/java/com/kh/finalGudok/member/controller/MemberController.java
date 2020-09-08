@@ -43,8 +43,6 @@ import org.springframework.web.servlet.ModelAndView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
-
-import com.kh.finalGudok.member.model.vo.Inquiry;
 import com.kh.finalGudok.item.model.vo.BannerItem;
 import com.kh.finalGudok.item.model.vo.Item;
 import com.kh.finalGudok.item.model.vo.PageInfo;
@@ -64,14 +62,15 @@ import com.kh.finalGudok.member.model.vo.Delivery;
 import com.kh.finalGudok.member.model.vo.Exchange;
 import com.kh.finalGudok.member.model.vo.Grade;
 import com.kh.finalGudok.member.model.vo.Heart;
+import com.kh.finalGudok.member.model.vo.Inquiry;
 import com.kh.finalGudok.member.model.vo.Member;
 import com.kh.finalGudok.member.model.vo.Point;
 import com.kh.finalGudok.member.model.vo.Reply;
 import com.kh.finalGudok.member.model.vo.Review;
 import com.kh.finalGudok.member.model.vo.Search;
 import com.kh.finalGudok.member.model.vo.Subscribe;
-import com.kh.finalGudok.member.model.vo.Withdrawal;
 import com.kh.finalGudok.member.model.vo.Tempkey;
+import com.kh.finalGudok.member.model.vo.Withdrawal;
 
 @SessionAttributes("loginUser")
 @Controller
@@ -872,6 +871,7 @@ public class MemberController {
 		// 회원별 총 구매금액 주입
 		for (int i = 0; i < mList.size(); i++) {
 
+			
 			Integer cnt = mService.selectTotalPay(mList.get(i).getMemberNo());
 
 			if (cnt == null) {
@@ -978,17 +978,19 @@ public class MemberController {
 		}
 
 		Search s = new Search();
-		if (categoryNo.equalsIgnoreCase("memberNo")) {
+		
+		if(categoryNo==null) {
+			s.setMemberNo(word);
+			s.setMemberName(word);
+			s.setMemberId(word);
+			
+		} else if (categoryNo.equalsIgnoreCase("memberNo")) {
 			s.setMemberNo(word);
 		} else if (categoryNo.equalsIgnoreCase("memberId")) {
 			s.setMemberId(word);
 		} else if (categoryNo.equalsIgnoreCase("memberName")) {
 			s.setMemberName(word);
-		} else {
-			s.setMemberNo(word);
-			s.setMemberName(word);
-			s.setMemberId(word);
-		}
+		} 
 
 		// 현재 등급정보
 		ArrayList<Grade> gList = mService.selectGradeList();
@@ -1437,10 +1439,31 @@ public class MemberController {
 
 		System.out.println(dArr);
 
+		//배송상태 변경
 		int result = mService.updateDelivery(dArr);
-
+		
+		
+		//배송 완료일 경우 
+		if(deliveryStatus.equalsIgnoreCase("Y")) {
+		
+			//판매량 +1 
+			int result2=mService.updateItemCmStatus(dArr);
+			
+			for(int i=0;i<dArr.size();i++) {
+			//포인트 뽑아오기 
+			int point=mService.selectPoint(dArr.get(i).getSubscribeNo());
+			dArr.get(i).setPoint(point);
+			System.out.println(dArr);
+			//회원에게 적립금 부여
+			int result3=mService.updateMemberPoint(dArr.get(i));
+			
+			}
+			
+		}
+		
 		System.out.println("결과는" + result);
 		if (result < 0) {
+			
 
 			return "success";
 
@@ -1508,7 +1531,7 @@ public class MemberController {
 			} else if (oList.get(i).getDeliveryStatus().equalsIgnoreCase("D")) {
 				oList.get(i).setDeliveryStatus("배송중");
 			} else {
-				oList.get(i).setDeliveryStatus("배송완료");
+				oList.get(i).setDeliveryStatus("배송 완료");
 			}
 
 		}
@@ -1656,6 +1679,7 @@ public class MemberController {
 		Search s = new Search();
 		s.setCategory1(category);
 
+		System.out.println("카테고리 잘 왔나"+category);
 		if (type == null) {
 			s.setSubscribeNo(word);
 			s.setWord(word);
@@ -2692,5 +2716,6 @@ public class MemberController {
 	}
 
 	// ------------------------------ 관리자 ----------------------------------------------
-
+	
+	
 }
