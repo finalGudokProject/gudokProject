@@ -2,7 +2,6 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -111,39 +110,41 @@
         }
 </style>
 </head>
-<body>
+<body>	
 	<jsp:include page="../common/menubar.jsp"/>
+	
 	<br><br><br>
     <div class="container">
     <div class="row">
       <div class="col-3">
         <h1 align="center">고객센터</h1>
         <ul class="list" id="list">
-            <li style="margin-bottom: 5%;"><img src="resources/images/Alert.png" style="width:20%; height:20%;margin-bottom:3%"><a href="noticeList.do">공지사항</a></li>
+			<li style="margin-bottom: 5%;"><img src="resources/images/Alert.png" style="width:20%; height:20%;margin-bottom:3%"><a href="noticeList.do">공지사항</a></li>
             <li style="margin-bottom: 5%;"><img src="resources/images/FAQ.png" style="width:20%; height:20%;margin-bottom:3%"><a href="FAQList.do">FAQ</a></li>
-            <li style="margin-bottom: 5%;"><img src="resources/images/inquiary.png" style="width:20%; height:20%;margin-bottom:3%"><a style="color:rgb(0, 125, 255);" readonly>1:1문의</a></li>
-            <li style="margin-bottom: 5%;"><img src="resources/images/proposal.png" style="width:20%; height:20%;margin-bottom:3%"><a href="productProposalList.do">상품제안</a></li>
-            <li style="margin-bottom: 5%;"><img src="resources/images/benefit1.png" style="width:20%; height:20%;margin-bottom:3%"><a href="tierOfBenefit.do">등급별 혜택</a></li>
+            <li style="margin-bottom: 5%;"><img src="resources/images/inquiary.png" style="width:20%; height:20%;margin-bottom:3%"><a href="sinquiryList.do">1:1문의</a></li>
+            <li style="margin-bottom: 5%;"><img src="resources/images/proposal.png" style="width:20%; height:20%;margin-bottom:3%"><a style="color:rgb(0, 125, 255);" readonly">상품제안</a></li>
+            <li style="margin-bottom: 5%;"><img src="resources/images/benefit1.png" style="width:20%; height:20%;margin-bottom:3%"><a href="tierOfBenefit.do">등급별 혜택</a></li>        
         </ul>
       </div>
       <div class="col-9">
-       
-          <div style="font-size: 30px;">1:1 문의</div>
-       	  <form action="searchsInquiryList.do" method="post" enctype="multipart/form-data">
+        
+          <div style="font-size: 30px;">상품제안</div>
+        	<form action="searchsProposalList.do" method="post" enctype="multipart/form-data">
           <div class="input-group">
             <select class="custom-select" id="inputGroupSelect04" id="searchType" name="searchType" style="margin-left: 500px; width:100px">
-              <option value="All">모두</option>
-                <option value="title">제목</option>
-                <option value="content">내용</option>          
-                <option value="user">작성자</option>
+                <option value="All"<c:if test="${searchType eq 'All' }">selected='selected'</c:if> >모두</option>             
+                <option value="title"<c:if test="${searchType eq 'title' }">selected='selected'</c:if> >제목</option>
+                <option value="content"<c:if test="${searchType eq 'content' }">selected='selected'</c:if> >내용</option>
+                <option value="user"<c:if test="${searchType eq 'user' }">selected='selected'</c:if> >작성자</option>
             </select>
-            <input type="text" class="form-control" id="keyword" name="keyword" value="" style="float:right; width:170px;height: 38px;">
+            <input type="text" class="form-control" id="keyword" name="keyword" value="${keyword }" style="float:right; width:170px;height: 38px;">
             <div class="input-group-append" style="float:right; width: 55px; height: 38px;">
               <input type="submit" value="검색" id="searchBtn" name="searchBtn" class="btn btn-primary">
             </div>
             </div>
             </form>
-         
+         	<input type="hidden" name="searchType" value="${searchType }">
+            <input type="hidden" name="keyword" value="${keyword }">
         
         <table style="text-align: center; margin-top:15px">
       <thead>
@@ -152,48 +153,25 @@
           <th style="width: 20%;">제목</th>
           <th style="width: 10%;">작성자</th>          
           <th style="width: 10%;">작성일</th>
-          <th style="width: 10%;">답변상태</th>
+          <th style="width: 10%;">조회수</th>
         </tr>
       </thead>
 	      <tbody>
 	      		<c:choose>
-	      			<c:when test="${fn:length(list1)>0}">
-			        	<c:forEach var="b" items="${list1 }" varStatus="cnt">
+	      			<c:when test="${fn:length(list)>0 }">
+			        	<c:forEach var="b" items="${list }">
 							<tr>
 								<td align="center">${b.rownum }</td>
 								<td align="center">
-									<c:url var="inquiryDetail" value="inquiryDetail.do">
+									<c:url var="ProductProposalDetail" value="ProductProposalDetail.do">
 										<c:param name="bBoard_no" value="${b.bBoard_no }"/>
 										<c:param name="page" value="${pi.currentPage }"/>
 									</c:url>
-									<c:url var="inquiryPwd" value="inquiryPassword.do">
-										<c:param name="bBoard_no" value="${b.bBoard_no }"/>
-										<c:param name="page" value="${pi.currentPage }"/>
-									</c:url>
-									<c:choose>
-									<c:when test="${list2[cnt.index] eq 'secret [oBoard_no=0, oSecret=Y, oSecret_pwd=null]'}">
-									<a href="${inquiryDetail }">[공개] ${b.bTitle }</a>
-									</c:when>
-									<c:when test="${list2[cnt.index] eq 'secret [oBoard_no=0, oSecret=N, oSecret_pwd=null]'}">
-									<a href="${inquiryPwd }">[비공개] ${b.bTitle }</a>
-									</c:when>
-									<c:otherwise>
-									에러입니다
-									</c:otherwise>
-									</c:choose>
+									<a href="${ProductProposalDetail }">${b.bTitle }</a>
 								</td>
 								<td align="center">${b.bMember_id}</td>
 								<td align="center">${b.bWrite_date }</td>
-								<td align="center">
-								<c:choose>
-								<c:when test="${list3[cnt.index]  eq 'Inquiry [iBoard_no=0, iInquiry_yn=N, iInquiry_date=null, iInquiry_content=null, iBoard_type=null, iInquiry_name=null]'}">
-									답변 대기중	
-								</c:when>
-								<c:otherwise>
-									답변 완료	
-								</c:otherwise>		
-								</c:choose>						
-								</td>
+								<td align="center">${b.bRead_num }</td>
 							</tr>
 						</c:forEach>
 					</c:when>
@@ -205,7 +183,7 @@
     </table>
     <br><br>
     <c:if test="${!empty loginUser }">
-    	<a href="inquiryInsert.do" type="button" class="btn btn-primary" style="float:right;">글쓰기</a>
+    	<a href="productProposalInsert.do" type="button" class="btn btn-primary" style="float:right;">글쓰기</a>
 	</c:if>
      <br><br><br>
     <!------페이징 처리----->
@@ -221,8 +199,10 @@
 						   </svg></a></li>
                   		</c:if>
                    		<c:if test="${pi.currentPage gt 1 }">
-                     		<c:url var="blistBack" value="sinquiryList.do">
+                     		<c:url var="blistBack" value="searchsProposalList.do">
                         		<c:param name="page" value="${pi.currentPage-1 }"/>
+                        		<c:param name="searchType" value="${searchType }"/>
+                        		<c:param name="keyword" value="${keyword }"/>
                      		</c:url>
                             <li class="page-item-t">
                             <a class="page-link-t" href="${blistBack }">
@@ -239,8 +219,10 @@
                      </c:if>
                      
                            <c:if test="${p ne pi.currentPage }">
-                              <c:url var="blistCheck" value="sinquiryList.do">
+                              <c:url var="blistCheck" value=" searchsProposalList.do">
                                  <c:param name="page" value="${p }"/>
+                                 <c:param name="searchType" value="${searchType }"/>
+                        		 <c:param name="keyword" value="${keyword }"/>
                               </c:url>
                               <li class="page-item-t"><a class="page-link-t" href="${blistCheck }">${p } <span class="sr-only"></span></a>
                               </li>
@@ -256,8 +238,10 @@
 						   </svg></a></li>
                   		</c:if>
                    		<c:if test="${pi.currentPage lt pi.maxPage }">
-                     		<c:url var="blistAfter" value="sinquiryList.do">
+                     		<c:url var="blistAfter" value=" searchsProposalList.do">
                         		<c:param name="page" value="${pi.currentPage+1 }"/>
+                        		<c:param name="searchType" value="${searchType }"/>
+                        		<c:param name="keyword" value="${keyword }"/>
                      		</c:url>
                             <li class="page-item-t">
                             <a class="page-link-t" href="${blistAfter }">

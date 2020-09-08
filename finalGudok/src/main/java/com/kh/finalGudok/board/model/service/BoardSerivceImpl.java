@@ -261,11 +261,21 @@ public class BoardSerivceImpl implements BoardService {
 
 	// Notice
 	@Override
+	public int getSearchListCountNotice(Search search) {
+		return bDao.getSearchListCountNotice(search);
+	}
+	
+	@Override
 	public ArrayList<Board> selectSearchListNotice(bPageInfo pi, Search search) {
 		return bDao.selectSearchListNotice(pi, search);
 	}
 	
 	// FAQ
+	@Override
+	public int getSearchListCountFAQ(Search search) {
+		return bDao.getSearchListCountFAQ(search);
+	}
+	
 	@Override
 	public ArrayList<Board> selectSearchListFAQ(bPageInfo pi, Search search) {
 		return bDao.selectSearchListFAQ(pi, search);
@@ -273,11 +283,21 @@ public class BoardSerivceImpl implements BoardService {
 	
 	// ProductProposal
 	@Override
+	public int getSearchListCountProductProposal(Search search) {
+		return bDao.getSearchListCountProductProposal(search);
+	}
+	
+	@Override
 	public ArrayList<Board> selectSearchListProductProposal(bPageInfo pi, Search search) {
 		return bDao.selectSearchListProductProposal(pi, search);
 	}
 
 	// Inquiry
+	@Override
+	public int getSearchListCountInquiry(Search search) {
+		return bDao.getSearchListCountInquiry(search);
+	}
+	
 	@Override
 	public ArrayList<Board> selectSearchListInquiry1(bPageInfo pi, Search search) {
 		return bDao.selectSearchListInquiry1(pi, search);
@@ -295,6 +315,11 @@ public class BoardSerivceImpl implements BoardService {
 	
 	// Inquiry ServiceCenter
 	@Override
+	public int getSearchListCountServiceInquiry(Search search) {
+		return bDao.getSearchListCountServiceInquiry(search);
+	}
+	
+	@Override
 	public ArrayList<Board> selectSearchListsInquiry1(bPageInfo pi, Search search) {
 		return bDao.selectSearchListsInquiry1(pi, search);
 	}
@@ -310,12 +335,11 @@ public class BoardSerivceImpl implements BoardService {
 	}
 
 	// Event
-
 	@Override
-	public int getListCountEventSearch() {
-		return bDao.getListCountEventSearch();
+	public int getSearchListCountEventSearch(Search search) {
+		return bDao.getSearchListCountEventSearch(search);
 	}
-
+	
 	@Override
 	public ArrayList<Board> selectSearchListEvent1(bPageInfo pi,  Search search) {
 		return bDao.selectSearchListEvent1(pi, search);
@@ -325,6 +349,18 @@ public class BoardSerivceImpl implements BoardService {
 	public ArrayList<EventBoard> selectSearchListEvent2(bPageInfo pi,  Search search) {
 		return bDao.selectSearchListEvent2(pi, search);
 	}
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
 
 	
 

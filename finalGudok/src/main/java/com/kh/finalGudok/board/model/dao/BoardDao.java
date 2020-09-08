@@ -244,6 +244,10 @@ public class BoardDao {
 
 	// 검색
 	// notice
+	public int getSearchListCountNotice(Search search) {
+		return sqlSessionTemplate.selectOne("boardMapper.getSearchListCountNotice", search);
+	}
+	
 	public ArrayList<Board> selectSearchListNotice(bPageInfo pi, Search search) {
 		int offset = (pi.getCurrentPage() - 1)*pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
@@ -252,6 +256,10 @@ public class BoardDao {
 	}
 
 	// FAQ
+	public int getSearchListCountFAQ(Search search) {
+		return sqlSessionTemplate.selectOne("boardMapper.getSearchListCountFAQ", search);
+	}
+	
 	public ArrayList<Board> selectSearchListFAQ(bPageInfo pi, Search search) {
 		int offset = (pi.getCurrentPage() - 1)*pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
@@ -260,6 +268,11 @@ public class BoardDao {
 	}
 	
 	// ProductProposal
+	public int getSearchListCountProductProposal(Search search) {
+		return sqlSessionTemplate.selectOne("boardMapper.getSearchListCountProductProposal", search);
+	}
+
+	
 	public ArrayList<Board> selectSearchListProductProposal(bPageInfo pi, Search search) {
 		int offset = (pi.getCurrentPage() - 1)*pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
@@ -268,6 +281,10 @@ public class BoardDao {
 	}
 	
 	// Inquiry
+	public int getSearchListCountInquiry(Search search) {
+		return sqlSessionTemplate.selectOne("boardMapper.getSearchListCountInquiry", search);
+	}
+	
 	public ArrayList<Board> selectSearchListInquiry1(bPageInfo pi, Search search) {
 		int offset = (pi.getCurrentPage() - 1)*pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
@@ -290,6 +307,10 @@ public class BoardDao {
 	}
 	
 	// Inquiry ServiceCenter
+	public int getSearchListCountServiceInquiry(Search search) {
+		return sqlSessionTemplate.selectOne("boardMapper.getSearchListCountServiceInquiry", search);
+	}
+	
 	public ArrayList<Board> selectSearchListsInquiry1(bPageInfo pi, Search search) {
 		int offset = (pi.getCurrentPage() - 1)*pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
@@ -330,6 +351,19 @@ public class BoardDao {
 	public int getListCountEventSearch() {
 		return sqlSessionTemplate.selectOne("boardMapper.getListCountEventSearch");
 	}
+
+	public int getSearchListCountEventSearch(Search search) {
+		return sqlSessionTemplate.selectOne("boardMapper.getSearchListCountEventSearch", search);
+	}
+
+	
+
+
+
+	
+	
+
+	
 
 	
 

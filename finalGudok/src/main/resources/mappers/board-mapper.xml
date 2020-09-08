@@ -189,6 +189,29 @@
 	<!-- 검색 기능 -->
 	<!-- 검색 리스트 부르기 -->
 	<!-- notice -->
+	<select id="getSearchListCountNotice" resultType="_int">
+		SELECT COUNT(*)
+		FROM BOARD
+		<where>
+			<if test="searchType=='title'">
+				BOARD_CODE= 'N'
+				AND TITLE LIKE '%${keyword}%'
+			</if>
+			
+			<if test="searchType=='content'">
+				BOARD_CODE= 'N'
+				AND CONTENT LIKE '%${keyword}%'
+			</if>
+			
+			<if test="searchType=='titleContent'">
+				BOARD_CODE= 'N'
+				AND (TITLE LIKE '%${keyword}%'
+				OR CONTENT LIKE '%${keyword}%')
+			</if>
+		</where>
+	</select>
+	
+	
 	<select id="selectSearchListNotice" resultMap="boardResultSet1">
 		SELECT ROWNUM, B.*
 		FROM (SELECT *
@@ -218,6 +241,29 @@
 	</select>
 	
 	<!-- FAQ -->
+	<select id="getSearchListCountFAQ" resultType="_int">
+		SELECT COUNT(*)
+		FROM BOARD
+		<where>
+			<if test="searchType=='title'">
+				BOARD_CODE= 'F'
+				AND TITLE LIKE '%${keyword}%'
+			</if>
+			
+			<if test="searchType=='content'">
+				BOARD_CODE= 'F'
+				AND CONTENT LIKE '%${keyword}%'
+			</if>
+			
+			<if test="searchType=='titleContent'">
+				BOARD_CODE= 'F'
+				AND (TITLE LIKE '%${keyword}%'
+				OR CONTENT LIKE '%${keyword}%')
+			</if>
+		</where>
+	</select>
+	
+	
 	<select id="selectSearchListFAQ" resultMap="boardResultSet1">
 		SELECT ROWNUM, B.*
 		FROM (SELECT *
@@ -248,6 +294,35 @@
 	
 	
 	<!-- productProposal -->
+	<select id="getSearchListCountProductProposal" resultType="_int">
+		SELECT COUNT(*)
+		FROM BOARD
+		<where>
+			<if test="searchType=='All'">
+				BOARD_CODE= 'P'
+				AND (TITLE LIKE '%${keyword}%'
+				OR CONTENT LIKE '%${keyword}%'
+				OR MEMBER_ID LIKE '%${keyword}%')
+			</if>
+        
+			<if test="searchType=='title'">
+				BOARD_CODE= 'P'
+				AND TITLE LIKE '%${keyword}%'
+			</if>
+			
+			<if test="searchType=='content'">
+				BOARD_CODE= 'P'
+				AND CONTENT LIKE '%${keyword}%'
+			</if>
+
+			<if test="searchType=='user'">
+				BOARD_CODE= 'P'
+				AND MEMBER_ID LIKE '%${keyword}%'
+			</if>
+		</where>
+	</select>
+	
+	
 	<select id="selectSearchListProductProposal" resultMap="boardResultSet1">
 		SELECT ROWNUM, B.*
 		FROM (SELECT *
@@ -285,10 +360,59 @@
 	
 	
 	<!-- event -->
-	<select id="getListCountEventSearch" resultType="_int">
+	<select id="getSearchListCountEventSearch" resultType="_int">
 		SELECT COUNT(*)
-		FROM BOARD
-		WHERE BOARD_CODE = 'E'
+		FROM BOARD B
+		LEFT JOIN EVENT_BOARD E ON (B.BOARD_NO = E.BOARD_NO)
+		<where>
+			<if test="searchType=='title' and post_yn.equals('All')">
+				B.BOARD_CODE= 'E'
+				AND B.TITLE LIKE '%${keyword}%'
+			</if>
+			
+			<if test="searchType=='content' and post_yn.equals('All')">
+				B.BOARD_CODE= 'E'
+				AND B.CONTENT LIKE '%${keyword}%'
+			</if>
+			
+			<if test="searchType=='titleContent' and post_yn.equals('All')">
+				B.BOARD_CODE= 'E'
+				AND (B.TITLE LIKE '%${keyword}%'
+				OR B.CONTENT LIKE '%${keyword}%')
+			</if>
+			<if test="searchType=='title' and post_yn.equals('Yes')">
+				B.BOARD_CODE= 'E'
+				AND B.TITLE LIKE '%${keyword}%'
+				AND E.E_STATUS = 'Y'
+			</if>
+			<if test="searchType=='title' and post_yn.equals('No')">
+				B.BOARD_CODE= 'E'
+				AND B.TITLE LIKE '%${keyword}%'
+				AND E.E_STATUS = 'N'
+			</if>
+			<if test="searchType=='content' and post_yn.equals('Yes')">
+				B.BOARD_CODE= 'E' 
+				AND B.CONTENT LIKE '%${keyword}%'
+				AND E.E_STATUS = 'Y'
+			</if>
+			<if test="searchType=='content' and post_yn.equals('No')">
+				B.BOARD_CODE= 'E' 
+				AND B.CONTENT LIKE '%${keyword}%'
+				AND E.E_STATUS = 'N'
+			</if>
+			<if test="searchType=='titleContent' and post_yn.equals('Yes')">
+				B.BOARD_CODE= 'E'
+				AND (B.TITLE LIKE '%${keyword}%'
+				OR B.CONTENT LIKE '%${keyword}%')
+				AND E.E_STATUS = 'Y'
+			</if>
+			<if test="searchType=='titleContent' and post_yn.equals('No')">
+				B.BOARD_CODE= 'E'
+				AND (B.TITLE LIKE '%${keyword}%'
+				OR B.CONTENT LIKE '%${keyword}%')
+				AND E.E_STATUS = 'N'
+			</if>
+		</where>
 	</select>
 	
 	
@@ -410,6 +534,79 @@
 
 
 	<!-- inquiry -->
+		<select id="getSearchListCountInquiry" resultType="_int">
+		SELECT COUNT(*)
+		FROM BOARD<where>
+			<if test="searchType=='title' and inquiry_yn.equals('All')">
+				BOARD_CODE= 'O'
+				AND TITLE LIKE '%${keyword}%'
+			</if>
+			
+			<if test="searchType=='content' and inquiry_yn.equals('All')">
+				BOARD_CODE= 'O'
+				AND CONTENT LIKE '%${keyword}%'
+			</if>
+
+			<if test="searchType=='user' and inquiry_yn.equals('All')">
+				BOARD_CODE= 'O'
+				AND MEMBER_ID LIKE '%${keyword}%'
+			</if>
+			
+			<if test="searchType=='All' and inquiry_yn.equals('All')">
+				BOARD_CODE= 'O'
+				AND (TITLE LIKE '%${keyword}%'
+				OR CONTENT LIKE '%${keyword}%'
+				OR MEMBER_ID LIKE '%${keyword}%')
+			</if>
+			<if test="searchType=='title' and inquiry_yn.equals('Yes')">
+				BOARD_CODE= 'O'
+				AND TITLE LIKE '%${keyword}%'
+				AND INQUIRY_YN = 'Y'
+			</if>
+			<if test="searchType=='title' and inquiry_yn.equals('No')">
+				BOARD_CODE= 'O'
+				AND TITLE LIKE '%${keyword}%'
+				AND INQUIRY_YN = 'N'
+			</if>
+			<if test="searchType=='content' and inquiry_yn.equals('Yes')">
+				BOARD_CODE= 'O' 
+				AND CONTENT LIKE '%${keyword}%'
+				AND INQUIRY_YN = 'Y'
+			</if>
+			<if test="searchType=='content' and inquiry_yn.equals('No')">
+				BOARD_CODE= 'O' 
+				AND CONTENT LIKE '%${keyword}%'
+				AND INQUIRY_YN = 'N'
+			</if>
+			<if test="searchType=='user' and inquiry_yn.equals('Yes')">
+				BOARD_CODE= 'O'
+				AND MEMBER_ID LIKE '%${keyword}%'
+				AND INQUIRY_YN = 'Y'
+			</if>
+			<if test="searchType=='user' and inquiry_yn.equals('No')">
+				BOARD_CODE= 'O'
+				AND MEMBER_ID LIKE '%${keyword}%'
+				AND INQUIRY_YN = 'N'
+			</if>
+			<if test="searchType=='All' and inquiry_yn.equals('Yes')">
+				BOARD_CODE= 'O'
+				AND (TITLE LIKE '%${keyword}%'
+				OR CONTENT LIKE '%${keyword}%'
+				OR MEMBER_ID LIKE '%${keyword}%')
+				AND INQUIRY_YN = 'Y'
+			</if>
+			<if test="searchType=='All' and inquiry_yn.equals('No')">
+				BOARD_CODE= 'O'
+				AND (TITLE LIKE '%${keyword}%'
+				OR CONTENT LIKE '%${keyword}%'
+				OR MEMBER_ID LIKE '%${keyword}%')
+				AND INQUIRY_YN = 'N'
+			</if>
+		</where>
+	</select>
+	
+	
+	
 	<select id="selectSearchListInquiry1" resultMap="boardResultSet1">
 		SELECT ROWNUM, B.*
 		FROM (SELECT *
@@ -641,6 +838,36 @@
 	
 	
 	<!-- Inquiry ServiceCenter -->
+	
+	<select id="getSearchListCountServiceInquiry" resultType="_int">
+		SELECT COUNT(*)
+		FROM BOARD
+		<where>
+			<if test="searchType=='All'">
+				BOARD_CODE= 'O'
+				AND (TITLE LIKE '%${keyword}%'
+				OR CONTENT LIKE '%${keyword}%'
+				OR MEMBER_ID LIKE '%${keyword}%')
+			</if>
+        
+			<if test="searchType=='title'">
+				BOARD_CODE= 'O'
+				AND TITLE LIKE '%${keyword}%'
+			</if>
+			
+			<if test="searchType=='content'">
+				BOARD_CODE= 'O'
+				AND CONTENT LIKE '%${keyword}%'
+			</if>
+
+			<if test="searchType=='user'">
+				BOARD_CODE= 'O'
+				AND MEMBER_ID LIKE '%${keyword}%'
+			</if>
+		</where>
+	</select>
+	
+	
 	<select id="selectSearchListsInquiry1" resultMap="boardResultSet1">
 		SELECT ROWNUM, B.*
 		FROM (SELECT *
@@ -804,8 +1031,8 @@
 			, DEFAULT
 			, 'N'
 			, 1
-			, 'admin'
-			, 'admin@naver.com'
+			, #{bMember_id}
+			, #{bEmail}
 			, DEFAULT
 		)
 	</insert>
@@ -820,8 +1047,8 @@
 			, DEFAULT
 			, 'F'
 			, 1
-			, 'admin'
-			, 'admin@naver.com'
+			, #{bMember_id}
+			, #{bEmail}
 			, DEFAULT
 		)
 	</insert>
@@ -836,8 +1063,8 @@
 			, DEFAULT
 			, 'P'
 			, 1
-			, 'user'
-			, 'user@naver.com'
+			, #{bMember_id}
+			, #{bEmail}
 			, DEFAULT
 		)
 	</insert>
@@ -852,8 +1079,8 @@
 			, DEFAULT
 			, 'O'
 			, 1
-			, 'user'
-			, 'user@naver.com'
+			, #{bMember_id}
+			, #{bEmail}
 			, DEFAULT
 		)
 	</insert>
@@ -886,8 +1113,8 @@
 			, DEFAULT
 			, 'E'
 			, 1
-			, 'admin'
-			, 'admin@naver.com'
+			, #{bMember_id}
+			, #{bEmail}
 			, DEFAULT
 		)
 	</insert>

@@ -144,6 +144,8 @@
       <div class="container box">
 
             <form action="eventInsert.do" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="bMember_id" value=${loginUser.memberId }>
+         	<input type="hidden" name="bEmail" value=${loginUser.email }>
                 <div style="font-size: 30px;">이벤트</div><br>
                 <hr style="border-color:rgb(0, 125, 255);">
                 <table style="text-align: center; margin-top:15px">

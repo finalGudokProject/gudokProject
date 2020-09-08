@@ -112,15 +112,23 @@ public interface BoardService {
 
 	// 검색
 	// notice
+	int getSearchListCountNotice(Search search);
+	
 	ArrayList<Board> selectSearchListNotice(bPageInfo pi, Search search);
 
 	// FAQ
+	int getSearchListCountFAQ(Search search);
+	
 	ArrayList<Board> selectSearchListFAQ(bPageInfo pi, Search search);
-
+	
 	// productProposal	
+	int getSearchListCountProductProposal(Search search);
+	
 	ArrayList<Board> selectSearchListProductProposal(bPageInfo pi, Search search);
 
 	// inquiry
+	int getSearchListCountInquiry(Search search);
+	
 	ArrayList<Board> selectSearchListInquiry1(bPageInfo pi, Search search);
 
 	ArrayList<secret> selectSearchListInquiry2(bPageInfo pi, Search search);
@@ -128,6 +136,8 @@ public interface BoardService {
 	ArrayList<Inquiry> selectSearchListInquiry3(bPageInfo pi, Search search);
 	
 	// inquiry serviceCenter
+	int getSearchListCountServiceInquiry(Search search);
+	
 	ArrayList<Board> selectSearchListsInquiry1(bPageInfo pi, Search search);
 
 	ArrayList<secret> selectSearchListsInquiry2(bPageInfo pi, Search search);
@@ -135,11 +145,22 @@ public interface BoardService {
 	ArrayList<Inquiry> selectSearchListsInquiry3(bPageInfo pi, Search search);
 	
 	// event
+	int getSearchListCountEventSearch(Search search);
+
 	ArrayList<Board> selectSearchListEvent1(bPageInfo pi, Search search);
 
 	ArrayList<EventBoard> selectSearchListEvent2(bPageInfo pi, Search search);
 
-	int getListCountEventSearch();
+
+
+	
+
+	
+
+
+	
+
+	
 
 	
 

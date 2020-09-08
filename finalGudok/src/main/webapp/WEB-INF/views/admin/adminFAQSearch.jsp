@@ -124,9 +124,11 @@
         </tbody>
       </table>
             <br><br>
+            <c:if test="${loginUser.memberId eq 'admin' }">
             &nbsp;&nbsp;<a href="adminFAQInsert.do" type="button" class="btn btn-primary" style="float:right;">글쓰기</a> 
             <input type="button" value="삭제" style="float:right; margin-right: 10px;"" class="btn btn-primary" onclick="fDelete()">
-
+			</c:if>
+			
             <br><br><br>
                   
                   
@@ -134,6 +136,8 @@
                   
       			<!------페이징 처리----->
                 <div class="page-center">
+                	<c:choose>
+		      		<c:when test="${fn:length(list1)>0 }">
                     <ul class="pagination-t">
                        <!-- 이전 -->
                         <c:if test="${pi.currentPage eq 1 }">
@@ -193,6 +197,11 @@
 							</svg></a></li>
                   		</c:if>
                     </ul>
+                    </c:when>
+                    <c:otherwise>
+                    
+                    </c:otherwise>
+                    </c:choose>
                 </div>
 
     </div><!--하얀박스 있는부분 끝-->
@@ -222,7 +231,7 @@
 			    				traditional:true,
 			    				data:{"sendArr":sendArr},
 			    				success:function(data){
-			    					alert("선택한 이벤트들을 삭제합니다");
+			    					alert("선택한 FAQ들을 삭제합니다");
 			    					getFAQList();
 			    				},
 			    				error:function(request, status, errorData){

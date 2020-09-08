@@ -136,12 +136,14 @@
         </tbody>
       </table>
             <br><br>
+            <c:if test="${loginUser.memberId eq 'admin' }">
             &nbsp;&nbsp;<a href="adminEventInsert.do" type="button" class="btn btn-primary" style="float:right;">글쓰기</a> 
             <div style="float:right; margin-right: 10px;">
             <input type="button" value="게시" class="btn btn-primary" onclick="eStatusY()">
             <input type="button" value="중지" class="btn btn-primary" onclick="eStatusN()">
             <input type="button" value="삭제" class="btn btn-primary" onclick="eDelete()">
     		</div>
+            </c:if>
 
             <br><br><br>
                   
@@ -150,6 +152,8 @@
                   
       			<!------페이징 처리----->
                 <div class="page-center">
+                <c:choose>
+		      			<c:when test="${fn:length(list1)>0 }">
                     <ul class="pagination-t">
                        <!-- 이전 -->
                         <c:if test="${pi.currentPage eq 1 }">
@@ -203,6 +207,11 @@
 							</svg></a></li>
                   		</c:if>
                     </ul>
+                    </c:when>
+                	<c:otherwise>
+                	
+                	</c:otherwise>    
+                </c:choose>
                 </div>
 		
     </div><!--하얀박스 있는부분 끝-->
