@@ -72,7 +72,7 @@ import com.kh.finalGudok.member.model.vo.Subscribe;
 import com.kh.finalGudok.member.model.vo.Tempkey;
 import com.kh.finalGudok.member.model.vo.Withdrawal;
 
-@SessionAttributes("loginUser")
+@SessionAttributes({"loginUser","cartCount", "pointCount", "subscribeCount"})
 @Controller
 public class MemberController {
 
@@ -350,7 +350,8 @@ public class MemberController {
 	public String cartView() {
 		return "mypage/cart";
 	}
-
+	
+	
 	// 구독 조회
 	@RequestMapping("subscribeList.do")
 	@ResponseBody
@@ -544,7 +545,6 @@ public class MemberController {
 		}
 	}
 
-	
 
 	// 탈퇴하기
 	@RequestMapping("withdrawalInsert.do")
@@ -659,8 +659,9 @@ public class MemberController {
 
 	// 구독취소
 	@RequestMapping("subscribeCancle.do")
-	public String subscribeCancle(HttpServletRequest request, Cancle c) { // 민지
-
+	public String subscribeCancle(HttpSession session, HttpServletRequest request, Cancle c, Model model) { // 민지
+		Member loginUser = (Member) session.getAttribute("loginUser");
+		
 		if (c.getCancleCategory() == 1) {
 			c.setCancleContent("상품이 불필요");
 		} else if (c.getCancleCategory() == 2) {
@@ -673,6 +674,10 @@ public class MemberController {
 		int result2 = mService.updateSubscribeStatus(c.getSubscribeNo());
 
 		if (result > 0 && result2 > 0) {
+			int subscribeCount = mService.subscribeCount(loginUser.getMemberNo());
+			
+			model.addAttribute("subscribeCount",subscribeCount);
+			
 			return "mypage/subscribe";
 		} else {
 			throw new MemberException("취소 신청 실패");
@@ -711,9 +716,12 @@ public class MemberController {
 			result += result;
 
 		}
+		
+		int cartCount = mService.cartCount(loginUser.getMemberNo());
 
 		if (result > 0) {
 			model.addAttribute("loginUser", loginUser);
+			model.addAttribute("cartCount",cartCount);
 			return "success";
 		} else {
 			throw new MemberException("장바구니 삭제 실패");

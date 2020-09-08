@@ -273,8 +273,7 @@
 		SELECT *
 		FROM REVIEW
 		WHERE MEMBER_NO=#{memberNo}
-		ORDER BY
-		REVIEW_DATE DESC
+		ORDER BY REVIEW_DATE DESC
 	</select>
 
 	<select id="exchangeList" parameterType="int"
@@ -370,9 +369,10 @@
 		resultMap="inquiryResultSet">
 		SELECT *
 		FROM BOARD B
-		LEFT JOIN INQUIRY I ON (B.BOARD_NO =
-		I.BOARD_NO)
+		LEFT JOIN INQUIRY I ON (B.BOARD_NO = I.BOARD_NO)
+		LEFT JOIN INQUIRY_TYPE T ON (I.BOARD_TYPE = T.BOARD_TYPE)
 		WHERE BOARD_CODE='O' AND MEMBER_NO=#{memberNo}
+		ORDER BY WRITE_DATE DESC
 	</select>
 
 	<select id="selectHeartList" parameterType="int"
