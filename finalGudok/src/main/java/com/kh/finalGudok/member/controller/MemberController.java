@@ -333,7 +333,8 @@ public class MemberController {
 	public String heartView() {
 		return "mypage/heart";
 	}
-
+	
+	// 회원 등급 페이지
 	@RequestMapping("gradeView.do")
 	public String gradeView() {
 		return "mypage/gradeInfo";
@@ -682,7 +683,7 @@ public class MemberController {
 	// 장바구니 삭제
 	@RequestMapping("cartDelete.do")
 	@ResponseBody
-	public String cartDelete(HttpSession session, HttpServletRequest request,
+	public String cartDelete(HttpSession session, HttpServletRequest request, Model model,
 			@RequestParam(value = "checkArr[]") List<String> cartList) {
 		Member loginUser = (Member) session.getAttribute("loginUser");
 
@@ -713,6 +714,7 @@ public class MemberController {
 		}
 
 		if (result > 0) {
+			model.addAttribute("loginUser", loginUser);
 			return "success";
 		} else {
 			throw new MemberException("장바구니 삭제 실패");
@@ -726,7 +728,7 @@ public class MemberController {
 			@RequestParam(value = "checkArr[]") List<String> cartList) {
 		Member loginUser = (Member) session.getAttribute("loginUser");
 
-		System.out.println("장바구니 추가");
+//		System.out.println("장바구니 추가");
 
 		int itemNo;
 		int result = 0;
@@ -776,8 +778,8 @@ public class MemberController {
 			@RequestParam(value = "changeMemberPwd") String changeMemberPwd) {
 		Member loginUser = mService.loginMember(m);
 
-		System.out.println(m);
-		System.out.println(loginUser);
+//		System.out.println(m);
+//		System.out.println(loginUser);
 
 		if (bcryptPasswordEncoder.matches(m.getMemberPwd(), loginUser.getMemberPwd())) {
 
@@ -799,7 +801,7 @@ public class MemberController {
 
 			return "mypage/memberInfoView";
 		} else {
-			throw new MemberException("본인확인 실패");
+			throw new MemberException("비밀번호 변경 실패");
 		}
 	}
 	
