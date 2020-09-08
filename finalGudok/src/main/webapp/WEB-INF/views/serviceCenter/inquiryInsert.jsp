@@ -194,64 +194,6 @@
                     </tr>
                 </tbody>
               </table>
-
-				<form action="oInquiryInsert.do" method="post"
-					enctype="multipart/form-data" onsubmit="return validate();">
-					<input type="hidden" name="bMember_id" value=${loginUser.memberId }>
-					<input type="hidden" name="bEmail" value=${loginUser.email }>
-					<div style="font-size: 30px;">1:1 문의</div>
-					<hr style="border-color: rgb(0, 125, 255);">
-					<table style="text-align: center; margin-top: 15px">
-						<tbody>
-							<tr>
-								<th style="width: 10%; padding: 20px;">문의유형</th>
-								<td style="width: 39%;" colspan="3"><select
-									name="iBoard_type"
-									style="float: left; margin-left: 35%; height: 30px; width: 200px;"
-									id="iBoard_type" name="iBoard_type">
-										<option value="OPI">상품정보문의</option>
-										<option value="OEC">교환문의</option>
-										<option value="OAL">제휴</option>
-										<option value="ODL">배송문의</option>
-										<option value="OETC">기타문의</option>
-								</select></td>
-							</tr>
-							<tr>
-								<th style="width: 10%; padding: 20px;">제목</th>
-								<td style="width: 39%;" colspan="3"><textarea
-										class="form-control" rows="1"
-										style="resize: none; margin-left: 10%; width: 550px;"
-										name="bTitle" id="bTitle"></textarea></td>
-							</tr>
-							<tr>
-								<th style="width: 15%; padding: 20px;">비밀글 설정</th>
-								<td style="width: 39%;"><input type="radio" name="oSecret"
-									id="open" value="Y" checked="checked">공개글 &nbsp; <input
-									type="radio" name="oSecret" id="close" value="N">비밀글</td>
-								<th style="width: 15%; padding: 20px;">비밀번호</th>
-								<td style="width: 39%;"><input type="password"
-									id="oSecret_pwd" name="oSecret_pwd" disabled></td>
-							</tr>
-							<tr>
-								<th style="padding: 20px;">내용</th>
-								<td colspan="3"><textarea class="form-control" rows="20"
-										style="resize: none;" name="bContent" id=""></textarea></td>
-							</tr>
-							<tr>
-								<th style="padding: 20px;">이미지</th>
-								<td colspan="3"><div
-										class="filebox bs3-primary preview-image">
-										<input class="upload-name" value="파일선택" disabled="disabled"
-											style="width: 200px;"> <label for="input_file">업로드</label>
-										<input type="file" id="input_file" name="uploadInquiry"
-											class="upload-hidden">
-									</div>
-							</tr>
-						</tbody>
-					</table>
-
-
-
 					<br>
 					<br>
 					<br> &nbsp;&nbsp;<a href="javascript:history.go(-1)"
