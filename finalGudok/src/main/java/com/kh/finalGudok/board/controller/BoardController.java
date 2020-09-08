@@ -2597,7 +2597,7 @@ public class BoardController {
 	}
 
 	
-	// inquiry 검색
+	
 	@RequestMapping("inquiryDelete.do")
 	public String inquiryDelete(Integer bBoard_no, HttpServletRequest request) {
 		System.out.println(bBoard_no);
@@ -2610,17 +2610,19 @@ public class BoardController {
 		// 게시글 삭제하기
 		int result1 = bService.deleteImage(bBoard_no);
 		int result2 = bService.deleteBoardImage(bBoard_no);
-		int result3 = bService.deleteBoard(bBoard_no);
-		int result4 = bService.deleteOneInquiryBoard(bBoard_no);
-		int result5 = bService.deleteInquiryBoard(bBoard_no);
+		int result3 = bService.deleteOneInquiryBoard(bBoard_no);
+		int result4 = bService.deleteInquiryBoard(bBoard_no);
+		int result5 = bService.deleteBoard(bBoard_no);
 
-		if (result1 > 0 && result2 > 0 && result3 > 0 && result4 > 0 && result5 > 0) {
+		if (result1 > 0 || result2 > 0 || result3 > 0 && result4 > 0 && result5 > 0) {
 			return "redirect:sinquiryList.do";
 		} else {
 			throw new BoardException("게시물 삭제 실패!");
 		}
 	}
 
+	
+	// inquiry 검색
 	@RequestMapping("searchsInquiryList.do")
 	public ModelAndView searchsInquiryList(ModelAndView mv,
 			@RequestParam(value = "page", required = false) Integer page, @RequestParam("searchType") String searchType,
