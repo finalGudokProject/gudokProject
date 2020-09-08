@@ -243,7 +243,7 @@ public class BoardController {
 		int result2 = bService.deleteBoardImage(bBoard_no);
 		int result3 = bService.deleteBoard(bBoard_no);
 
-		if (result1 > 0 && result2 > 0 && result3 > 0) {
+		if (result1 > 0 || result2 > 0 || result3 > 0) {
 			return "redirect:adminNoticeList.do";
 		} else {
 			throw new BoardException("게시물 삭제 실패!");
@@ -280,7 +280,7 @@ public class BoardController {
 			result3 = bService.deleteBoard(NoticeArr[k]);
 		}
 
-		if (result1 > 0 && result2 > 0 && result3 > 0) {
+		if (result1 > 0 || result2 > 0 || result3 > 0) {
 
 			return "redirect:adminNoticeList.do";
 
@@ -815,7 +815,7 @@ public class BoardController {
 		int result2 = bService.deleteBoardImage(bBoard_no);
 		int result3 = bService.deleteBoard(bBoard_no);
 
-		if (result1 > 0 && result2 > 0 && result3 > 0) {
+		if (result1 > 0 || result2 > 0 || result3 > 0) {
 			return "redirect:adminProductProposalList.do";
 		} else {
 			throw new BoardException("게시물 삭제 실패!");
@@ -853,7 +853,7 @@ public class BoardController {
 
 		}
 
-		if (result1 > 0 && result2 > 0 && result3 > 0) {
+		if (result1 > 0 || result2 > 0 || result3 > 0) {
 			return "redirect:adminProductProposalList.do";
 		
 		}else{
@@ -1398,6 +1398,7 @@ public class BoardController {
 	}
 
 	// Detail
+	@RequestMapping("adminEventDetail.do")
 	public ModelAndView adminEventDetail(ModelAndView mv, int bBoard_no, @RequestParam("page") Integer page) {
 		int currentPage = page;
 
@@ -1568,7 +1569,7 @@ public class BoardController {
 		int result3 = bService.deleteBoardImage(bBoard_no);
 		int result4 = bService.deleteBoard(bBoard_no);
 
-		if (result1 > 0 && result2 > 0 && result3 > 0 && result4 > 0) {
+		if (result1 > 0 && result2 > 0 || result3 > 0 || result4 > 0) {
 			return "redirect:adminEventList.do";
 		} else {
 			throw new BoardException("게시물 삭제 실패!");
@@ -1744,7 +1745,7 @@ public class BoardController {
 			result4 = bService.deleteBoard(dEventArr[k]);
 		}
 
-		if (result1 > 0 && result3 > 0 && result4 > 0) {
+		if (result1 > 0 && result2>0 || result3 > 0 || result4 > 0) {
 
 			return "redirect:adminEventList.do";
 
@@ -2226,7 +2227,7 @@ public class BoardController {
 		int result2 = bService.deleteBoardImage(bBoard_no);
 		int result3 = bService.deleteBoard(bBoard_no);
 
-		if (result1 > 0 && result2 > 0 && result3 > 0) {
+		if (result1 > 0 || result2 > 0 || result3 > 0) {
 			return "redirect:productProposalList.do";
 		} else {
 			throw new BoardException("게시물 삭제 실패!");

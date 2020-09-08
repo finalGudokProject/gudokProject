@@ -43,6 +43,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
+import com.kh.finalGudok.item.model.service.ItemService;
 import com.kh.finalGudok.item.model.vo.BannerItem;
 import com.kh.finalGudok.item.model.vo.Item;
 import com.kh.finalGudok.item.model.vo.PageInfo;
@@ -55,7 +56,7 @@ import com.kh.finalGudok.member.model.vo.AdminPayment;
 import com.kh.finalGudok.member.model.vo.AdminSecession;
 import com.kh.finalGudok.member.model.vo.AdminSubscribe;
 import com.kh.finalGudok.member.model.vo.Cancle;
-import com.kh.finalGudok.member.model.vo.Cart;
+import com.kh.finalGudok.item.model.vo.Cart;
 import com.kh.finalGudok.member.model.vo.Chart;
 import com.kh.finalGudok.member.model.vo.DeleteHeart;
 import com.kh.finalGudok.member.model.vo.Delivery;
@@ -84,6 +85,8 @@ public class MemberController {
 	private JavaMailSender mailSender;
 	@Autowired
 	private Member m;
+	@Autowired
+	ItemService iService;
 
 	@RequestMapping("moveToLogin.do")
 	public String moveTologin() {
@@ -351,6 +354,14 @@ public class MemberController {
 		return "mypage/cart";
 	}
 	
+	// 장바구니 페이지 리스트 불러오기
+	@RequestMapping("mbasketPage.do")
+	public ModelAndView basketPage(ModelAndView mv, Integer memberNo) {
+		ArrayList<Cart> list = iService.selectBasket(memberNo);
+		mv.addObject("list", list).setViewName("mypage/cart");
+		System.out.println("basketList : " + list);
+		return mv;
+	}
 	
 	// 구독 조회
 	@RequestMapping("subscribeList.do")
@@ -510,18 +521,21 @@ public class MemberController {
 		return mv;
 	}
 
-	// 장바구니 내역
-	@RequestMapping("cartList.do")
-	@ResponseBody
-	public void cartList(HttpServletResponse response, Integer memberNo) throws JsonIOException, IOException { // 민지
-		ArrayList<Cart> list = mService.selectCartList(memberNo);
-
-		System.out.println("장바구니 내역 : " + list);
-
-		response.setContentType("application/json;charset=utf-8");
-
-		new Gson().toJson(list, response.getWriter());
-	}
+	/*
+	 * // 장바구니 내역
+	 * 
+	 * @RequestMapping("cartList.do")
+	 * 
+	 * @ResponseBody public void cartList(HttpServletResponse response, Integer
+	 * memberNo) throws JsonIOException, IOException { // 민지 ArrayList<Cart> list =
+	 * mService.selectCartList(memberNo);
+	 * 
+	 * System.out.println("장바구니 내역 : " + list);
+	 * 
+	 * response.setContentType("application/json;charset=utf-8");
+	 * 
+	 * new Gson().toJson(list, response.getWriter()); }
+	 */
 
 	// 교환 신청
 	@RequestMapping("exchangeInsert.do")
@@ -684,84 +698,116 @@ public class MemberController {
 		}
 	}
 
-	// 장바구니 삭제
-	@RequestMapping("cartDelete.do")
-	@ResponseBody
-	public String cartDelete(HttpSession session, HttpServletRequest request, Model model,
-			@RequestParam(value = "checkArr[]") List<String> cartList) {
-		Member loginUser = (Member) session.getAttribute("loginUser");
-
-		System.out.println("선택삭제 실행됨");
-
-		System.out.println(cartList);
-
-		DeleteHeart dh = new DeleteHeart();
-
-		int cartNo;
-
-		int memberNo = loginUser.getMemberNo();
-
-		int result = 0;
-
-		for (int i = 0; i < cartList.size(); i++) {
-			cartNo = Integer.parseInt(cartList.get(i));
-
-			HashMap map = new HashMap<Integer, Integer>();
-
-			map.put("cartNo", cartNo);
-			map.put("memberNo", memberNo);
-
-			result = mService.deleteCart(map);
-
-			result += result;
-
-		}
-		
-		int cartCount = mService.cartCount(loginUser.getMemberNo());
-
-		if (result > 0) {
-			model.addAttribute("loginUser", loginUser);
-			model.addAttribute("cartCount",cartCount);
-			return "success";
-		} else {
-			throw new MemberException("장바구니 삭제 실패");
-		}
-	}
-
+	/*
+	 * // 장바구니 삭제
+	 * 
+	 * @RequestMapping("cartDelete.do")
+	 * 
+	 * @ResponseBody public String cartDelete(HttpSession session,
+	 * HttpServletRequest request, Model model,
+	 * 
+	 * @RequestParam(value = "checkArr[]") List<String> cartList) { Member loginUser
+	 * = (Member) session.getAttribute("loginUser");
+	 * 
+	 * System.out.println("선택삭제 실행됨");
+	 * 
+	 * System.out.println(cartList);
+	 * 
+	 * DeleteHeart dh = new DeleteHeart();
+	 * 
+	 * int cartNo;
+	 * 
+	 * int memberNo = loginUser.getMemberNo();
+	 * 
+	 * int result = 0;
+	 * 
+	 * for (int i = 0; i < cartList.size(); i++) { cartNo =
+	 * Integer.parseInt(cartList.get(i));
+	 * 
+	 * HashMap map = new HashMap<Integer, Integer>();
+	 * 
+	 * map.put("cartNo", cartNo); map.put("memberNo", memberNo);
+	 * 
+	 * result = mService.deleteCart(map);
+	 * 
+	 * result += result;
+	 * 
+	 * }
+	 * 
+	 * int cartCount = mService.cartCount(loginUser.getMemberNo());
+	 * 
+	 * if (result > 0) { model.addAttribute("loginUser", loginUser);
+	 * model.addAttribute("cartCount",cartCount); return "success"; } else { throw
+	 * new MemberException("장바구니 삭제 실패"); } }
+	 */
+	
 	// 장바구니 추가
-	@RequestMapping("addCart.do")
-	@ResponseBody
-	public String addCart(HttpSession session, HttpServletRequest request,
-			@RequestParam(value = "checkArr[]") List<String> cartList) {
-		Member loginUser = (Member) session.getAttribute("loginUser");
+		@RequestMapping("mbasket.do")
+		@ResponseBody
+		public String maddCart(HttpSession session, HttpServletRequest request, Model model,
+				@RequestParam(value = "checkArr[]") List<String> cartList) {
+			Member loginUser = (Member) session.getAttribute("loginUser");
 
-//		System.out.println("장바구니 추가");
+//			System.out.println("장바구니 추가");
 
-		int itemNo;
-		int result = 0;
+			int itemNo;
+			int result = 0;
 
-		for (int i = 0; i < cartList.size(); i++) {
-			itemNo = Integer.parseInt(cartList.get(i));
-			Item item = mService.selectItem(itemNo);
+			for (int i = 0; i < cartList.size(); i++) {
+				itemNo = Integer.parseInt(cartList.get(i));
+				Item item = mService.selectItem(itemNo);
 
-			HashMap map = new HashMap<Object, Object>();
+				HashMap map = new HashMap<Object, Object>();
 
-			System.out.println("선택한 찜 상품 : " + item);
+				System.out.println("선택한 찜 상품 : " + item);
 
-			if (item != null) {
-				map.put("item", item);
-				map.put("member", loginUser);
-				result = mService.addCart(map);
+				if (item != null) {
+					map.put("item", item);
+					map.put("member", loginUser);
+					result = mService.addCart(map);
+					
+					int cartCount = mService.cartCount(loginUser.getMemberNo());
+					
+					model.addAttribute("cartCount",cartCount);
+				}
+				result += result;
 			}
-			result += result;
+
+			if (result > 0) {
+				return "success";
+			} else {
+				throw new MemberException("장바구니 추가 실패");
+			}
 		}
 
-		if (result > 0) {
-			return "success";
-		} else {
-			throw new MemberException("장바구니 추가 실패");
-		}
-	}
+		/*
+		 * // 장바구니 추가
+		 * 
+		 * @RequestMapping("addCart.do")
+		 * 
+		 * @ResponseBody public String addCart(HttpSession session, HttpServletRequest
+		 * request,
+		 * 
+		 * @RequestParam(value = "checkArr[]") List<String> cartList) { Member loginUser
+		 * = (Member) session.getAttribute("loginUser");
+		 * 
+		 * // System.out.println("장바구니 추가");
+		 * 
+		 * int itemNo; int result = 0;
+		 * 
+		 * for (int i = 0; i < cartList.size(); i++) { itemNo =
+		 * Integer.parseInt(cartList.get(i)); Item item = mService.selectItem(itemNo);
+		 * 
+		 * HashMap map = new HashMap<Object, Object>();
+		 * 
+		 * System.out.println("선택한 찜 상품 : " + item);
+		 * 
+		 * if (item != null) { map.put("item", item); map.put("member", loginUser);
+		 * result = mService.addCart(map); } result += result; }
+		 * 
+		 * if (result > 0) { return "success"; } else { throw new
+		 * MemberException("장바구니 추가 실패"); } }
+		 */
 
 	// 1:1문의 답변
 	@RequestMapping("inquiryReply.do")

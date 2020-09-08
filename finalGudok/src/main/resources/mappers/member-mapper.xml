@@ -405,7 +405,7 @@
 		, #{member.memberId}
 		,
 		#{member.email}
-		, '1주'
+		, 1
 		, 1
 		, #{item.itemName}
 		, #{item.itemPrice})

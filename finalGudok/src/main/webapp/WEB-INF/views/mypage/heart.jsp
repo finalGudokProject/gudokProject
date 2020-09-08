@@ -375,7 +375,7 @@
 	  			console.log(checkArr);
 	  			
 	  			$.ajax({
-	  				url:"addCart.do",
+	  				url:"mbasket.do",
 	  				type:"post",
 	  				data:{checkArr:checkArr, memberNo:memberNo, memberId:memberId, email:email},
 	  				success:function(data){
