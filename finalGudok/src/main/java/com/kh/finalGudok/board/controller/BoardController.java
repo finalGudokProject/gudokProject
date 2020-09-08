@@ -42,14 +42,7 @@ public class BoardController {
 	// admin Notice
 	// List
 	@RequestMapping("adminNoticeList.do")
-	public ModelAndView adminNoticeList(ModelAndView mv, @RequestParam(value = "page", required = false) Integer page) { // 기본
-																															// 자료형으로
-																															// 받을
-																															// 수
-																															// 없기
-																															// 때문에
-																															// Integer를
-																															// 쓴다
+	public ModelAndView adminNoticeList(ModelAndView mv, @RequestParam(value = "page", required = false) Integer page) { 
 		// 페이징 관련 처리부터 하자
 		int currentPage = 1;
 		if (page != null) {
@@ -448,14 +441,7 @@ public class BoardController {
 
 	// 리스트 출력
 	@RequestMapping("adminFAQList.do")
-	public ModelAndView adminFAQList(ModelAndView mv, @RequestParam(value = "page", required = false) Integer page) { // 기본
-																														// 자료형으로
-																														// 받을
-																														// 수
-																														// 없기
-																														// 때문에
-																														// Integer를
-																														// 쓴다
+	public ModelAndView adminFAQList(ModelAndView mv, @RequestParam(value = "page", required = false) Integer page) { 
 
 		int currentPage = 1;
 		if (page != null) {
@@ -1364,7 +1350,7 @@ public class BoardController {
 	// admin Event
 	// List
 	@RequestMapping("adminEventList.do")
-	public ModelAndView adminEventDetail(ModelAndView mv,
+	public ModelAndView adminEventList(ModelAndView mv,
 			@RequestParam(value = "page", required = false) Integer page) { // 기본 자료형으로 받을 수 없기 때문에 Integer를 쓴다
 		// 페이징 관련 처리부터 하자
 		int currentPage = 1;
@@ -1398,6 +1384,7 @@ public class BoardController {
 	}
 
 	// Detail
+	@RequestMapping("adminEventDetail.do")
 	public ModelAndView adminEventDetail(ModelAndView mv, int bBoard_no, @RequestParam("page") Integer page) {
 		int currentPage = page;
 
@@ -1428,9 +1415,7 @@ public class BoardController {
 
 	@RequestMapping("eventInsert.do")
 	public String eventInsert(HttpServletRequest request, Board b, EventBoard e,
-			@RequestParam(value = "uploadEvent", required = false) MultipartFile file) { // 다중 업로드 파일은
-																							// List<MultipartFile> file
-																							// 이용 찾아서 해봐
+			@RequestParam(value = "uploadEvent", required = false) MultipartFile file) {
 		// NoticeController에 있는 saveFile 메소드 가져오고 buploadFiles폴더로 수정하자
 		// 그리고 이번엔 날짜를 활용한 rename을 적용해 보자
 
