@@ -509,4 +509,8 @@ public class MemberDao {
 	public int selectPoint(int subscribeNo) {
 		return sqlSessionTemplate.selectOne("memberMapper.selectPoint",subscribeNo);
 	}
+
+	public int selectPointMember(AdminSubscribe adminSubscribe) {
+		return sqlSessionTemplate.update("memberMapper.selectPointMember",adminSubscribe);
+	}
 }

@@ -641,7 +641,7 @@ public class MemberController {
 	// 찜 삭제
 	@RequestMapping("heartDelete.do")
 	@ResponseBody
-	public String heartDelete(HttpSession session, HttpServletRequest request,
+	public String heartDelete(HttpSession session, HttpServletRequest request, Model model,
 			@RequestParam(value = "checkArr[]") List<String> heartList) {
 		Member loginUser = (Member) session.getAttribute("loginUser");
 
@@ -663,8 +663,12 @@ public class MemberController {
 			result = mService.deleteHeart(dh);
 			result += result;
 		}
-
-		if (result > 0) {
+		
+		int cartCount = mService.cartCount(loginUser.getMemberNo());
+		
+		model.addAttribute("cartCount",cartCount);
+		
+		if (result > 0) {		
 			return "success";
 		} else {
 			throw new MemberException("찜 삭제 실패");
@@ -1480,8 +1484,7 @@ public class MemberController {
 	// 관리자 배송 상태 변경-admin
 	@RequestMapping("updateDelivery.do")
 	@ResponseBody
-	public String updateDelivery(String sendArr, String deliveryStatus) {
-
+	public String updateDelivery(String sendArr, String deliveryStatus, Model model) {
 		String[] strArr = sendArr.split(",");
 
 		ArrayList<AdminSubscribe> dArr = new ArrayList<>();
@@ -1513,6 +1516,10 @@ public class MemberController {
 			//회원에게 적립금 부여
 			int result3=mService.updateMemberPoint(dArr.get(i));
 			
+			
+			int memberNo = mService.selectPointMember(dArr.get(i));
+			int pointCount = mService.pointCount(memberNo);
+			model.addAttribute("pointCount",pointCount);
 			}
 			
 		}

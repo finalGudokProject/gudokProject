@@ -21,11 +21,13 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -45,6 +47,7 @@ import com.kh.finalGudok.item.model.vo.Review;
 import com.kh.finalGudok.item.model.vo.ReviewImage;
 import com.kh.finalGudok.item.model.vo.ReviewView;
 import com.kh.finalGudok.item.model.vo.SearchItem;
+import com.kh.finalGudok.member.model.service.MemberService;
 import com.kh.finalGudok.member.model.vo.Member;
 import com.kh.finalGudok.member.model.vo.Subscribe;
 import com.siot.IamportRestClient.IamportClient;
@@ -59,11 +62,14 @@ import com.siot.IamportRestClient.response.Schedule;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
+@SessionAttributes("cartCount")
 @Controller
 public class ItemController {
 
 	@Autowired
 	ItemService iService;
+	@Autowired
+	private MemberService mService;
 
 	@RequestMapping("itemNew.do")
 	private ModelAndView itemNew(ModelAndView mv, @RequestParam(value = "page", required = false) Integer page,
@@ -384,7 +390,7 @@ public class ItemController {
 	// 장바구니 선택 리스트 삭제
 	@ResponseBody
 	@RequestMapping(value = "basketDel.do", method = RequestMethod.POST)
-	public String cartDelete(HttpSession session, HttpServletRequest request,
+	public String cartDelete(HttpSession session, HttpServletRequest request, Model model,
 			@RequestParam(value = "checkboxArr[]") List<String> checkArr, Cart c) {
 		Member member = (Member) session.getAttribute("loginUser");
 		String memberId = member.getMemberId();
@@ -397,6 +403,9 @@ public class ItemController {
 				cartNo = Integer.parseInt(i);
 				c.setCartNo(cartNo);
 				iService.deleteCart(c);
+				int cartCount = mService.cartCount(member.getMemberNo());
+				System.out.println("장바구니 갯수 : " + cartCount);
+				model.addAttribute("cartCount",cartCount);
 			}
 		}
 		return "success";
@@ -406,11 +415,15 @@ public class ItemController {
 	// 장바구니 추가
 	@RequestMapping("basket.do")
 	@ResponseBody
-	public String insertCart(HttpServletRequest request, Cart c) {
+	public String insertCart(HttpSession session, HttpServletRequest request, Cart c, Model model) {
+		Member member = (Member) session.getAttribute("loginUser");
 		int search = iService.selectCart(c);
 		System.out.println("search : " + search);
 		if(search == 0) {
 			iService.insertCart(c);
+			int cartCount = mService.cartCount(member.getMemberNo());
+			System.out.println("장바구니 갯수 : " + cartCount);
+			model.addAttribute("cartCount",cartCount);
 			return "success";
 		}else {
 			return "fail";
