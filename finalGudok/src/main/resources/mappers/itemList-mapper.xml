@@ -445,4 +445,12 @@
 		</choose>
 	</select>
 	
+	<select id="selectPN" resultType="int">
+		SELECT CART_NO, ITEM_RENAME, ITEM_DISCOUNT
+		FROM ITEM_LIST_VIEW ILV
+		JOIN CART C ON(C.ITEM_NO = ILV.ITEM_NO)
+		WHERE MEMBER_NO = #{memberNo}
+		ORDER BY CART_NO DESC
+	</select>
+	
 </mapper>

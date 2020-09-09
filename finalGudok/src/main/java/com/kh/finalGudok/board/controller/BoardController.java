@@ -1729,6 +1729,7 @@ public class BoardController {
 			result4 = bService.deleteBoard(dEventArr[k]);
 		}
 
+
 		if ((result1 > 0 && result4>0) || result2 > 0 || result3 > 0) {
 
 			return "redirect:adminEventList.do";

@@ -149,7 +149,7 @@
                     <li><a href="${plist}">적립금 내역</a></li>
                 </ul>
             </li>
-            <c:url var="clist" value="cartView.do">
+            <c:url var="clist" value="mbasketPage.do">
 				<c:param name="memberNo" value="${loginUser.memberNo}"/>
 			</c:url> 
             <li><a href="${clist}"><img src="resources/images/cart.png"
@@ -196,7 +196,7 @@
 	                <tr>
 	                    <td style="width: 80px">탈퇴사유</td>
 	                    <td>
-	                        <select style="width:40%; height:30px;" name="secessionCategory">
+	                        <select style="width:40%; height:30px;" id="secessionCategory" name="secessionCategory" >
 	                            <option value="1">서비스가 마음에 들지 않음</option>
 	                            <option value="2">가격이 비쌈</option>
 	                            <option value="3">원하는 상품이 없음</option>
@@ -207,8 +207,8 @@
 	                </tr>
 	                <tr></tr>
 	                <tr>
-	                    <td colspan="2" name="secessionContent">
-	                        <textarea cols="80" rows="10" style="resize:none;"></textarea>
+	                    <td colspan="2">
+	                        <textarea cols="80" rows="10" style="resize:none;" id="secessionContent" name="secessionContent"></textarea>
 	                    </td>
 	                </tr>
 	            </table>
@@ -223,5 +223,27 @@
     </div>
     <br style="clear:both;">
 	<jsp:include page="../common/footer.jsp"/>
+	
+	<script>
+		$(function(){
+			$("#secessionContent").attr("disabled", "disabled");
+			
+			$("#secessionCategory").on('change',function(){
+    			var select = $("#secessionCategory option:selected").val()
+    			
+        		if(select == 1){
+        			$("#secessionContent").attr("disabled", "disabled");
+        		} else if(select == 2){
+        			$("#secessionContent").attr("disabled", "disabled");
+        		} else if(select == 3){
+        			$("#secessionContent").attr("disabled", "disabled");
+        		} else if(select == 4){
+        			$("#secessionContent").attr("disabled", "disabled");
+        		} else if(select == 5){
+        			$("#secessionContent").attr("disabled", false);
+        		}
+    		})
+		})
+	</script>>
 </body>
 </html>

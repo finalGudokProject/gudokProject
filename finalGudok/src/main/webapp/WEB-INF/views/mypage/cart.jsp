@@ -10,7 +10,11 @@
 <title>Insert title here</title>
 <!-- Bootstrap CSS -->
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-
+ <!-- sweetalert시작 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<link rel="stylesheet"href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css" />
+<!-- sweetalert끝 -->
 <style>
 	#content {
         font-size: 1em;
@@ -173,7 +177,7 @@
       width: 85%;
     }
 
-    .cartTable tr {
+    /* .cartTable tr {
       height: 45px;
     }
 
@@ -228,7 +232,72 @@
 
     .price td{
       border: 2px solid #115D8C;
-    }
+    } */
+    
+    .basketImg{
+		width:20rem;
+		height:20rem;
+	}
+	.listChk{
+		width:5%;
+		height:5%;
+	}
+	input[type=checkbox]{
+		width:30px;
+		height:30px;
+		display:block;
+		margin:0 auto;
+		
+	}
+	td{
+		vertical-align:middle;
+
+	}
+	th{
+
+	}
+	
+	input[type=button]{
+		background:#6AAED9;
+		color:white;
+		border-radius:5px;
+		padding:2%;
+		width:20%;
+		transition:0.5s;
+	  	position:relative;
+	  	border:1px solid #6AAED9;
+		margin-bottom:1%;
+	}
+	input[type=button]:hover{
+		background:#11538C;
+		color:#white;
+		border:1px solid #11538C;
+	}
+	
+	input[type=button]:hover:before,input[type=button]:hover:after{
+		width:100%;
+		transition:0.5s;
+	}
+		
+	.signImg{
+		width:35px;
+		height:35px;
+	}
+	
+	.signImgP{
+		width:35px;
+		height:35px;
+	}
+	
+	.signImgM{
+		width:35px;
+		height:35px;
+	}
+	
+	
+	table .countTd{
+		vertical-align:middle;
+	}
  
 </style>
 </head>
@@ -267,7 +336,7 @@
                     <li><a href="${plist}">적립금 내역</a></li>
                 </ul>
             </li>
-            <c:url var="clist" value="cartView.do">
+            <c:url var="clist" value="mbasketPage.do">
 				<c:param name="memberNo" value="${loginUser.memberNo}"/>
 			</c:url> 
             <li><a href="${clist}"><img src="resources/images/cart.png"
@@ -329,16 +398,13 @@
 	          </div>
 	          <div class="subscribe">
 	            <div class="sub">
-	              <span class="title"><a href="#" style="color: black;">구독</a></span>
+	              <span class="title"><a href="${slist}" style="color: black;">구독</a></span>
 	              <br><br>
-	              <span class="count"><a href="#" style="color :#115D8C;">${subscribeCount}<span class="etc">&nbsp;건</span></a></span>
+	              <span class="count"><a href="${slist}" style="color :#115D8C;">${subscribeCount}<span class="etc">&nbsp;건</span></a></span>
 	            </div>
 	          </div>
 	          <div class="cart">
 	            <div class="sub">
-		            <c:url var="clist" value="cartList.do">
-						<c:param name="memberNo" value="${loginUser.memberNo}"/>
-					</c:url> 
 	              <span class="title"><a href="${clist}" style="color: black;">장바구니</a></span>
 	              <br><br>
 	              <span class="count"><a href="${clist}" style="color :#115D8C;">${cartCount}<span class="etc">&nbsp;건</span></a></span>
@@ -346,9 +412,6 @@
 	          </div>
 	          <div class="point">
 	            <div class="sub">
-	            	<c:url var="plist" value="pointList.do">
-						<c:param name="memberNo" value="${loginUser.memberNo}"/>
-					</c:url>
 	              <span class="title"><a href="${plist}" style="color: black;">적립금</a></span>
 	              <br><br>
 	              <span class="count"><a href="${plist}" style="color :#115D8C;">${pointCount}<span class="etc">&nbsp;건</span></a></span>
@@ -357,339 +420,275 @@
 	        </div>
 	      </div>
 	      <span class="sub_content" style="font-size: 1.5em;">장바구니</span>
-	      <br><br><br>
-	      <table class="cartTable">
-	      	<thead>
-	      		<tr class="cartList">
-		          <td style="width: 10%" class="top bottom"><input type="checkbox" class="check_all">&nbsp;&nbsp;전체선택</td>
-		          <td style="width: 45%;" colspan="2" class="top bottom">상품명</td>
-		          <td style="width: 15%;" class="top bottom">주기</td>
-		          <td style="width: 15%;" class="top bottom">수량</td>
-		          <td style="width: 15%;" class="top bottom">주문금액</td>
-		        </tr>
-	      	</thead>
-	        <tbody class="tbody">
-	        
-	        </tbody>
-	      </table>
-	
-	      <div class="delete">
-	        <button onclick="deleteCart();">선택삭제</button>
-	      </div>
-	
-	      <div class="price" style="width: 100%; margin: 0 auto; margin-top: 10%;">
-	        <table>
-	          <tr style="height: 40px;">
-	            <td>총 판매금액</td>
-	            <td>할인금액</td>
-	            <td>배송비</td>
-	            <td>최종 주문금액</td>
-	          </tr>
-	          <tr style="height: 80px;">
-	            <td><span style="font-size:1.2em" class="totalPrice"><fmt:formatNumber value="0" pattern="#,###"/></span><span>원</span></td>
-	            <td><span style="font-size:1.2em">0</span><span>원</span></td>
-	            <td><span style="font-size:1.2em" class="deliveryPrice">2,500</span><span>원</span></td>
-	            <fmt:parseNumber var="numberType" value="${price}"/>
-	            <c:set var="paymentPrice" value="${numberType + 2500}"/>
-	            <td><span style="font-size:1.2em" class="paymentPrice"><fmt:formatNumber value="0" pattern="#,###"/></span><span>원</span></td>
-	          </tr>
-	        </table>
-	      </div>
-	
-	      <div class="btn2">
-	        <button style="border: 1px solid black; background: #fff;">선택주문하기</button>
-	        <button style="background: #115D8C; color: #fff;">주문하기</button>
-	      </div>
+	      <br><br>
+			<c:if test="${!empty list }">
+			<table style="border:1px solid black; text-align:center; padding:10%; align="center" class="cartTable">
+				<thead>
+				<tr style="border-bottom:1px solid lightgray; vertical-align:middle;">
+					<th class="listChk"  style="width:3%;"><input type="checkbox" id="allChk"></th>
+					<th style="width:7%;"><label for="chk" style="display:block;margin:0px;text-align:left;">전체선택(<span id="frontCount">0</span>/<span id="afterCount">${list.size() }</span>)</label></th>
+					<th colspan="2" style="width:35%;text-align:left;">상품정보</th>
+					<th style="width:18%;">수량</th>
+					<th style="width:8%;">구독주기</th>
+					<th style="width:19%;">상품가격</th>
+				</tr>
+				
+				</thead>
+				<tbody id="tbody">
+				
+				<c:forEach var="c" items="${list }" varStatus="vs">
+				<fmt:formatNumber var="discountPrice" value="${(c.itemPrice - c.itemPrice*(c.itemDiscount/100)) * c.cartCount}" type="number"/>
+				<fmt:formatNumber var="itemPrice" value="${c.itemPrice * c.cartCount }" type="number"/>
+				<tr style="border-bottom:1px solid lightgray;vertical-align:middle;">
+					<td class="listChk">
+					<c:if test="${c.itemDiscount == 0 }">
+					<input type="checkbox" class="chk" value="${c.itemPrice * c.cartCount}" data-cartNo="${c.cartNo }">
+					</c:if>
+					<c:if test="${c.itemDiscount != 0 }">
+					<input type="checkbox" class="chk" value="${(c.itemPrice - c.itemPrice*(c.itemDiscount/100)) * c.cartCount}" data-cartNo="${c.cartNo }">
+					<input type="hidden" class="chk" value="${c.itemPrice * c.cartCount}" data-cartNo="${c.cartNo }">
+					</c:if>
+					</td>
+					<td colspan="2" style="width:25rem;text-align:center;">
+						<img src="${contextPath }/resources/uploadFiles/${c.itemRename}" class="basketImg">
+					</td>
+					<td><input type="hidden" id="totalPriceInput" class="totalPriceInput" style="width:10rem;">${c.itemName }</td>
+					<td class="countTd" style="width:20rem;">
+						<c:if test="${c.cartCount == 1 }">
+						<img src="${contextPath }/resources/images/XSIGN.png" class="signImgM" id="signM">
+						</c:if>
+						<c:if test="${c.cartCount != 1 }">
+						<img src="${contextPath }/resources/images/minus.png" class="signImgM" id="signM">
+						</c:if>
+						
+						<input type="hidden">
+						
+						<c:if test="${c.itemDiscount != 0}">
+		                	<input type="hidden" value="${c.itemPrice - c.itemPrice*(c.itemDiscount/100)}">
+						</c:if>
+						<c:if test="${c.itemDiscount == 0}">
+							<input type="hidden" value="${c.itemPrice }">
+						</c:if>
+						<input type="text" readonly class="amountT" value="${c.cartCount }" style="width:50px;text-align:center;">
+						<img src="${contextPath }/resources/images/plus.png" class="signImgP" id="signP">
+						<input type="hidden" value="${c.itemDiscount }">
+					</td>
+					<td style="width:10rem;">
+					<c:choose>
+						<c:when test="${c.cartSubs == 1 }">
+							<select style="width:80px;height:30px;" name="cartSubs">
+								<option value="1" selected>1주일</option>
+								<option value="2">2주일</option>
+								<option value="3">3주일</option>
+								<option value="4">4주일</option>
+							</select>
+						</c:when>
+						<c:when test="${c.cartSubs == 2 }">
+							<select style="width:80px;height:30px;" name="cartSubs">
+								<option value="1">1주일</option>
+								<option value="2" selected>2주일</option>
+								<option value="3">3주일</option>
+								<option value="4">4주일</option>
+							</select>
+						</c:when>
+						<c:when test="${c.cartSubs == 3 }">
+							<select style="width:80px;height:30px;" name="cartSubs">
+								<option value="1">1주일</option>
+								<option value="2">2주일</option>
+								<option value="3" selected>3주일</option>
+								<option value="4">4주일</option>
+							</select>
+						</c:when>
+						<c:otherwise>
+							<select style="width:80px;height:30px;" name="cartSubs">
+								<option value="1">1주일</option>
+								<option value="2">2주일</option>
+								<option value="3">3주일</option>
+								<option value="4" selected>4주일</option>
+							</select>
+						</c:otherwise>
+					</c:choose>
+					</td>
+					<td style="width:50px;">
+						<c:if test="${c.itemDiscount != 0}">
+		                	<s style="color:red;">${itemPrice }원</s><br>↓<br>${discountPrice }원
+						</c:if>
+						<c:if test="${c.itemDiscount == 0}">
+							${itemPrice }원
+						</c:if>
+					</td>
+				</tr>
+				</c:forEach>
+				</tbody>
+				<tfoot>
+				<tr>
+					<td colspan="7" style="text-align:right; padding-right:3%; font-size:20px;"><span id="totalPriceTd">결제하실 상품을 선택해 주세요.</span></td>
+				</tr>
+				<tr id="asd">
+					<td colspan="7" style="text-align:right;padding-right:3%;"><input type="button" value="장바구니 삭제하기" style="margin-right:5%;" id="delBtn"><input type="button" value="선택 상품 결제하기" id="paymentBtn"></td>
+				</tr>
+				</tfoot>
+			</table>
+			</c:if>
+			<c:if test="${empty list }">
+				<div class="col-2"></div>
+					<div class="col-8" id="emptyDiv" style="margin-top:2%;border:1px solid lightgray;">
+						<div style="text-align:center;width:100%;"><img src="${contextPath }/resources/images/empty.png" style="width:30%;"></div>
+						<div style="text-align:center;width:100%;font-size:40px;">장바구니에 추가한 상품이 없습니다.</div>
+					</div>
+				<div class="col-2"></div>	
+			</c:if>
 	    </div>
     </div>
     <br style="clear:both;">
     <jsp:include page="../common/footer.jsp"/>
-  
-  <script>
-	$(function(){
-		getCartList();
-  	});
-	
-	  function deleteCart(){
-			var confirm_val = confirm("정말 삭제하시겠습니까?");
-			
-			if(confirm_val){
-				var checkArr = new Array();
-				
-				$("input[class='check']:checked").each(function(){
-					checkArr.push($(this).attr("data-cartNum"))
-				});
-				
-				$.ajax({
-					url:"cartDelete.do",
-					type:"post",
-					data:{checkArr:checkArr},
-					success:function(data){
-						if(data == "success"){ 
-							getCartList();
-					}
-					},
-					error:function(request, status, errorData){
-	                  alert("error code: " + request.status + "\n"
-	                        +"message: " + request.responseText
-	                        +"error: " + errorData);
-					}
-				});
-			}
-		}
-	  
-	  function getCartList(){
-			var memberNo = ${loginUser.memberNo};
-			
-			$.ajax({
-				url:"cartList.do",
-				data:{memberNo:memberNo},
-				dataType:"json",
-				success:function(data){
-					console.log(data);
-					
-					$tableBody = $(".cartTable .tbody");
-					$tableBody.html("");
-					
-					var $tr;
-					var $td;
-					var $checkbox;
-					var $imageTd;
-					var $imageDiv
-					var $img;
-					var $productTd;
-					var $productSpan;
-					var $cycleTd;
-					var $cycleSelect;
-					var $cycleOption1;
-					var $cycleOption2;
-					var $cycleOption3;
-					var $cycleOption4;
-					var $countTd;
-					var $minus;
-					var $amount;
-					var $plus;
-					var $totalPriceTd;
-					var $totalPrice;
-					var $won;
-					
-					if(data.length > 0 ){	// 댓글이 하나 이상 존재하면
-						for(var i in data){
-							var cartNo = parseInt(data[i].heartNo);
-							
-							$tr = $("<tr class='cartList'>");
-							$td = $("<td class='bottom'>");
-							$checkBox = $("<input type='checkbox' name='check' class='check' style='margin: auto 0;'>").attr('data-cartNum', data[i].cartNo).attr('value',data[i].itemPrice * data[i].cartCount);			
-							$imageTd = $("<td style='width:15%' class='bottom'>");
-							$imageDiv = $("<div class='image'>")
-							$img = $("<img src=${contextPath}/resources/uploadFiles/"+data[i].imageRename+">");
-							$productTd = $("<td class='bottom'>");
-							$productSpan = $("<span style='float:left; margin-left: 1%;'>").text(data[i].itemName);
-							$cycleTd = $("<td class='bottom'>");
-							$cycleSelect = $("<select style='width:60%; height:30px'>");
-							if(data[i].cartSubs == '1주'){								
-								$cycleOption1 = $("<option selected>").text("1주");
-								$cycleOption2 = $("<option>").text("2주");
-								$cycleOption3 = $("<option>").text("3주");
-								$cycleOption4 = $("<option>").text("4주");
-							} else if(data[i].cartSubs == '2주'){								
-								$cycleOption1 = $("<option>").text("1주");
-								$cycleOption2 = $("<option selected>").text("2주");
-								$cycleOption3 = $("<option>").text("3주");
-								$cycleOption4 = $("<option>").text("4주");
-							} else if(data[i].cartSubs == '3주'){								
-								$cycleOption1 = $("<option>").text("1주");
-								$cycleOption2 = $("<option>").text("2주");
-								$cycleOption3 = $("<option selected>").text("3주");
-								$cycleOption4 = $("<option>").text("4주");
-							} else{
-								$cycleOption1 = $("<option>").text("1주");
-								$cycleOption2 = $("<option>").text("2주");
-								$cycleOption3 = $("<option>").text("3주");
-								$cycleOption4 = $("<option selected>").text("4주");
-							}
-							$countTd = $("<td class='bottom'>");
-							$minus = $("<img class='minus' src = 'resources/images/my_minus.png' style='width: 10%; height: auto; cursor:pointer;'>");
-							$amount = $("<span class='amount' style='display:inline-block; width:40px;'>").text(data[i].cartCount);
-							$plus = $("<img class='plus' src='resources/images/my_plus.png' style='width: 10%; height: auto; cursor:pointer;'>");
-							$totalPriceTd = $("<td class='bottom tprice'>");
-							var str = String(data[i].itemPrice * data[i].cartCount);
-							var price = str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
-							$totalPrice = $("<span class='price' style='display: inline-block; width: 45px;'>").text(price);
-							$won = $("<span>").text("원");
-							
-							$td.append($checkBox);
-							$imageDiv.append($img);
-							$imageTd.append($imageDiv);
-							$productTd.append($productSpan);
-							$cycleSelect.append($cycleOption1);
-							$cycleSelect.append($cycleOption2);
-							$cycleSelect.append($cycleOption3);
-							$cycleSelect.append($cycleOption4);
-							$cycleTd.append($cycleSelect);
-							$countTd.append($minus);
-							$countTd.append($amount);
-							$countTd.append($plus);
-							$totalPriceTd.append($totalPrice);
-							$totalPriceTd.append($won);
-							
-							$tr.append($td);
-							$tr.append($imageTd);
-							$tr.append($productTd);
-							$tr.append($cycleTd);
-							$tr.append($countTd);
-							$tr.append($totalPriceTd);
-							
-							$tableBody.append($tr);
-						}
-					}
-				},
-				error:function(request, status, errorData){
-	                alert("error code: " + request.status + "\n"
-	                      +"message: " + request.responseText
-	                      +"error: " + errorData);
-	           }
-
-			})
-	  }
-  </script>
-  
-  <script>
-    	$(function(){
-    		function addComma(num) {
+  		<!-- 수량 버튼 -->
+		<script>
+		$(function(){
+			function addComma(num) {
 			 	var regexp = /\B(?=(\d{3})+(?!\d))/g;
 				return num.toString().replace(regexp, ',');
 			}
-    		
-    		var sum = 0;
-    		var paymentPrice = 0;
-    		
-    		$(".check_all").on("click", function(){
-				if($(".check_all").prop("checked")){
+			var count = "";
+			var check = "";
+			var sum = 0;
+			$("#allChk").on("click", function(){
+				if($("#allChk").prop("checked")){
 					$("input[type=checkbox]").prop("checked",true);
-					/* check = $("input:checkbox[class=check]:checked").length;
+					check = $("input:checkbox[class=chk]:checked").length;
 					$("#delBtn").val(check + "개 상품 삭제하기");
-					$("#frontCount").text(check); */
-					$("input:checkbox[class=check]:checked").each(function(){
+					$("#frontCount").text(check);
+					$("input:checkbox[class=chk]:checked").each(function(){
 						sum += Number($(this).val());
-						
-						var deliveryPrice = parseInt($('.deliveryPrice').text().replace(/\,/g, ""), 10);
-						
-						paymentPrice = sum + deliveryPrice;
-						
-						$('.totalPrice').text(addComma(sum));
-						$('.paymentPrice').text(addComma(paymentPrice));
-						
-						console.log(sum);
+						$("#paymentBtn").val(addComma(sum)+"원 결제하기");
+						$("#totalPriceTd").text("총 주문 금액 : " + addComma(sum)+"원");
 					})
+					console.log(sum);
 				}else{
 					$("input[type=checkbox]").prop("checked",false);
-					/* check = $("input:checkbox[class=chk]:checked").length;
+					check = $("input:checkbox[class=chk]:checked").length;
 					$("#delBtn").val("장바구니 삭제하기");
-					$("#frontCount").text("0"); */
+					$("#frontCount").text("0");
 					sum = 0;
-					var deliveryPrice = parseInt($('.deliveryPrice').text().replace(/\,/g, ""), 10);
-					
-					paymentPrice = sum + deliveryPrice;
-					
-					$('.totalPrice').text(addComma(sum));
-					$('.paymentPrice').text(addComma(paymentPrice));
+					$("#paymentBtn").val("상품을 선택해 주세요.");
+					$("#totalPriceTd").text("결제하실 상품을 선택해 주세요.");
+					console.log(sum);
 				}
-			});
-    		
-    		$(document).on('click', '.check', function(){
-				/* if($("#allChk").prop("checked")){
+			})
+			$(".chk").on("click", function(){
+				if($("#allChk").prop("checked")){
 					$("#allChk").prop("checked",false);
-				} */
+				}
 				if($(this).prop("checked")){
-					alert("체크");
-					/* check++;
+					check++;
 					$("#delBtn").val(check + "개 상품 삭제하기");
-					$("#frontCount").text(check); */
+					$("#frontCount").text(check);
 					
+					/* sum += $(this).parent().next().next().find("input").val(); */
 					sum += Number($(this).val());
+					$("#totalPrice").val(sum);
+					$("#paymentBtn").val(addComma(sum)+"원 결제하기");
+					$("#totalPriceTd").text("총 주문 금액 : " + addComma(sum)+"원");
 					
-					var deliveryPrice = parseInt($('.deliveryPrice').text().replace(/\,/g, ""), 10);
-					
-					paymentPrice = sum + deliveryPrice;
-					
-					$('.totalPrice').text(addComma(sum));
-					$('.paymentPrice').text(addComma(paymentPrice));
-					/* $("#paymentBtn").val(addComma(sum)+"원 결제하기");
-					$("#totalPriceTd").text("총 주문 금액 : " + addComma(sum)+"원"); */
+					console.log(sum);
 				}else{
-					/* check--; */
+					check--;
 					sum -= Number($(this).val());
-					paymentPrice -= Number($(this).val());
-					/* $("#frontCount").text(check);
+					$("#frontCount").text(check);
 					if(check != 0){
-						$("#delBtn").val("상품을 선택해 주세요.");
+						$("#delBtn").val(check + "개 상품 삭제하기");
 						$("#paymentBtn").val(addComma(sum)+"원 결제하기");
 						$("#totalPriceTd").text("총 주문 금액 : " + addComma(sum)+"원");
 					}else{
 						$("#paymentBtn").val("상품을 선택해 주세요.");
-						$("#delBtn").val(check + "개 상품 삭제하기");
+						$("#delBtn").val("장바구니 삭제하기");
 						$("#totalPriceTd").text("결제하실 상품을 선택해 주세요.");
-					} */
+					}
+					console.log(sum);
 					
-					$('.totalPrice').text(addComma(sum));
-					$('.paymentPrice').text(addComma(paymentPrice));
 				}
-			});
-    	})
-    </script>
-    
-    <script>
-	    $(function () {
-	    	function addComma(num) {
-			 	var regexp = /\B(?=(\d{3})+(?!\d))/g;
-				return num.toString().replace(regexp, ',');
-			}
-	    	
-	    	$(document).on('click', '.minus', function(e){
-		        e.preventDefault();
-		        var stat = $(this).siblings('.amount').text();
-		        var num = parseInt(stat, 10);
-		        var currentPrice = $(this).parent('td').next('td').children('.price').text();
-		        var price = parseInt(currentPrice.replace(/\,/g, ""), 10);
-		        var itemPrice = price / num;
-		        var deliveryPrice = parseInt($('.deliveryPrice').text().replace(/\,/g, ""), 10);
-		        
-		        num--;
+			})
+		})
+	</script>
 		
-		        if (num <= 0) {
-		          alert('주문 최소 수량은 1개입니다.');
-		          num = 1;
-		        }
-				
-		        var totalPrice = itemPrice * num;
-	
-		        $(this).siblings('.amount').text(num);
-		        $(this).parent('td').next('td').children('.price').text(addComma(totalPrice));
-		        $(this).parent().prev().prev().prev().prev().children('.check').val(totalPrice);
-	
-		      });
-			
-	    	$(document).on('click', '.plus', function(e){
-		        e.preventDefault();
-		        var stat = $(this).siblings('.amount').text();
-		        var num = parseInt(stat, 10);
-		        var currentPrice = $(this).parent('td').next('td').children('.price').text();
-		        var price = parseInt(currentPrice.replace(/\,/g, ""), 10);
-		        var itemPrice = price / num;
-		        var deliveryPrice = parseInt($('.deliveryPrice').text().replace(/\,/g, ""), 10);
-		        
-		        num++;
-		        
-		        var totalPrice = itemPrice * num;
-	
-		        $(this).siblings('.amount').text(num);
-		        $(this).parent('td').next('td').children('.price').text(addComma(totalPrice));
-		        $(this).parent().prev().prev().prev().prev().children('.check').val(totalPrice);
-	
-		   });
-	    });
-  </script>
-
+		<!-- 장바구니 목록 삭제버튼 -->
+		<script>
+			$(function(){
+				$("#delBtn").on("click", function(){
+					var check = $("input:checkbox[class=chk]:checked").length;
+					if(check == 0){
+						swal("","선택된 상품이 없습니다.","error");
+					}else{
+						swal({
+							text : check + "개의 상품을 장바구니에서 삭제하시겠습니까?",
+							icon : "warning",
+							buttons : ["예", "아니오"],
+							closeOnEsc : false,
+							dangerMode : true,
+						}).then((result)=>{
+							if(result){
+								
+							}else{
+								var checkArr = new Array();
+								$("input:checkbox[class='chk']:checked").each(function(){
+									checkArr.push($(this).attr("data-cartNo"));
+								})
+								$.ajax({
+									url : "basketDel.do",
+									data : {checkboxArr:checkArr},
+									type : "post",
+									success:function(data){
+										if(data == "success"){
+											swal("",check+"개의 상품이 장바구니에서 삭제되었습니다.","success").then((del)=>{
+												if(del){
+													location.reload();
+												}
+											})
+											
+										}else{
+											alert("실패");
+										}
+									},
+									error:function(request, status, errorData){
+					                	alert("error code: " + request.status + "\n"
+					                	+"message: " + request.responseText
+					                	+"error: " + errorData);
+					               }
+								})
+							}
+						})
+					}
+				})
+			})	
+		</script>
+		<!-- 장바구니 목록 삭제버튼 끝 -->
+		
+		<!-- 결제하기 버튼 -->
+		<script>
+			$(function(){
+				$("#paymentBtn").on("click", function(){
+					var check = $("input:checkbox[class='chk']:checked").length;
+					var pay = $("#paymentBtn").val().slice(0,-5);
+					if(check == 0){
+						swal("","결제하실 상품을 선택해 주세요.","error");
+					}else{
+						swal({
+							text : check + "개의 상품 " + pay + "을 결제하시겠습니까?",
+							icon : "warning",
+							buttons : ["예", "아니오"],
+							closeOnEsc : false,
+							dangerMode : true,
+						}).then((result)=>{
+							if(result){
+								
+							}else{
+								swal("","결제 페이지로","success");
+							}
+						})
+					}
+				})
+			})	
+		</script>
+		<!-- 결제하기 버튼 끝 -->
 </body>
 </html>

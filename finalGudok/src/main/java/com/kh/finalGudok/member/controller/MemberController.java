@@ -43,6 +43,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
+import com.kh.finalGudok.item.model.service.ItemService;
 import com.kh.finalGudok.item.model.vo.BannerItem;
 import com.kh.finalGudok.item.model.vo.Item;
 import com.kh.finalGudok.item.model.vo.PageInfo;
@@ -55,7 +56,7 @@ import com.kh.finalGudok.member.model.vo.AdminPayment;
 import com.kh.finalGudok.member.model.vo.AdminSecession;
 import com.kh.finalGudok.member.model.vo.AdminSubscribe;
 import com.kh.finalGudok.member.model.vo.Cancle;
-import com.kh.finalGudok.member.model.vo.Cart;
+import com.kh.finalGudok.item.model.vo.Cart;
 import com.kh.finalGudok.member.model.vo.Chart;
 import com.kh.finalGudok.member.model.vo.DeleteHeart;
 import com.kh.finalGudok.member.model.vo.Delivery;
@@ -72,7 +73,7 @@ import com.kh.finalGudok.member.model.vo.Subscribe;
 import com.kh.finalGudok.member.model.vo.Tempkey;
 import com.kh.finalGudok.member.model.vo.Withdrawal;
 
-@SessionAttributes("loginUser")
+@SessionAttributes({"loginUser","cartCount", "pointCount", "subscribeCount"})
 @Controller
 public class MemberController {
 
@@ -84,6 +85,8 @@ public class MemberController {
 	private JavaMailSender mailSender;
 	@Autowired
 	private Member m;
+	@Autowired
+	ItemService iService;
 
 	@RequestMapping("moveToLogin.do")
 	public String moveTologin() {
@@ -350,7 +353,16 @@ public class MemberController {
 	public String cartView() {
 		return "mypage/cart";
 	}
-
+	
+	// 장바구니 페이지 리스트 불러오기
+	@RequestMapping("mbasketPage.do")
+	public ModelAndView basketPage(ModelAndView mv, Integer memberNo) {
+		ArrayList<Cart> list = iService.selectBasket(memberNo);
+		mv.addObject("list", list).setViewName("mypage/cart");
+		System.out.println("basketList : " + list);
+		return mv;
+	}
+	
 	// 구독 조회
 	@RequestMapping("subscribeList.do")
 	@ResponseBody
@@ -509,18 +521,21 @@ public class MemberController {
 		return mv;
 	}
 
-	// 장바구니 내역
-	@RequestMapping("cartList.do")
-	@ResponseBody
-	public void cartList(HttpServletResponse response, Integer memberNo) throws JsonIOException, IOException { // 민지
-		ArrayList<Cart> list = mService.selectCartList(memberNo);
-
-		System.out.println("장바구니 내역 : " + list);
-
-		response.setContentType("application/json;charset=utf-8");
-
-		new Gson().toJson(list, response.getWriter());
-	}
+	/*
+	 * // 장바구니 내역
+	 * 
+	 * @RequestMapping("cartList.do")
+	 * 
+	 * @ResponseBody public void cartList(HttpServletResponse response, Integer
+	 * memberNo) throws JsonIOException, IOException { // 민지 ArrayList<Cart> list =
+	 * mService.selectCartList(memberNo);
+	 * 
+	 * System.out.println("장바구니 내역 : " + list);
+	 * 
+	 * response.setContentType("application/json;charset=utf-8");
+	 * 
+	 * new Gson().toJson(list, response.getWriter()); }
+	 */
 
 	// 교환 신청
 	@RequestMapping("exchangeInsert.do")
@@ -544,7 +559,6 @@ public class MemberController {
 		}
 	}
 
-	
 
 	// 탈퇴하기
 	@RequestMapping("withdrawalInsert.do")
@@ -627,7 +641,7 @@ public class MemberController {
 	// 찜 삭제
 	@RequestMapping("heartDelete.do")
 	@ResponseBody
-	public String heartDelete(HttpSession session, HttpServletRequest request,
+	public String heartDelete(HttpSession session, HttpServletRequest request, Model model,
 			@RequestParam(value = "checkArr[]") List<String> heartList) {
 		Member loginUser = (Member) session.getAttribute("loginUser");
 
@@ -649,8 +663,12 @@ public class MemberController {
 			result = mService.deleteHeart(dh);
 			result += result;
 		}
-
-		if (result > 0) {
+		
+		int cartCount = mService.cartCount(loginUser.getMemberNo());
+		
+		model.addAttribute("cartCount",cartCount);
+		
+		if (result > 0) {		
 			return "success";
 		} else {
 			throw new MemberException("찜 삭제 실패");
@@ -659,8 +677,9 @@ public class MemberController {
 
 	// 구독취소
 	@RequestMapping("subscribeCancle.do")
-	public String subscribeCancle(HttpServletRequest request, Cancle c) { // 민지
-
+	public String subscribeCancle(HttpSession session, HttpServletRequest request, Cancle c, Model model) { // 민지
+		Member loginUser = (Member) session.getAttribute("loginUser");
+		
 		if (c.getCancleCategory() == 1) {
 			c.setCancleContent("상품이 불필요");
 		} else if (c.getCancleCategory() == 2) {
@@ -673,87 +692,126 @@ public class MemberController {
 		int result2 = mService.updateSubscribeStatus(c.getSubscribeNo());
 
 		if (result > 0 && result2 > 0) {
+			int subscribeCount = mService.subscribeCount(loginUser.getMemberNo());
+			
+			model.addAttribute("subscribeCount",subscribeCount);
+			
 			return "mypage/subscribe";
 		} else {
 			throw new MemberException("취소 신청 실패");
 		}
 	}
 
-	// 장바구니 삭제
-	@RequestMapping("cartDelete.do")
-	@ResponseBody
-	public String cartDelete(HttpSession session, HttpServletRequest request, Model model,
-			@RequestParam(value = "checkArr[]") List<String> cartList) {
-		Member loginUser = (Member) session.getAttribute("loginUser");
-
-		System.out.println("선택삭제 실행됨");
-
-		System.out.println(cartList);
-
-		DeleteHeart dh = new DeleteHeart();
-
-		int cartNo;
-
-		int memberNo = loginUser.getMemberNo();
-
-		int result = 0;
-
-		for (int i = 0; i < cartList.size(); i++) {
-			cartNo = Integer.parseInt(cartList.get(i));
-
-			HashMap map = new HashMap<Integer, Integer>();
-
-			map.put("cartNo", cartNo);
-			map.put("memberNo", memberNo);
-
-			result = mService.deleteCart(map);
-
-			result += result;
-
-		}
-
-		if (result > 0) {
-			model.addAttribute("loginUser", loginUser);
-			return "success";
-		} else {
-			throw new MemberException("장바구니 삭제 실패");
-		}
-	}
-
+	/*
+	 * // 장바구니 삭제
+	 * 
+	 * @RequestMapping("cartDelete.do")
+	 * 
+	 * @ResponseBody public String cartDelete(HttpSession session,
+	 * HttpServletRequest request, Model model,
+	 * 
+	 * @RequestParam(value = "checkArr[]") List<String> cartList) { Member loginUser
+	 * = (Member) session.getAttribute("loginUser");
+	 * 
+	 * System.out.println("선택삭제 실행됨");
+	 * 
+	 * System.out.println(cartList);
+	 * 
+	 * DeleteHeart dh = new DeleteHeart();
+	 * 
+	 * int cartNo;
+	 * 
+	 * int memberNo = loginUser.getMemberNo();
+	 * 
+	 * int result = 0;
+	 * 
+	 * for (int i = 0; i < cartList.size(); i++) { cartNo =
+	 * Integer.parseInt(cartList.get(i));
+	 * 
+	 * HashMap map = new HashMap<Integer, Integer>();
+	 * 
+	 * map.put("cartNo", cartNo); map.put("memberNo", memberNo);
+	 * 
+	 * result = mService.deleteCart(map);
+	 * 
+	 * result += result;
+	 * 
+	 * }
+	 * 
+	 * int cartCount = mService.cartCount(loginUser.getMemberNo());
+	 * 
+	 * if (result > 0) { model.addAttribute("loginUser", loginUser);
+	 * model.addAttribute("cartCount",cartCount); return "success"; } else { throw
+	 * new MemberException("장바구니 삭제 실패"); } }
+	 */
+	
 	// 장바구니 추가
-	@RequestMapping("addCart.do")
-	@ResponseBody
-	public String addCart(HttpSession session, HttpServletRequest request,
-			@RequestParam(value = "checkArr[]") List<String> cartList) {
-		Member loginUser = (Member) session.getAttribute("loginUser");
+		@RequestMapping("mbasket.do")
+		@ResponseBody
+		public String maddCart(HttpSession session, HttpServletRequest request, Model model,
+				@RequestParam(value = "checkArr[]") List<String> cartList) {
+			Member loginUser = (Member) session.getAttribute("loginUser");
 
-//		System.out.println("장바구니 추가");
+//			System.out.println("장바구니 추가");
 
-		int itemNo;
-		int result = 0;
+			int itemNo;
+			int result = 0;
 
-		for (int i = 0; i < cartList.size(); i++) {
-			itemNo = Integer.parseInt(cartList.get(i));
-			Item item = mService.selectItem(itemNo);
+			for (int i = 0; i < cartList.size(); i++) {
+				itemNo = Integer.parseInt(cartList.get(i));
+				Item item = mService.selectItem(itemNo);
 
-			HashMap map = new HashMap<Object, Object>();
+				HashMap map = new HashMap<Object, Object>();
 
-			System.out.println("선택한 찜 상품 : " + item);
+				System.out.println("선택한 찜 상품 : " + item);
 
-			if (item != null) {
-				map.put("item", item);
-				map.put("member", loginUser);
-				result = mService.addCart(map);
+				if (item != null) {
+					map.put("item", item);
+					map.put("member", loginUser);
+					result = mService.addCart(map);
+					
+					int cartCount = mService.cartCount(loginUser.getMemberNo());
+					
+					model.addAttribute("cartCount",cartCount);
+				}
+				result += result;
 			}
-			result += result;
+
+			if (result > 0) {
+				return "success";
+			} else {
+				throw new MemberException("장바구니 추가 실패");
+			}
 		}
 
-		if (result > 0) {
-			return "success";
-		} else {
-			throw new MemberException("장바구니 추가 실패");
-		}
-	}
+		/*
+		 * // 장바구니 추가
+		 * 
+		 * @RequestMapping("addCart.do")
+		 * 
+		 * @ResponseBody public String addCart(HttpSession session, HttpServletRequest
+		 * request,
+		 * 
+		 * @RequestParam(value = "checkArr[]") List<String> cartList) { Member loginUser
+		 * = (Member) session.getAttribute("loginUser");
+		 * 
+		 * // System.out.println("장바구니 추가");
+		 * 
+		 * int itemNo; int result = 0;
+		 * 
+		 * for (int i = 0; i < cartList.size(); i++) { itemNo =
+		 * Integer.parseInt(cartList.get(i)); Item item = mService.selectItem(itemNo);
+		 * 
+		 * HashMap map = new HashMap<Object, Object>();
+		 * 
+		 * System.out.println("선택한 찜 상품 : " + item);
+		 * 
+		 * if (item != null) { map.put("item", item); map.put("member", loginUser);
+		 * result = mService.addCart(map); } result += result; }
+		 * 
+		 * if (result > 0) { return "success"; } else { throw new
+		 * MemberException("장바구니 추가 실패"); } }
+		 */
 
 	// 1:1문의 답변
 	@RequestMapping("inquiryReply.do")
@@ -1426,8 +1484,7 @@ public class MemberController {
 	// 관리자 배송 상태 변경-admin
 	@RequestMapping("updateDelivery.do")
 	@ResponseBody
-	public String updateDelivery(String sendArr, String deliveryStatus) {
-
+	public String updateDelivery(String sendArr, String deliveryStatus, Model model) {
 		String[] strArr = sendArr.split(",");
 
 		ArrayList<AdminSubscribe> dArr = new ArrayList<>();
@@ -1459,6 +1516,10 @@ public class MemberController {
 			//회원에게 적립금 부여
 			int result3=mService.updateMemberPoint(dArr.get(i));
 			
+			
+			int memberNo = mService.selectPointMember(dArr.get(i));
+			int pointCount = mService.pointCount(memberNo);
+			model.addAttribute("pointCount",pointCount);
 			}
 			
 		}

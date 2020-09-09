@@ -378,7 +378,7 @@
                     <li><a href="${plist}">적립금 내역</a></li>
                 </ul>
             </li>
-            <c:url var="clist" value="cartView.do">
+            <c:url var="clist" value="mbasketPage.do">
 				<c:param name="memberNo" value="${loginUser.memberNo}"/>
 			</c:url> 
             <li><a href="${clist}"><img src="resources/images/cart.png"
@@ -440,16 +440,13 @@
 	          </div>
 	          <div class="subscribe">
 	            <div class="sub">
-	              <span class="title"><a href="#" style="color: black;">구독</a></span>
+	              <span class="title"><a href="${slist}" style="color: black;">구독</a></span>
 	              <br><br>
-	              <span class="count"><a href="#" style="color :#115D8C;">${subscribeCount}<span class="etc">&nbsp;건</span></a></span>
+	              <span class="count"><a href="${slist}" style="color :#115D8C;">${subscribeCount}<span class="etc">&nbsp;건</span></a></span>
 	            </div>
 	          </div>
 	          <div class="cart">
 	            <div class="sub">
-		            <c:url var="clist" value="cartList.do">
-						<c:param name="memberNo" value="${loginUser.memberNo}"/>
-					</c:url> 
 	              <span class="title"><a href="${clist}" style="color: black;">장바구니</a></span>
 	              <br><br>
 	              <span class="count"><a href="${clist}" style="color :#115D8C;">${cartCount}<span class="etc">&nbsp;건</span></a></span>
@@ -457,9 +454,6 @@
 	          </div>
 	          <div class="point">
 	            <div class="sub">
-	            	<c:url var="plist" value="pointList.do">
-						<c:param name="memberNo" value="${loginUser.memberNo}"/>
-					</c:url>
 	              <span class="title"><a href="${plist}" style="color: black;">적립금</a></span>
 	              <br><br>
 	              <span class="count"><a href="${plist}" style="color :#115D8C;">${pointCount}<span class="etc">&nbsp;건</span></a></span>
@@ -477,9 +471,8 @@
 			$(function(){
 				myEvents = subscribeList();
 			});
-		     
-			 document.addEventListener('DOMContentLoaded', function() {
-				 
+			
+			document.addEventListener('DOMContentLoaded', function() {
 			    var calendarEl = document.getElementById('calendar');
 
 			    var calendar = new FullCalendar.Calendar(calendarEl, {
@@ -491,12 +484,12 @@
 			      	dayMaxEvents: true,
 			      	displayEventTime: false,
 			      	events:subscribeList()
+			      	
 			    });
 
 			    calendar.render();
 			  });
-			 
-			 
+
 			function subscribeList(){
 				var memberNo = ${loginUser.memberNo};
 				$.ajax({
@@ -505,9 +498,6 @@
 					data:{memberNo:memberNo},
 					dataType:"json",
 					success:function(data){
-						console.log("DB에서 불러온 리스트");
-						console.log(data);
-						
 						$tableBody = $(".subscribeTable .tbody");
 						$tableBody.html("");
 						
@@ -600,10 +590,6 @@
 					            $tableBody.append($tr);
 							}
 						}
-						
-						console.log("ajax2");
-						console.log(myEvents);
-						
 					},
 					error:function(request, status, errorData){
 		                alert("error code: " + request.status + "\n"
@@ -735,8 +721,8 @@
 	    function cancleClick(subscribeNo, memberNo){
 	    	$("#subscribeNo3").val(subscribeNo);
 			$("#memberNo3").val(memberNo);
-			
 			$("#subscribeNo4").text(subscribeNo);
+			$("#cancleContent").attr("disabled", "disabled");
 	    }
 	    
 	    $(function(){

@@ -235,4 +235,6 @@ public interface MemberService {
 
 	int selectPoint(int subscribeNo);
 
+	int selectPointMember(AdminSubscribe adminSubscribe);
+
 }

@@ -22,7 +22,7 @@
 	<resultMap type="Point" id="pointResultSet">
 		<id property="pointNo" column="POINT_NO" />
 		<result property="subscribeNo" column="SUBSCRIBE_NO" />
-		<result property="subscribeDate" column="SUBCSRIBE_DATE" />
+		<result property="subscribeDate" column="SUBSCRIBE_DATE" />
 		<result property="itemName" column="ITEM_NAME" />
 		<result property="point" column="POINT" />
 	</resultMap>
@@ -273,8 +273,7 @@
 		SELECT *
 		FROM REVIEW
 		WHERE MEMBER_NO=#{memberNo}
-		ORDER BY
-		REVIEW_DATE DESC
+		ORDER BY REVIEW_DATE DESC
 	</select>
 
 	<select id="exchangeList" parameterType="int"
@@ -370,9 +369,10 @@
 		resultMap="inquiryResultSet">
 		SELECT *
 		FROM BOARD B
-		LEFT JOIN INQUIRY I ON (B.BOARD_NO =
-		I.BOARD_NO)
+		LEFT JOIN INQUIRY I ON (B.BOARD_NO = I.BOARD_NO)
+		LEFT JOIN INQUIRY_TYPE T ON (I.BOARD_TYPE = T.BOARD_TYPE)
 		WHERE BOARD_CODE='O' AND MEMBER_NO=#{memberNo}
+		ORDER BY WRITE_DATE DESC
 	</select>
 
 	<select id="selectHeartList" parameterType="int"
@@ -405,7 +405,7 @@
 		, #{member.memberId}
 		,
 		#{member.email}
-		, '1주'
+		, 1
 		, 1
 		, #{item.itemName}
 		, #{item.itemPrice})
@@ -1331,5 +1331,10 @@
         FROM SUBSCRIBE S
         LEFT JOIN POINT P ON(S.SUBSCRIBE_NO=P.SUBSCRIBE_NO)
         WHERE S.SUBSCRIBE_NO=#{value}
+	</select>
+	<select id="selectPointMember" parameterType="object" resultType="_int">
+		SELECT MEMBER_NO
+        FROM SUBSCRIBE
+        WHERE SUBSCRIBE_NO=#{subscribeNo}
 	</select>
 </mapper>
