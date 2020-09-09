@@ -434,11 +434,12 @@ public class MemberDao {
 	}
 
 	public int insertVisitor(Visitor vo) {
-		System.out.println("dao에서"+vo);
+		System.out.println("dao에 있는 vo"+vo);
 		return sqlSessionTemplate.insert("memberMapper.insertVisitor",vo);
 	}
 
 	public int getVisitTodayCount() {
+		System.out.println("여기오나");
 		return sqlSessionTemplate.selectOne("memberMapper.getVisitTodayCount");
 	}
 

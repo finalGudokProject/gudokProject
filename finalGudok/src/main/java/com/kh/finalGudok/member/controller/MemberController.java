@@ -141,8 +141,9 @@ public class MemberController {
 	}
 
 	@RequestMapping(value = "logout.do", method = RequestMethod.GET)
-	public String logout(SessionStatus status) {
+	public String logout(SessionStatus status,HttpSession session) {
 		status.setComplete();
+		session.invalidate();
 		return "home";
 	}
 

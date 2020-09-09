@@ -452,27 +452,28 @@ public class ItemController {
 
 	private String saveFile(HttpServletRequest request, MultipartFile file) {
 
-		String root = request.getSession().getServletContext().getRealPath("resources");
-		String savePath = root + "\\uploadFiles";
-		File folder = new File(savePath);
+	      String root = request.getSession().getServletContext().getRealPath("resources");
+	      String savePath = root + "\\uploadFiles";
+	      File folder = new File(savePath);
 
-		if (!folder.exists()) {
-			folder.mkdir();
-		}
+	      if (!folder.exists()) {
+	         folder.mkdir();
+	      }
+	      int random = (int) (Math.random() * 100000 + 1);
+	      SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+	      String originFileName = file.getOriginalFilename();
+	      String renameFileName = sdf.format(new java.sql.Date(System.currentTimeMillis())) + random + "."
+	            + originFileName.substring(originFileName.lastIndexOf(".") + 1);
+	      String filePath = folder + "\\" + renameFileName;
 
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-		String originFileName = file.getOriginalFilename();
-		String renameFileName = sdf.format(new java.sql.Date(System.currentTimeMillis())) + "."
-				+ originFileName.substring(originFileName.lastIndexOf(".") + 1);
-		String filePath = folder + "\\" + renameFileName;
+	      try {
+	         file.transferTo(new File(filePath));
+	      } catch (IllegalStateException | IOException e) {
+	         e.printStackTrace();
+	      }
 
-		try {
-			file.transferTo(new File(filePath));
-		} catch (IllegalStateException | IOException e) {
-			e.printStackTrace();
-		}
+	      return renameFileName;
 
-		return renameFileName;
 	}
 
 	// 상품등록-admin
@@ -494,6 +495,8 @@ public class ItemController {
 
 		result1 = iService.insertItem(i);
 
+		
+		
 		String renameFileName2 = saveFile(request, uploadFile2);
 		String root2 = request.getSession().getServletContext().getRealPath("resources");
 		String savePath2 = root2 + "\\uploadFiles";
@@ -1842,24 +1845,19 @@ public class ItemController {
 		int result=iService.updateRecommendStatusN(itemNo);
 		
 		ArrayList<BannerItem> rList = new ArrayList<>();
-<<<<<<< HEAD
+
 				
 				
 		//리스트 가져오기
 		if (result > 0) {
-=======
-		
-//		if (result > 0) {
->>>>>>> refs/remotes/origin/master
+
 
 			rList = iService.selectRecommendList();
 
-<<<<<<< HEAD
+
 		}
 		System.out.println("여기왔고"+rList);
-=======
-//		}
->>>>>>> refs/remotes/origin/master
+
 
 		response.setContentType("application/json;charset=utf-8");
 		JSONArray jarr = new JSONArray();

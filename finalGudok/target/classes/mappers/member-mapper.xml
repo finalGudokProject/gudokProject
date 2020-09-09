@@ -1158,7 +1158,7 @@
 		VALUES(SEQ_VID.NEXTVAL,#{visitIp},SYSDATE,#{visitRefer},#{visitAgent})
 	</insert>
 
-	<select id="getVisitTodayCount" resultType="_int">
+	<select id="getVisitTodayCount">
 		SELECT COUNT(*)
 		FROM
 		VISITOR

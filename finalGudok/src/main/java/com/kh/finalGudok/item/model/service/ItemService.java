@@ -264,9 +264,8 @@ public interface ItemService {
 	
 
 	int updateItemEventStatusN(int[] dEventArr);
-<<<<<<< HEAD
+
 
 	int updateRecommendStatusN(Integer itemNo);
-=======
->>>>>>> refs/remotes/origin/master
+
 }

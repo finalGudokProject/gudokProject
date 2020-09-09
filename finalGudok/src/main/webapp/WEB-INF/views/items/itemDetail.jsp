@@ -547,7 +547,7 @@ input[type=button]:hover:before,input[type=button]:hover:after{
 									}
 								}); */
 							}else{
-								$("#reviewTxt").focus();
+								$("#reviewTxt").focus().val("");
 							}
 						})	
 					}else{
