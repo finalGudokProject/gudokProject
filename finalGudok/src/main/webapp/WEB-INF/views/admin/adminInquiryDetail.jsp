@@ -117,11 +117,11 @@
             <a href="adminInquiryList.do" type="button" class="btn btn-primary" style="float:right;">목록으로</a>
             <c:if test="${loginUser.memberId eq 'admin' }">
             <c:if test="${inquiry.iInquiry_content eq null}">
-            <a href="${adminIquiryDelete }" type="button" class="btn btn-primary" style="float:right;margin-right:10px">삭제</a>
+            <a href="${adminIquiryDelete }" type="button" class="btn btn-primary" style="float:right;margin-right:10px" id="delete">삭제</a>
             <a href="${adminInquiryUpdateView }" type="button" class="btn btn-primary" style="float:right;margin-right:10px">답변</a>
             </c:if>
             <c:if test="${inquiry.iInquiry_content != null}">
-            <a href="${adminIquiryDelete }" type="button" class="btn btn-primary" style="float:right;margin-right:10px">삭제</a>
+            <a href="${adminIquiryDelete }" type="button" class="btn btn-primary" style="float:right;margin-right:10px" id="delete">삭제</a>
             <a href="${adminInquiryUpdateView }" type="button" class="btn btn-primary" style="float:right;margin-right:10px">수정</a>
             </c:if>
 			</c:if>
@@ -129,6 +129,21 @@
 
     </div><!--하얀박스 있는부분 끝-->
   </div><!--회색바탕 div-->
+  
+  
+  		<script>
+				$("#delete").click(function(){
+					
+					var flag = true;
+					
+					if(confirm("작성된 글을 삭제하시겠습니까?")){
+						alert("삭제되었습니다!");
+					}else{
+						flag=false;
+					}
+					return flag;
+				})
+		</script>
   
 
    

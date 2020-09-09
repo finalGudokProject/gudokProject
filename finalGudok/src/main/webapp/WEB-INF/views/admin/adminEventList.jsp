@@ -235,16 +235,20 @@
 			  }
 		  }
 		  
+		  if(sendCnt == 0){
+			  alert("체크된 이벤트가 없습니다.");
+		  }
+		  else{
 		  
-		  
+		  if(confirm("선택한 이벤트들을 게시하시겠습니까?")){
 		  $.ajax({
 				url:"eventChangeY.do",
 				type:"post",
 				traditional:true,
 				data:{"sendArr":sendArr},
 				success:function(data){
-					alert("선택한 이벤트들이 게시됩니다.");
-					getBannerList();
+					alert("선택한 이벤트들이 게시되었습니다!");
+					getBannerList();									
 				},
 				error:function(request, status, errorData){
 	                alert("error code: " + request.status + "\n"
@@ -252,6 +256,8 @@
 	                           +"error: " + errorData);
 	                  }   
 		  });
+		  }
+		  }
 	  }
   
   
@@ -342,14 +348,20 @@
            				sendCnt++;
            			}
            		}
-            		      		
+            	
+            	if(sendCnt == 0){
+      			  alert("체크된 이벤트가 없습니다.");
+      		  	}
+      		  	else{
+            	
+            	if(confirm("선택한 이벤트들을 중지시키겠습니까?")){
            		$.ajax({
             			url:"eventChangeN.do",
             			type:"post",
            				traditional:true,
            				data:{"sendArr":sendArr},
            				success:function(data){
-           					alert("선택한 이벤트들이 중지됩니다.");
+           					alert("선택한 이벤트들이 중지되었습니다!");
            					getBannerList();
            					        					
            				},
@@ -359,6 +371,8 @@
   		                           +"error: " + errorData);
    			                  }   
            			});
+            	}
+      		  	}
            }
   
   // 선택 삭제
@@ -374,14 +388,20 @@
                				sendCnt++;
                			}
                		}
+     				
+     				if(sendCnt == 0){
+     					  alert("체크된 이벤트가 없습니다.");
+     				  }
+     				else{
 	        		
+     				if(confirm("선택한 이벤트들을 삭제하시겠습니까?")){
 	        		$.ajax({
 	    				url:"eventDeleteCheck.do",
 	    				type:"post",
 	    				traditional:true,
 	    				data:{"sendArr":sendArr},
 	    				success:function(data){
-	    					alert("선택한 이벤트들을 삭제합니다");
+	    					alert("선택한 이벤트들이 삭제되었습니다!");
 	    					getBannerList();
 	    				},
 	    				error:function(request, status, errorData){
@@ -390,6 +410,8 @@
 			                           +"error: " + errorData);
 			                  }   
 	    			});
+					}
+     				}
 	        	} 
   
   // 모두 체크

@@ -220,14 +220,20 @@
 		               				sendCnt++;
 		               			}
 		               		}
-			        		
+		     				
+		     				if(sendCnt == 0){
+		     					  alert("체크된 상품제안이 없습니다.");
+		     				}
+		     				else{
+		     				  
+		     				if(confirm("선택한 상품제안을 삭제하시겠습니까?")){
 			        		$.ajax({
 			    				url:"proposalDeleteCheck.do",
 			    				type:"post",
 			    				traditional:true,
 			    				data:{"sendArr":sendArr},
 			    				success:function(data){
-			    					alert("선택한 상품문의들을 삭제합니다");
+			    					alert("선택한 상품문의들이 삭제되었습니다!");
 			    					getFAQList();
 			    				},
 			    				error:function(request, status, errorData){
@@ -236,6 +242,8 @@
 					                           +"error: " + errorData);
 					                  }   
 			    			});
+		     				}
+		     				}
 			        	} 
 	  
 		// 삭제 후 리스트 가져오기

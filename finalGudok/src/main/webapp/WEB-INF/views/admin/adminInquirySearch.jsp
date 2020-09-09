@@ -247,14 +247,19 @@
 		               				sendCnt++;
 		               			}
 		               		}
-			        		
+		     				if(sendCnt == 0){
+		     					  alert("체크된 1:1문의가 없습니다.");
+		     				}
+		     				else{
+		     				  
+		     				if(confirm("선택한 1:1문의들을 게시하시겠습니까?")){
 			        		$.ajax({
 			    				url:"inquiryDeleteCheck.do",
 			    				type:"post",
 			    				traditional:true,
 			    				data:{"sendArr":sendArr},
 			    				success:function(data){
-			    					alert("선택한 1:1 문의들을 삭제합니다");
+			    					alert("선택한 1:1 문의들이 삭제되었습니다!");
 			    					getInquiryList();
 			    				},
 			    				error:function(request, status, errorData){
@@ -263,6 +268,8 @@
 					                           +"error: " + errorData);
 					                  }   
 			    			});
+		     				}
+		     				}
 			        	} 
 	  
 		// 삭제 후 리스트 가져오기

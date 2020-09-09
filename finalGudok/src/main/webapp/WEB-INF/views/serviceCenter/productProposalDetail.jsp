@@ -96,7 +96,7 @@
             <a href="productProposalList.do" type="button" class="btn btn-primary" style="float:right;">목록으로</a>
             <c:if test="${loginUser.memberId eq board.bMember_id }">
             <a href="${proposalUpdateView }" type="button" class="btn btn-primary" style="float:right;margin-right:10px">수정</a>
-            <a href="${proposalDelete }" type="button" class="btn btn-primary" style="float:right;margin-right:10px">삭제</a>
+            <a href="${proposalDelete }" type="button" class="btn btn-primary" style="float:right;margin-right:10px" id="delete">삭제</a>
             </c:if>
             </div>
             </div>
@@ -106,5 +106,19 @@
             <footer class="page-footer font-small indigo">
 				<jsp:include page="../common/footer.jsp" />
 			</footer>
+			
+			<script>
+				$("#delete").click(function(){
+					
+					var flag = true;
+					
+					if(confirm("작성된 글을 삭제하시겠습니까?")){
+						alert("삭제되었습니다!");
+					}else{
+						flag=false;
+					}
+					return flag;
+				})
+			</script>
 </body>
 </html>
