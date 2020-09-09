@@ -42,15 +42,8 @@ public class BoardController {
 	// admin Notice
 	// List
 	@RequestMapping("adminNoticeList.do")
-	public ModelAndView adminNoticeList(ModelAndView mv, @RequestParam(value = "page", required = false) Integer page) { // 기본
-																															// 자료형으로
-																															// 받을
-																															// 수
-																															// 없기
-																															// 때문에
-																															// Integer를
-																															// 쓴다
-		// 페이징 관련 처리부터 하자
+	public ModelAndView adminNoticeList(ModelAndView mv, @RequestParam(value = "page", required = false) Integer page) { 
+		
 		int currentPage = 1;
 		if (page != null) {
 			currentPage = page;
@@ -448,14 +441,7 @@ public class BoardController {
 
 	// 리스트 출력
 	@RequestMapping("adminFAQList.do")
-	public ModelAndView adminFAQList(ModelAndView mv, @RequestParam(value = "page", required = false) Integer page) { // 기본
-																														// 자료형으로
-																														// 받을
-																														// 수
-																														// 없기
-																														// 때문에
-																														// Integer를
-																														// 쓴다
+	public ModelAndView adminFAQList(ModelAndView mv, @RequestParam(value = "page", required = false) Integer page) { 
 
 		int currentPage = 1;
 		if (page != null) {
@@ -752,7 +738,7 @@ public class BoardController {
 	@RequestMapping("adminProductProposalList.do")
 	public ModelAndView adminProductProposalList(ModelAndView mv,
 			@RequestParam(value = "page", required = false) Integer page) { // 기본 자료형으로 받을 수 없기 때문에 Integer를 쓴다
-		// 페이징 관련 처리부터 하자
+		
 		int currentPage = 1;
 		if (page != null) {
 			currentPage = page;
@@ -1025,7 +1011,7 @@ public class BoardController {
 	@RequestMapping("adminInquiryList")
 	public ModelAndView adminInquiryList(ModelAndView mv,
 			@RequestParam(value = "page", required = false) Integer page) { // 기본 자료형으로 받을 수 없기 때문에 Integer를 쓴다
-		// 페이징 관련 처리부터 하자
+		
 		int currentPage = 1;
 		if (page != null) {
 			currentPage = page;
@@ -1129,7 +1115,7 @@ public class BoardController {
 		int result4 = bService.deleteInquiryBoard(bBoard_no);
 		int result5 = bService.deleteBoard(bBoard_no);
 
-		if (result1 > 0 || result2 > 0 || result3 > 0 && result4 > 0 && result5 > 0) {
+		if (result1 > 0 || result2 > 0 || (result3 > 0 && result4 > 0 && result5 > 0)) {
 			return "redirect:adminInquiryList.do";
 		} else {
 			throw new BoardException("게시물 삭제 실패!");
@@ -1171,7 +1157,7 @@ public class BoardController {
 
 		}
 
-		if (result1 > 0 || result2 > 0 || result3 > 0 && result4 > 0 && result5 > 0) {
+		if (result1 > 0 || result2 > 0 || (result3 > 0 && result4 > 0 && result5 > 0)) {
 
 			return "redirect:adminInquiryList.do";
 
@@ -1364,9 +1350,9 @@ public class BoardController {
 	// admin Event
 	// List
 	@RequestMapping("adminEventList.do")
-	public ModelAndView adminEventDetail(ModelAndView mv,
+	public ModelAndView adminEventList(ModelAndView mv,
 			@RequestParam(value = "page", required = false) Integer page) { // 기본 자료형으로 받을 수 없기 때문에 Integer를 쓴다
-		// 페이징 관련 처리부터 하자
+		
 		int currentPage = 1;
 		if (page != null) {
 			currentPage = page;
@@ -1429,9 +1415,7 @@ public class BoardController {
 
 	@RequestMapping("eventInsert.do")
 	public String eventInsert(HttpServletRequest request, Board b, EventBoard e,
-			@RequestParam(value = "uploadEvent", required = false) MultipartFile file) { // 다중 업로드 파일은
-																							// List<MultipartFile> file
-																							// 이용 찾아서 해봐
+			@RequestParam(value = "uploadEvent", required = false) MultipartFile file) {
 		// NoticeController에 있는 saveFile 메소드 가져오고 buploadFiles폴더로 수정하자
 		// 그리고 이번엔 날짜를 활용한 rename을 적용해 보자
 
@@ -1569,7 +1553,7 @@ public class BoardController {
 		int result3 = bService.deleteBoardImage(bBoard_no);
 		int result4 = bService.deleteBoard(bBoard_no);
 
-		if (result1 > 0 && result2 > 0 || result3 > 0 || result4 > 0) {
+		if ((result1 > 0 && result4 > 0) || result2 > 0 || result3 > 0) {
 			return "redirect:adminEventList.do";
 		} else {
 			throw new BoardException("게시물 삭제 실패!");
@@ -1661,7 +1645,7 @@ public class BoardController {
 	// 게시or중지or삭제 후 바뀐 게시판 보기
 	@RequestMapping("eventListChange.do")
 	public void eventListChange(HttpServletResponse response, Integer page) throws IOException {
-		// 페이징 관련 처리부터 하자
+		
 		int currentPage = 1;
 		if (page != null) {
 			currentPage = page;
@@ -1745,7 +1729,8 @@ public class BoardController {
 			result4 = bService.deleteBoard(dEventArr[k]);
 		}
 
-		if (result1 > 0 && result2>0 || result3 > 0 || result4 > 0) {
+
+		if ((result1 > 0 && result4>0) || result2 > 0 || result3 > 0) {
 
 			return "redirect:adminEventList.do";
 
@@ -1885,15 +1870,8 @@ public class BoardController {
 
 	// Notice List
 	@RequestMapping("noticeList.do")
-	public ModelAndView noticeList(ModelAndView mv, @RequestParam(value = "page", required = false) Integer page) { // 기본
-																													// 자료형으로
-																													// 받을
-																													// 수
-																													// 없기
-																													// 때문에
-																													// Integer를
-																													// 쓴다
-		// 페이징 관련 처리부터 하자
+	public ModelAndView noticeList(ModelAndView mv, @RequestParam(value = "page", required = false) Integer page) { 
+		
 		int currentPage = 1;
 		if (page != null) {
 			currentPage = page;
@@ -1927,7 +1905,7 @@ public class BoardController {
 		int result = bService.addReadCount(bBoard_no); // 조회수가 증가 되어야만 게시물 상세보기가 가능하다
 
 		if (result > 0) {
-			Board board = bService.selectDetail(bBoard_no);
+			Board board = bService.selectIDetail(bBoard_no);
 			if (board != null) {
 				mv.addObject("board", board).addObject("currentPage", currentPage)
 						.setViewName("serviceCenter/noticeDetail");
@@ -1982,15 +1960,9 @@ public class BoardController {
 
 	// FAQ List
 	@RequestMapping("FAQList.do")
-	public ModelAndView FAQList(ModelAndView mv, @RequestParam(value = "page", required = false) Integer page) { // 기본
-																													// 자료형으로
-																													// 받을
-																													// 수
-																													// 없기
-																													// 때문에
-																													// Integer를
-																													// 쓴다
-		// 페이징 관련 처리부터 하자
+	public ModelAndView FAQList(ModelAndView mv, @RequestParam(value = "page", required = false) Integer page) { 
+		
+		
 		int currentPage = 1;
 		if (page != null) {
 			currentPage = page;
@@ -2079,7 +2051,7 @@ public class BoardController {
 	@RequestMapping("productProposalList.do")
 	public ModelAndView productProposalList(ModelAndView mv,
 			@RequestParam(value = "page", required = false) Integer page) { // 기본 자료형으로 받을 수 없기 때문에 Integer를 쓴다
-		// 페이징 관련 처리부터 하자
+		
 		int currentPage = 1;
 		if (page != null) {
 			currentPage = page;
@@ -2317,7 +2289,7 @@ public class BoardController {
 	// Inquiry List
 	@RequestMapping("sinquiryList")
 	public ModelAndView inquirylList(ModelAndView mv, @RequestParam(value = "page", required = false) Integer page) { 
-		// 페이징 관련 처리부터 하자
+		
 		int currentPage = 1;
 		if (page != null) {
 			currentPage = page;
@@ -2615,7 +2587,7 @@ public class BoardController {
 		int result4 = bService.deleteInquiryBoard(bBoard_no);
 		int result5 = bService.deleteBoard(bBoard_no);
 
-		if (result1 > 0 || result2 > 0 || result3 > 0 && result4 > 0 && result5 > 0) {
+		if (result1 > 0 || result2 > 0 || (result3 > 0 && result4 > 0 && result5 > 0)) {
 			return "redirect:sinquiryList.do";
 		} else {
 			throw new BoardException("게시물 삭제 실패!");
@@ -2674,7 +2646,7 @@ public class BoardController {
 	// List
 	@RequestMapping("eventList.do")
 	public ModelAndView eventList(ModelAndView mv, @RequestParam(value = "page", required = false) Integer page) { 
-		// 페이징 관련 처리부터 하자
+		
 		int currentPage = 1;
 		if (page != null) {
 			currentPage = page;
