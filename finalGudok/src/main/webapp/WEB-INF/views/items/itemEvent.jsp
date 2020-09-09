@@ -243,7 +243,7 @@
 	<div class="row">
 	<div class="col-md-12">
 		<div id="cateName" style="text-align:center;font-size:50px;">
-		<img src="${contextPath }/resources/images/cateSale.png" style="width:70px;height:70px;">
+		<img src="${contextPath }/resources/images/discount.png" style="width:70px;height:70px;">
 		<span>할인상품</span>
 		</div>
 			<div style="border-top:1px solid lightgray;border-bottom:1px solid lightgray;">

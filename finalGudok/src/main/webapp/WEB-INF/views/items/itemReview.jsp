@@ -116,7 +116,7 @@
 		
 		<div class="col-12">
 		<c:if test="${empty review}">
-		<div style="width:100%;border:1px solid lightgray;border-radius:5rem;">
+		<div style="width:100%;border:1px solid lightgray;border-radius:5rem;margin-bottom:2%;">
 			<div style="text-align:center;width:100%;"><img src="${contextPath }/resources/images/empty.png" style="width:30%;"></div>
 			<div style="text-align:center;width:100%;font-size:40px;">${item.itemName } 상품평이 존재하지 않습니다.</div>
 		</div>
