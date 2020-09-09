@@ -518,9 +518,6 @@
 	        
 	        <form action="destinationModify.do" method="post" id="destination">
 	        	<input type="hidden" id="subscribeNo" name="subscribeNo">
-	        	<input type="hidden" id="address1" name="address1">
-	        	<input type="hidden" id="address2" name="address2">
-	        	<input type="hidden" id="address3" name="address3">
 		        <div>
 		          	<table>
 			            <tr>
@@ -559,9 +556,9 @@
     <script>
     	function destinationClick(subscribeNo, address1, address2, address3){
     		$("#destination #subscribeNo").val(subscribeNo);
-    		$("table #address1").val(address1);
-    		$("table #address2").val(address2);
-    		$("table #address3").val(address3);
+    		$("#destination #address1").val(address1);
+    		$("#destination #address2").val(address2);
+    		$("#destination #address3").val(address3);
     	}
     </script>
     
