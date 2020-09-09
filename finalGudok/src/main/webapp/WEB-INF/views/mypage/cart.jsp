@@ -531,12 +531,12 @@
 			</table>
 			</c:if>
 			<c:if test="${empty list }">
-				<div class="col-2"></div>
-					<div class="col-8" id="emptyDiv" style="margin-top:2%;border:1px solid lightgray;">
+				<div class="col-8" style="margin:0 auto;">
+					<div class="col-20" id="emptyDiv" style="margin-top:10%;border:1px solid lightgray;">
 						<div style="text-align:center;width:100%;"><img src="${contextPath }/resources/images/empty.png" style="width:30%;"></div>
 						<div style="text-align:center;width:100%;font-size:40px;">장바구니에 추가한 상품이 없습니다.</div>
 					</div>
-				<div class="col-2"></div>	
+				</div>
 			</c:if>
 	    </div>
     </div>

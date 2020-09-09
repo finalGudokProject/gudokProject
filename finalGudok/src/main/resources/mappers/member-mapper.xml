@@ -365,7 +365,7 @@
 	<insert id="insertSecession" parameterType="Withdrawal">
 		INSERT INTO SECESSION
 		VALUES(SEQ_SECESSION.NEXTVAL, #{memberNo}, #{memberId}, #{email},
-		#{secessionCategory}, #{secessionContent}, DEFAULT)
+		#{secessionCategory}, #{secessionContent}, SYSDATE)
 	</insert>
 
 	<select id="selectInquiryList" parameterType="int"

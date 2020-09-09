@@ -544,8 +544,9 @@ public class MemberController {
 
 	// 교환 신청
 	@RequestMapping("exchangeInsert.do")
-	public String exchangeInsert(HttpServletRequest request, Exchange e) { // 민지
-
+	public String exchangeInsert(HttpSession session, HttpServletRequest request, Exchange e) { // 민지
+		Member loginUser = (Member) session.getAttribute("loginUser");
+		
 		if (e.getExchangeCategory() == 1) {
 			e.setExchangeContent("품질불량");
 		} else if (e.getExchangeCategory() == 2) {
@@ -558,7 +559,7 @@ public class MemberController {
 		int result2 = mService.updateSubscribe(e.getSubscribeNo());
 
 		if (result > 0 && result2 > 0) {
-			return "redirect:exchangeList.do";
+			return "redirect:exchangeList.do?"+"memberNo="+loginUser.getMemberNo();
 		} else {
 			throw new MemberException("교환 신청 실패");
 		}
@@ -567,7 +568,7 @@ public class MemberController {
 
 	// 탈퇴하기
 	@RequestMapping("withdrawalInsert.do")
-	public String withdrawalInsert(HttpServletRequest request, Withdrawal w) {
+	public String withdrawalInsert(SessionStatus status, HttpSession session, HttpServletRequest request, Withdrawal w) {
 		if (w.getSecessionCategory() == 1) {
 			w.setSecessionContent("서비스가 마음에 들지 않음");
 		} else if (w.getSecessionCategory() == 2) {
@@ -584,6 +585,8 @@ public class MemberController {
 		int result2 = mService.updateMemberStatus(w.getMemberNo());
 
 		if (result > 0 && result2 > 0) {
+			status.setComplete();
+			session.invalidate();
 			return "home";
 		} else {
 			throw new MemberException("탈퇴 실패");
