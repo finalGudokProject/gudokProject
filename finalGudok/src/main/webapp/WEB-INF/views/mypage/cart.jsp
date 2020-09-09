@@ -542,8 +542,7 @@
     </div>
     <br style="clear:both;">
     <jsp:include page="../common/footer.jsp"/>
-  		<!-- 수량 버튼 -->
-		<script>
+  	<script>
 		$(function(){
 			function addComma(num) {
 			 	var regexp = /\B(?=(\d{3})+(?!\d))/g;
@@ -610,6 +609,70 @@
 			})
 		})
 	</script>
+	
+	
+	<!-- 수량 버튼 -->
+		<script>
+			function addComma(num) {
+			 	var regexp = /\B(?=(\d{3})+(?!\d))/g;
+				return num.toString().replace(regexp, ',');
+			}
+			$(function(){
+				$(".signImgP").on("click",function(){
+					if($(this).parent().prev().prev().prev("td").find("input").prop("checked") == true){
+						swal("","선택된 상태로는 수량 변경을 할 수 없습니다.","error");
+					}else{
+						var amount = $(this).prev().val();
+						amount = Number(amount) + 1;
+						console.log(amount);
+						$(this).prev().val(amount);
+						
+						var valueCheck = $(this).prev().prev().val();
+						$(this).prev().prev().prev().val("");
+						var realValue = $(this).prev().prev().prev().val(valueCheck * amount);
+						var varPrice = $(this).prev().prev().prev().val();
+	
+						$(this).parent().next("td").next("td").text("");
+						$(this).parent().prev("td").find(".totalPriceInput").val(varPrice);
+						$(this).parent().prev().prev().prev("td").find("input").val(varPrice);
+						$(this).parent().next("td").next("td").text(addComma(varPrice)+"원");
+						
+						if(amount > 1){
+							$(this).prev().prev().prev().prev().attr("src","${contextPath }/resources/images/minus.png");
+						}
+					}
+				})
+				$(".signImgM").on("click",function(){
+					if($(this).parent().prev().prev().prev("td").find("input").prop("checked") == true){
+						swal("","선택된 상태로는 수량 변경을 할 수 없습니다.","error");
+					}else{
+						var amount = $(this).next().next().next().val();
+						if(amount > 1){
+							amount = Number(amount) - 1;
+							$(this).next().next().next().val(amount);
+							/* console.log(amount); */
+							
+							var valueCheck = $(this).next().next().val();
+							$(this).next().val("");
+							var realValue = $(this).next().val(valueCheck * amount);
+							var varPrice = $(this).next().val();
+							
+							$(this).parent().next("td").next("td").text("");
+							$(this).parent().next("td").next("td").text(varPrice);
+							$(this).parent().prev().prev().prev("td").find("input").val(varPrice);
+							$(this).parent().next("td").next("td").text(addComma(varPrice)+"원");
+							/* $("#totalPriceTd").text("총 주문 금액 : " + addComma(varPrice) + "원"); */
+							if(amount == 1){
+								$(this).attr("src","${contextPath }/resources/images/XSIGN.png");
+							}
+							
+						}else if(amount == 1){
+								swal("","1개 미만은 선택하실 수 없습니다.","error");
+						}
+					}
+				})
+			})
+		</script>
 		
 		<!-- 장바구니 목록 삭제버튼 -->
 		<script>
