@@ -51,6 +51,9 @@
 		<result property="itemName" column="ITEM_NAME" />
 		<result property="subscribeDate" column="SUBSCRIBE_DATE" />
 		<result property="exchangeStatus" column="EXCHANGE_STATUS" />
+		<result property="address1" column="ADDRESS_1" />
+		<result property="address2" column="ADDRESS_2" />
+		<result property="address3" column="ADDRESS_3" />
 	</resultMap>
 
 	<resultMap type="mCart" id="cartResultSet">
@@ -292,7 +295,7 @@
 
 	<select id="deliveryList" parameterType="int"
 		resultMap="deliveryResultSet">
-		SELECT D.*, I.ITEM_NAME, S.SUBSCRIBE_DATE, S.EXCHANGE_STATUS
+		SELECT D.*, I.ITEM_NAME, S.SUBSCRIBE_DATE, S.EXCHANGE_STATUS, S.ADDRESS_1, S.ADDRESS_2, S.ADDRESS_3
 		FROM DELIVERY D
 		JOIN SUBSCRIBE S ON (D.SUBSCRIBE_NO = S.SUBSCRIBE_NO)
 		JOIN ITEM I ON (S.ITEM_NO = I.ITEM_NO)
@@ -1337,4 +1340,10 @@
         FROM SUBSCRIBE
         WHERE SUBSCRIBE_NO=#{subscribeNo}
 	</select>
+	
+	<update id="updateSubscribeDestination" parameterType="mDelivery">
+		UPDATE SUBSCRIBE
+		SET ADDRESS_1=#{address1}, ADDRESS_2=#{address2}, ADDRESS_3=#{address3}
+		WHERE SUBSCRIBE_NO=#{subscribeNo}
+	</update>
 </mapper>

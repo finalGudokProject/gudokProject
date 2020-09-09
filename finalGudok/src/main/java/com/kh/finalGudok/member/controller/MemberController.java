@@ -506,8 +506,10 @@ public class MemberController {
 
 	// 배송 내역
 	@RequestMapping(value = "deliveryList.do")
-	public ModelAndView deliveryList(ModelAndView mv, Integer memberNo) { // 민지
-		ArrayList<Delivery> list = mService.selectDeliveryList(memberNo);
+	public ModelAndView deliveryList(HttpSession session, ModelAndView mv, Integer memberNo) { // 민지
+		Member loginUser = (Member) session.getAttribute("loginUser");
+		
+		ArrayList<Delivery> list = mService.selectDeliveryList(loginUser.getMemberNo());
 
 		System.out.println("배송 내역 : " + list);
 
@@ -860,6 +862,22 @@ public class MemberController {
 		} else {
 			throw new MemberException("비밀번호 변경 실패");
 		}
+	}
+	
+	@RequestMapping("destinationModify.do")
+	public String destinationModify(Delivery d, Model model) { // 민지
+		System.out.println("전달받은 배송지 : " + d);
+		
+		int result = mService.updateSubscribeDestination(d);
+
+		System.out.println("배송지 수정 후  : " + d);
+
+		if (result > 0) {
+			return "redirect:deliveryList.do";
+		} else {
+			throw new MemberException("수정 실패!");
+		}
+		
 	}
 	
 	// ------------------------------ 마이페이지 ----------------------------------------------

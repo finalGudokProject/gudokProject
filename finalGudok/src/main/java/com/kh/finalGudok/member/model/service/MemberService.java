@@ -237,4 +237,6 @@ public interface MemberService {
 
 	int selectPointMember(AdminSubscribe adminSubscribe);
 
+	int updateSubscribeDestination(Delivery d);
+
 }
