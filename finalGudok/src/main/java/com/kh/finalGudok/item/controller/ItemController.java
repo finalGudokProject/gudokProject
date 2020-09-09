@@ -17,11 +17,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -41,6 +38,7 @@ import com.kh.finalGudok.item.model.vo.Image;
 import com.kh.finalGudok.item.model.vo.Item;
 import com.kh.finalGudok.item.model.vo.ItemListView;
 import com.kh.finalGudok.item.model.vo.PageInfo;
+import com.kh.finalGudok.item.model.vo.PaymentInfo;
 import com.kh.finalGudok.item.model.vo.Review;
 import com.kh.finalGudok.item.model.vo.ReviewImage;
 import com.kh.finalGudok.item.model.vo.ReviewView;
@@ -1669,31 +1667,74 @@ public class ItemController {
 	}
 
 	// ------------------------------결제 구현-----------------------------------------
+	@RequestMapping("moveToPayment.do")
+	@ResponseBody
+	public ModelAndView moveToPayment(ModelAndView mv, @RequestParam(value="itemNo") String[] itemNo, @RequestParam("name") String[] name, @RequestParam("price") String[] price, 
+			@RequestParam("cycle") String[] cycle, @RequestParam("amount") String[] amount){
+		
+		ArrayList<Cart> list = new ArrayList<>();
+		int itemPrice = 0;
+		int itemAmount = 0;
+		int totalPrice = 0;
+		int discount = 0;
+		
+		for(int i = 0 ; i < itemNo.length ; i++) {	
+			Cart cart = new Cart();
+			int no = Integer.valueOf(itemNo[i]);
+			cart.setItemNo(no);
+			itemPrice = Integer.valueOf(price[i]);
+			
+			discount = iService.checkDiscount(no);
+//			System.out.println("할인율: " + discount);
+			
+			if(discount > 0) {
+				
+				itemPrice = itemPrice - (int)(itemPrice*(double)discount/100);
+				cart.setItemPrice(itemPrice);
+			}else {
+				cart.setItemPrice(itemPrice);
+			}		
+//			System.out.println(itemPrice);
+			itemAmount = Integer.valueOf(amount[i]);
+			cart.setCartCount(itemAmount);
+			cart.setCartSubs(cycle[i]);
+			cart.setItemName(name[i]);
+			list.add(cart);
+			
+			totalPrice += itemPrice * itemAmount;
+		}
+		
+//		System.out.println(discount);
+//		System.out.println(list);
+		mv.addObject("list",list);
+		mv.addObject("totalPrice", totalPrice);
+		mv.setViewName("items/payment");
+		return mv;
+	}
+	
+	
 
 	IamportClient client = new IamportClient("3086404975484077",
 			"EsAndJxwJmc8oD49ezXFzHqWyessiK4XcFlpoSW8f8hDMmN0VLFus6r1kTtDDyBQdWfCOcK4l2I7ow7j");
 
 	@RequestMapping(value = "payment.do", method = RequestMethod.POST)
 	@ResponseBody
-	public String payment(@RequestBody String param) throws ParseException, IamportResponseException, IOException {
-		JSONParser parser = new JSONParser();
-		JSONObject json = new JSONObject();
-		JSONObject jobj = (JSONObject) parser.parse(param);
-
-		String customerUid = (String) jobj.get("customer_uid");
-//					String merchantUid = (String) jobj.get("merchant_uid");
-		BigDecimal price = new BigDecimal(((Long) jobj.get("price")).intValue());
-		String name = (String) jobj.get("name");
-//					String impUid = (String)jobj.get("imp_uid");
-		int cycle = 1;
-
-		System.out.println("customerUid : " + customerUid);
-//					System.out.println("merchatUid : " + merchantUid);
-		System.out.println("price : " + price);
-		System.out.println("name : " + name);
-//					System.out.println("impUid : " + impUid);
-
-		firstPayment(customerUid, price, name, cycle);
+	public String payment(HttpServletRequest request) {
+		
+		String[] noArr = request.getParameterValues("noArr");
+		String[] nameArr = request.getParameterValues("nameArr");
+		String[] priceArr = request.getParameterValues("priceArr");
+		String[] countArr = request.getParameterValues("countArr");
+		String[] cycleArr = request.getParameterValues("cycleArr");
+		String firstPrice = request.getParameter("finalPrice");
+		String customerUid = request.getParameter("customerUid");
+		String email = request.getParameter("email");
+		int point = Integer.valueOf((String)request.getParameter("point"));
+		
+		System.out.println(point);
+		System.out.println(firstPrice);
+		
+//		firstPayment(customerUid, price, name, cycle);
 
 		return "success";
 

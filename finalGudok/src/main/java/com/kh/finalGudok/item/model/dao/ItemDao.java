@@ -651,4 +651,8 @@ public class ItemDao {
 	public int updateItemEventStatusN(int[] dEventArr) {
 		return sqlSessionTemplate.update("adminItemMapper.updateItemEventStatusN",dEventArr);
 	}
+
+	public int checkDiscount(int no) {
+		return sqlSessionTemplate.selectOne("itemMapper.checkDiscount", no);
+	}
 }

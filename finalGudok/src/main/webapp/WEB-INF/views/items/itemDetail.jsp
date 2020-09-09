@@ -935,7 +935,9 @@ input[type=button]:hover:before,input[type=button]:hover:after{
 				var itemPrice = "${ilv.itemPrice}";
 				var cartCount = $(".amountT").val();
 				var cartSubs = $("#cycleText").val();
+				
 				$("#paymentBtn").click(function(){
+					
 					var cycle = $("#cycleText").val();
 					var amount = $(".amountT").val();
 					/* console.log($("#cycleText").val()); */
@@ -967,7 +969,23 @@ input[type=button]:hover:before,input[type=button]:hover:after{
 								if(result){
 									
 								}else{
-									location.href="moveToPayment.do?itemName=itemName&cartCount=cartCount&itemPrice=itemPrice&cartSubs=cartSubs";
+									
+									var form = document.createElement('form');
+									form.setAttribute('method', 'post');
+									form.setAttribute('action', "moveToPayment.do");
+									document.charset = "utf-8";
+									params = {"itemNo":itemNo, "price":itemPrice, "name":itemName, "cycle":cycle, "amount":amount};
+									for ( var key in params) {
+										var hiddenField = document.createElement('input');
+										hiddenField.setAttribute('type', 'hidden');
+										hiddenField.setAttribute('name', key);
+										hiddenField.setAttribute('value', params[key]);
+										form.appendChild(hiddenField);
+
+									}
+									document.body.appendChild(form);
+									form.submit();
+									
 								}
 							})
 						}

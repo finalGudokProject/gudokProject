@@ -261,7 +261,7 @@ public interface ItemService {
 
 	int selectDelStatus(Subscribe scb);
 	
-	
-
 	int updateItemEventStatusN(int[] dEventArr);
+
+	int checkDiscount(int no);
 }
