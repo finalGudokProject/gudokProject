@@ -146,6 +146,7 @@
             <form action="insertFAQ.do" method="post" enctype="multipart/form-data" onsubmit="return validate();">
             <input type="hidden" name="bMember_id" value=${loginUser.memberId }>
           	<input type="hidden" name="bEmail" value=${loginUser.email }>
+          	<input type="hidden" name="bMember_no" value=${loginUser.memberNo }>
                 <div style="font-size: 30px;">FAQ</div><br>
                 <hr style="border-color:rgb(0, 125, 255);">
                 <table style="text-align: center; margin-top:15px">
