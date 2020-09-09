@@ -469,21 +469,15 @@ public class ItemController {
 	      String savePath = root + "\\uploadFiles";
 	      File folder = new File(savePath);
 
-	      if (!folder.exists()) {
-	         folder.mkdir();
-	      }
-	      int random = (int) (Math.random() * 100000 + 1);
-	      SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-	      String originFileName = file.getOriginalFilename();
-	      String renameFileName = sdf.format(new java.sql.Date(System.currentTimeMillis())) + random + "."
-	            + originFileName.substring(originFileName.lastIndexOf(".") + 1);
-	      String filePath = folder + "\\" + renameFileName;
-
-	      try {
-	         file.transferTo(new File(filePath));
-	      } catch (IllegalStateException | IOException e) {
-	         e.printStackTrace();
-	      }
+		if (!folder.exists()) {
+			folder.mkdir();
+		}
+		int random = (int) (Math.random() * 100000 + 1);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+		String originFileName = file.getOriginalFilename();
+		String renameFileName = sdf.format(new java.sql.Date(System.currentTimeMillis())) + random + "."
+				+ originFileName.substring(originFileName.lastIndexOf(".") + 1);
+		String filePath = folder + "\\" + renameFileName;
 
 	      return renameFileName;
 
@@ -497,7 +491,7 @@ public class ItemController {
 
 		int result1 = 0;
 		int result2 = 0;
-
+		
 		String renameFileName = saveFile(request, uploadFile1);
 		String root = request.getSession().getServletContext().getRealPath("resources");
 		String savePath = root + "\\uploadFiles";
@@ -541,7 +535,7 @@ public class ItemController {
 		String renameFileName = saveFile(request, file);
 		String root = request.getSession().getServletContext().getRealPath("resources");
 		String savePath = root + "\\uploadFiles";
-
+		
 		e.setImageOriginalName(file.getOriginalFilename());
 		e.setImageRename(renameFileName);
 		e.setImagePath(savePath);
@@ -807,7 +801,7 @@ public class ItemController {
 			scb.setMemberNo(memberNo);
 			scb.setItemNo(itemNo);
 			int currentPage = page;
-
+			System.out.println("memberNo : " + memberNo + ", itemNo : " + itemNo);
 			int deliveryChk = iService.selectDelChk(scb);
 			int reviewChk = iService.selectReviewChk(scb);
 			System.out.println("del값 확인 : " + deliveryChk);

@@ -227,6 +227,7 @@
 					check = $("input:checkbox[class=chk]:checked").length;
 					$("#delBtn").val(check + "개 상품 삭제하기");
 					$("#frontCount").text(check);
+					sum = 0;
 					$("input:checkbox[class=chk]:checked").each(function(){
 						sum += Number($(this).val());
 						$("#paymentBtn").val(addComma(sum)+"원 결제하기");

@@ -527,9 +527,14 @@ input[type=button]:hover:before,input[type=button]:hover:after{
 													location.reload();
 												}
 											});
-										}else if(data == "delFail"){
+										}
+										else if(data == "noDelFail"){
+											swal("","상품평 쓰기 권한이 없습니다.","error");
+										}
+										else if(data == "delFail"){
 											swal("","배송 완료된 상품이 아닙니다.","error");
-										}else if(data == "reviewFail"){
+										}
+										else if(data == "reviewFail"){
 											swal("","이미 등록된 상품평이 존재합니다.","error");
 										}
 									}
@@ -540,7 +545,6 @@ input[type=button]:hover:before,input[type=button]:hover:after{
 					               }
 									
 								})
-								
 								/* swal("상품평","등록 완료되었습니다.","success").then((result)=>{
 									if(result){
 										$("#reviewForm").submit();
@@ -560,7 +564,6 @@ input[type=button]:hover:before,input[type=button]:hover:after{
 							if(result){
 
 							}else{
-								
 								$.ajax({
 									url : "reviewInsert.do",
 									data : new FormData($("#reviewForm")[0]),
