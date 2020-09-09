@@ -248,9 +248,9 @@ float:left;
                             	추천 선택
                         </td>
                         <td id="td4">
-                            <input type="radio" name="itemRecommend" value="F">&nbsp;여성 &nbsp; &nbsp; &nbsp;
-                            <input type="radio" name="itemRecommend" value="M">&nbsp;남성 &nbsp; &nbsp; &nbsp;
-                            <input type="radio" name="itemRecommend" value="C">&nbsp;공통
+                            <input type="radio" id="itemRecommend" name="itemRecommend" value="F">&nbsp;여성 &nbsp; &nbsp; &nbsp;
+                            <input type="radio" id="itemRecommend" name="itemRecommend" value="M">&nbsp;남성 &nbsp; &nbsp; &nbsp;
+                            <input type="radio" id="itemRecommend" name="itemRecommend" value="C" checked>&nbsp;공통
 
                         </td>
 
@@ -390,6 +390,7 @@ float:left;
         
         //상품 등록시 필요정보 공백 제한
         function validate(){
+        	alert(("#itemRecommend").val())
         	
         	confirm("상품을 등록하시겠습니까?");
     	if($("#category").val().trim().length==1){
@@ -405,10 +406,6 @@ float:left;
     			alert('가격을 입력하세요.')
     		return false;
     		
-    	}else if($("#itemRecommend").val().trim().length==0){
-    			alert('추천 유형을 선택하세요.')
-    		return false;
-    			
     	}else if(!$("#input-file1").val()){
 			alert('상품 이미지를 선택하세요.')
 			return false;

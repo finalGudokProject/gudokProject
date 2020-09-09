@@ -682,4 +682,9 @@ public class ItemServiceImpl implements ItemService {
 		return iDao.updateItemEventStatusN(dEventArr);
 	}
 
+
+	@Override
+	public int updateRecommendStatusN(Integer itemNo) {
+		return iDao.updateRecommendStatusN(itemNo);
+	}
 }

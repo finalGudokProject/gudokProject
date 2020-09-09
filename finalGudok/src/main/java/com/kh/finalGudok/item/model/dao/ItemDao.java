@@ -651,4 +651,8 @@ public class ItemDao {
 	public int updateItemEventStatusN(int[] dEventArr) {
 		return sqlSessionTemplate.update("adminItemMapper.updateItemEventStatusN",dEventArr);
 	}
+
+	public int updateRecommendStatusN(Integer itemNo) {
+		return sqlSessionTemplate.update("adminItemMapper.updateRecommendStatusN",itemNo);
+	}
 }

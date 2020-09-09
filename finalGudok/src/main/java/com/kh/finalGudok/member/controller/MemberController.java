@@ -110,6 +110,8 @@ public class MemberController {
 
 	@RequestMapping(value = "login.do", method = RequestMethod.POST)
 	public ModelAndView memberLogin(Member m, HttpSession session, ModelAndView mv) {
+		
+		
 
 		Member loginUser = mService.loginMember(m);
 
@@ -130,7 +132,7 @@ public class MemberController {
 			session.setAttribute("pointCount", pointCount);
 
 			if (loginUser.getMemberId().equalsIgnoreCase("admin")) {
-				mv.setViewName("admin/main");
+				mv.setViewName("redirect:aMain.do");
 			} else {
 				mv.setViewName("home");
 			}
@@ -142,8 +144,9 @@ public class MemberController {
 	}
 
 	@RequestMapping(value = "logout.do", method = RequestMethod.GET)
-	public String logout(SessionStatus status) {
+	public String logout(SessionStatus status,HttpSession session) {
 		status.setComplete();
+		session.invalidate();
 		return "home";
 	}
 
