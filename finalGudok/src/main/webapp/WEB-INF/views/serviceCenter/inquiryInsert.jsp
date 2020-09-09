@@ -231,25 +231,32 @@
                   
         function validate(){
             	  
+            	   var flag = true;
+            	   
             	   if($("#bTitle").val().trim().length == 0){
                        alert("제목을 입력하세요");
                        $("#bTitle").focus();
-                       return false;
+                       flag = false;
             	   }
             	   else if($("input[name='oSecret']:checked").val()=='N' && $("#oSecret_pwd").val().trim().length == 0){
             		   console.log("d");
             		   alert("비밀번호를 입력하세요");
                        $("#oSecret_pwd").focus();
-                       return false;
+                       flag = false;
             	   }
             	   else if($("#bContent").val().trim().length == 0){
             		   alert("내용을 입력하세요");
                        $("#bContent").focus();
-                       return false;
+                       flag = false;
             	   }
             	   else{
-                    	alert("1:1문의가 등록되었습니다!");           
+            		   if(confirm("1:1문의를 등록하시겠습니까?")){
+             		 		alert("등록되었습니다!");
+             		 	}else{
+             		 		flag = false;
+             		 	}    
                     }
+            	   return flag;
                  }
         
         $(document).ready(function(){

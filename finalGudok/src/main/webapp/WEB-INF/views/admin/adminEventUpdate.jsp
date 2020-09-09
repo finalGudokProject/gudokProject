@@ -200,19 +200,26 @@
     
     function validate(){
     	  
+    	var flag = true;
+    	
 	  	   if($("#bTitle").val().trim().length == 0){
 	             alert("제목을 입력하세요");
 	             $("#bTitle").focus();
-	             return false;
+	             flag = false;
 	  	   }
 	  	   else if($("#bContent").val().trim().length == 0){
 	  		   alert("내용을 입력하세요");
 	             $("#bContent").focus();
-	             return false;
+	             flag = false;
 	  	   }
 	  	   else{
-	          	alert("이벤트 내용이 수정되었습니다!");           
+	  		 	if(confirm("이벤트를 수정하시겠습니까?")){
+	  		 		alert("수정되었습니다!");
+	  		 	}else{
+	  		 		flag = false;
+	  		 	}          
 	          }
+	  	   return flag;
 	       }
     
     

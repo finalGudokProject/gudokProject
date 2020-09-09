@@ -177,7 +177,7 @@
 
             <br><br>
              &nbsp;&nbsp;<a href="javascript:history.go(-1)" type="button" class="btn btn-primary" style="float:right;">이전으로</a>
-            <input type="submit" value="작성하기" class="btn btn-primary" style="float:right; margin-right: 10px;">
+            <input type="submit" value="수정하기" class="btn btn-primary" style="float:right; margin-right: 10px;">
             </form>
             </div>
             
@@ -194,19 +194,26 @@
             
             function validate(){
             	  
+            	var flag = true;
+            	
           	   if($("#bTitle").val().trim().length == 0){
                      alert("제목을 입력하세요");
                      $("#bTitle").focus();
-                     return false;
+                     flag = false;
           	   }
           	   else if($("#bContent").val().trim().length == 0){
           		   alert("내용을 입력하세요");
                      $("#bContent").focus();
-                     return false;
+                     flag = false;
           	   }
           	   else{
-                  	alert("상품제안이 수정되었습니다!");           
+          		 	if(confirm("상품제안을 수정하시겠습니까?")){
+          		 		alert("수정되었습니다!");
+          		 	}else{
+          		 		flag = false;
+          		 	}
                   }
+          	   return flag;
                }
             
             

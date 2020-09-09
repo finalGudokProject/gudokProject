@@ -174,19 +174,26 @@
             
             function validate(){
           	  
+            	var flag = true;
+            	
          	   if($("#bTitle").val().trim().length == 0){
                     alert("제목을 입력하세요");
                     $("#bTitle").focus();
-                    return false;
+                    flag = false;
          	   }
          	   else if($("#bContent").val().trim().length == 0){
          		   alert("내용을 입력하세요");
                     $("#bContent").focus();
-                    return false;
+                    flag = false;
          	   }
          	   else{
-                 	alert("상품제안이 등록되었습니다!");           
+         		  if(confirm("상품제안을 등록하시겠습니까?")){
+        		 		alert("등록되었습니다!");
+        		 	}else{
+        		 		flag = false;
+        		 	}           
                  }
+         	   return flag;
               }
             
             

@@ -141,7 +141,7 @@
             <c:if test="${inquiry.iInquiry_content eq null }">
             <a href="${inquiryUpdateView }" type="button" class="btn btn-primary" style="float:right;margin-right:10px">수정</a>
             </c:if>
-            <a href="${inquiryDelete }" type="button" class="btn btn-primary" style="float:right;margin-right:10px">삭제</a>
+            <a href="${inquiryDelete }" type="button" class="btn btn-primary" style="float:right;margin-right:10px" id="delete">삭제</a>
             </c:if>
             </div>
             </div>
@@ -150,5 +150,19 @@
             <footer class="page-footer font-small indigo">
 				<jsp:include page="../common/footer.jsp" />
 			</footer>
+			
+			<script>
+				$("#delete").click(function(){
+					
+					var flag = true;
+					
+					if(confirm("작성된 글을 삭제하시겠습니까?")){
+						alert("삭제되었습니다!");
+					}else{
+						flag=false;
+					}
+					return flag;
+				})
+			</script>
 </body>
 </html>
