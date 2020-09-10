@@ -87,5 +87,12 @@
 		WHERE ITEM_NO=#{itemNo}
 	</select>
 	
+	<select id="checkDiscount" parameterType="_int" resultType="_int">
+		SELECT NVL(MAX(ITEM_DISCOUNT), 0)
+		FROM ITEM
+		JOIN EVENT_ITEM USING(ITEM_NO)
+		WHERE ITEM_NO = #{no}
+	</select>
+	
 	
 </mapper>

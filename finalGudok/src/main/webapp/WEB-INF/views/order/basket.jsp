@@ -111,9 +111,16 @@
 				<fmt:formatNumber var="discountPrice" value="${(c.itemPrice - c.itemPrice*(c.itemDiscount/100)) * c.cartCount}" type="number"/>
 				<fmt:formatNumber var="itemPrice" value="${c.itemPrice * c.cartCount }" type="number"/>
 				<tr style="border-bottom:1px solid lightgray;vertical-align:middle;">
+					<input type="hidden" class="iName" value="${c.itemName }">
+					<input type="hidden" class="no" value="${c.itemNo }">
 					<td class="listChk">
 					<c:if test="${c.itemDiscount == 0 }">
 					<input type="checkbox" class="chk" value="${c.itemPrice * c.cartCount}" data-cartNo="${c.cartNo }">
+					<input type="hidden" class="chk" value="${c.itemPrice * c.cartCount}" data-cartNo="${c.cartNo }">
+					
+					
+					<input type="hidden" class="amount" value="${c.cartCount }">
+					
 					</c:if>
 					<c:if test="${c.itemDiscount != 0 }">
 					<input type="checkbox" class="chk" value="${(c.itemPrice - c.itemPrice*(c.itemDiscount/100)) * c.cartCount}" data-cartNo="${c.cartNo }">
@@ -142,12 +149,13 @@
 						</c:if>
 						<input type="text" readonly class="amountT" value="${c.cartCount }" style="width:50px;text-align:center;">
 						<img src="${contextPath }/resources/images/plus.png" class="signImgP" id="signP">
-						<input type="hidden" value="${c.itemDiscount }">
+						<input type="hidden" value="${c.itemDiscount }" class="discount">
+						<input type="hidden" value="${c.itemPrice }" class="price">
 					</td>
 					<td style="width:10rem;">
 					<c:choose>
 						<c:when test="${c.cartSubs == 1 }">
-							<select style="width:80px;height:30px;" name="cartSubs">
+							<select style="width:80px;height:30px;" name="cartSubs" class="cartSubs">
 								<option value="1" selected>1주일</option>
 								<option value="2">2주일</option>
 								<option value="3">3주일</option>
@@ -155,7 +163,7 @@
 							</select>
 						</c:when>
 						<c:when test="${c.cartSubs == 2 }">
-							<select style="width:80px;height:30px;" name="cartSubs">
+							<select style="width:80px;height:30px;" name="cartSubs" class="cartSubs">
 								<option value="1">1주일</option>
 								<option value="2" selected>2주일</option>
 								<option value="3">3주일</option>
@@ -163,7 +171,7 @@
 							</select>
 						</c:when>
 						<c:when test="${c.cartSubs == 3 }">
-							<select style="width:80px;height:30px;" name="cartSubs">
+							<select style="width:80px;height:30px;" name="cartSubs" class="cartSubs">
 								<option value="1">1주일</option>
 								<option value="2">2주일</option>
 								<option value="3" selected>3주일</option>
@@ -171,7 +179,7 @@
 							</select>
 						</c:when>
 						<c:otherwise>
-							<select style="width:80px;height:30px;" name="cartSubs">
+							<select style="width:80px;height:30px;" name="cartSubs" class="cartSubs">
 								<option value="1">1주일</option>
 								<option value="2">2주일</option>
 								<option value="3">3주일</option>
@@ -399,8 +407,45 @@
 		
 		<!-- 결제하기 버튼 -->
 		<script>
+		
 			$(function(){
 				$("#paymentBtn").on("click", function(){
+					
+					var itemNo = new Array();
+					var price = new Array();
+					var amount = new Array();
+					var name = new Array();
+					var cycle = new Array();
+					var discount = new Array();
+					
+					var checkItem = $(".chk"); //체크박스 다 가져옴
+					
+					$(checkItem).each(function(){
+						if($(this).is(":checked")){
+							/* var itemNo = $(this).parent().parent().find(".no").val(); */
+							/* var name = $(this).parent().parent().find(".iName").val();
+							var price = $(this).parent().next().next().next().find(".price").val();
+							var discount = $(this).parent().next().next().next().find(".discount").val();
+							var cycle = $(this).parent().next().next().next().next().find("select[name=cartSubs]").val();
+							var amount = $(this).parent().next().next().next().find(".amountT").val(); */
+							
+							itemNo.push($(this).parent().parent().find(".no").val());
+							name.push($(this).parent().parent().find(".iName").val());
+							price.push($(this).parent().next().next().next().find(".price").val());
+							discount.push($(this).parent().next().next().next().find(".discount").val());
+							cycle.push($(this).parent().next().next().next().next().find("select[name=cartSubs]").val());
+							amount.push($(this).parent().next().next().next().find(".amountT").val());
+							
+						}
+					})
+						/* alert("번호 " + itemNo);
+						alert("이름 " + name);
+						alert("가격 " + price);
+						alert("할인률 " + discount);
+						alert("주기" + cycle);
+						alert("수량" + amount); */
+					
+					
 					var check = $("input:checkbox[class='chk']:checked").length;
 					var pay = $("#paymentBtn").val().slice(0,-5);
 					if(check == 0){
@@ -416,6 +461,25 @@
 							if(result){
 								
 							}else{
+								
+								var form = document.createElement('form');
+								form.setAttribute('method', 'post');
+								form.setAttribute('action', "moveToPayment.do");
+								document.charset = "utf-8";
+								params = {"price":price, "name":name, "cycle":cycle, "amount":amount,
+										"itemNo":itemNo, "discount":discount};
+								
+								for ( var key in params) {
+									var hiddenField = document.createElement('input');
+									hiddenField.setAttribute('type', 'hidden');
+									hiddenField.setAttribute('name', key);
+									hiddenField.setAttribute('value', params[key]);
+									form.appendChild(hiddenField);
+
+								}
+								document.body.appendChild(form);
+								form.submit();
+								
 								swal("","결제 페이지로","success");
 							}
 						})
