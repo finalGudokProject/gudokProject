@@ -206,6 +206,10 @@
 	             $("#bContent").focus();
 	             flag = false;
 	  	   }
+	  	   else if(!$("#input_file").val()){
+	  		 	alert("이미지를 등록하세요");
+	  		 	flag = false;
+	  	   }
 	  	   else{
 		  		 if(confirm("이벤트를 등록하시겠습니까?")){
 	  		 		alert("등록되었습니다!");

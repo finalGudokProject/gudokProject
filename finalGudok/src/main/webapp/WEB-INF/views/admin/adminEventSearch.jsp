@@ -395,6 +395,10 @@
 		 			var sendArr = Array();
      				var sendCnt = 0;
      				var chkbox=$(".common");
+     				var page='${page}';
+     				var searchType='${searchType}';
+     		     	var keyword='${keyword}';
+     		     	var post_yn='${post_yn}';
 	        		
      				for(i=0; i<chkbox.length;i++){
                			if(chkbox[i].checked == true){
@@ -402,22 +406,17 @@
                				sendCnt++;
                			}
                		}
+     				if(sendCnt == 0){
+   					  alert("체크된 이벤트가 없습니다.");
+   				  	}
+   					else{
+   						if(confirm("선택한 이벤트들을 삭제하시겠습니까?")){
+	     				alert("선택한 이벤트들이 삭제되었습니다!");
+	     				location.href="eventSearchListDelete.do?sendArr="+sendArr+"&page="+page+"&searchType="+searchType+"&keyword="+keyword+"&post_yn="+post_yn;
+	     			}
+   				}
 	        		
-	        		$.ajax({
-	    				url:"eventDeleteCheck.do",
-	    				type:"post",
-	    				traditional:true,
-	    				data:{"sendArr":sendArr},
-	    				success:function(data){
-	    					alert("선택한 이벤트들을 삭제합니다");
-	    					getBannerList();
-	    				},
-	    				error:function(request, status, errorData){
-		                    alert("error code: " + request.status + "\n"
-			                           +"message: " + request.responseText
-			                           +"error: " + errorData);
-			                  }   
-	    			});
+	        		
 	        	} 
   
   // 모두 체크
