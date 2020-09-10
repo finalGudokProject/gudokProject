@@ -133,6 +133,7 @@
           <form action="ProductProposalInsert.do" method="post" enctype="multipart/form-data" onsubmit="return validate();">
           <input type="hidden" name="bMember_id" value=${loginUser.memberId }>
           <input type="hidden" name="bEmail" value=${loginUser.email }>
+          <input type="hidden" name="bMember_no" value=${loginUser.memberNo }>
             <div style="font-size: 30px;">상품제안</div>
             <hr style="border-color:rgb(0, 125, 255);">
             <table style="text-align: center; margin-top:15px">
@@ -174,19 +175,26 @@
             
             function validate(){
           	  
+            	var flag = true;
+            	
          	   if($("#bTitle").val().trim().length == 0){
                     alert("제목을 입력하세요");
                     $("#bTitle").focus();
-                    return false;
+                    flag = false;
          	   }
          	   else if($("#bContent").val().trim().length == 0){
          		   alert("내용을 입력하세요");
                     $("#bContent").focus();
-                    return false;
+                    flag = false;
          	   }
          	   else{
-                 	alert("상품제안이 등록되었습니다!");           
+         		  if(confirm("상품제안을 등록하시겠습니까?")){
+        		 		alert("등록되었습니다!");
+        		 	}else{
+        		 		flag = false;
+        		 	}           
                  }
+         	   return flag;
               }
             
             

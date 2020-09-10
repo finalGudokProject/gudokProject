@@ -220,7 +220,7 @@
                     <li><a href="${plist}">적립금 내역</a></li>
                 </ul>
             </li>
-            <c:url var="clist" value="cartView.do">
+            <c:url var="clist" value="mbasketPage.do">
 				<c:param name="memberNo" value="${loginUser.memberNo}"/>
 			</c:url> 
             <li><a href="${clist}"><img src="resources/images/cart.png"
@@ -279,7 +279,8 @@
 	              	<span class="grade">황금거위 <span class="etc">&nbsp;등급</span></span>
 	              </c:if>
 	              <br>
-	              <span><a href="#" style="color: black; font-size: 0.8em;">등급 혜택보기</a></span>
+	              <c:url var="grade" value="gradeView.do"></c:url> 
+	              <span><a href="${grade}" style="color: black; font-size: 0.8em;">등급 혜택보기</a></span>
 	            </div>
 	          </div>
 	          <div class="subscribe">

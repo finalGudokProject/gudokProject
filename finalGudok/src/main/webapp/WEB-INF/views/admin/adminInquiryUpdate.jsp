@@ -127,14 +127,21 @@
    
    function validate(){
    	  
+	   var flag = true;
+	   
  	   if($("#iInquiry_content").val().trim().length == 0){
             alert("답변을 입력하세요");
             $("#iInquiry_content").focus();
-            return false;
+            flag = false;
  	   }
  	   else{
-         	alert("답변이 등록되었습니다!");           
+ 		  	if(confirm("답변을 등록하시겠습니까?")){
+		 		alert("등록되었습니다!");
+		 	}else{
+		 		flag = false;
+		 	}          
          }
+ 	   return flag;
       }
    
    </script>

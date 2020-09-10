@@ -510,6 +510,7 @@ public class MemberDao {
 		return sqlSessionTemplate.selectOne("memberMapper.selectPoint",subscribeNo);
 	}
 
+<<<<<<< HEAD
 	public int getMemberCount(SqlSessionTemplate sqlsessiontemplate2) {
 		return sqlsessiontemplate2.selectOne("memberMapper.getMemberCount");
 	}
@@ -524,5 +525,13 @@ public class MemberDao {
 
 	public ArrayList<Grade> selectGradeInfo() {
 		return (ArrayList)sqlSessionTemplate.selectList("memberMapper.selectGradeInfo");
+=======
+	public int selectPointMember(AdminSubscribe adminSubscribe) {
+		return sqlSessionTemplate.update("memberMapper.selectPointMember",adminSubscribe);
+	}
+
+	public int updateSubscribeDestination(Delivery d) {
+		return sqlSessionTemplate.update("memberMapper.updateSubscribeDestination",d);
+>>>>>>> refs/remotes/origin/master
 	}
 }

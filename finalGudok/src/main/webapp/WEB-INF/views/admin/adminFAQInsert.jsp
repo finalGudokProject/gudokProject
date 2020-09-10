@@ -146,6 +146,7 @@
             <form action="insertFAQ.do" method="post" enctype="multipart/form-data" onsubmit="return validate();">
             <input type="hidden" name="bMember_id" value=${loginUser.memberId }>
           	<input type="hidden" name="bEmail" value=${loginUser.email }>
+          	<input type="hidden" name="bMember_no" value=${loginUser.memberNo }>
                 <div style="font-size: 30px;">FAQ</div><br>
                 <hr style="border-color:rgb(0, 125, 255);">
                 <table style="text-align: center; margin-top:15px">
@@ -176,19 +177,26 @@
  	
  	function validate(){
     	  
+ 		var flag = true;
+ 		
   	   if($("#bTitle").val().trim().length == 0){
              alert("제목을 입력하세요");
              $("#bTitle").focus();
-             return false;
+             flag = false;
   	   }
   	   else if($("#bContent").val().trim().length == 0){
   		   alert("내용을 입력하세요");
              $("#bContent").focus();
-             return false;
+             flag = false;
   	   }
   	   else{
-          	alert("FAQ가 등록되었습니다!");           
+  		 	if(confirm("FAQ를 등록하시겠습니까?")){
+		 		alert("등록되었습니다!");
+		 	}else{
+		 		flag = false;
+		 	}           
           }
+  	   return flag;
        }
  	
  	</script>

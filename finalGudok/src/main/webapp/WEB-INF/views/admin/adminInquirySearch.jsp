@@ -240,6 +240,10 @@
 				 			var sendArr = Array();
 		     				var sendCnt = 0;
 		     				var chkbox=$(".common");
+		     				var page='${page}';
+		     				var searchType='${searchType}';
+		     		     	var keyword='${keyword}';
+		     		     	var inquiry_yn='${inquiry_yn}';
 			        		
 		     				for(i=0; i<chkbox.length;i++){
 		               			if(chkbox[i].checked == true){
@@ -247,113 +251,18 @@
 		               				sendCnt++;
 		               			}
 		               		}
+		     				if(sendCnt == 0){
+		     					  alert("체크된 1:1문의가 없습니다.");
+		     				}
+		     				else{
+		     					if(confirm("선택한 1:1문의들을 게시하시겠습니까?")){
+			    				alert("선택한 1:1 문의들이 삭제되었습니다!");
+			    				location.href="inquirySearchListDelete.do?sendArr="+sendArr+"&page="+page+"&searchType="+searchType+"&keyword="+keyword+"&inquiry_yn="+inquiry_yn;
+		     					}
+		     				}
+		  				}
 			        		
-			        		$.ajax({
-			    				url:"inquiryDeleteCheck.do",
-			    				type:"post",
-			    				traditional:true,
-			    				data:{"sendArr":sendArr},
-			    				success:function(data){
-			    					alert("선택한 1:1 문의들을 삭제합니다");
-			    					getInquiryList();
-			    				},
-			    				error:function(request, status, errorData){
-				                    alert("error code: " + request.status + "\n"
-					                           +"message: " + request.responseText
-					                           +"error: " + errorData);
-					                  }   
-			    			});
-			        	} 
-	  
-		// 삭제 후 리스트 가져오기
-	      function getInquiryList(){
-	     	 var page=${pi.currentPage};
-	     	 var searchType='${searchType}';
-	     	 var keyword='${keyword}';
-	     	 var inquiry_yn='${inquiry_yn}';
-	     	 
-	     	 $.ajax({
-	     		 
-	     	 	url:"inquirySearchListChange.do", 
-	     	 	data:{"page":page, "searchType":searchType, "keyword":keyword, "inquiry_yn":inquiry_yn},
-	     	 	dataType:"json",
-	     	 	success:function(data){
-	     	 		
-	     	 		//게시물 상세보기(ajax후)
-	        	        
-	        	       	$(function(){
-	        	       		
-	        	       		$("tr").on("click",function(){
-	        	       			var bBoard_no=$(this).children().eq(1).text();
-	        	        		var page=${pi.currentPage };  
-	        	           		location.href="adminInquiryDetail.do?bBoard_no="+bBoard_no+"&page="+page;
-	        	       		})
-	        	       	})
-	        	       	
-	     	 		$tableBody=$("tbody");
-	     	 		$tableBody.html("");
-	     	 		
-	     	 		var $tr;
-	     	 		var $bBoard_no;
-	     	 		var $rownum;
-	     	 		var $bTitle;
-	     	 		var $bMember_id;
-	     	 		var $bWrite_date;
-	     	 		var $bRead_num;
-	     	 		var $th;
-	     	 		
-	     	 				
-	     	 				for(var i in data.adminInquirySearch){
-	     	 					
-	     	 					$tr=$("<tr id='cursor'>");
-		     	 				$td=$("<td onclick='event.cancelBubble=true'>");
-		     	 				$checkBox=$("<input type='checkbox' class='common' name='proposalNo'>").val(data.adminInquirySearch[i].bBoard_no);     	 			
-		     	 				$bBoard_no=$("<td onclick='event.cancelBubble=true'>").text(data.adminInquirySearch[i].bBoard_no).hide();
-		     	 				$rownum=$("<td onclick='event.cancelBubble=true'>").text(data.adminInquirySearch[i].rownum);
-		     	 				$oSecret=$("<td>").text(data.adminInquirySearch[i].oSecret);
-		     	 				if($oSecret.text()=="N"){
-		     	 					$oSecret.text("[비공개]");
-		     	 				}else if($oSecret.text()=="Y"){
-		     	 					$oSecret.text("[공개]");
-		     	 				} 
-		     	 				$bTitle=$($oSecret).append(data.adminInquirySearch[i].bTitle);
-		     	 				$bMember_id=$("<td onclick='event.cancelBubble=true'>").text(data.adminInquirySearch[i].bMember_id);
-		     	 				$bWrite_date=$("<td onclick='event.cancelBubble=true'>").text(data.adminInquirySearch[i].bWrite_date);
-		     	 				$iInquiry_yn=$("<td onclick='event.cancelBubble=true'>").text(data.adminInquirySearch[i].iInquiry_yn);
-		     	 				
-		     	 				
-		     	 				if($iInquiry_yn.text()=="N"){
-		     	 					$iInquiry_yn.text("답변대기중");
-		     	 				}else if($iInquiry_yn.text()=="Y"){
-		     	 					$iInquiry_yn.text("답변완료");
-		     	 				}
-		     	 				
-		     	 				
-		     	 				
-		     	 				$td.append($checkBox);
-		     	 				$tr.append($td);
-		     	 				$tr.append($bBoard_no);
-		     	 				$tr.append($rownum);
-		     	 				$tr.append($oSecret);
-		     	 				$tr.append($bTitle);
-		     	 				$tr.append($bMember_id);
-		     	 				$tr.append($bWrite_date);
-		     	 				$tr.append($iInquiry_yn);
-		     	 				$tableBody.append($tr);
-	     	 				
-	     	 			}
-	     	 	},
-	     	 	error:function(request, status, errorData){
-	                 alert("error code: " + request.status + "\n"
-		                           +"message: " + request.responseText
-		                           +"error: " + errorData);
-		                  }   
-	     	 	
-	     	 })
-	     	 
-	      }
-	  
-	  
+					        
 	  // 모두 체크
 	  
 		  $(function(){

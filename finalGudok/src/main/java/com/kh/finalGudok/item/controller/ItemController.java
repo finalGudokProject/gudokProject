@@ -1,8 +1,5 @@
 package com.kh.finalGudok.item.controller;
 
-import static com.kh.finalGudok.common.pagination.getPageInfo;
-import static com.kh.finalGudok.common.pagination2.getPageInfo2;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -17,15 +14,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -45,6 +41,7 @@ import com.kh.finalGudok.item.model.vo.Review;
 import com.kh.finalGudok.item.model.vo.ReviewImage;
 import com.kh.finalGudok.item.model.vo.ReviewView;
 import com.kh.finalGudok.item.model.vo.SearchItem;
+import com.kh.finalGudok.member.model.service.MemberService;
 import com.kh.finalGudok.member.model.vo.Member;
 import com.kh.finalGudok.member.model.vo.Subscribe;
 import com.siot.IamportRestClient.IamportClient;
@@ -59,11 +56,14 @@ import com.siot.IamportRestClient.response.Schedule;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
+@SessionAttributes("cartCount")
 @Controller
 public class ItemController {
 
 	@Autowired
 	ItemService iService;
+	@Autowired
+	private MemberService mService;
 
 	@RequestMapping("itemNew.do")
 	private ModelAndView itemNew(ModelAndView mv, @RequestParam(value = "page", required = false) Integer page,
@@ -384,7 +384,7 @@ public class ItemController {
 	// 장바구니 선택 리스트 삭제
 	@ResponseBody
 	@RequestMapping(value = "basketDel.do", method = RequestMethod.POST)
-	public String cartDelete(HttpSession session, HttpServletRequest request,
+	public String cartDelete(HttpSession session, HttpServletRequest request, Model model,
 			@RequestParam(value = "checkboxArr[]") List<String> checkArr, Cart c) {
 		Member member = (Member) session.getAttribute("loginUser");
 		String memberId = member.getMemberId();
@@ -397,6 +397,9 @@ public class ItemController {
 				cartNo = Integer.parseInt(i);
 				c.setCartNo(cartNo);
 				iService.deleteCart(c);
+				int cartCount = mService.cartCount(member.getMemberNo());
+				System.out.println("장바구니 갯수 : " + cartCount);
+				model.addAttribute("cartCount",cartCount);
 			}
 		}
 		return "success";
@@ -406,11 +409,15 @@ public class ItemController {
 	// 장바구니 추가
 	@RequestMapping("basket.do")
 	@ResponseBody
-	public String insertCart(HttpServletRequest request, Cart c) {
+	public String insertCart(HttpSession session, HttpServletRequest request, Cart c, Model model) {
+		Member member = (Member) session.getAttribute("loginUser");
 		int search = iService.selectCart(c);
 		System.out.println("search : " + search);
 		if(search == 0) {
 			iService.insertCart(c);
+			int cartCount = mService.cartCount(member.getMemberNo());
+			System.out.println("장바구니 갯수 : " + cartCount);
+			model.addAttribute("cartCount",cartCount);
 			return "success";
 		}else {
 			return "fail";
@@ -456,21 +463,15 @@ public class ItemController {
 	      String savePath = root + "\\uploadFiles";
 	      File folder = new File(savePath);
 
-	      if (!folder.exists()) {
-	         folder.mkdir();
-	      }
-	      int random = (int) (Math.random() * 100000 + 1);
-	      SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-	      String originFileName = file.getOriginalFilename();
-	      String renameFileName = sdf.format(new java.sql.Date(System.currentTimeMillis())) + random + "."
-	            + originFileName.substring(originFileName.lastIndexOf(".") + 1);
-	      String filePath = folder + "\\" + renameFileName;
-
-	      try {
-	         file.transferTo(new File(filePath));
-	      } catch (IllegalStateException | IOException e) {
-	         e.printStackTrace();
-	      }
+		if (!folder.exists()) {
+			folder.mkdir();
+		}
+		int random = (int) (Math.random() * 100000 + 1);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+		String originFileName = file.getOriginalFilename();
+		String renameFileName = sdf.format(new java.sql.Date(System.currentTimeMillis())) + random + "."
+				+ originFileName.substring(originFileName.lastIndexOf(".") + 1);
+		String filePath = folder + "\\" + renameFileName;
 
 	      return renameFileName;
 
@@ -484,7 +485,7 @@ public class ItemController {
 
 		int result1 = 0;
 		int result2 = 0;
-
+		
 		String renameFileName = saveFile(request, uploadFile1);
 		String root = request.getSession().getServletContext().getRealPath("resources");
 		String savePath = root + "\\uploadFiles";
@@ -528,7 +529,7 @@ public class ItemController {
 		String renameFileName = saveFile(request, file);
 		String root = request.getSession().getServletContext().getRealPath("resources");
 		String savePath = root + "\\uploadFiles";
-
+		
 		e.setImageOriginalName(file.getOriginalFilename());
 		e.setImageRename(renameFileName);
 		e.setImagePath(savePath);
@@ -794,7 +795,7 @@ public class ItemController {
 			scb.setMemberNo(memberNo);
 			scb.setItemNo(itemNo);
 			int currentPage = page;
-
+			System.out.println("memberNo : " + memberNo + ", itemNo : " + itemNo);
 			int deliveryChk = iService.selectDelChk(scb);
 			int reviewChk = iService.selectReviewChk(scb);
 			System.out.println("del값 확인 : " + deliveryChk);
@@ -1707,31 +1708,74 @@ public class ItemController {
 	}
 
 	// ------------------------------결제 구현-----------------------------------------
+	@RequestMapping("moveToPayment.do")
+	@ResponseBody
+	public ModelAndView moveToPayment(ModelAndView mv, @RequestParam(value="itemNo") String[] itemNo, @RequestParam("name") String[] name, @RequestParam("price") String[] price, 
+			@RequestParam("cycle") String[] cycle, @RequestParam("amount") String[] amount){
+		
+		ArrayList<Cart> list = new ArrayList<>();
+		int itemPrice = 0;
+		int itemAmount = 0;
+		int totalPrice = 0;
+		int discount = 0;
+		
+		for(int i = 0 ; i < itemNo.length ; i++) {	
+			Cart cart = new Cart();
+			int no = Integer.valueOf(itemNo[i]);
+			cart.setItemNo(no);
+			itemPrice = Integer.valueOf(price[i]);
+			
+			discount = iService.checkDiscount(no);
+//			System.out.println("할인율: " + discount);
+			
+			if(discount > 0) {
+				
+				itemPrice = itemPrice - (int)(itemPrice*(double)discount/100);
+				cart.setItemPrice(itemPrice);
+			}else {
+				cart.setItemPrice(itemPrice);
+			}		
+//			System.out.println(itemPrice);
+			itemAmount = Integer.valueOf(amount[i]);
+			cart.setCartCount(itemAmount);
+			cart.setCartSubs(cycle[i]);
+			cart.setItemName(name[i]);
+			list.add(cart);
+			
+			totalPrice += itemPrice * itemAmount;
+		}
+		
+//		System.out.println(discount);
+//		System.out.println(list);
+		mv.addObject("list",list);
+		mv.addObject("totalPrice", totalPrice);
+		mv.setViewName("items/payment");
+		return mv;
+	}
+	
+	
 
 	IamportClient client = new IamportClient("3086404975484077",
 			"EsAndJxwJmc8oD49ezXFzHqWyessiK4XcFlpoSW8f8hDMmN0VLFus6r1kTtDDyBQdWfCOcK4l2I7ow7j");
 
 	@RequestMapping(value = "payment.do", method = RequestMethod.POST)
 	@ResponseBody
-	public String payment(@RequestBody String param) throws ParseException, IamportResponseException, IOException {
-		JSONParser parser = new JSONParser();
-		JSONObject json = new JSONObject();
-		JSONObject jobj = (JSONObject) parser.parse(param);
-
-		String customerUid = (String) jobj.get("customer_uid");
-//					String merchantUid = (String) jobj.get("merchant_uid");
-		BigDecimal price = new BigDecimal(((Long) jobj.get("price")).intValue());
-		String name = (String) jobj.get("name");
-//					String impUid = (String)jobj.get("imp_uid");
-		int cycle = 1;
-
-		System.out.println("customerUid : " + customerUid);
-//					System.out.println("merchatUid : " + merchantUid);
-		System.out.println("price : " + price);
-		System.out.println("name : " + name);
-//					System.out.println("impUid : " + impUid);
-
-		firstPayment(customerUid, price, name, cycle);
+	public String payment(HttpServletRequest request) {
+		
+		String[] noArr = request.getParameterValues("noArr");
+		String[] nameArr = request.getParameterValues("nameArr");
+		String[] priceArr = request.getParameterValues("priceArr");
+		String[] countArr = request.getParameterValues("countArr");
+		String[] cycleArr = request.getParameterValues("cycleArr");
+		String firstPrice = request.getParameter("finalPrice");
+		String customerUid = request.getParameter("customerUid");
+		String email = request.getParameter("email");
+		int point = Integer.valueOf((String)request.getParameter("point"));
+		
+		System.out.println(point);
+		System.out.println(firstPrice);
+		
+//		firstPayment(customerUid, price, name, cycle);
 
 		return "success";
 

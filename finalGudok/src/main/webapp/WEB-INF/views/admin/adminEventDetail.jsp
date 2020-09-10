@@ -77,13 +77,27 @@
             &nbsp;&nbsp;<a href="adminEventList.do" type="button" class="btn btn-primary" style="float:right;">목록으로</a>
             <c:if test="${loginUser.memberId eq 'admin' }">
             <a href="${adminEventUpdateView }" type="button" class="btn btn-primary" style="float:right;margin-right:10px">수정</a>
-            <a href="${eventDelete }" type="button" class="btn btn-primary" style="float:right;margin-right:10px">삭제</a>
+            <a href="${eventDelete }" type="button" class="btn btn-primary" style="float:right;margin-right:10px" id="delete">삭제</a>
             </c:if>
             
             <br><br><br>
 
     </div><!--하얀박스 있는부분 끝-->
   </div><!--회색바탕 div-->
+  
+  		<script>
+				$("#delete").click(function(){
+					
+					var flag = true;
+					
+					if(confirm("작성된 글을 삭제하시겠습니까?")){
+						alert("삭제되었습니다!");
+					}else{
+						flag=false;
+					}
+					return flag;
+				})
+		</script>
   
 
    

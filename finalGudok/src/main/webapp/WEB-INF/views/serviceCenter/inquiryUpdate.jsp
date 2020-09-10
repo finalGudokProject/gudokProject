@@ -221,8 +221,14 @@
                         	
                             </td>
                         <th style="width:15%; padding:20px;">비밀번호</th>
+                        <c:if test="${secret.oSecret eq 'Y' }">
+                        <td style="width: 39%;"><input type="password" id="oSecret_pwd" name="oSecret_pwd" disabled>
+                        </td>
+                        </c:if>
+                        <c:if test="${secret.oSecret eq 'N' }">
                         <td style="width: 39%;"><input type="password" id="oSecret_pwd" name="oSecret_pwd" value="${secret.oSecret_pwd }">
                         </td>
+                        </c:if>
                     </tr>
                     <tr>
                         <th style="padding:20px;">내용</th>
@@ -279,25 +285,32 @@
            
  		function validate(){
      	  
+        	var flag = true;
+        	
      	   if($("#bTitle").val().trim().length == 0){
                 alert("제목을 입력하세요");
                 $("#bTitle").focus();
-                return false;
+                flag = false;
      	   }
      	   else if($("input[name='oSecret']:checked").val()=='N' && $("#oSecret_pwd").val().trim().length == 0){
      		   console.log("d");
      		   alert("비밀번호를 입력하세요");
                 $("#oSecret_pwd").focus();
-                return false;
+                flag = false;
      	   }
      	   else if($("#bContent").val().trim().length == 0){
      		   alert("내용을 입력하세요");
                 $("#bContent").focus();
-                return false;
+                flag = false;
      	   }
      	   else{
-             	alert("1:1문의가 수정되었습니다!");           
-             }
+     		  if(confirm("1:1문의를 수정하시겠습니까?")){
+    		 		alert("수정되었습니다!");
+    		 	}else{
+    		 		flag = false;
+    		 	}
+     	   }
+     	   return flag;
           }
         
         

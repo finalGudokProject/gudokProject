@@ -42,15 +42,8 @@ public class BoardController {
 	// admin Notice
 	// List
 	@RequestMapping("adminNoticeList.do")
-	public ModelAndView adminNoticeList(ModelAndView mv, @RequestParam(value = "page", required = false) Integer page) { // 기본
-																															// 자료형으로
-																															// 받을
-																															// 수
-																															// 없기
-																															// 때문에
-																															// Integer를
-																															// 쓴다
-		// 페이징 관련 처리부터 하자
+	public ModelAndView adminNoticeList(ModelAndView mv, @RequestParam(value = "page", required = false) Integer page) { 
+		
 		int currentPage = 1;
 		if (page != null) {
 			currentPage = page;
@@ -243,7 +236,7 @@ public class BoardController {
 		int result2 = bService.deleteBoardImage(bBoard_no);
 		int result3 = bService.deleteBoard(bBoard_no);
 
-		if (result1 > 0 && result2 > 0 && result3 > 0) {
+		if (result1 > 0 || result2 > 0 || result3 > 0) {
 			return "redirect:adminNoticeList.do";
 		} else {
 			throw new BoardException("게시물 삭제 실패!");
@@ -252,7 +245,6 @@ public class BoardController {
 
 	// 선택 삭제
 	@RequestMapping("noticeDeleteCheck.do")
-	@ResponseBody
 	public String noticeDeleteCheck(HttpServletRequest request, String sendArr) {
 
 		String[] strArr = sendArr.split(",");
@@ -280,7 +272,7 @@ public class BoardController {
 			result3 = bService.deleteBoard(NoticeArr[k]);
 		}
 
-		if (result1 > 0 && result2 > 0 && result3 > 0) {
+		if (result1 > 0 || result2 > 0 || result3 > 0) {
 
 			return "redirect:adminNoticeList.do";
 
@@ -288,59 +280,6 @@ public class BoardController {
 			throw new BoardException("공지글 삭제 실패!");
 		}
 
-	}
-
-	// 삭제 후 바뀐 게시판 보기
-	@RequestMapping("noticeListChange.do")
-	public void noticeListChange(HttpServletResponse response, Integer page) throws IOException {
-
-		int currentPage = 1;
-		if (page != null) {
-			currentPage = page;
-		}
-
-		int listCount = bService.getListCountNotice();
-
-		int pageLimit = 10; // 보여질 페이지 총 갯수
-		int boardLimit = 12; // 게시판 한 페이지에 뿌려질 게시글 수
-
-		bPageInfo pi = getPageInfo2(currentPage, listCount, pageLimit, boardLimit);
-
-		ArrayList<Board> list = bService.selectListNotice(pi);
-
-		System.out.println("삭제 전 목록 : " + list);
-
-		response.setContentType("application/json;charset=utf-8");
-
-		if (list != null) {
-
-			JSONArray jarr = new JSONArray();
-
-			for (int i = 0; i < list.size(); i++) {
-				JSONObject jList = new JSONObject();
-				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
-				jList.put("bBoard_no", list.get(i).getbBoard_no());
-				jList.put("rownum", list.get(i).getRownum());
-				jList.put("bTitle", list.get(i).getbTitle());
-				jList.put("bWrite_date", sdf.format(list.get(i).getbWrite_date()));
-				jList.put("bRead_num", list.get(i).getbRead_num());
-
-				jarr.add(jList);
-
-			}
-
-			JSONObject sendJson = new JSONObject();
-			sendJson.put("adminNoticeList", jarr);
-
-			PrintWriter out = response.getWriter();
-			out.print(sendJson);
-			out.flush();
-			out.close();
-
-		} else {
-			throw new BoardException("공지 전체 조회 실패!");
-		}
 	}
 
 	// 검색
@@ -381,65 +320,45 @@ public class BoardController {
 		return mv;
 	}
 
-	// 검색 후 상태 변환 후 페이지
-	@RequestMapping("noticeSearchListChange.do")
-	public void noticeSearchListChange(HttpServletResponse response, Integer page,
-			@RequestParam("searchType") String searchType, @RequestParam("keyword") String keyword) throws IOException {
+	// 검색 후 삭제 후 페이지
+	@RequestMapping("noticeSearchListDelete.do")
+	public ModelAndView noticeSearchListDelete(ModelAndView mv, 
+			@RequestParam("searchType") String searchType, @RequestParam("keyword") String keyword, 
+			HttpServletRequest request, String sendArr){
 
-		System.out.println("검색 후 변환 페이지 : " + searchType);
-		System.out.println(keyword);
+		String[] strArr = sendArr.split(",");
 
-		int currentPage = 1;
-		if (page != null) {
-			currentPage = page;
+		int[] NoticeArr = new int[strArr.length];
+
+		for (int i = 0; i < strArr.length; i++) {
+			NoticeArr[i] = Integer.valueOf(strArr[i]);
+			System.out.println("선택된 값:" + strArr[i]);
 		}
 
-		Search search = new Search();
-		search.setSearchType(searchType);
-		search.setKeyword(keyword);
+		int result1 = 0;
+		int result2 = 0;
+		int result3 = 0;
 
-		int listCount = bService.getSearchListCountNotice(search);
+		for (int k = 0; k < NoticeArr.length; k++) {
 
-		int pageLimit = 10; // 보여질 페이지 총 갯수
-		int boardLimit = 12; // 게시판 한 페이지에 뿌려질 게시글 수
+			Board b = bService.selectDeleteBoard(NoticeArr[k]);
 
-		bPageInfo pi = getPageInfo2(currentPage, listCount, pageLimit, boardLimit);
-
-		ArrayList<Board> list = bService.selectSearchListNotice(pi, search);
-
-		System.out.println(list);
-
-		response.setContentType("application/json;charset=utf-8");
-
-		if (list != null) {
-
-			JSONArray jarr = new JSONArray();
-
-			for (int i = 0; i < list.size(); i++) {
-				JSONObject jList = new JSONObject();
-				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
-				jList.put("bBoard_no", list.get(i).getbBoard_no());
-				jList.put("rownum", list.get(i).getRownum());
-				jList.put("bTitle", list.get(i).getbTitle());
-				jList.put("bWrite_date", sdf.format(list.get(i).getbWrite_date()));
-				jList.put("bRead_num", list.get(i).getbRead_num());
-
-				jarr.add(jList);
-
+			if (b.getOriginalFileName() != null) {
+				deleteFile(b.getRenameFileName(), request);
 			}
-
-			JSONObject sendJson = new JSONObject();
-			sendJson.put("adminNoticeSearch", jarr);
-
-			PrintWriter out = response.getWriter();
-			out.print(sendJson);
-			out.flush();
-			out.close();
-
-		} else {
-			throw new BoardException("공지 조회 실패!");
+			result1 = bService.deleteImage(NoticeArr[k]);
+			result2 = bService.deleteBoardImage(NoticeArr[k]);
+			result3 = bService.deleteBoard(NoticeArr[k]);
 		}
+
+		if (result1 > 0 || result2 > 0 || result3 > 0) {
+			mv.addObject("searchType", searchType);
+			mv.addObject("keyword", keyword);
+			mv.setViewName("redirect:searchNoticeList.do");
+		} else {
+			throw new BoardException("공지글 삭제 실패!");
+		}
+		return mv;
 	}
 
 	// ------------------------------------------------------------------------------------
@@ -448,14 +367,7 @@ public class BoardController {
 
 	// 리스트 출력
 	@RequestMapping("adminFAQList.do")
-	public ModelAndView adminFAQList(ModelAndView mv, @RequestParam(value = "page", required = false) Integer page) { // 기본
-																														// 자료형으로
-																														// 받을
-																														// 수
-																														// 없기
-																														// 때문에
-																														// Integer를
-																														// 쓴다
+	public ModelAndView adminFAQList(ModelAndView mv, @RequestParam(value = "page", required = false) Integer page) { 
 
 		int currentPage = 1;
 		if (page != null) {
@@ -559,7 +471,6 @@ public class BoardController {
 
 	// 선택 삭제
 	@RequestMapping("FAQDeleteCheck.do")
-	@ResponseBody
 	public String FAQDeleteCheck(HttpServletRequest request, String sendArr) {
 
 		String[] strArr = sendArr.split(",");
@@ -591,59 +502,6 @@ public class BoardController {
 			throw new BoardException("FAQ글 삭제 실패!");
 		}
 
-	}
-
-	// 삭제 후 바뀐 게시판 보기
-	@RequestMapping("FAQListChange.do")
-	public void FAQListChange(HttpServletResponse response, Integer page) throws IOException {
-
-		int currentPage = 1;
-		if (page != null) {
-			currentPage = page;
-		}
-
-		int listCount = bService.getListCountFAQ();
-
-		int pageLimit = 10; // 보여질 페이지 총 갯수
-		int boardLimit = 12; // 게시판 한 페이지에 뿌려질 게시글 수
-
-		bPageInfo pi = getPageInfo2(currentPage, listCount, pageLimit, boardLimit);
-
-		ArrayList<Board> list = bService.selectListFAQ(pi);
-
-		System.out.println("삭제 전 목록 : " + list);
-
-		response.setContentType("application/json;charset=utf-8");
-
-		if (list != null) {
-
-			JSONArray jarr = new JSONArray();
-
-			for (int i = 0; i < list.size(); i++) {
-				JSONObject jList = new JSONObject();
-				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
-				jList.put("bBoard_no", list.get(i).getbBoard_no());
-				jList.put("rownum", list.get(i).getRownum());
-				jList.put("bTitle", list.get(i).getbTitle());
-				jList.put("bWrite_date", sdf.format(list.get(i).getbWrite_date()));
-				jList.put("bRead_num", list.get(i).getbRead_num());
-
-				jarr.add(jList);
-
-			}
-
-			JSONObject sendJson = new JSONObject();
-			sendJson.put("adminFAQList", jarr);
-
-			PrintWriter out = response.getWriter();
-			out.print(sendJson);
-			out.flush();
-			out.close();
-
-		} else {
-			throw new BoardException("FAQ 전체 조회 실패!");
-		}
 	}
 
 	// 검색
@@ -684,66 +542,44 @@ public class BoardController {
 		return mv;
 	}
 
-	// 검색 후 상태 변환 후 페이지
-	@RequestMapping("FAQSearchListChange.do")
-	public void FAQSearchListChange(HttpServletResponse response, Integer page,
-			@RequestParam("searchType") String searchType, @RequestParam("keyword") String keyword) throws IOException {
+	// 검색 후 삭제 후 페이지
+	@RequestMapping("FAQSearchListDelete.do")
+	public ModelAndView searchFAQList(ModelAndView mv, 
+			@RequestParam("searchType") String searchType, @RequestParam("keyword") String keyword, 
+			HttpServletRequest request, String sendArr){
 
-		System.out.println("검색 후 변환 페이지 : " + searchType);
-		System.out.println(keyword);
+		String[] strArr = sendArr.split(",");
 
-		int currentPage = 1;
-		if (page != null) {
-			currentPage = page;
+		int[] FAQArr = new int[strArr.length];
+
+		for (int i = 0; i < strArr.length; i++) {
+			FAQArr[i] = Integer.valueOf(strArr[i]);
+			System.out.println("선택된 값:" + strArr[i]);
 		}
 
-		Search search = new Search();
-		search.setSearchType(searchType);
-		search.setKeyword(keyword);
+		int result = 0;
 
-		int listCount = bService.getSearchListCountFAQ(search);
+		for (int k = 0; k < FAQArr.length; k++) {
 
-		int pageLimit = 10; // 보여질 페이지 총 갯수
-		int boardLimit = 12; // 게시판 한 페이지에 뿌려질 게시글 수
+			Board b = bService.selectDeleteBoard(FAQArr[k]);
 
-		bPageInfo pi = getPageInfo2(currentPage, listCount, pageLimit, boardLimit);
+			result = bService.deleteBoard(FAQArr[k]);
+		}
 
-		ArrayList<Board> list = bService.selectSearchListFAQ(pi, search);
-
-		System.out.println(list);
-
-		response.setContentType("application/json;charset=utf-8");
-
-		if (list != null) {
-
-			JSONArray jarr = new JSONArray();
-
-			for (int i = 0; i < list.size(); i++) {
-				JSONObject jList = new JSONObject();
-				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
-				jList.put("bBoard_no", list.get(i).getbBoard_no());
-				jList.put("rownum", list.get(i).getRownum());
-				jList.put("bTitle", list.get(i).getbTitle());
-				jList.put("bWrite_date", sdf.format(list.get(i).getbWrite_date()));
-				jList.put("bRead_num", list.get(i).getbRead_num());
-
-				jarr.add(jList);
-
-			}
-
-			JSONObject sendJson = new JSONObject();
-			sendJson.put("adminFAQSearch", jarr);
-
-			PrintWriter out = response.getWriter();
-			out.print(sendJson);
-			out.flush();
-			out.close();
+		
+		if (result > 0) {
+			mv.addObject("searchType", searchType);
+			mv.addObject("keyword", keyword);
+			mv.setViewName("redirect:searchFAQList.do");
 
 		} else {
-			throw new BoardException("FAQ 조회 실패!");
+			throw new BoardException("FAQ글 삭제 실패!");
 		}
+		return mv;
+
 	}
+	
+	
 
 	// -------------------------------------------------------------------
 
@@ -752,7 +588,7 @@ public class BoardController {
 	@RequestMapping("adminProductProposalList.do")
 	public ModelAndView adminProductProposalList(ModelAndView mv,
 			@RequestParam(value = "page", required = false) Integer page) { // 기본 자료형으로 받을 수 없기 때문에 Integer를 쓴다
-		// 페이징 관련 처리부터 하자
+		
 		int currentPage = 1;
 		if (page != null) {
 			currentPage = page;
@@ -815,7 +651,7 @@ public class BoardController {
 		int result2 = bService.deleteBoardImage(bBoard_no);
 		int result3 = bService.deleteBoard(bBoard_no);
 
-		if (result1 > 0 && result2 > 0 && result3 > 0) {
+		if (result1 > 0 || result2 > 0 || result3 > 0) {
 			return "redirect:adminProductProposalList.do";
 		} else {
 			throw new BoardException("게시물 삭제 실패!");
@@ -824,7 +660,6 @@ public class BoardController {
 
 	// 선택 삭제
 	@RequestMapping("proposalDeleteCheck.do")
-	@ResponseBody
 	public String proposalDeleteCheck(HttpServletRequest request, String sendArr) {
 
 		String[] strArr = sendArr.split(",");
@@ -853,7 +688,7 @@ public class BoardController {
 
 		}
 
-		if (result1 > 0 && result2 > 0 && result3 > 0) {
+		if (result1 > 0 || result2 > 0 || result3 > 0) {
 			return "redirect:adminProductProposalList.do";
 		
 		}else{
@@ -862,62 +697,6 @@ public class BoardController {
 			
 		}
 		
-	
-		
-
-	// 삭제 후 바뀐 게시판 보기
-	@RequestMapping("proposalListChange.do")
-	public void proposalListChange(HttpServletResponse response, Integer page) throws IOException {
-
-		int currentPage = 1;
-		if (page != null) {
-			currentPage = page;
-		}
-
-		int listCount = bService.getListCountProductProposal();
-
-		int pageLimit = 100; // 보여질 페이지 총 갯수
-		int boardLimit = 12; // 게시판 한 페이지에 뿌려질 게시글 수
-
-		bPageInfo pi = getPageInfo2(currentPage, listCount, pageLimit, boardLimit);
-
-		ArrayList<Board> list = bService.selectListProductProposal(pi);
-
-		System.out.println("삭제 전 목록 : " + list);
-
-		response.setContentType("application/json;charset=utf-8");
-
-		if (list != null) {
-
-			JSONArray jarr = new JSONArray();
-
-			for (int i = 0; i < list.size(); i++) {
-				JSONObject jList = new JSONObject();
-				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
-				jList.put("bBoard_no", list.get(i).getbBoard_no());
-				jList.put("rownum", list.get(i).getRownum());
-				jList.put("bTitle", list.get(i).getbTitle());
-				jList.put("bMember_id", list.get(i).getbMember_id());
-				jList.put("bWrite_date", sdf.format(list.get(i).getbWrite_date()));
-				jList.put("bRead_num", list.get(i).getbRead_num());
-
-				jarr.add(jList);
-
-			}
-
-			JSONObject sendJson = new JSONObject();
-			sendJson.put("adminProductProposalList", jarr);
-
-			PrintWriter out = response.getWriter();
-			out.print(sendJson);
-			out.flush();
-			out.close();
-
-		} else {
-			throw new BoardException("Proposal 전체 조회 실패!");
-		}
-	}
 
 	// 검색
 	@RequestMapping("searchProposalList.do")
@@ -958,74 +737,55 @@ public class BoardController {
 		return mv;
 	}
 
-	// 검색 후 상태 변환 후 페이지
-	@RequestMapping("proposalSearchListChange.do")
-	public void proposalSearchListChange(HttpServletResponse response, Integer page,
-			@RequestParam("searchType") String searchType, @RequestParam("keyword") String keyword) throws IOException {
+	// 검색 후 삭제 후 페이지
+	@RequestMapping("proposalSearchListDelete.do")
+	public ModelAndView proposalSearchListDelete(ModelAndView mv, 
+				@RequestParam("searchType") String searchType, @RequestParam("keyword") String keyword, 
+				HttpServletRequest request, String sendArr){
 
-		System.out.println("검색 후 변환 페이지 : " + searchType);
-		System.out.println(keyword);
+		String[] strArr = sendArr.split(",");
 
-		int currentPage = 1;
-		if (page != null) {
-			currentPage = page;
+		int[] ProposalArr = new int[strArr.length];
+
+		for (int i = 0; i < strArr.length; i++) {
+			ProposalArr[i] = Integer.valueOf(strArr[i]);
+			System.out.println("선택된 값:" + strArr[i]);
 		}
 
-		Search search = new Search();
-		search.setSearchType(searchType);
-		search.setKeyword(keyword);
+		int result1 = 0;
+		int result2 = 0;
+		int result3 = 0;
 
-		int listCount = bService.getSearchListCountProductProposal(search);
+		for (int k = 0; k < ProposalArr.length; k++) {
 
-		int pageLimit = 100; // 보여질 페이지 총 갯수
-		int boardLimit = 12; // 게시판 한 페이지에 뿌려질 게시글 수
+			Board b = bService.selectDeleteBoard(ProposalArr[k]);
 
-		bPageInfo pi = getPageInfo2(currentPage, listCount, pageLimit, boardLimit);
-
-		ArrayList<Board> list = bService.selectSearchListProductProposal(pi, search);
-
-		System.out.println(list);
-
-		response.setContentType("application/json;charset=utf-8");
-
-		if (list != null) {
-
-			JSONArray jarr = new JSONArray();
-
-			for (int i = 0; i < list.size(); i++) {
-				JSONObject jList = new JSONObject();
-				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
-				jList.put("bBoard_no", list.get(i).getbBoard_no());
-				jList.put("rownum", list.get(i).getRownum());
-				jList.put("bTitle", list.get(i).getbTitle());
-				jList.put("bMember_id", list.get(i).getbMember_id());
-				jList.put("bWrite_date", sdf.format(list.get(i).getbWrite_date()));
-				jList.put("bRead_num", list.get(i).getbRead_num());
-
-				jarr.add(jList);
-
+			if (b.getOriginalFileName() != null) {
+				PdeleteFile(b.getRenameFileName(), request);
 			}
+			result1 = bService.deleteImage(ProposalArr[k]);
+			result2 = bService.deleteBoardImage(ProposalArr[k]);
+			result3 = bService.deleteBoard(ProposalArr[k]);
 
-			JSONObject sendJson = new JSONObject();
-			sendJson.put("adminProductProposalSearch", jarr);
-
-			PrintWriter out = response.getWriter();
-			out.print(sendJson);
-			out.flush();
-			out.close();
-
-		} else {
-			throw new BoardException("Proposal 조회 실패!");
 		}
-	}
+
+		if (result1 > 0 || result2 > 0 || result3 > 0) {
+			mv.addObject("searchType", searchType);
+			mv.addObject("keyword", keyword);
+			mv.setViewName("redirect:searchProposalList.do");
+		}else{
+				throw new BoardException("Proposal글 삭제 실패!");
+		}
+		return mv;
+		}
+		
 
 	// -----------------------------------------------
 	// admin Inquiry List
 	@RequestMapping("adminInquiryList")
 	public ModelAndView adminInquiryList(ModelAndView mv,
 			@RequestParam(value = "page", required = false) Integer page) { // 기본 자료형으로 받을 수 없기 때문에 Integer를 쓴다
-		// 페이징 관련 처리부터 하자
+		
 		int currentPage = 1;
 		if (page != null) {
 			currentPage = page;
@@ -1125,11 +885,11 @@ public class BoardController {
 		// 게시글 삭제하기
 		int result1 = bService.deleteImage(bBoard_no);
 		int result2 = bService.deleteBoardImage(bBoard_no);
-		int result3 = bService.deleteBoard(bBoard_no);
-		int result4 = bService.deleteOneInquiryBoard(bBoard_no);
-		int result5 = bService.deleteInquiryBoard(bBoard_no);
+		int result3 = bService.deleteOneInquiryBoard(bBoard_no);
+		int result4 = bService.deleteInquiryBoard(bBoard_no);
+		int result5 = bService.deleteBoard(bBoard_no);
 
-		if (result1 > 0 && result2 > 0 && result3 > 0 && result4 > 0 && result5 > 0) {
+		if (result1 > 0 || result2 > 0 || (result3 > 0 && result4 > 0 && result5 > 0)) {
 			return "redirect:adminInquiryList.do";
 		} else {
 			throw new BoardException("게시물 삭제 실패!");
@@ -1138,7 +898,6 @@ public class BoardController {
 
 	// 선택 삭제
 	@RequestMapping("inquiryDeleteCheck.do")
-	@ResponseBody
 	public String inquiryDeleteCheck(HttpServletRequest request, String sendArr) {
 
 		String[] strArr = sendArr.split(",");
@@ -1165,13 +924,13 @@ public class BoardController {
 			}
 			result1 = bService.deleteImage(InquriyArr[k]);
 			result2 = bService.deleteBoardImage(InquriyArr[k]);
-			result3 = bService.deleteBoard(InquriyArr[k]);
+			result3 = bService.deleteInquiryBoard(InquriyArr[k]);
 			result4 = bService.deleteOneInquiryBoard(InquriyArr[k]);
-			result5 = bService.deleteInquiryBoard(InquriyArr[k]);
+			result5 = bService.deleteBoard(InquriyArr[k]);
 
 		}
 
-		if (result1 > 0 && result2 > 0 && result3 > 0 && result4 > 0 && result5 > 0) {
+		if (result1 > 0 || result2 > 0 || (result3 > 0 && result4 > 0 && result5 > 0)) {
 
 			return "redirect:adminInquiryList.do";
 
@@ -1179,65 +938,6 @@ public class BoardController {
 			throw new BoardException("문의글 삭제 실패!");
 		}
 
-	}
-
-	// 삭제 후 바뀐 게시판 보기
-	@RequestMapping("inquiryListChange.do")
-	public void inquiryListChange(HttpServletResponse response, Integer page) throws IOException {
-
-		int currentPage = 1;
-		if (page != null) {
-			currentPage = page;
-		}
-
-		int listCount = bService.getListCountInquiry();
-
-		int pageLimit = 100; // 보여질 페이지 총 갯수
-		int boardLimit = 12; // 게시판 한 페이지에 뿌려질 게시글 수
-
-		bPageInfo pi = getPageInfo2(currentPage, listCount, pageLimit, boardLimit);
-
-		ArrayList<Board> list1 = bService.selectListInquiry1(pi);
-		ArrayList<secret> list2 = bService.selectListInquiry2(pi);
-		ArrayList<Inquiry> list3 = bService.selectListInquiry3(pi);
-
-		System.out.println("삭제 전 목록 : " + list1);
-		System.out.println("삭제 전 목록 : " + list2);
-		System.out.println("삭제 전 목록 : " + list3);
-
-		response.setContentType("application/json;charset=utf-8");
-
-		if (list1 != null && list2 != null && list3 != null) {
-
-			JSONArray jarr = new JSONArray();
-
-			for (int i = 0; i < list1.size(); i++) {
-				JSONObject jList = new JSONObject();
-				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
-				jList.put("bBoard_no", list1.get(i).getbBoard_no());
-				jList.put("rownum", list1.get(i).getRownum());
-				jList.put("oSecret", list2.get(i).getoSecret());
-				jList.put("bTitle", list1.get(i).getbTitle());
-				jList.put("bMember_id", list1.get(i).getbMember_id());
-				jList.put("bWrite_date", sdf.format(list1.get(i).getbWrite_date()));
-				jList.put("iInquiry_yn", list3.get(i).getiInquiry_yn());
-
-				jarr.add(jList);
-
-			}
-
-			JSONObject sendJson = new JSONObject();
-			sendJson.put("adminInquiryList", jarr);
-
-			PrintWriter out = response.getWriter();
-			out.print(sendJson);
-			out.flush();
-			out.close();
-
-		} else {
-			throw new BoardException("문의 전체 조회 실패!");
-		}
 	}
 
 	// 검색
@@ -1290,83 +990,62 @@ public class BoardController {
 		return mv;
 	}
 
-	// 검색 후 상태 변환 후 페이지
-	@RequestMapping("inquirySearchListChange.do")
-	public void inquirySearchListChange(HttpServletResponse response, Integer page,
-			@RequestParam("searchType") String searchType, @RequestParam("keyword") String keyword,
-			@RequestParam("inquiry_yn") String inquiry_yn) throws IOException {
+	// 검색 후 삭제 후 페이지
+	@RequestMapping("inquirySearchListDelete.do")
+	public ModelAndView inquirySearchListDelete(ModelAndView mv, 
+			@RequestParam("searchType") String searchType, @RequestParam("keyword") String keyword, 
+			@RequestParam("inquiry_yn") String inquiry_yn,
+			HttpServletRequest request, String sendArr){
 
-		System.out.println("검색 후 변환 페이지 : " + searchType);
-		System.out.println(keyword);
-		System.out.println(inquiry_yn);
+		String[] strArr = sendArr.split(",");
 
-		int currentPage = 1;
-		if (page != null) {
-			currentPage = page;
+		int[] InquriyArr = new int[strArr.length];
+
+		for (int i = 0; i < strArr.length; i++) {
+			InquriyArr[i] = Integer.valueOf(strArr[i]);
+			System.out.println("선택된 값:" + strArr[i]);
 		}
 
-		Search search = new Search();
-		search.setSearchType(searchType);
-		search.setInquiry_yn(inquiry_yn);
-		search.setKeyword(keyword);
+		int result1 = 0;
+		int result2 = 0;
+		int result3 = 0;
+		int result4 = 0;
+		int result5 = 0;
 
-		int listCount = bService.getSearchListCountInquiry(search);
+		for (int k = 0; k < InquriyArr.length; k++) {
 
-		int pageLimit = 100; // 보여질 페이지 총 갯수
-		int boardLimit = 12; // 게시판 한 페이지에 뿌려질 게시글 수
+			Board b = bService.selectDeleteBoard(InquriyArr[k]);
 
-		bPageInfo pi = getPageInfo2(currentPage, listCount, pageLimit, boardLimit);
-
-		ArrayList<Board> list1 = bService.selectSearchListInquiry1(pi, search);
-		ArrayList<secret> list2 = bService.selectSearchListInquiry2(pi, search);
-		ArrayList<Inquiry> list3 = bService.selectSearchListInquiry3(pi, search);
-
-		System.out.println(list1);
-		System.out.println(list2);
-		System.out.println(list3);
-
-		response.setContentType("application/json;charset=utf-8");
-
-		if (list1 != null && list2 != null && list3 != null) {
-
-			JSONArray jarr = new JSONArray();
-
-			for (int i = 0; i < list1.size(); i++) {
-				JSONObject jList = new JSONObject();
-				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
-				jList.put("bBoard_no", list1.get(i).getbBoard_no());
-				jList.put("rownum", list1.get(i).getRownum());
-				jList.put("oSecret", list2.get(i).getoSecret());
-				jList.put("bTitle", list1.get(i).getbTitle());
-				jList.put("bMember_id", list1.get(i).getbMember_id());
-				jList.put("bWrite_date", sdf.format(list1.get(i).getbWrite_date()));
-				jList.put("iInquiry_yn", list3.get(i).getiInquiry_yn());
-
-				jarr.add(jList);
-
+			if (b.getOriginalFileName() != null) {
+				iDeleteFile(b.getRenameFileName(), request);
 			}
+			result1 = bService.deleteImage(InquriyArr[k]);
+			result2 = bService.deleteBoardImage(InquriyArr[k]);
+			result3 = bService.deleteInquiryBoard(InquriyArr[k]);
+			result4 = bService.deleteOneInquiryBoard(InquriyArr[k]);
+			result5 = bService.deleteBoard(InquriyArr[k]);
 
-			JSONObject sendJson = new JSONObject();
-			sendJson.put("adminInquirySearch", jarr);
-
-			PrintWriter out = response.getWriter();
-			out.print(sendJson);
-			out.flush();
-			out.close();
-
-		} else {
-			throw new BoardException("공지 조회 실패!");
 		}
+
+		if (result1 > 0 || result2 > 0 || (result3 > 0 && result4 > 0 && result5 > 0)) {
+			mv.addObject("searchType", searchType);
+			mv.addObject("keyword", keyword);
+			mv.addObject("inquiry_yn", inquiry_yn);
+			mv.setViewName("redirect:searchInquiryList.do");
+		} else {
+			throw new BoardException("문의글 삭제 실패!");
+		}
+		return mv;
+
 	}
 
 	// -------------------------------------------------
 	// admin Event
 	// List
 	@RequestMapping("adminEventList.do")
-	public ModelAndView adminEventDetail(ModelAndView mv,
+	public ModelAndView adminEventList(ModelAndView mv,
 			@RequestParam(value = "page", required = false) Integer page) { // 기본 자료형으로 받을 수 없기 때문에 Integer를 쓴다
-		// 페이징 관련 처리부터 하자
+		
 		int currentPage = 1;
 		if (page != null) {
 			currentPage = page;
@@ -1398,6 +1077,7 @@ public class BoardController {
 	}
 
 	// Detail
+	@RequestMapping("adminEventDetail.do")
 	public ModelAndView adminEventDetail(ModelAndView mv, int bBoard_no, @RequestParam("page") Integer page) {
 		int currentPage = page;
 
@@ -1428,9 +1108,7 @@ public class BoardController {
 
 	@RequestMapping("eventInsert.do")
 	public String eventInsert(HttpServletRequest request, Board b, EventBoard e,
-			@RequestParam(value = "uploadEvent", required = false) MultipartFile file) { // 다중 업로드 파일은
-																							// List<MultipartFile> file
-																							// 이용 찾아서 해봐
+			@RequestParam(value = "uploadEvent", required = false) MultipartFile file) {
 		// NoticeController에 있는 saveFile 메소드 가져오고 buploadFiles폴더로 수정하자
 		// 그리고 이번엔 날짜를 활용한 rename을 적용해 보자
 
@@ -1568,7 +1246,7 @@ public class BoardController {
 		int result3 = bService.deleteBoardImage(bBoard_no);
 		int result4 = bService.deleteBoard(bBoard_no);
 
-		if (result1 > 0 && result2 > 0 && result3 > 0 && result4 > 0) {
+		if ((result1 > 0 && result4 > 0) || result2 > 0 || result3 > 0) {
 			return "redirect:adminEventList.do";
 		} else {
 			throw new BoardException("게시물 삭제 실패!");
@@ -1657,10 +1335,10 @@ public class BoardController {
 		}
 	}
 
-	// 게시or중지or삭제 후 바뀐 게시판 보기
+	// 게시or중지 후 바뀐 게시판 보기
 	@RequestMapping("eventListChange.do")
 	public void eventListChange(HttpServletResponse response, Integer page) throws IOException {
-		// 페이징 관련 처리부터 하자
+		
 		int currentPage = 1;
 		if (page != null) {
 			currentPage = page;
@@ -1713,7 +1391,6 @@ public class BoardController {
 
 	// 선택 삭제
 	@RequestMapping("eventDeleteCheck.do")
-	@ResponseBody
 	public String eventDeleteCheck(HttpServletRequest request, String sendArr) {
 
 		String[] strArr = sendArr.split(",");
@@ -1744,7 +1421,8 @@ public class BoardController {
 			result4 = bService.deleteBoard(dEventArr[k]);
 		}
 
-		if (result1 > 0 && result3 > 0 && result4 > 0) {
+
+		if ((result1 > 0 && result4>0) || result2 > 0 || result3 > 0) {
 
 			return "redirect:adminEventList.do";
 
@@ -1862,6 +1540,55 @@ public class BoardController {
 			throw new ItemException("이벤트 전체 조회 실패!");
 		}
 	}
+	
+	@RequestMapping("eventSearchListDelete.do")
+	public ModelAndView eventSearchListDelete(ModelAndView mv, 
+			@RequestParam("searchType") String searchType, @RequestParam("keyword") String keyword,
+			@RequestParam("post_yn") String post_yn,
+			HttpServletRequest request, String sendArr){
+
+		String[] strArr = sendArr.split(",");
+
+		int[] dEventArr = new int[strArr.length];
+
+		for (int i = 0; i < strArr.length; i++) {
+			dEventArr[i] = Integer.valueOf(strArr[i]);
+			System.out.println("선택된 값:" + strArr[i]);
+		}
+
+		int result1 = 0;
+		int result2 = 0;
+		int result3 = 0;
+		int result4 = 0;
+
+		for (int k = 0; k < dEventArr.length; k++) {
+
+			Board b = bService.selectDeleteBoard(dEventArr[k]);
+
+			if (b.getOriginalFileName() != null) {
+				eDeleteFile(b.getRenameFileName(), request);
+			}
+
+			result1 = bService.deleteEventBoard(dEventArr[k]);
+			result2 = bService.deleteImage(dEventArr[k]);
+			result3 = bService.deleteBoardImage(dEventArr[k]);
+			result4 = bService.deleteBoard(dEventArr[k]);
+		}
+
+		
+		if ((result1 > 0 && result4>0) || result2 > 0 || result3 > 0) {
+			mv.addObject("searchType", searchType);
+			mv.addObject("keyword", keyword);
+			mv.addObject("post_yn", post_yn);
+			mv.setViewName("redirect:adminEventSearch.do");
+
+		} else {
+			throw new BoardException("이벤트 글 삭제 실패!");
+		}
+		return mv;
+
+	}
+	
 
 	// -------------------------------------------------
 	// serviceCenter
@@ -1884,15 +1611,8 @@ public class BoardController {
 
 	// Notice List
 	@RequestMapping("noticeList.do")
-	public ModelAndView noticeList(ModelAndView mv, @RequestParam(value = "page", required = false) Integer page) { // 기본
-																													// 자료형으로
-																													// 받을
-																													// 수
-																													// 없기
-																													// 때문에
-																													// Integer를
-																													// 쓴다
-		// 페이징 관련 처리부터 하자
+	public ModelAndView noticeList(ModelAndView mv, @RequestParam(value = "page", required = false) Integer page) { 
+		
 		int currentPage = 1;
 		if (page != null) {
 			currentPage = page;
@@ -1926,7 +1646,7 @@ public class BoardController {
 		int result = bService.addReadCount(bBoard_no); // 조회수가 증가 되어야만 게시물 상세보기가 가능하다
 
 		if (result > 0) {
-			Board board = bService.selectDetail(bBoard_no);
+			Board board = bService.selectIDetail(bBoard_no);
 			if (board != null) {
 				mv.addObject("board", board).addObject("currentPage", currentPage)
 						.setViewName("serviceCenter/noticeDetail");
@@ -1981,15 +1701,9 @@ public class BoardController {
 
 	// FAQ List
 	@RequestMapping("FAQList.do")
-	public ModelAndView FAQList(ModelAndView mv, @RequestParam(value = "page", required = false) Integer page) { // 기본
-																													// 자료형으로
-																													// 받을
-																													// 수
-																													// 없기
-																													// 때문에
-																													// Integer를
-																													// 쓴다
-		// 페이징 관련 처리부터 하자
+	public ModelAndView FAQList(ModelAndView mv, @RequestParam(value = "page", required = false) Integer page) { 
+		
+		
 		int currentPage = 1;
 		if (page != null) {
 			currentPage = page;
@@ -2078,7 +1792,7 @@ public class BoardController {
 	@RequestMapping("productProposalList.do")
 	public ModelAndView productProposalList(ModelAndView mv,
 			@RequestParam(value = "page", required = false) Integer page) { // 기본 자료형으로 받을 수 없기 때문에 Integer를 쓴다
-		// 페이징 관련 처리부터 하자
+		
 		int currentPage = 1;
 		if (page != null) {
 			currentPage = page;
@@ -2226,7 +1940,7 @@ public class BoardController {
 		int result2 = bService.deleteBoardImage(bBoard_no);
 		int result3 = bService.deleteBoard(bBoard_no);
 
-		if (result1 > 0 && result2 > 0 && result3 > 0) {
+		if (result1 > 0 || result2 > 0 || result3 > 0) {
 			return "redirect:productProposalList.do";
 		} else {
 			throw new BoardException("게시물 삭제 실패!");
@@ -2316,7 +2030,7 @@ public class BoardController {
 	// Inquiry List
 	@RequestMapping("sinquiryList")
 	public ModelAndView inquirylList(ModelAndView mv, @RequestParam(value = "page", required = false) Integer page) { 
-		// 페이징 관련 처리부터 하자
+		
 		int currentPage = 1;
 		if (page != null) {
 			currentPage = page;
@@ -2614,7 +2328,7 @@ public class BoardController {
 		int result4 = bService.deleteInquiryBoard(bBoard_no);
 		int result5 = bService.deleteBoard(bBoard_no);
 
-		if (result1 > 0 || result2 > 0 || result3 > 0 && result4 > 0 && result5 > 0) {
+		if (result1 > 0 || result2 > 0 || (result3 > 0 && result4 > 0 && result5 > 0)) {
 			return "redirect:sinquiryList.do";
 		} else {
 			throw new BoardException("게시물 삭제 실패!");
@@ -2673,7 +2387,7 @@ public class BoardController {
 	// List
 	@RequestMapping("eventList.do")
 	public ModelAndView eventList(ModelAndView mv, @RequestParam(value = "page", required = false) Integer page) { 
-		// 페이징 관련 처리부터 하자
+		
 		int currentPage = 1;
 		if (page != null) {
 			currentPage = page;

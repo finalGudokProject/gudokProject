@@ -205,6 +205,7 @@
 				 			var sendArr = Array();
 		     				var sendCnt = 0;
 		     				var chkbox=$(".common");
+		     				var page='${page}';
 			        		
 		     				for(i=0; i<chkbox.length;i++){
 		               			if(chkbox[i].checked == true){
@@ -213,93 +214,16 @@
 		               			}
 		               		}
 			        		
-			        		$.ajax({
-			    				url:"proposalDeleteCheck.do",
-			    				type:"post",
-			    				traditional:true,
-			    				data:{"sendArr":sendArr},
-			    				success:function(data){
-			    					alert("선택한 상품문의들을 삭제합니다");
-			    					getFAQList();
-			    				},
-			    				error:function(request, status, errorData){
-				                    alert("error code: " + request.status + "\n"
-					                           +"message: " + request.responseText
-					                           +"error: " + errorData);
-					                  }   
-			    			});
+		     				if(sendCnt == 0){
+		     					  alert("체크된 상품제안이 없습니다.");
+		     				}
+		     				else{
+		     					if(confirm("선택한 상품제안을 삭제하시겠습니까?")){
+		     					alert("선택한 상품문의들이 삭제되었습니다!");
+		     					location.href="proposalDeleteCheck.do?sendArr="+sendArr+"&page="+page;
+		     					}
+		     				}
 			        	} 
-	  
-		// 삭제 후 리스트 가져오기
-	      function getFAQList(){
-	     	 var page=${pi.currentPage};
-	     	 
-	     	 $.ajax({
-	     		 
-	     	 	url:"proposalListChange.do", 
-	     	 	data:{"page":page},
-	     	 	dataType:"json",
-	     	 	success:function(data){
-	     	 		
-	     	 		//게시물 상세보기(ajax후)
-	        	        
-	        	       	$(function(){
-	        	       		
-	        	       		$("tr").on("click",function(){
-	        	       			var bBoard_no=$(this).children().eq(1).text();
-	        	        		var page=${pi.currentPage };  
-	        	           		location.href="adminProductProposalDetail.do?bBoard_no="+bBoard_no+"&page="+page;
-	        	       		})
-	        	       	})
-	        	       	
-	     	 		$tableBody=$("tbody");
-	     	 		$tableBody.html("");
-	     	 		
-	     	 		var $tr;
-	     	 		var $bBoard_no;
-	     	 		var $rownum;
-	     	 		var $bTitle;
-	     	 		var $bMember_id;
-	     	 		var $bWrite_date;
-	     	 		var $bRead_num;
-	     	 		var $th;
-	     	 		
-	     	 				
-	     	 				for(var i in data.adminProductProposalList){
-	     	 					
-	     	 				$tr=$("<tr id='cursor'>");
-	     	 				$td=$("<td onclick='event.cancelBubble=true'>");
-	     	 				$checkBox=$("<input type='checkbox' class='common' name='proposalNo'>").val(data.adminProductProposalList[i].bBoard_no);     	 			
-	     	 				$bBoard_no=$("<td onclick='event.cancelBubble=true'>").text(data.adminProductProposalList[i].bBoard_no).hide();
-	     	 				$rownum=$("<td onclick='event.cancelBubble=true'>").text(data.adminProductProposalList[i].rownum);
-	     	 				$bTitle=$("<td>").text(data.adminProductProposalList[i].bTitle);
-	     	 				$bMember_id=$("<td onclick='event.cancelBubble=true'>").text(data.adminProductProposalList[i].bMember_id);
-	     	 				$bWrite_date=$("<td onclick='event.cancelBubble=true'>").text(data.adminProductProposalList[i].bWrite_date);
-	     	 				$bRead_num=$("<td onclick='event.cancelBubble=true'>").text(data.adminProductProposalList[i].bRead_num);
-
-	     	 				
-	     	 				$td.append($checkBox);
-	     	 				$tr.append($td);
-	     	 				$tr.append($bBoard_no);
-	     	 				$tr.append($rownum);
-	     	 				$tr.append($bTitle);
-	     	 				$tr.append($bMember_id);
-	     	 				$tr.append($bWrite_date);
-	     	 				$tr.append($bRead_num);
-	     	 				$tableBody.append($tr);
-	     	 				
-	     	 			}
-	     	 	},
-	     	 	error:function(request, status, errorData){
-	                 alert("error code: " + request.status + "\n"
-		                           +"message: " + request.responseText
-		                           +"error: " + errorData);
-		                  }   
-	     	 	
-	     	 })
-	     	 
-	      }
-	  
 	  
 	  // 모두 체크
 	  

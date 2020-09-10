@@ -238,6 +238,7 @@ public interface MemberService {
 
 	int selectPoint(int subscribeNo);
 
+<<<<<<< HEAD
 	ArrayList<AdminMember> selectMemberPaymentList(String startDay);
 
 	int updateMemberGrade(AdminMember adminMember);
@@ -246,5 +247,10 @@ public interface MemberService {
 
 	
 
+=======
+	int selectPointMember(AdminSubscribe adminSubscribe);
+
+	int updateSubscribeDestination(Delivery d);
+>>>>>>> refs/remotes/origin/master
 
 }

@@ -213,6 +213,9 @@
 				 			var sendArr = Array();
 		     				var sendCnt = 0;
 		     				var chkbox=$(".common");
+		     				var page='${page}';
+		     		     	var searchType='${searchType}';
+		     		     	var keyword='${keyword}';
 			        		
 		     				for(i=0; i<chkbox.length;i++){
 		               			if(chkbox[i].checked == true){
@@ -220,95 +223,16 @@
 		               				sendCnt++;
 		               			}
 		               		}
-			        		
-			        		$.ajax({
-			    				url:"noticeDeleteCheck.do",
-			    				type:"post",
-			    				traditional:true,
-			    				data:{"sendArr":sendArr},
-			    				success:function(data){
-			    					alert("선택한 공지들을 삭제합니다");
-			    					getNoticeList();
-			    				},
-			    				error:function(request, status, errorData){
-				                    alert("error code: " + request.status + "\n"
-					                           +"message: " + request.responseText
-					                           +"error: " + errorData);
-					                  }   
-			    			});
+		     				if(sendCnt == 0){
+		     					  alert("체크된 공지가 없습니다.");
+		     				}
+		     				else{
+		     					if(confirm("선택한 공지들을 삭제하시겠습니까?")){
+			        			alert("선택한 공지들이 삭제되었습니다!");
+			        			location.href="noticeSearchListDelete.do?sendArr="+sendArr+"&page="+page+"&searchType="+searchType+"&keyword="+keyword;
+		     					}
+		     				}
 			        	} 
-	  
-		// 삭제 후 리스트 가져오기
-	      function getNoticeList(){
-	     	 var page=${pi.currentPage};
-	     	 var searchType='${searchType}';
-	     	 var keyword='${keyword}';
-	     	 
-	     	 $.ajax({
-	     		 
-	     	 	url:"noticeSearchListChange.do", 
-	     	 	data:{"page":page, "searchType":searchType, "keyword":keyword},
-	     	 	dataType:"json",
-	     	 	success:function(data){
-	     	 		
-	     	 		//게시물 상세보기(ajax후)
-	        	        
-	        	       	$(function(){
-	        	       		
-	        	       		$("tr").on("click",function(){
-	        	       			var bBoard_no=$(this).children().eq(1).text();
-	        	        		var page=${pi.currentPage };  
-	        	           		location.href="adminNoticeDetail.do?bBoard_no="+bBoard_no+"&page="+page;
-	        	       		})
-	        	       	})
-	        	       	
-	     	 		$tableBody=$("tbody");
-	     	 		$tableBody.html("");
-	     	 		
-	     	 		var $tr;
-	     	 		var $bBoard_no;
-	     	 		var $rownum;
-	     	 		var $bTitle;
-	     	 		var $bWrite_date;
-	     	 		var $bRead_num;
-	     	 		var $th;
-	     	 		
-	     	 				
-	     	 				for(var i in data.adminNoticeSearch){
-	     	 					
-	     	 				$tr=$("<tr id='cursor'>");
-	     	 				$td=$("<td onclick='event.cancelBubble=true'>");
-	     	 				$checkBox=$("<input type='checkbox' class='common' name='eventNo'>").val(data.adminNoticeSearch[i].bBoard_no);     	 			
-	     	 				$bBoard_no=$("<td onclick='event.cancelBubble=true'>").text(data.adminNoticeSearch[i].bBoard_no).hide();
-	     	 				$rownum=$("<td onclick='event.cancelBubble=true'>").text(data.adminNoticeSearch[i].rownum);
-	     	 				$bTitle=$("<td>").text(data.adminNoticeSearch[i].bTitle);
-	     	 				$bWrite_date=$("<td onclick='event.cancelBubble=true'>").text(data.adminNoticeSearch[i].bWrite_date);
-	     	 				$bRead_num=$("<td onclick='event.cancelBubble=true'>").text(data.adminNoticeSearch[i].bRead_num);
-	     	 				
-	     	 				
-	     	 				
-	     	 				$td.append($checkBox);
-	     	 				$tr.append($td);
-	     	 				$tr.append($bBoard_no);
-	     	 				$tr.append($rownum);
-	     	 				$tr.append($bTitle);
-	     	 				$tr.append($bWrite_date);
-	     	 				$tr.append($bRead_num);
-	     	 				$tableBody.append($tr);
-	     	 				
-	     	 			}
-	     	 	},
-	     	 	error:function(request, status, errorData){
-	                 alert("error code: " + request.status + "\n"
-		                           +"message: " + request.responseText
-		                           +"error: " + errorData);
-		                  }   
-	     	 	
-	     	 })
-	     	 
-	      }
-	  
-	  
 	  // 모두 체크
 	  
 		  $(function(){

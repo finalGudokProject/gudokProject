@@ -682,14 +682,20 @@ public class ItemServiceImpl implements ItemService {
 		return iDao.updateItemEventStatusN(dEventArr);
 	}
 
-
 	@Override
 	public int updateRecommendStatusN(Integer itemNo) {
 		return iDao.updateRecommendStatusN(itemNo);
 	}
 
 	@Override
+<<<<<<< HEAD
 	public int selectRecommendChk(String s) {
 		return iDao.selectRecommendChk(s);
 	}
+=======
+	public int checkDiscount(int no) {
+		return iDao.checkDiscount(no);
+	}
+
+>>>>>>> refs/remotes/origin/master
 }

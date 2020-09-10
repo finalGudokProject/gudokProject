@@ -656,7 +656,12 @@ public class ItemDao {
 		return sqlSessionTemplate.update("adminItemMapper.updateRecommendStatusN",itemNo);
 	}
 
+
 	public int selectRecommendChk(String s) {
 		return sqlSessionTemplate.selectOne("adminItemMapper.selectRecommendChk",s);
+
+	public int checkDiscount(int no) {
+		return sqlSessionTemplate.selectOne("itemMapper.checkDiscount", no);
+
 	}
 }

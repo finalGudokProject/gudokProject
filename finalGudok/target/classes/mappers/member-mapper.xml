@@ -22,7 +22,7 @@
 	<resultMap type="Point" id="pointResultSet">
 		<id property="pointNo" column="POINT_NO" />
 		<result property="subscribeNo" column="SUBSCRIBE_NO" />
-		<result property="subscribeDate" column="SUBCSRIBE_DATE" />
+		<result property="subscribeDate" column="SUBSCRIBE_DATE" />
 		<result property="itemName" column="ITEM_NAME" />
 		<result property="point" column="POINT" />
 	</resultMap>
@@ -51,6 +51,9 @@
 		<result property="itemName" column="ITEM_NAME" />
 		<result property="subscribeDate" column="SUBSCRIBE_DATE" />
 		<result property="exchangeStatus" column="EXCHANGE_STATUS" />
+		<result property="address1" column="ADDRESS_1" />
+		<result property="address2" column="ADDRESS_2" />
+		<result property="address3" column="ADDRESS_3" />
 	</resultMap>
 
 	<resultMap type="mCart" id="cartResultSet">
@@ -292,7 +295,7 @@
 
 	<select id="deliveryList" parameterType="int"
 		resultMap="deliveryResultSet">
-		SELECT D.*, I.ITEM_NAME, S.SUBSCRIBE_DATE, S.EXCHANGE_STATUS
+		SELECT D.*, I.ITEM_NAME, S.SUBSCRIBE_DATE, S.EXCHANGE_STATUS, S.ADDRESS_1, S.ADDRESS_2, S.ADDRESS_3
 		FROM DELIVERY D
 		JOIN SUBSCRIBE S ON (D.SUBSCRIBE_NO = S.SUBSCRIBE_NO)
 		JOIN ITEM I ON (S.ITEM_NO = I.ITEM_NO)
@@ -362,7 +365,7 @@
 	<insert id="insertSecession" parameterType="Withdrawal">
 		INSERT INTO SECESSION
 		VALUES(SEQ_SECESSION.NEXTVAL, #{memberNo}, #{memberId}, #{email},
-		#{secessionCategory}, #{secessionContent}, DEFAULT)
+		#{secessionCategory}, #{secessionContent}, SYSDATE)
 	</insert>
 
 	<select id="selectInquiryList" parameterType="int"
@@ -405,7 +408,7 @@
 		, #{member.memberId}
 		,
 		#{member.email}
-		, '1주'
+		, 1
 		, 1
 		, #{item.itemName}
 		, #{item.itemPrice})
@@ -1327,6 +1330,7 @@
         LEFT JOIN POINT P ON(S.SUBSCRIBE_NO=P.SUBSCRIBE_NO)
         WHERE S.SUBSCRIBE_NO=#{value}
 	</select>
+<<<<<<< HEAD
 	<select id="getMemberCount" resultType="_int">
 		select count(*)
 		from member
@@ -1353,4 +1357,17 @@
 		from grade
 		order by grade_no
 	</select>
+=======
+	<select id="selectPointMember" parameterType="object" resultType="_int">
+		SELECT MEMBER_NO
+        FROM SUBSCRIBE
+        WHERE SUBSCRIBE_NO=#{subscribeNo}
+	</select>
+	
+	<update id="updateSubscribeDestination" parameterType="mDelivery">
+		UPDATE SUBSCRIBE
+		SET ADDRESS_1=#{address1}, ADDRESS_2=#{address2}, ADDRESS_3=#{address3}
+		WHERE SUBSCRIBE_NO=#{subscribeNo}
+	</update>
+>>>>>>> refs/remotes/origin/master
 </mapper>

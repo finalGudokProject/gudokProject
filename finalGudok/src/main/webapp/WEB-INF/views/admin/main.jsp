@@ -284,8 +284,12 @@
                         <table class="table">
                         	<c:if test="${!empty bList }">
                              <c:forEach var="i" items="${bList }" varStatus="cnt">
+                             <c:url var="adminInquiryDetail" value="adminInquiryDetail.do">
+								<c:param name="bBoard_no" value="${i.bBoard_no }"/>
+								<c:param name="page" value="1"/>
+							</c:url>	
 	                            <tr>
-	                                <td style="width:70%; text-align:left">${i.bTitle }</td>
+	                                <td style="width:70%; text-align:left"><a href="${adminInquiryDetail }">${i.bTitle }</a></td>
 	                                <td style="width:30%;">${i.bWrite_date }</td>
 	                            </tr>
                             </c:forEach>
@@ -314,8 +318,12 @@
                         <table class="table">
                             <c:if test="${!empty nList }">
                              <c:forEach var="i" items="${nList }" varStatus="cnt">
+                             <c:url var="adminNoticeDetail" value="adminNoticeDetail.do">
+								<c:param name="bBoard_no" value="${i.bBoard_no }"/>
+								<c:param name="page" value="1"/>
+							</c:url>								
 	                           	 <tr>
-	                                <td style="width:70%; text-align:left;">${i.bTitle }</td>
+	                                <td style="width:70%; text-align:left;"><a href="${adminNoticeDetail }">${i.bTitle }</a></td>
 	                                <td style="width:30%;">${i.bWrite_date }</td>
 	                            </tr>
                            	</c:forEach>

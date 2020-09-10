@@ -554,6 +554,7 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
+<<<<<<< HEAD
 	public ArrayList<AdminMember> selectMemberPaymentList(String startDay) {
 		return mDao.selectMemberPaymentList(startDay);
 	}
@@ -569,6 +570,17 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	
+=======
+	public int selectPointMember(AdminSubscribe adminSubscribe) {
+		return mDao.selectPointMember(adminSubscribe);
+	}
+
+	@Override
+	public int updateSubscribeDestination(Delivery d) {
+		return mDao.updateSubscribeDestination(d);
+	}
+
+>>>>>>> refs/remotes/origin/master
 
 
 }

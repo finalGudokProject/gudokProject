@@ -261,13 +261,14 @@ public interface ItemService {
 
 	int selectDelStatus(Subscribe scb);
 	
-	
-
 	int updateItemEventStatusN(int[] dEventArr);
-
 
 	int updateRecommendStatusN(Integer itemNo);
 
+<<<<<<< HEAD
 	int selectRecommendChk(String string);
 
+=======
+	int checkDiscount(int no);
+>>>>>>> refs/remotes/origin/master
 }

@@ -536,7 +536,9 @@
 	<!-- inquiry -->
 		<select id="getSearchListCountInquiry" resultType="_int">
 		SELECT COUNT(*)
-		FROM BOARD<where>
+		FROM BOARD B
+		LEFT JOIN INQUIRY I ON (B.BOARD_NO = I.BOARD_NO)
+		<where>
 			<if test="searchType=='title' and inquiry_yn.equals('All')">
 				BOARD_CODE= 'O'
 				AND TITLE LIKE '%${keyword}%'
