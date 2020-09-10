@@ -2,6 +2,7 @@ package com.kh.finalGudok.item.model.dao;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -18,6 +19,7 @@ import com.kh.finalGudok.item.model.vo.Image;
 import com.kh.finalGudok.item.model.vo.Item;
 import com.kh.finalGudok.item.model.vo.ItemListView;
 import com.kh.finalGudok.item.model.vo.PageInfo;
+import com.kh.finalGudok.item.model.vo.PaymentInfo;
 import com.kh.finalGudok.item.model.vo.Review;
 import com.kh.finalGudok.item.model.vo.ReviewImage;
 import com.kh.finalGudok.item.model.vo.ReviewView;
@@ -655,4 +657,23 @@ public class ItemDao {
 	public int checkDiscount(int no) {
 		return sqlSessionTemplate.selectOne("itemMapper.checkDiscount", no);
 	}
+
+	public int insertFirstPayment(PaymentInfo payInfo) {
+		
+		return sqlSessionTemplate.insert("itemMapper.insertFirstPayment", payInfo);
+	}
+
+	public int selectItemPrice(int itemNo) {
+		return sqlSessionTemplate.selectOne("itemMapper.selectItemPrice", itemNo);
+	}
+
+	public int insertSubcribeInfo(HashMap<String, Object> map) {
+		return sqlSessionTemplate.insert("itemMapper.insertSubscribeInfo", map);
+	}
+
+	public ArrayList<Subscribe> selectSubscribeStatus(String customerUid) {
+		return (ArrayList)sqlSessionTemplate.selectList("itemMapper.selectSubscribeStatus", customerUid);
+	}
+
+	
 }

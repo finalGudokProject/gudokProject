@@ -20,11 +20,22 @@ public class Subscribe implements Serializable{
 	private String email;
 	private String exchangeStatus;
 	private String itemName;
+	private String address1;
+	private String address2;
+	private String address3;
+	private String phone;
+	private int subPrice;
+	private String customerUid;
+	private Date paymentDate;
+	
+	
 	
 	public Subscribe() {}
 
 	public Subscribe(int subscribeNo, int itemNo, int cycleNo, String subscribeStatus, Date subscribeDate, int amount,
-			int memberNo, String memberId, String email, String exchangeStatus, String itemName) {
+			int memberNo, String memberId, String email, String exchangeStatus, String itemName, String address1,
+			String address2, String address3, String phone, int subPrice, String customerUid, Date paymentDate) {
+		super();
 		this.subscribeNo = subscribeNo;
 		this.itemNo = itemNo;
 		this.cycleNo = cycleNo;
@@ -36,6 +47,13 @@ public class Subscribe implements Serializable{
 		this.email = email;
 		this.exchangeStatus = exchangeStatus;
 		this.itemName = itemName;
+		this.address1 = address1;
+		this.address2 = address2;
+		this.address3 = address3;
+		this.phone = phone;
+		this.subPrice = subPrice;
+		this.customerUid = customerUid;
+		this.paymentDate = paymentDate;
 	}
 
 	public int getSubscribeNo() {
@@ -126,6 +144,62 @@ public class Subscribe implements Serializable{
 		this.itemName = itemName;
 	}
 
+	public String getAddress1() {
+		return address1;
+	}
+
+	public void setAddress1(String address1) {
+		this.address1 = address1;
+	}
+
+	public String getAddress2() {
+		return address2;
+	}
+
+	public void setAddress2(String address2) {
+		this.address2 = address2;
+	}
+
+	public String getAddress3() {
+		return address3;
+	}
+
+	public void setAddress3(String address3) {
+		this.address3 = address3;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public int getSubPrice() {
+		return subPrice;
+	}
+
+	public void setSubPrice(int subPrice) {
+		this.subPrice = subPrice;
+	}
+
+	public String getCustomerUid() {
+		return customerUid;
+	}
+
+	public void setCustomerUid(String customerUid) {
+		this.customerUid = customerUid;
+	}
+
+	public Date getPaymentDate() {
+		return paymentDate;
+	}
+
+	public void setPaymentDate(Date paymentDate) {
+		this.paymentDate = paymentDate;
+	}
+
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
@@ -135,6 +209,9 @@ public class Subscribe implements Serializable{
 		return "Subscribe [subscribeNo=" + subscribeNo + ", itemNo=" + itemNo + ", cycleNo=" + cycleNo
 				+ ", subscribeStatus=" + subscribeStatus + ", subscribeDate=" + subscribeDate + ", amount=" + amount
 				+ ", memberNo=" + memberNo + ", memberId=" + memberId + ", email=" + email + ", exchangeStatus="
-				+ exchangeStatus + ", itemName=" + itemName + "]";
+				+ exchangeStatus + ", itemName=" + itemName + ", address1=" + address1 + ", address2=" + address2
+				+ ", address3=" + address3 + ", phone=" + phone + ", subPrice=" + subPrice + ", customerUid="
+				+ customerUid + ", paymentDate=" + paymentDate + "]";
 	}
+	
 }
