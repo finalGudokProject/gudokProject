@@ -570,7 +570,6 @@
 								}
 								
 		   
-					            $tr = $("<tr class='cartList'>");
 					            $tr=$("<tr>");
 					            $changeTd=$("<td>");
 					            $cancleTd=$("<td>");

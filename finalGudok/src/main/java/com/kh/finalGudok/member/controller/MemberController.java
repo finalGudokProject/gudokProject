@@ -73,7 +73,7 @@ import com.kh.finalGudok.member.model.vo.Subscribe;
 import com.kh.finalGudok.member.model.vo.Tempkey;
 import com.kh.finalGudok.member.model.vo.Withdrawal;
 
-@SessionAttributes({"loginUser","cartCount", "pointCount", "subscribeCount"})
+@SessionAttributes({ "loginUser", "cartCount", "pointCount", "subscribeCount" })
 @Controller
 public class MemberController {
 
@@ -86,7 +86,7 @@ public class MemberController {
 	@Autowired
 	private Member m;
 	@Autowired
-	ItemService iService;
+	private ItemService iService;
 
 	@RequestMapping("moveToLogin.do")
 	public String moveTologin() {
@@ -110,8 +110,6 @@ public class MemberController {
 
 	@RequestMapping(value = "login.do", method = RequestMethod.POST)
 	public ModelAndView memberLogin(Member m, HttpSession session, ModelAndView mv) {
-		
-		
 
 		Member loginUser = mService.loginMember(m);
 
@@ -121,9 +119,9 @@ public class MemberController {
 		int cartCount = mService.cartCount(loginUser.getMemberNo());
 		int pointCount = mService.pointCount(loginUser.getMemberNo());
 
-		System.out.println("구독" + subscribeCount);
-		System.out.println("장바구니" + cartCount);
-		System.out.println("포인트" + pointCount);
+		System.out.println("구독 : " + subscribeCount);
+		System.out.println("장바구니 : " + cartCount);
+		System.out.println("포인트 : " + pointCount);
 
 		if (bcryptPasswordEncoder.matches(m.getMemberPwd(), loginUser.getMemberPwd())) {
 			session.setAttribute("loginUser", loginUser);
@@ -144,7 +142,7 @@ public class MemberController {
 	}
 
 	@RequestMapping(value = "logout.do", method = RequestMethod.GET)
-	public String logout(SessionStatus status,HttpSession session) {
+	public String logout(SessionStatus status, HttpSession session) {
 		status.setComplete();
 		session.invalidate();
 		return "home";
@@ -202,7 +200,7 @@ public class MemberController {
 		out.flush();
 		out.close();
 	}
-	
+
 	@RequestMapping("emailDupCheck.do")
 	public ModelAndView emailDupCheck(ModelAndView mv, String email) {
 
@@ -243,7 +241,7 @@ public class MemberController {
 		mv.setViewName("jsonView");
 		return mv;
 	}
-	
+
 	@RequestMapping(value = "findId.do", method = RequestMethod.POST)
 	public ModelAndView findId(ModelAndView mv, String name, String email) {
 
@@ -313,7 +311,7 @@ public class MemberController {
 		return mv;
 	}
 
-	// ------------------------------ 마이페이지 ----------------------------------------------
+	// ------------------------------ 마이페이지  ----------------------------------------------
 
 	// 마이페이지 이동
 	@RequestMapping("mypage.do")
@@ -338,7 +336,7 @@ public class MemberController {
 	public String heartView() {
 		return "mypage/heart";
 	}
-	
+
 	// 회원 등급 페이지
 	@RequestMapping("gradeView.do")
 	public String gradeView() {
@@ -356,7 +354,7 @@ public class MemberController {
 	public String cartView() {
 		return "mypage/cart";
 	}
-	
+
 	// 장바구니 페이지 리스트 불러오기
 	@RequestMapping("mbasketPage.do")
 	public ModelAndView basketPage(ModelAndView mv, Integer memberNo) {
@@ -365,7 +363,7 @@ public class MemberController {
 		System.out.println("basketList : " + list);
 		return mv;
 	}
-	
+
 	// 구독 조회
 	@RequestMapping("subscribeList.do")
 	@ResponseBody
@@ -408,12 +406,6 @@ public class MemberController {
 			return "mypage/memberInfoView";
 		} else { // 로그인 실패시
 			throw new MemberException("본인확인 실패");
-			// 예외를 발생시켜서 에러페이지로 넘어갈 껀데
-			// 우선 예외 클래스는 RuntimeException을 상속 받아
-			// 예외 처리가 따로 필요 없다.
-
-			// 그리고 예외가 발생 했을 때 common에 있는 errorPage에서
-			// 처리될 수 있도록 web.xml에 공용 에러 페이지를 등록하러 가자!
 		}
 
 	}
@@ -427,10 +419,6 @@ public class MemberController {
 		System.out.println("회원정보 수정 후  : " + m);
 
 		if (result > 0) {
-			// 회원정보가 수정되면 현재 로그인 한 사람의 정보를
-			// 업데이트 시키기 위해 session에 수정된 객체를 담아줘야 된다.
-			// @SessionAttribute("loginUser")를 클래스 위에 달아줬기 때문에
-			// model에 수정된 회원 객체를 담자
 			model.addAttribute("loginUser", m);
 		} else {
 			throw new MemberException("수정 실패!");
@@ -511,7 +499,7 @@ public class MemberController {
 	@RequestMapping(value = "deliveryList.do")
 	public ModelAndView deliveryList(HttpSession session, ModelAndView mv, Integer memberNo) { // 민지
 		Member loginUser = (Member) session.getAttribute("loginUser");
-		
+
 		ArrayList<Delivery> list = mService.selectDeliveryList(loginUser.getMemberNo());
 
 		System.out.println("배송 내역 : " + list);
@@ -526,27 +514,11 @@ public class MemberController {
 		return mv;
 	}
 
-	/*
-	 * // 장바구니 내역
-	 * 
-	 * @RequestMapping("cartList.do")
-	 * 
-	 * @ResponseBody public void cartList(HttpServletResponse response, Integer
-	 * memberNo) throws JsonIOException, IOException { // 민지 ArrayList<Cart> list =
-	 * mService.selectCartList(memberNo);
-	 * 
-	 * System.out.println("장바구니 내역 : " + list);
-	 * 
-	 * response.setContentType("application/json;charset=utf-8");
-	 * 
-	 * new Gson().toJson(list, response.getWriter()); }
-	 */
-
 	// 교환 신청
 	@RequestMapping("exchangeInsert.do")
 	public String exchangeInsert(HttpSession session, HttpServletRequest request, Exchange e) { // 민지
 		Member loginUser = (Member) session.getAttribute("loginUser");
-		
+
 		if (e.getExchangeCategory() == 1) {
 			e.setExchangeContent("품질불량");
 		} else if (e.getExchangeCategory() == 2) {
@@ -559,16 +531,16 @@ public class MemberController {
 		int result2 = mService.updateSubscribe(e.getSubscribeNo());
 
 		if (result > 0 && result2 > 0) {
-			return "redirect:exchangeList.do?"+"memberNo="+loginUser.getMemberNo();
+			return "redirect:exchangeList.do?" + "memberNo=" + loginUser.getMemberNo();
 		} else {
 			throw new MemberException("교환 신청 실패");
 		}
 	}
 
-
 	// 탈퇴하기
 	@RequestMapping("withdrawalInsert.do")
-	public String withdrawalInsert(SessionStatus status, HttpSession session, HttpServletRequest request, Withdrawal w) {
+	public String withdrawalInsert(SessionStatus status, HttpSession session, HttpServletRequest request,
+			Withdrawal w) {
 		if (w.getSecessionCategory() == 1) {
 			w.setSecessionContent("서비스가 마음에 들지 않음");
 		} else if (w.getSecessionCategory() == 2) {
@@ -596,14 +568,14 @@ public class MemberController {
 	// 리뷰 삭제
 	@RequestMapping("mreviewDelete.do")
 	public String reviewDelete(HttpServletRequest request, int reviewNo) {// 민지
-		
+
 		System.out.println(reviewNo);
-		
+
 		int chkImg = mService.checkImage(reviewNo);
 		System.out.println("ReviewImage 조회 되나? : " + chkImg);
 		if (chkImg > 0) {
 			int imResult = mService.imageDelete(reviewNo);
-			
+
 			if (imResult > 0) {
 				mService.deleteReviewImage(reviewNo);
 				System.out.println("reviewimage테이블 삭제");
@@ -671,12 +643,12 @@ public class MemberController {
 			result = mService.deleteHeart(dh);
 			result += result;
 		}
-		
+
 		int cartCount = mService.cartCount(loginUser.getMemberNo());
-		
-		model.addAttribute("cartCount",cartCount);
-		
-		if (result > 0) {		
+		System.out.println("찜목록에서 장바구니  : " + cartCount);
+		model.addAttribute("cartCount", cartCount);
+
+		if (result > 0) {
 			return "success";
 		} else {
 			throw new MemberException("찜 삭제 실패");
@@ -687,7 +659,7 @@ public class MemberController {
 	@RequestMapping("subscribeCancle.do")
 	public String subscribeCancle(HttpSession session, HttpServletRequest request, Cancle c, Model model) { // 민지
 		Member loginUser = (Member) session.getAttribute("loginUser");
-		
+
 		if (c.getCancleCategory() == 1) {
 			c.setCancleContent("상품이 불필요");
 		} else if (c.getCancleCategory() == 2) {
@@ -701,125 +673,51 @@ public class MemberController {
 
 		if (result > 0 && result2 > 0) {
 			int subscribeCount = mService.subscribeCount(loginUser.getMemberNo());
-			
-			model.addAttribute("subscribeCount",subscribeCount);
-			
+
+			model.addAttribute("subscribeCount", subscribeCount);
+
 			return "mypage/subscribe";
 		} else {
 			throw new MemberException("취소 신청 실패");
 		}
 	}
 
-	/*
-	 * // 장바구니 삭제
-	 * 
-	 * @RequestMapping("cartDelete.do")
-	 * 
-	 * @ResponseBody public String cartDelete(HttpSession session,
-	 * HttpServletRequest request, Model model,
-	 * 
-	 * @RequestParam(value = "checkArr[]") List<String> cartList) { Member loginUser
-	 * = (Member) session.getAttribute("loginUser");
-	 * 
-	 * System.out.println("선택삭제 실행됨");
-	 * 
-	 * System.out.println(cartList);
-	 * 
-	 * DeleteHeart dh = new DeleteHeart();
-	 * 
-	 * int cartNo;
-	 * 
-	 * int memberNo = loginUser.getMemberNo();
-	 * 
-	 * int result = 0;
-	 * 
-	 * for (int i = 0; i < cartList.size(); i++) { cartNo =
-	 * Integer.parseInt(cartList.get(i));
-	 * 
-	 * HashMap map = new HashMap<Integer, Integer>();
-	 * 
-	 * map.put("cartNo", cartNo); map.put("memberNo", memberNo);
-	 * 
-	 * result = mService.deleteCart(map);
-	 * 
-	 * result += result;
-	 * 
-	 * }
-	 * 
-	 * int cartCount = mService.cartCount(loginUser.getMemberNo());
-	 * 
-	 * if (result > 0) { model.addAttribute("loginUser", loginUser);
-	 * model.addAttribute("cartCount",cartCount); return "success"; } else { throw
-	 * new MemberException("장바구니 삭제 실패"); } }
-	 */
-	
 	// 장바구니 추가
-		@RequestMapping("mbasket.do")
-		@ResponseBody
-		public String maddCart(HttpSession session, HttpServletRequest request, Model model,
-				@RequestParam(value = "checkArr[]") List<String> cartList) {
-			Member loginUser = (Member) session.getAttribute("loginUser");
+	@RequestMapping("mbasket.do")
+	@ResponseBody
+	public String maddCart(HttpSession session, HttpServletRequest request, Model model,
+			@RequestParam(value = "checkArr[]") List<String> cartList) {
+		Member loginUser = (Member) session.getAttribute("loginUser");
+		
+		int itemNo;
+		int result = 0;
 
-//			System.out.println("장바구니 추가");
+		for (int i = 0; i < cartList.size(); i++) {
+			itemNo = Integer.parseInt(cartList.get(i));
+			Item item = mService.selectItem(itemNo);
 
-			int itemNo;
-			int result = 0;
+			HashMap map = new HashMap<Object, Object>();
 
-			for (int i = 0; i < cartList.size(); i++) {
-				itemNo = Integer.parseInt(cartList.get(i));
-				Item item = mService.selectItem(itemNo);
+			System.out.println("선택한 찜 상품 : " + item);
 
-				HashMap map = new HashMap<Object, Object>();
+			if (item != null) {
+				map.put("item", item);
+				map.put("member", loginUser);
+				result = mService.addCart(map);
 
-				System.out.println("선택한 찜 상품 : " + item);
+				int cartCount = mService.cartCount(loginUser.getMemberNo());
 
-				if (item != null) {
-					map.put("item", item);
-					map.put("member", loginUser);
-					result = mService.addCart(map);
-					
-					int cartCount = mService.cartCount(loginUser.getMemberNo());
-					
-					model.addAttribute("cartCount",cartCount);
-				}
-				result += result;
+				model.addAttribute("cartCount", cartCount);
 			}
-
-			if (result > 0) {
-				return "success";
-			} else {
-				throw new MemberException("장바구니 추가 실패");
-			}
+			result += result;
 		}
 
-		/*
-		 * // 장바구니 추가
-		 * 
-		 * @RequestMapping("addCart.do")
-		 * 
-		 * @ResponseBody public String addCart(HttpSession session, HttpServletRequest
-		 * request,
-		 * 
-		 * @RequestParam(value = "checkArr[]") List<String> cartList) { Member loginUser
-		 * = (Member) session.getAttribute("loginUser");
-		 * 
-		 * // System.out.println("장바구니 추가");
-		 * 
-		 * int itemNo; int result = 0;
-		 * 
-		 * for (int i = 0; i < cartList.size(); i++) { itemNo =
-		 * Integer.parseInt(cartList.get(i)); Item item = mService.selectItem(itemNo);
-		 * 
-		 * HashMap map = new HashMap<Object, Object>();
-		 * 
-		 * System.out.println("선택한 찜 상품 : " + item);
-		 * 
-		 * if (item != null) { map.put("item", item); map.put("member", loginUser);
-		 * result = mService.addCart(map); } result += result; }
-		 * 
-		 * if (result > 0) { return "success"; } else { throw new
-		 * MemberException("장바구니 추가 실패"); } }
-		 */
+		if (result > 0) {
+			return "success";
+		} else {
+			throw new MemberException("장바구니 추가 실패");
+		}
+	}
 
 	// 1:1문의 답변
 	@RequestMapping("inquiryReply.do")
@@ -842,9 +740,6 @@ public class MemberController {
 	public String modifyPassword(Member m, Model model,
 			@RequestParam(value = "changeMemberPwd") String changeMemberPwd) {
 		Member loginUser = mService.loginMember(m);
-
-//		System.out.println(m);
-//		System.out.println(loginUser);
 
 		if (bcryptPasswordEncoder.matches(m.getMemberPwd(), loginUser.getMemberPwd())) {
 
@@ -869,11 +764,11 @@ public class MemberController {
 			throw new MemberException("비밀번호 변경 실패");
 		}
 	}
-	
+
 	@RequestMapping("destinationModify.do")
 	public String destinationModify(Delivery d, Model model) { // 민지
 		System.out.println("전달받은 배송지 : " + d);
-		
+
 		int result = mService.updateSubscribeDestination(d);
 
 		System.out.println("배송지 수정 후  : " + d);
@@ -883,11 +778,11 @@ public class MemberController {
 		} else {
 			throw new MemberException("수정 실패!");
 		}
-		
+
 	}
-	
-	// ------------------------------ 마이페이지 ----------------------------------------------
-	
+
+	// ------------------------------ 마이페이지  ----------------------------------------------
+
 	// ------------------------------ 관리자 ----------------------------------------------
 	// 관리자 등급 & 회원 리스트 보기-admin
 	@RequestMapping("gradeList.do")
@@ -955,7 +850,6 @@ public class MemberController {
 		// 회원별 총 구매금액 주입
 		for (int i = 0; i < mList.size(); i++) {
 
-			
 			Integer cnt = mService.selectTotalPay(mList.get(i).getMemberNo());
 
 			if (cnt == null) {
@@ -1062,19 +956,19 @@ public class MemberController {
 		}
 
 		Search s = new Search();
-		
-		if(categoryNo==null) {
+
+		if (categoryNo == null) {
 			s.setMemberNo(word);
 			s.setMemberName(word);
 			s.setMemberId(word);
-			
+
 		} else if (categoryNo.equalsIgnoreCase("memberNo")) {
 			s.setMemberNo(word);
 		} else if (categoryNo.equalsIgnoreCase("memberId")) {
 			s.setMemberId(word);
 		} else if (categoryNo.equalsIgnoreCase("memberName")) {
 			s.setMemberName(word);
-		} 
+		}
 
 		// 현재 등급정보
 		ArrayList<Grade> gList = mService.selectGradeList();
@@ -1522,35 +1416,32 @@ public class MemberController {
 
 		System.out.println(dArr);
 
-		//배송상태 변경
+		// 배송상태 변경
 		int result = mService.updateDelivery(dArr);
-		
-		
-		//배송 완료일 경우 
-		if(deliveryStatus.equalsIgnoreCase("Y")) {
-		
-			//판매량 +1 
-			int result2=mService.updateItemCmStatus(dArr);
-			
-			for(int i=0;i<dArr.size();i++) {
-			//포인트 뽑아오기 
-			int point=mService.selectPoint(dArr.get(i).getSubscribeNo());
-			dArr.get(i).setPoint(point);
-			System.out.println(dArr);
-			//회원에게 적립금 부여
-			int result3=mService.updateMemberPoint(dArr.get(i));
-			
-			
-			int memberNo = mService.selectPointMember(dArr.get(i));
-			int pointCount = mService.pointCount(memberNo);
-			model.addAttribute("pointCount",pointCount);
+
+		// 배송 완료일 경우
+		if (deliveryStatus.equalsIgnoreCase("Y")) {
+
+			// 판매량 +1
+			int result2 = mService.updateItemCmStatus(dArr);
+
+			for (int i = 0; i < dArr.size(); i++) {
+				// 포인트 뽑아오기
+				int point = mService.selectPoint(dArr.get(i).getSubscribeNo());
+				dArr.get(i).setPoint(point);
+				System.out.println(dArr);
+				// 회원에게 적립금 부여
+				int result3 = mService.updateMemberPoint(dArr.get(i));
+
+				int memberNo = mService.selectPointMember(dArr.get(i));
+				int pointCount = mService.pointCount(memberNo);
+				model.addAttribute("pointCount", pointCount);
 			}
-			
+
 		}
-		
+
 		System.out.println("결과는" + result);
 		if (result < 0) {
-			
 
 			return "success";
 
@@ -1766,7 +1657,7 @@ public class MemberController {
 		Search s = new Search();
 		s.setCategory1(category);
 
-		System.out.println("카테고리 잘 왔나"+category);
+		System.out.println("카테고리 잘 왔나" + category);
 		if (type == null) {
 			s.setSubscribeNo(word);
 			s.setWord(word);
@@ -2803,6 +2694,5 @@ public class MemberController {
 	}
 
 	// ------------------------------ 관리자 ----------------------------------------------
-	
-	
+
 }

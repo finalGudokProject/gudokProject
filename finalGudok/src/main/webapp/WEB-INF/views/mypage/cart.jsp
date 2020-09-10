@@ -10,7 +10,7 @@
 <title>Insert title here</title>
 <!-- Bootstrap CSS -->
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
- <!-- sweetalert시작 -->
+<!-- sweetalert시작 -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <link rel="stylesheet"href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css" />
@@ -177,84 +177,24 @@
       width: 85%;
     }
 
-    /* .cartTable tr {
-      height: 45px;
-    }
-
-    .image {
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      display: flex;
-      justify-content: center;
-    }
-
-    .image img {
-      float: left;
-      width: 100px;
-      height: 70px;
-    }
-
-    .product {
-      display: inline-block;
-      border: 1px solid pink;
-    }
-
-    .btn2 {
-      width: 90%;
-      margin-top: 5%;
-      text-align: center;
-      margin-left: 10%;
-    }
-
-    .btn2 button {
-      border: none;
-      padding: 2% 8%;
-      margin-right: 10%;
-      margin: 0 auto;
-      margin-left: 3%;
-    }
-
-    .delete button{
-      border: 1px solid black;
-      background: #fff;
-      padding: 0.5% 2%;
-      float: left;
-      margin-left: 10%;
-      margin-top: 3%;
-    }
-
-    .price table{
-      width: 85%;
-      margin-top: 10%;
-      margin-left: 10%;
-    }
-
-    .price td{
-      border: 2px solid #115D8C;
-    } */
-    
     .basketImg{
-		width:20rem;
-		height:20rem;
+		width:10rem;
+		height:10rem;
 	}
 	.listChk{
 		width:5%;
 		height:5%;
 	}
 	input[type=checkbox]{
-		width:30px;
-		height:30px;
+		width:15px;
+		height:15px;
 		display:block;
 		margin:0 auto;
 		
 	}
+	
 	td{
 		vertical-align:middle;
-
-	}
-	th{
-
 	}
 	
 	input[type=button]{

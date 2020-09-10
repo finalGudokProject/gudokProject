@@ -176,7 +176,10 @@
 
     .inquiry table tr {
       height: 50px;
+      width: 300px;
     }
+    
+   
 
     .inquiry_btn{
       border: none;

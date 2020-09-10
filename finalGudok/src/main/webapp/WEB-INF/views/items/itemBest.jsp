@@ -591,17 +591,6 @@
 		
 	</div>
 </div>
-
-	<!-- <script>
-		$(function(){
-			$(".btn-primary").on("click", function(){
-				swal("","확인","warning").then((value)=>{
-					swal("","여기서 값 넣어요","info");
-				});
-			})
-		})
-	</script> -->
-
 	
 	<!-- 사이드 메뉴바 -->
 	<script>
@@ -613,17 +602,6 @@
 		})
 	})
 	</script>
-	<!-- <script>
-		$(function(){
-			$(".cardHeader, .cardBody, #btnBlank, .cardFooter").click(function(){
-				var itemNo = $(this).find("input[type=hidden]").val();
-				console.log(itemNo);
-				location.href="itemDetail.do?itemNo+" + ${i.itemNo} + "&page="+${pi.currentPage};
-			}).mouseenter(function(){
-				$(this).css("cursor","pointer");
-			})
-		})
-	</script> -->
 	
 <jsp:include page="../common/footer.jsp"/>
 </body>
