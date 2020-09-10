@@ -9,11 +9,6 @@
 <title>Insert title here</title>
 <style>
 	
-	ul{
-		list-style: none;
-		display:inline-block;
-	}
-	
 	.paper{
 		margin:2%;
 		width:25%;
