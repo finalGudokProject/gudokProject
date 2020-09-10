@@ -687,4 +687,9 @@ public class ItemServiceImpl implements ItemService {
 	public int updateRecommendStatusN(Integer itemNo) {
 		return iDao.updateRecommendStatusN(itemNo);
 	}
+
+	@Override
+	public int selectRecommendChk(String s) {
+		return iDao.selectRecommendChk(s);
+	}
 }

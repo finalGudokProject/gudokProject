@@ -31,6 +31,7 @@ import com.kh.finalGudok.member.model.vo.Reply;
 import com.kh.finalGudok.member.model.vo.Review;
 import com.kh.finalGudok.member.model.vo.Search;
 import com.kh.finalGudok.member.model.vo.Subscribe;
+import com.kh.finalGudok.member.model.vo.Visitor;
 import com.kh.finalGudok.member.model.vo.Withdrawal;
 
 @Service("mService")
@@ -552,6 +553,22 @@ public class MemberServiceImpl implements MemberService {
 		return mDao.selectPoint(subscribeNo);
 	}
 
+	@Override
+	public ArrayList<AdminMember> selectMemberPaymentList(String startDay) {
+		return mDao.selectMemberPaymentList(startDay);
+	}
+
+	@Override
+	public int updateMemberGrade(AdminMember adminMember) {
+		return mDao.updateMemberGrade(adminMember);
+	}
+
+	@Override
+	public ArrayList<Grade> selectGradeInfo() {
+		return mDao.selectGradeInfo();
+	}
+
+	
 
 
 }

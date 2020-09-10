@@ -259,6 +259,7 @@ display:inline-block !important;
           </form>
         </div>
 	</nav>
+	
 
 	<script
        src="https://code.jquery.com/jquery-3.4.1.min.js"

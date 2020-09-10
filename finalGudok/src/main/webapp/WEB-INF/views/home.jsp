@@ -288,6 +288,24 @@
       <!-- Copyright -->
   
   </footer>
+  <script>
+	//하루에 한번 자동 등업 
+	$(function(){
+		setInterval(function(){
+			
+		location.href="updateGradeAuto.do"
+		
+		},1000*60*60*24);
+	})
+	
+	
+	
+
+
+</script>
+ 
+  
+  
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>

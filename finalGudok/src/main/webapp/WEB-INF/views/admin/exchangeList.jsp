@@ -94,15 +94,38 @@ input, select,textarea{
                     
                     <div style="width:100%;">
                     <div style="float:left;">
-                    	<select id="category" name="category">
-                            <option value="">전체</option>
-                            <option value="N">교환 대기</option>
-                            <option value="Y">교환 완료</option></select>
+                    <c:choose>
+	                    <c:when test="${category eq 'N'}">
+	                    	<select id="category" name="category">
+	                            <option value="">전체</option>
+	                            <option value="N" selected>교환 대기</option>
+	                            <option value="Y">교환 완료</option></select>
+	                            
+	                    </c:when>
+	                     <c:when test="${category eq 'Y'}">
+	                    	<select id="category" name="category">
+	                            <option value="">전체</option>
+	                            <option value="N">교환 대기</option>
+	                            <option value="Y" selected>교환 완료</option></select>
+	                            
+	                    </c:when>
+	                    <c:otherwise>
+	                    	<select id="category" name="category">
+	                            <option value="" selected>전체</option>
+	                            <option value="N">교환 대기</option>
+	                            <option value="Y">교환 완료</option></select>
+	                    
+	                    </c:otherwise>
+                    </c:choose>        
                         <select id="type" name="type">
                             <option value="">전체</option>
                             <option value="exchangeContent">교환사유</option>
                             <option value="subscribeNo">구독번호</option>
                             <option value="memberId">구매자</option></select>
+                            
+                            
+                            
+                            
                         <input type="text" id="word" name="word" value="">   
                         <input type="button" class="btn" value="검색" onclick="search()">
                     </div>
@@ -219,7 +242,7 @@ input, select,textarea{
             </div><!--내용담은 컨테이너-->
         </div><!--250px띄운 div-->
         
-        
+        <input type="hidden" id="category" name="category" value="${category }">
         
            <script>
            //검색
@@ -275,7 +298,7 @@ input, select,textarea{
    				success:function(data){
    					
    					alert('성공이다');
-   					/* getList(); */
+   					getList();
    					        					
    				},
    				error:function(request, status, errorData){
@@ -406,8 +429,9 @@ input, select,textarea{
         			var subscribeNo=$(this).children().eq(3).text();
          			 var page=${pi.currentPage };   
          			 var type="exchange";
+         			 var category=$("#category").val();
          				
-            		location.href="oDetail.do?subscribeNo="+subscribeNo+"&page="+page+"&type="+type;
+            		location.href="oDetail.do?subscribeNo="+subscribeNo+"&page="+page+"&type="+type+"&category="+category;
         		})
         	})
         	

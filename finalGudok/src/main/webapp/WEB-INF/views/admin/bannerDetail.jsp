@@ -175,7 +175,7 @@ input, select,textarea{
        	        		 var page=${pi.currentPage };   
        	        		 var type='event';
        	        	
-       	           		location.href="itemDetail.do?itemNo="+itemNo+"&page="+page+"&type="+type;
+       	           		location.href="itemDetail.do?itemNo="+itemNo+"&page="+page+"&type="+type+"&eventNo="+eventNo;
        	       		})
        	        	
        	       	})

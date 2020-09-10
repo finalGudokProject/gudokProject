@@ -945,16 +945,14 @@ public class MemberController {
 	// 등급별 최소 금액 변경-admin
 	@RequestMapping("gradeMinInfoChang.do")
 	@ResponseBody
-	public String updateGradeMin(String sendGradeMinArr, String sendGradeArr) {
-
-		System.out.println(sendGradeArr);
-		System.out.println(sendGradeMinArr);
+	public ModelAndView updateGradeMin(ModelAndView mv, String sendGradeMinArr, String sendGradeArr, Integer page) {
 
 		String[] gArr = sendGradeArr.split(",");
 		String[] rArr = sendGradeMinArr.split(",");
 
 		ArrayList<Grade> g = new ArrayList<>();
-		int result = 0;
+		int result1 = 0; //등급 변경 확인
+		int result2 = 0; //변경된 등급에 따라 회원 등급 변경
 
 		for (int k = 0; k < gArr.length; k++) {
 
@@ -966,10 +964,56 @@ public class MemberController {
 			g.add(grade);
 		}
 
-		result = mService.updateGradeMin(g);
-
-		if (result < 0) {
-			return "success";
+		result1 = mService.updateGradeMin(g);
+		System.out.println("g는"+g);
+		
+		//최소금액 변경 시 회원 전체 등급 업데이트
+			//전월 날짜 데이터 설정 
+				Calendar last = Calendar.getInstance(); // 현재 시간
+				SimpleDateFormat sdfm = new SimpleDateFormat("yyyy-MM");
+				last.add(Calendar.MONTH, -1);
+				Date lastDate = new Date(last.getTimeInMillis());
+				String startDay = sdfm.format(lastDate); // 1달전
+		
+			//1달동안 결제한 회원번호와  총 결제 금액을 가져오기 
+				System.out.println("1달전은?"+startDay);
+				ArrayList<AdminMember> pList=mService.selectMemberPaymentList(startDay);
+				
+			
+		
+			//금액에 따라 등급 설정 
+				
+				ArrayList<Grade> gradeChg=new ArrayList<>();
+				for(int i=g.size()-1;i>-1;i--) {
+					Grade temp=g.get(i);
+					gradeChg.add(temp);
+				}
+				
+				for(int i=0;i<gradeChg.size();i++) {
+					
+			
+						int gradeMin=gradeChg.get(i).getGradeMin();
+						int gradeNo=gradeChg.get(i).getGradeNo();
+				
+						
+						
+						for(int k=0;k<pList.size();k++) {
+							if(pList.get(k).getTotalPay()>=gradeMin) { 
+								System.out.println("등급은"+gradeNo);
+								System.out.println("등급 최소금액은"+gradeMin);
+								System.out.println("고객 최소금액은"+pList.get(k).getTotalPay());
+								System.out.println("고객 이름은"+pList.get(k).getMemberId());
+								pList.get(k).setGradeNo(gradeNo);
+								result2=mService.updateMemberGrade(pList.get(k));
+							}
+						}
+					}
+					
+		if (result1 < 0) {
+			
+			mv.addObject("page",page).setViewName("redirect:gradeList.do");
+			return mv;
+			
 
 		} else {
 			throw new MemberException("적립율 변경 실패!");
@@ -1585,7 +1629,7 @@ public class MemberController {
 
 	// 구독내역 상세보기 -admin
 	@RequestMapping("oDetail.do")
-	public ModelAndView selectOrderDetail(ModelAndView mv, Integer page, Integer subscribeNo, String type) {
+	public ModelAndView selectOrderDetail(ModelAndView mv, Integer page, Integer subscribeNo, String type,@RequestParam(value = "category", required = false) String category) {
 
 		System.out.println("타입은???" + type);
 		// 구독 상세 내역 조회
@@ -1607,7 +1651,7 @@ public class MemberController {
 
 		if (sc != null && p != null) {
 
-			mv.addObject("sc", sc).addObject("p", p).addObject("page", page).addObject("type", type)
+			mv.addObject("sc", sc).addObject("p", p).addObject("page", page).addObject("type", type).addObject("category", category)
 					.addObject("total", total).setViewName("admin/orderDetail");
 
 			return mv;
@@ -2574,6 +2618,7 @@ public class MemberController {
 			// 카테고리에서 왔으면
 		} else {
 
+				System.out.println("카테고리에서 와썽요");
 			if (word == "") {
 				word = null;
 			}
@@ -2590,7 +2635,7 @@ public class MemberController {
 			Search s = new Search();
 			s.setStartDay(start); // 검색 날짜
 			s.setLastDay(last);
-			s.setCategoryNo(categoryNo); // 카테고리
+			s.setCategoryNo(categoryNo); // 카테고리(f1,f2...)
 			s.setCategory1(category);
 
 			if (category.equalsIgnoreCase("subscribeNo")) {
@@ -2627,7 +2672,7 @@ public class MemberController {
 
 		}
 
-		mv.addObject("pList", pList).addObject("beforePage", beforePage).addObject("startDay", startDay)
+		mv.addObject("pList", pList).addObject("beforePage", beforePage).addObject("startDay", startDay).addObject("word", word)
 				.addObject("lastDay", lastDay).addObject("startD", startD).addObject("categoryNo", categoryNo)
 				.addObject("pi", pi).addObject("type", type).addObject("type2", type2).setViewName("admin/salesDetail");
 		return mv;
@@ -2669,6 +2714,7 @@ public class MemberController {
 			c.setvDay(vDay);
 			c.setMemberNum(mCnt);
 			cArr.add(c);
+			System.out.println("확인이 필요함"+cArr);
 		}
 
 		// 주간 매출현황 차트
@@ -2729,6 +2775,57 @@ public class MemberController {
 	}
 
 	// ------------------------------ 관리자 ----------------------------------------------
+	
+	@RequestMapping("updateGradeAuto")
+	public ModelAndView updateGradeAuto(ModelAndView mv){
+	
+		//전월 날짜 데이터 설정 
+			Calendar last = Calendar.getInstance(); // 현재 시간
+			SimpleDateFormat sdfm = new SimpleDateFormat("yyyy-MM");
+			last.add(Calendar.MONTH, -1);
+			Date lastDate = new Date(last.getTimeInMillis());
+			String startDay = sdfm.format(lastDate); // 1달전
+		
+		//1달동안 결제한 회원번호와  총 결제 금액을 가져오기 
+			ArrayList<AdminMember> pList=mService.selectMemberPaymentList(startDay);
+		
+		//등급별 최소금액 가져오기 
+			ArrayList<Grade> gradeChg=mService.selectGradeInfo();
+		
+			int result=0;
+		
+			System.out.println("등급이 잘 가져와졌나"+gradeChg);
+		
+			for(int i=0;i<gradeChg.size();i++) {
+				
+		
+					int gradeMin=gradeChg.get(i).getGradeMin();
+					int gradeNo=gradeChg.get(i).getGradeNo();
+			
+					
+					
+					for(int k=0;k<pList.size();k++) {
+						if(pList.get(k).getTotalPay()>=gradeMin) { 
+							System.out.println("등급은"+gradeNo);
+							System.out.println("등급 최소금액은"+gradeMin);
+							System.out.println("고객 최소금액은"+pList.get(k).getTotalPay());
+							System.out.println("고객 이름은"+pList.get(k).getMemberId());
+							pList.get(k).setGradeNo(gradeNo);
+							result=mService.updateMemberGrade(pList.get(k));
+						}
+					}
+				}
+				
+		if (result > 0) {
+		
+			mv.setViewName("home");
+			return mv;
+		
+		} else {
+		throw new MemberException("자동 등업 실패!");
+		
+		}
+	}
 	
 	
 }

@@ -433,18 +433,16 @@ public class MemberDao {
 		return (ArrayList) sqlSessionTemplate.selectList("memberMapper.selectPaymentDetailY", s, rowBounds);
 	}
 
-	public int insertVisitor(Visitor vo) {
-		System.out.println("dao에 있는 vo"+vo);
-		return sqlSessionTemplate.insert("memberMapper.insertVisitor",vo);
+	public int insertVisitor(Visitor vo, SqlSessionTemplate sqlsessiontemplate) {
+		return sqlsessiontemplate.insert("memberMapper.insertVisitor",vo);
 	}
 
-	public int getVisitTodayCount() {
-		System.out.println("여기오나");
-		return sqlSessionTemplate.selectOne("memberMapper.getVisitTodayCount");
+	public int getVisitTodayCount(SqlSessionTemplate sqlsessiontemplate) {
+		return sqlsessiontemplate.selectOne("memberMapper.getVisitTodayCount");
 	}
 
-	public int getVisitTotalCount() {
-		return sqlSessionTemplate.selectOne("memberMapper.getVisitTotalCount");
+	public int getVisitTotalCount(SqlSessionTemplate sqlsessiontemplate) {
+		return sqlsessiontemplate.selectOne("memberMapper.getVisitTotalCount");
 	}
 
 	public int selectTodayMember(String s) {
@@ -510,5 +508,21 @@ public class MemberDao {
 
 	public int selectPoint(int subscribeNo) {
 		return sqlSessionTemplate.selectOne("memberMapper.selectPoint",subscribeNo);
+	}
+
+	public int getMemberCount(SqlSessionTemplate sqlsessiontemplate2) {
+		return sqlsessiontemplate2.selectOne("memberMapper.getMemberCount");
+	}
+
+	public ArrayList<AdminMember> selectMemberPaymentList(String startDay) {
+		return (ArrayList)sqlSessionTemplate.selectList("memberMapper.selectMemberPaymentList",startDay);
+	}
+
+	public int updateMemberGrade(AdminMember adminMember) {
+		return sqlSessionTemplate.update("memberMapper.updateMemberGrade",adminMember);
+	}
+
+	public ArrayList<Grade> selectGradeInfo() {
+		return (ArrayList)sqlSessionTemplate.selectList("memberMapper.selectGradeInfo");
 	}
 }

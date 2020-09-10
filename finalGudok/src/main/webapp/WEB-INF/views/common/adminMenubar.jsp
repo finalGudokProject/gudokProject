@@ -438,8 +438,8 @@ label > span {
 		}
 		 #cursor:hover{
 		cursor: pointer;
-		
-		text-decoration: underline;
+		font-weight:600;
+	
 		
 		}
     </style>

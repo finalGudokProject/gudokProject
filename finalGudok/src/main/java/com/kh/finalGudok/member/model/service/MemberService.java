@@ -3,6 +3,8 @@ package com.kh.finalGudok.member.model.service;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.mybatis.spring.SqlSessionTemplate;
+
 import com.kh.finalGudok.item.model.vo.Item;
 import com.kh.finalGudok.item.model.vo.PageInfo;
 import com.kh.finalGudok.member.model.vo.Cart;
@@ -17,6 +19,7 @@ import com.kh.finalGudok.member.model.vo.Reply;
 import com.kh.finalGudok.member.model.vo.Review;
 import com.kh.finalGudok.member.model.vo.Search;
 import com.kh.finalGudok.member.model.vo.Subscribe;
+import com.kh.finalGudok.member.model.vo.Visitor;
 import com.kh.finalGudok.member.model.vo.Withdrawal;
 import com.kh.finalGudok.member.model.vo.AdminBoard;
 import com.kh.finalGudok.item.model.vo.BannerItem;
@@ -234,5 +237,14 @@ public interface MemberService {
 	int updateMemberPoint(AdminSubscribe adminSubscribe);
 
 	int selectPoint(int subscribeNo);
+
+	ArrayList<AdminMember> selectMemberPaymentList(String startDay);
+
+	int updateMemberGrade(AdminMember adminMember);
+
+	ArrayList<Grade> selectGradeInfo();
+
+	
+
 
 }

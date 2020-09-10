@@ -941,13 +941,22 @@ public class ItemController {
 
 	// 이벤트 검색-admin
 	@RequestMapping("searchEventA.do")
-	public String searchEventA(String keyword) {
+	public String searchEventA(String word) {
 
 		Event e = new Event();
-		e.setEventName(keyword);
-		System.out.println("도착?" + keyword);
+		e.setEventName(word);
+		System.out.println("도착?" + word);
 
 		return null;
+		
+		
+		
+		
+		
+		
+		
+		
+		
 
 	}
 
@@ -1025,7 +1034,7 @@ public class ItemController {
 
 	// 같은 이벤트 번호를 지닌 아이템들 리스트 보기-admin
 	@RequestMapping("bannerDetail.do")
-	public ModelAndView bannerDetail(ModelAndView mv, int eventNo, Integer page) throws IOException {
+	public ModelAndView bannerDetail(ModelAndView mv, Integer eventNo, Integer page) throws IOException {
 
 		int currentPage = 1;
 
@@ -1369,7 +1378,16 @@ public class ItemController {
 //			int result3=iService.deleteEventItem(i); //이벤트 등록 테이블에서 상품 삭제
 
 		if (result1 > 0 || result2 > 0) {
+			
+			
+			
+			
 			mv.addObject("page", page).setViewName("redirect:itemListA.do");
+			
+			
+			
+			
+			
 		} else {
 			throw new ItemException("상품 정보 수정 실패!");
 		}
@@ -1612,8 +1630,24 @@ public class ItemController {
 	// 추천 갯수 확인 -admin
 
 	@RequestMapping("recommendChk.do")
-	public void recommendCheck(HttpServletResponse response, Integer sendCnt) throws IOException {
+	public void recommendCheck(HttpServletResponse response, Integer sendCnt,String sendArr) throws IOException {
 
+		//선택한 상품이 이미 추천 상품에 있다면 
+		
+		String[] strArr = sendArr.split(",");
+		int chk=0;
+		int result=0;
+
+		
+		for(int i=0;i<strArr.length;i++) {
+			chk=iService.selectRecommendChk(strArr[i]);
+			result+=chk;
+		}
+		
+		
+		
+		
+		//선택한 상품 갯수가 4개를 초과하는지 확인하기 위해 
 		response.setContentType("application/json;charset=utf-8");
 		JSONObject iNum = new JSONObject();
 
@@ -1621,6 +1655,7 @@ public class ItemController {
 		int i = sendCnt + cnt;
 
 		iNum.put("iNum", i);
+		iNum.put("result", result);
 
 		PrintWriter out = response.getWriter();
 
