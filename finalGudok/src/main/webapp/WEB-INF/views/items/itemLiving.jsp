@@ -18,11 +18,6 @@
 	color: #495057;
 	}
 	
-	ul{
-		list-style: none;
-		display:inline-block;
-	}
-	
 	.paper{
 		margin:2%;
 		width:25%;

@@ -93,7 +93,7 @@
 	<div class="container">
 		<div class="row" style="text-align:center;">
 			<c:if test="${!empty list }">
-			<table style="border:1px solid black; text-align:center; padding:10%; width:100%;" align="center">
+			<table style="border:1px solid black; text-align:center; padding:10%; width:100%;margin-bottom:2%;" align="center">
 				<thead>
 				<tr style="border-bottom:1px solid lightgray; vertical-align:middle;">
 					<th class="listChk"  style="width:3%;"><input type="checkbox" id="allChk"></th>
