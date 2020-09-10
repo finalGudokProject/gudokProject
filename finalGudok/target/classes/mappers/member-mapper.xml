@@ -1330,7 +1330,7 @@
         LEFT JOIN POINT P ON(S.SUBSCRIBE_NO=P.SUBSCRIBE_NO)
         WHERE S.SUBSCRIBE_NO=#{value}
 	</select>
-<<<<<<< HEAD
+
 	<select id="getMemberCount" resultType="_int">
 		select count(*)
 		from member
@@ -1357,7 +1357,7 @@
 		from grade
 		order by grade_no
 	</select>
-=======
+
 	<select id="selectPointMember" parameterType="object" resultType="_int">
 		SELECT MEMBER_NO
         FROM SUBSCRIBE
@@ -1369,5 +1369,5 @@
 		SET ADDRESS_1=#{address1}, ADDRESS_2=#{address2}, ADDRESS_3=#{address3}
 		WHERE SUBSCRIBE_NO=#{subscribeNo}
 	</update>
->>>>>>> refs/remotes/origin/master
+
 </mapper>

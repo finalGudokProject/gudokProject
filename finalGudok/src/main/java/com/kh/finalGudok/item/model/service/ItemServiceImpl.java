@@ -688,14 +688,13 @@ public class ItemServiceImpl implements ItemService {
 	}
 
 	@Override
-<<<<<<< HEAD
+
 	public int selectRecommendChk(String s) {
 		return iDao.selectRecommendChk(s);
 	}
-=======
 	public int checkDiscount(int no) {
 		return iDao.checkDiscount(no);
 	}
 
->>>>>>> refs/remotes/origin/master
+
 }

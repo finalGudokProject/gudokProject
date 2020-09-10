@@ -45,6 +45,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
 import com.kh.finalGudok.item.model.service.ItemService;
 import com.kh.finalGudok.item.model.vo.BannerItem;
+import com.kh.finalGudok.item.model.vo.Cart;
 import com.kh.finalGudok.item.model.vo.Item;
 import com.kh.finalGudok.item.model.vo.PageInfo;
 import com.kh.finalGudok.member.model.exception.MemberException;
@@ -56,7 +57,6 @@ import com.kh.finalGudok.member.model.vo.AdminPayment;
 import com.kh.finalGudok.member.model.vo.AdminSecession;
 import com.kh.finalGudok.member.model.vo.AdminSubscribe;
 import com.kh.finalGudok.member.model.vo.Cancle;
-import com.kh.finalGudok.item.model.vo.Cart;
 import com.kh.finalGudok.member.model.vo.Chart;
 import com.kh.finalGudok.member.model.vo.DeleteHeart;
 import com.kh.finalGudok.member.model.vo.Delivery;
@@ -2740,7 +2740,7 @@ public class MemberController {
 	}
 
 	// ------------------------------ 관리자 ----------------------------------------------
-<<<<<<< HEAD
+
 	
 	@RequestMapping("updateGradeAuto")
 	public ModelAndView updateGradeAuto(ModelAndView mv){
@@ -2793,8 +2793,5 @@ public class MemberController {
 		}
 	}
 	
-	
-=======
 
->>>>>>> refs/remotes/origin/master
 }

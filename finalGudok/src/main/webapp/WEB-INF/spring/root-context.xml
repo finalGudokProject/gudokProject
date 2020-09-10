@@ -59,8 +59,6 @@
 		
 	</bean>
 	
-	
-	
 	<bean id="mService"
 		class="com.kh.finalGudok.member.model.service.MemberServiceImpl">
 	</bean>

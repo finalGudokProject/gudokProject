@@ -659,7 +659,7 @@ public class ItemDao {
 
 	public int selectRecommendChk(String s) {
 		return sqlSessionTemplate.selectOne("adminItemMapper.selectRecommendChk",s);
-
+	}
 	public int checkDiscount(int no) {
 		return sqlSessionTemplate.selectOne("itemMapper.checkDiscount", no);
 

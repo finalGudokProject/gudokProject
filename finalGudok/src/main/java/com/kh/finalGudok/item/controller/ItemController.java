@@ -1,4 +1,6 @@
 package com.kh.finalGudok.item.controller;
+import static com.kh.finalGudok.common.pagination.getPageInfo;
+import static com.kh.finalGudok.common.pagination2.getPageInfo2;
 
 import java.io.File;
 import java.io.IOException;
@@ -86,6 +88,7 @@ public class ItemController {
 		}
 		return mv;
 	}
+
 
 	@RequestMapping("itemBest.do")
 	private ModelAndView itemBest(ModelAndView mv, @RequestParam(value = "page", required = false) Integer page,

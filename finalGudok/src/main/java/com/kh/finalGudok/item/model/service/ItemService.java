@@ -265,10 +265,10 @@ public interface ItemService {
 
 	int updateRecommendStatusN(Integer itemNo);
 
-<<<<<<< HEAD
+
 	int selectRecommendChk(String string);
 
-=======
+
 	int checkDiscount(int no);
->>>>>>> refs/remotes/origin/master
+
 }
