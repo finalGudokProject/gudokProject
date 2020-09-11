@@ -14,7 +14,8 @@
      <!-- google charts -->
 	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 	
-    <title>주문 리스트</title>    
+    <title>주문 리스트
+    </title>    
     <style>
 
 
@@ -169,10 +170,10 @@ cursor: pointer;
                              </tr>   
                          </thead>
                          <tbody>
-                            <c:if test="${!empty oList }">
+                         <c:out value="${oList }"/>
+                            <c:if test="${!empty oList }"> 
 	                         	<c:forEach var="e" items="${oList }" varStatus="cnt">
 		                             <tr>
-		                                
 		                                	<c:choose>
 				                                <c:when test="${e.deliveryStatus eq 'N' }">
 				                                	<td onclick="event.cancelBubble=true"><input type="checkbox" class="common" id="subscribeNo${cnt.index}" name="subscribeNo" value="${e.subscribeNo }"></td>
@@ -204,8 +205,8 @@ cursor: pointer;
 				                            </c:choose>
                            			 </tr>
                            		</c:forEach>
-                           	</c:if>
-                           	 <c:if test="${empty oList }">
+                            	</c:if> 
+                          	 <c:if test="${empty oList }">
 		                             <tr>
 		                                <td colspan="7">등록된 주문이 없습니다.</td>
                            			 </tr>

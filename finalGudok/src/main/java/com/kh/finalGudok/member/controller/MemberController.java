@@ -51,6 +51,7 @@ import com.kh.finalGudok.item.model.vo.PageInfo;
 import com.kh.finalGudok.member.model.exception.MemberException;
 import com.kh.finalGudok.member.model.service.MemberService;
 import com.kh.finalGudok.member.model.vo.AdminBoard;
+import com.kh.finalGudok.member.model.vo.AdminCancle;
 import com.kh.finalGudok.member.model.vo.AdminExchange;
 import com.kh.finalGudok.member.model.vo.AdminMember;
 import com.kh.finalGudok.member.model.vo.AdminPayment;
@@ -2793,5 +2794,112 @@ public class MemberController {
 		}
 	}
 	
+	
+	@RequestMapping("cList.do")
+	public ModelAndView cancelListView(ModelAndView mv, Integer page,
+			@RequestParam(value = "word", required = false) String word,
+			@RequestParam(value = "type", required = false) String type) {
+		// 주간 사유별 비율을 조회하기 위한 날짜 수집
+		Calendar start = Calendar.getInstance(); // 현재 시간
+		Date startDate = new Date(start.getTimeInMillis()); // Date형으로 변환
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		String startDay = sdf.format(startDate);
 
+		start.add(Calendar.DATE, -7);
+		Date lastDate = new Date(start.getTimeInMillis());
+		String lastDay = sdf.format(lastDate); // 7일전
+		System.out.println(startDay);
+		System.out.println(lastDay);
+
+		// 차트용 리스트
+		ArrayList<Search> list = new ArrayList<>();
+
+		for (int i = 1; i < 6; i++) {
+			Search s = new Search();
+			s.setStartDay(startDay);
+			s.setLastDay(lastDay);
+			s.setTemp1(i);
+			list.add(s);
+
+			Integer temp = mService.selectSubscribeCancelChart(list.get(i - 1));
+
+			if (temp == null) {
+				temp = 0;
+			}
+			s.setTemp2(temp);
+
+			System.out.println(list.get(i - 1).getTemp2());
+		}
+
+		// 교환리스트
+
+	
+		System.out.println("타입은 " + type);
+		System.out.println("검색어는 " + word);
+
+	
+
+		if (word == "") {
+			word = null;
+		}
+
+		if (type == "") {
+			type = null;
+		}
+
+		Search s = new Search();
+	
+		if (type == null) {
+			s.setSubscribeNo(word);
+			s.setWord(word);
+			s.setMemberId(word);
+
+		} else if (type.equalsIgnoreCase("subscribeNo")) {
+			s.setSubscribeNo(word);
+
+		} else if (type.equalsIgnoreCase("calcelContent")) {
+			s.setWord(word);
+		} else if (type.equalsIgnoreCase("memberId")) {
+			s.setMemberId(word);
+		}
+
+		int currentPage = 1;
+
+		if (page != null) {
+			currentPage = page;
+		}
+
+		System.out.println("s는" + s);
+		int listCount = mService.getSubscribeCancelCnt(s);
+
+		System.out.println("몇개?" + listCount);
+		PageInfo pi = new PageInfo();
+
+		int pageLimit = 10; // 보여질 페이지 총 갯수
+		int boardLimit = 5; // 게시판 한 페이지에 뿌려질 게시글 수
+		pi = getPageInfo2(currentPage, listCount, pageLimit, boardLimit);
+
+		ArrayList<AdminCancle> eList = mService.selectSubscribeCancel(s, pi);
+
+	
+
+		if (list != null && eList != null) {
+
+			mv.addObject("list", list).addObject("pi", pi).addObject("eList", eList)
+					.addObject("word", word).addObject("type", type).addObject("pi", pi)
+					.setViewName("admin/cancelList");
+
+			return mv;
+		} else {
+			throw new MemberException("취소 내역 조회 실패!");
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 }

@@ -135,6 +135,7 @@ input, select,textarea{
                              </tr>   
                          </thead>
                          <tbody>
+                         	<c:if test="${!empty pList }">
                         	 <c:forEach var="i" items="${pList }" varStatus="cnt">
 	                             <tr>
 	                                <td>${i.paymentDate }</td>
@@ -145,6 +146,15 @@ input, select,textarea{
 	                                <td>${i.totalPayment }</td>
 	                            </tr>
                             </c:forEach>
+                          </c:if>
+                          <c:if test="${empty pList }">
+                       
+	                             <tr>
+	                                <td colspan="6">결제 내역이 없습니다.</td>
+	                             
+	                            </tr>
+                       
+                          </c:if>
                           
                          </tbody>
                     </table>
@@ -153,6 +163,7 @@ input, select,textarea{
 
                     <br>
 
+<c:if test="${!empty pList }">
 
                      <!------페이징 처리----->
                 <div class="page-center">
@@ -231,7 +242,7 @@ input, select,textarea{
 
                 </div>
 
-
+</c:if>
 
 
 

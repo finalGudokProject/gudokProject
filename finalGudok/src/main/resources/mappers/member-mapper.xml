@@ -240,6 +240,18 @@
 		<result property="cancleContent" column="CANCLE_CONTENT" />
 		<result property="cancleDate" column="CANCLE_DATE" />
 	</resultMap>
+	
+	<resultMap type="AdminCancle" id="adminCancleResultSet">
+		<id property="cancleNo" column="CANCLE_NO" />
+		<result property="subscribeNo" column="SUBSCRIBE_NO" />
+		<result property="cancleCategory" column="CANCLE_CATEGORY" />
+		<result property="cancleContent" column="CANCLE_CONTENT" />
+		<result property="cancleDate" column="CANCLE_DATE" />
+		<result property="memberId" column="MEMBER_ID" />
+		<result property="itemName" column="ITEM_NAME" />
+		<result property="subPrice" column="SUB_PRICE" />
+		
+	</resultMap>
 
 	<select id="selectOne" parameterType="Member"
 		resultMap="memberResultSet">
@@ -704,7 +716,7 @@
 	<select id="selectOrderList" resultMap="adminSubscribeResultSet">
 		select *
 		from(
-		SELECT S.*,I.ITEM_NAME
+		SELECT S.*,I.ITEM_NAME,D.DELIVERY_STATUS
 		FROM SUBSCRIBE S
 		LEFT JOIN ITEM I ON(S.ITEM_NO=I.ITEM_NO)
 		LEFT JOIN DELIVERY D ON(S.SUBSCRIBE_NO=D.SUBSCRIBE_NO)
@@ -732,7 +744,7 @@
 	<select id="selectOrderCnt" resultType="_int">
 		select count(*)
 		from(
-		SELECT S.SUBSCRIBE_NO, I.ITEM_NAME, S.MEMBER_ID
+		SELECT S.SUBSCRIBE_NO, I.ITEM_NAME, S.MEMBER_ID,D.DELIVERY_STATUS
 		FROM SUBSCRIBE S
 		LEFT JOIN DELIVERY D ON(S.SUBSCRIBE_NO=D.SUBSCRIBE_NO)
 		LEFT JOIN ITEM I ON(S.ITEM_NO=I.ITEM_NO)
@@ -825,7 +837,7 @@
 		FROM (SELECT *
 		FROM EXCHANGE
              <![CDATA[
-            WHERE EXCHANGE_DATE >= #{lastDay} AND EXCHANGE_DATE < #{startDay}
+            WHERE EXCHANGE_DATE >= #{lastDay} AND EXCHANGE_DATE <= #{startDay}
              ]]>
 		)
 		GROUP BY EXCHANGE_CATEGORY
@@ -1369,5 +1381,63 @@
 		SET ADDRESS_1=#{address1}, ADDRESS_2=#{address2}, ADDRESS_3=#{address3}
 		WHERE SUBSCRIBE_NO=#{subscribeNo}
 	</update>
+	<select id="selectSubscribeCancelChart" parameterType="object" resultType="int">
+	        	SELECT COUNT(*)
+		FROM (SELECT *
+		FROM cancle
+   <![CDATA[
+            WHERE cancle_date >= #{lastDay} AND cancle_date <= #{startDay}
+             ]]>
+		)
+		GROUP BY cancle_category
+		HAVING cancle_category=#{temp1}
+	
+	</select>
+	<select id="getSubscribeCancelCnt" parameterType="object" resultType="_int">
+	  SELECT COUNT(*)
+		FROM(
+		SELECT E.*,S.MEMBER_ID,S.SUB_PRICE,I.ITEM_NAME
+		FROM CANCLE E
+		LEFT JOIN SUBSCRIBE S ON (E.SUBSCRIBE_NO=S.SUBSCRIBE_NO)
+		LEFT JOIN ITEM I ON (S.ITEM_NO=I.ITEM_NO)
+		ORDER BY E.CANCLE_DATE DESC
+		)
+		<where>
+			<if test="subscribeNo!=null">
+				subscribe_no like <![CDATA['%${subscribeNo}%']]>
+			</if>
+			<if test="word!=null">
+				or CANCLE_content LIKE <![CDATA['%${word}%']]>
+			</if>
+			<if test="memberId!=null">
+				or member_Id  LIKE <![CDATA['%${memberId}%']]>
+			</if>
+		</where>
+	</select>
+	<select id="selectSubscribeCancel" parameterType="object" resultMap="adminCancleResultSet">
+	  SELECT *
+		FROM(
+		SELECT E.*,S.MEMBER_ID,S.SUB_PRICE,I.ITEM_NAME
+		FROM CANCLE E
+		LEFT JOIN SUBSCRIBE S ON (E.SUBSCRIBE_NO=S.SUBSCRIBE_NO)
+		LEFT JOIN ITEM I ON (S.ITEM_NO=I.ITEM_NO)
+		ORDER BY E.CANCLE_DATE DESC
+		)
+		<where>
+			<if test="subscribeNo!=null">
+				subscribe_no like <![CDATA['%${subscribeNo}%']]>
+			</if>
+			<if test="word!=null">
+				or CANCLE_content LIKE <![CDATA['%${word}%']]>
+			</if>
+			<if test="memberId!=null">
+				or member_Id  LIKE <![CDATA['%${memberId}%']]>
+			</if>
+		</where>
+	
+	
+	
+	</select>
+	
 
 </mapper>

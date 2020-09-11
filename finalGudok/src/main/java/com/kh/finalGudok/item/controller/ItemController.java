@@ -1322,7 +1322,7 @@ public class ItemController {
 
 	// 상품 상세보기 -admin
 	@RequestMapping("itemDetail.do")
-	public ModelAndView selectItemDetail(ModelAndView mv, int itemNo, @RequestParam(value="eventNo",required=false) Integer eventNo,Integer page, String type) {
+	public ModelAndView selectItemDetail(ModelAndView mv, int itemNo, @RequestParam(value="itemCategory",required=false) String itemCategory, @RequestParam(value="eventNo",required=false) Integer eventNo,Integer page, String type) {
 
 		System.out.println("아이템 디테일" + type);
 
@@ -1340,7 +1340,7 @@ public class ItemController {
 		mv.addObject("m", m);
 		mv.addObject("type", type);
 		mv.addObject("eventNo", eventNo);
-		mv.addObject("page", currentPage);
+		mv.addObject("page", currentPage).addObject("itemCategory",itemCategory);
 		mv.setViewName("admin/itemModify");
 
 		return mv;
@@ -1458,6 +1458,7 @@ public class ItemController {
 	public ModelAndView itemEventInsertView(ModelAndView mv, Integer page,
 			@RequestParam(value = "itemCategory", required = false) String itemCategory) {
 
+		System.out.println("받은 아이템카테고리는"+itemCategory);
 		if (itemCategory == "") {
 			itemCategory = null;
 		}
@@ -1569,8 +1570,7 @@ public class ItemController {
 		pi = getPageInfo2(currentPage, listCount, pageLimit, boardLimit);
 
 		// 이벤트 등록이 안된 상품 목록
-		System.out.println("여기 확인해보자");
-		System.out.println("category는" + itemCategory);
+		
 		ArrayList<BannerItem> list = iService.selectItems(itemCategory, pi);
 
 		response.setContentType("application/json;charset=utf-8");
@@ -1588,6 +1588,8 @@ public class ItemController {
 				jList.put("itemName", list.get(i).getItemName());
 				jList.put("itemPrice", list.get(i).getItemPrice());
 				jList.put("itemRate", list.get(i).getItemRate());
+				
+	
 
 				jarr.add(jList);
 			}

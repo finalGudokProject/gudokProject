@@ -12,6 +12,7 @@ import com.kh.finalGudok.item.model.vo.PageInfo;
 
 import com.kh.finalGudok.member.model.dao.MemberDao;
 import com.kh.finalGudok.member.model.vo.AdminBoard;
+import com.kh.finalGudok.member.model.vo.AdminCancle;
 import com.kh.finalGudok.member.model.vo.AdminExchange;
 import com.kh.finalGudok.member.model.vo.AdminMember;
 import com.kh.finalGudok.member.model.vo.AdminPayment;
@@ -577,6 +578,21 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public int updateSubscribeDestination(Delivery d) {
 		return mDao.updateSubscribeDestination(d);
+	}
+
+	@Override
+	public Integer selectSubscribeCancelChart(Search search) {
+		return mDao.selectSubscribeCancelChart(search);
+	}
+
+	@Override
+	public int getSubscribeCancelCnt(Search s) {
+		return mDao.getSubscribeCancelCnt(s);
+	}
+
+	@Override
+	public ArrayList<AdminCancle> selectSubscribeCancel(Search s, PageInfo pi) {
+		return mDao.selectSubscribeCancel(s,pi);
 	}
 
 

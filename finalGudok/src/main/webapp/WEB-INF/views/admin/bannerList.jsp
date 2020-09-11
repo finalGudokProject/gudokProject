@@ -92,12 +92,12 @@ input, select,textarea{
         			<input type="hidden" name="array" value="">
                     <table id="bannerTable">
                         <thead>
-                            <tr>
-                                <th><input type="checkbox" id="checkAll"></th>
-                                <th id="td1">배너번호</th>
-                                <th>이벤트 명</th>
-                                <th>상품 수</th>
-                                <th>상태</th>
+                            <tr onclick='event.stopImmediatePropagation()'>
+                                <th onclick='event.cancelBubble=true'><input type="checkbox" id="checkAll"></th>
+                                <th onclick='event.cancelBubble=true' id="td1">배너번호</th>
+                                <th onclick='event.cancelBubble=true'>이벤트 명</th>
+                                <th onclick='event.cancelBubble=true'>상품 수</th>
+                                <th onclick='event.cancelBubble=true'>상태</th>
                              </tr>   
                          </thead>
                          

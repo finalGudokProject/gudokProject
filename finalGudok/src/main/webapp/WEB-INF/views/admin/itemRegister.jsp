@@ -390,9 +390,9 @@ float:left;
         
         //상품 등록시 필요정보 공백 제한
         function validate(){
-        	alert(("#itemRecommend").val())
+
         	
-        	confirm("상품을 등록하시겠습니까?");
+         	confirm("상품을 등록하시겠습니까?");
     	if($("#category").val().trim().length==1){
 	    		alert('카테고리를 선택해주세요.');
 	    		$("#category").focus();    		
@@ -418,7 +418,8 @@ float:left;
     		
     		return true;
     	}
-    	
+    	 
+    
     	
     };
         
@@ -427,15 +428,25 @@ float:left;
         $(function() {
 
          $('input[name=itemPrice]').css('imeMode','disabled').keypress(function(event){
-          if(event.which && (event.which<48||event.which>57)){
-           event.preventDefault();
-          }
-         }).keyup(function(){
-          if( $(this).val() != null && $(this).val() != '' ){
-           $(this).val( $(this).val().replace(/[^0-9]/g, ''));
-          
-          }
+             if(e.which && (e.which < 48 || e.which > 57) ) e.preventDefault();
+
          });
+
+         $(document).on('keyup', 'input[name=itemPrice]', function(e){
+
+             if( $(this).val() != null && $(this).val() != '' ) {
+            	 
+                 var tmps = parseInt($(this).val().replace(/[^0-9]/g, '')) || 0;
+
+                 var tmps2 = tmps.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+
+                 $(this).val(tmps2);
+
+             }
+
+         });
+
+
          
          
          });

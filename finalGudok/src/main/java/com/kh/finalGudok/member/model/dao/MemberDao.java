@@ -12,6 +12,7 @@ import com.kh.finalGudok.item.model.vo.BannerItem;
 import com.kh.finalGudok.item.model.vo.Item;
 import com.kh.finalGudok.item.model.vo.PageInfo;
 import com.kh.finalGudok.member.model.vo.AdminBoard;
+import com.kh.finalGudok.member.model.vo.AdminCancle;
 import com.kh.finalGudok.member.model.vo.AdminExchange;
 import com.kh.finalGudok.member.model.vo.AdminMember;
 import com.kh.finalGudok.member.model.vo.AdminPayment;
@@ -533,5 +534,19 @@ public class MemberDao {
 	public int updateSubscribeDestination(Delivery d) {
 		return sqlSessionTemplate.update("memberMapper.updateSubscribeDestination",d);
 
+	}
+
+	public Integer selectSubscribeCancelChart(Search search) {
+		return sqlSessionTemplate.selectOne("memberMapper.selectSubscribeCancelChart",search);
+	}
+
+	public int getSubscribeCancelCnt(Search s) {
+		return sqlSessionTemplate.selectOne("memberMapper.getSubscribeCancelCnt",s);
+	}
+
+	public ArrayList<AdminCancle> selectSubscribeCancel(Search s, PageInfo pi) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		return (ArrayList) sqlSessionTemplate.selectList("memberMapper.selectSubscribeCancel", s, rowBounds);
 	}
 }

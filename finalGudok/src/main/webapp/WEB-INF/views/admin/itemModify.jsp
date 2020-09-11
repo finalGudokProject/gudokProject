@@ -434,6 +434,7 @@ float:left;
 	                <c:if test="${type eq 'itemList' }">
 	                	<c:url var="goItemList" value="itemListA.do">
 	                		<c:param name="page" value="${page }"/>
+	                		<c:param name="itemCategory" value="${itemCategory }"/>
 	                	</c:url>
 		                <input type="button" class="btn" value="목록" onclick="location.href='${goItemList}'">                
 	                </c:if>

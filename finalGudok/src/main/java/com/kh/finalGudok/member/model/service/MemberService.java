@@ -22,6 +22,7 @@ import com.kh.finalGudok.member.model.vo.Subscribe;
 import com.kh.finalGudok.member.model.vo.Visitor;
 import com.kh.finalGudok.member.model.vo.Withdrawal;
 import com.kh.finalGudok.member.model.vo.AdminBoard;
+import com.kh.finalGudok.member.model.vo.AdminCancle;
 import com.kh.finalGudok.item.model.vo.BannerItem;
 import com.kh.finalGudok.member.model.vo.AdminExchange;
 import com.kh.finalGudok.member.model.vo.AdminMember;
@@ -250,5 +251,11 @@ public interface MemberService {
 	int selectPointMember(AdminSubscribe adminSubscribe);
 
 	int updateSubscribeDestination(Delivery d);
+
+	Integer selectSubscribeCancelChart(Search search);
+
+	int getSubscribeCancelCnt(Search s);
+
+	ArrayList<AdminCancle> selectSubscribeCancel(Search s, PageInfo pi);
 
 }

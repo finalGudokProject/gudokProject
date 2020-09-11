@@ -48,6 +48,7 @@
 		<typeAlias type="com.kh.finalGudok.member.model.vo.AdminSubscribe" alias="AdminSubscribe"/>
       	<typeAlias type="com.kh.finalGudok.member.model.vo.AdminExchange" alias="AdminExchange"/>
       	<typeAlias type="com.kh.finalGudok.member.model.vo.AdminBoard" alias="AdminBoard"/>
+      	<typeAlias type="com.kh.finalGudok.member.model.vo.AdminCancle" alias="AdminCancle"/>
 	</typeAliases>
 	
 	<mappers>
