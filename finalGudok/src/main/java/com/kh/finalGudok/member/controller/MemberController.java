@@ -1,6 +1,8 @@
 package com.kh.finalGudok.member.controller;
 import static com.kh.finalGudok.common.pagination2.getPageInfo2;
 
+import static com.kh.finalGudok.common.pagination2.getPageInfo2;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
