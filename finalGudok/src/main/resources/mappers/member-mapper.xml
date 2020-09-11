@@ -234,6 +234,7 @@
 		<result property="address1" column="ADDRESS_1" />
 		<result property="address2" column="ADDRESS_2" />
 		<result property="address3" column="ADDRESS_3" />
+		<result property="deliveryStatus" column="DELIVERY_STATUS"/>
 	</resultMap>
 
 	<resultMap type="mCancle" id="cancleResultSet">
@@ -264,9 +265,8 @@
 		AND MEMBER_STATUS='N'
 	</select>
 
-	<select id="pointList" parameterType="int"
-		resultMap="pointResultSet">
-		SELECT P.*, S.SUBSCRIBE_DATE, I.ITEM_NAME
+	<select id="pointList" parameterType="int" resultMap="pointResultSet">
+		SELECT P.*, S.SUBSCRIBE_DATE, I.ITEM_NAME, M.POINT AS MEMBER_POINT
 		FROM POINT P
 		JOIN SUBSCRIBE S ON (P.SUBSCRIBE_NO = S.SUBSCRIBE_NO)
 		JOIN ITEM I ON (I.ITEM_NO = S.ITEM_NO)
@@ -694,14 +694,12 @@
 		
 	</select>
 
-	<select id="selectSubscribeList" resultMap="subscribeResultSet"
-		parameterType="int">
-		SELECT S.*, I.ITEM_NAME
+	<select id="selectSubscribeList" resultMap="subscribeResultSet" parameterType="int">
+		SELECT S.*, I.ITEM_NAME, D.DELIVERY_STATUS
 		FROM SUBSCRIBE S
-		JOIN ITEM I ON
-		(S.ITEM_NO = I.ITEM_NO)
-		WHERE MEMBER_NO=#{memberNo} AND
-		SUBSCRIBE_STATUS='N'
+		JOIN ITEM I ON (S.ITEM_NO = I.ITEM_NO)
+		JOIN DELIVERY D ON (D.SUBSCRIBE_NO = S.SUBSCRIBE_NO)
+		WHERE MEMBER_NO=#{memberNo} AND SUBSCRIBE_STATUS='N'
 	</select>
 
 	<select id="selectOrderList" resultMap="adminSubscribeResultSet">
@@ -1372,5 +1370,16 @@
 		SET ADDRESS_1=#{address1}, ADDRESS_2=#{address2}, ADDRESS_3=#{address3}
 		WHERE SUBSCRIBE_NO=#{subscribeNo}
 	</update>
-
+	
+	<select id="selectUsedPoint" parameterType="_int" resultType="_int">
+		SELECT POINT
+		FROM PAYMENT
+		WHERE MEMBER_NO = #{memberNo}
+	</select>
+	
+	<update id="updateMyPoint" parameterType="Member">
+		UPDATE MEMBER
+		SET POINT = #{point}
+		WHERE MEMBER_NO = #{memberNo}
+	</update>
 </mapper>

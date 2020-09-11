@@ -593,7 +593,13 @@
 					            $data=$("<td>").text(data[i].subscribeDate);
 					            $itemName=$("<td>").text(data[i].itemName);
 					            $change=$("<a href='#cycle_form' id='cycle_pop' onclick='changeCycle(" + data[i].subscribeNo+","+ data[i].memberNo+"," +'"'+data[i].itemName+'"'+","+data[i].cycleNo+")'>").text("구독주기변경");
-					            $cancle=$("<a href='#cancle_form' id='cancle_pop' onclick='cancleClick(" + data[i].subscribeNo+","+ data[i].memberNo+")'>").text("구독취소");
+					            if(data[i].deliveryStatus == 'N'){
+					            	 $cancle=$("<a href='#cancle_form' id='cancle_pop' onclick='cancleClick(" + data[i].subscribeNo+","+ data[i].memberNo+")'>").text("구독취소");
+					            } else{
+					            	$cancle=$("<a href='#cancle_form' id='cancle_pop' onclick='return false;'>").text("구독취소");
+					            }
+					            
+					           
 					            $detail=$("<a href='#detail_form' id='detail_pop' onclick='detailClick(" + data[i].subscribeNo+","+ data[i].memberNo+"," +'"'+data[i].itemName+'"'+","+data[i].cycleNo+","+'"'+data[i].address1+'"'+","+'"'+data[i].address2+'"'+","+'"'+data[i].address3+'"'+")'>").text("구독상세정보");
 					            
 					            

@@ -670,11 +670,21 @@ public class MemberController {
 
 		int result = mService.insertCancle(c);
 		int result2 = mService.updateSubscribeStatus(c.getSubscribeNo());
+		
+		int point = mService.selectUsedPoint(loginUser.getMemberNo());
+		
+		System.out.println("사용한 포인트 : " + point);
+		
+		loginUser.setPoint(loginUser.getPoint() + point);
+		
+		System.out.println("돌아온 포인트 : " + loginUser.getPoint());
 
-		if (result > 0 && result2 > 0) {
+		int result3 = mService.updateMyPoint(loginUser);
+		
+		if (result > 0 && result2 > 0 && result3 > 0) {
 			int subscribeCount = mService.subscribeCount(loginUser.getMemberNo());
-
 			model.addAttribute("subscribeCount", subscribeCount);
+			model.addAttribute("loginUser", loginUser);
 
 			return "mypage/subscribe";
 		} else {

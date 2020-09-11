@@ -579,6 +579,17 @@ public class MemberServiceImpl implements MemberService {
 		return mDao.updateSubscribeDestination(d);
 	}
 
+	@Override
+	public int selectUsedPoint(int memberNo) {
+		return mDao.selectUsedPoint(memberNo);
+	}
+
+
+	@Override
+	public int updateMyPoint(Member loginUser) {
+		return mDao.updateMyPoint(loginUser);
+	}
+
 
 
 

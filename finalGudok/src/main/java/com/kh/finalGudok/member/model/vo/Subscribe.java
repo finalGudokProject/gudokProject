@@ -27,13 +27,14 @@ public class Subscribe implements Serializable{
 	private int subPrice;
 	private String customerUid;
 	private Date paymentDate;
+	private String deliveryStatus;
 
 	public Subscribe() {}
 
 	public Subscribe(int subscribeNo, int itemNo, int cycleNo, String subscribeStatus, Date subscribeDate, int amount,
 			int memberNo, String memberId, String email, String exchangeStatus, String itemName, String address1,
-			String address2, String address3, String phone, int subPrice, String customerUid, Date paymentDate) {
-		super();
+			String address2, String address3, String phone, int subPrice, String customerUid, Date paymentDate,
+			String deliveryStatus) {
 		this.subscribeNo = subscribeNo;
 		this.itemNo = itemNo;
 		this.cycleNo = cycleNo;
@@ -52,6 +53,7 @@ public class Subscribe implements Serializable{
 		this.subPrice = subPrice;
 		this.customerUid = customerUid;
 		this.paymentDate = paymentDate;
+		this.deliveryStatus = deliveryStatus;
 	}
 
 	public int getSubscribeNo() {
@@ -198,6 +200,14 @@ public class Subscribe implements Serializable{
 		this.paymentDate = paymentDate;
 	}
 
+	public String getDeliveryStatus() {
+		return deliveryStatus;
+	}
+
+	public void setDeliveryStatus(String deliveryStatus) {
+		this.deliveryStatus = deliveryStatus;
+	}
+
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
@@ -209,7 +219,7 @@ public class Subscribe implements Serializable{
 				+ ", memberNo=" + memberNo + ", memberId=" + memberId + ", email=" + email + ", exchangeStatus="
 				+ exchangeStatus + ", itemName=" + itemName + ", address1=" + address1 + ", address2=" + address2
 				+ ", address3=" + address3 + ", phone=" + phone + ", subPrice=" + subPrice + ", customerUid="
-				+ customerUid + ", paymentDate=" + paymentDate + "]";
+				+ customerUid + ", paymentDate=" + paymentDate + ", deliveryStatus=" + deliveryStatus + "]";
 	}
 	
 }

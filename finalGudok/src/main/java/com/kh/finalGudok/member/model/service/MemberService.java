@@ -238,17 +238,18 @@ public interface MemberService {
 
 	int selectPoint(int subscribeNo);
 
-
 	ArrayList<AdminMember> selectMemberPaymentList(String startDay);
 
 	int updateMemberGrade(AdminMember adminMember);
 
 	ArrayList<Grade> selectGradeInfo();
 
-	
-
 	int selectPointMember(AdminSubscribe adminSubscribe);
 
 	int updateSubscribeDestination(Delivery d);
+
+	int selectUsedPoint(int memberNo);
+
+	int updateMyPoint(Member loginUser);
 
 }
