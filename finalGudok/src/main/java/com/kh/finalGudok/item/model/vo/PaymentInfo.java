@@ -11,22 +11,27 @@ public class PaymentInfo implements Serializable{
 	private static final long serialVersionUID = -8069509695407087214L;
 		
 	private int paymentNo;
-	private int amount;
+	private int itemNo;
 	private int point;
-	private int subscribeNo;
 	private Date paymentDate;
+	private int memberNo;
+	private String memberId;
+	private String email;
 	
 	public PaymentInfo() {
 		super();
 	}
 
-	public PaymentInfo(int paymentNo, int amount, int point, int subscribeNo, Date paymentDate) {
+	public PaymentInfo(int paymentNo, int itemNo, int point, Date paymentDate, int memberNo, String memberId,
+			String email) {
 		super();
 		this.paymentNo = paymentNo;
-		this.amount = amount;
+		this.itemNo = itemNo;
 		this.point = point;
-		this.subscribeNo = subscribeNo;
 		this.paymentDate = paymentDate;
+		this.memberNo = memberNo;
+		this.memberId = memberId;
+		this.email = email;
 	}
 
 	public int getPaymentNo() {
@@ -37,12 +42,12 @@ public class PaymentInfo implements Serializable{
 		this.paymentNo = paymentNo;
 	}
 
-	public int getAmount() {
-		return amount;
+	public int getItemNo() {
+		return itemNo;
 	}
 
-	public void setAmount(int amount) {
-		this.amount = amount;
+	public void setItemNo(int itemNo) {
+		this.itemNo = itemNo;
 	}
 
 	public int getPoint() {
@@ -53,14 +58,6 @@ public class PaymentInfo implements Serializable{
 		this.point = point;
 	}
 
-	public int getSubscribeNo() {
-		return subscribeNo;
-	}
-
-	public void setSubscribeNo(int subscribeNo) {
-		this.subscribeNo = subscribeNo;
-	}
-
 	public Date getPaymentDate() {
 		return paymentDate;
 	}
@@ -69,15 +66,41 @@ public class PaymentInfo implements Serializable{
 		this.paymentDate = paymentDate;
 	}
 
+	public int getMemberNo() {
+		return memberNo;
+	}
+
+	public void setMemberNo(int memberNo) {
+		this.memberNo = memberNo;
+	}
+
+	public String getMemberId() {
+		return memberId;
+	}
+
+	public void setMemberId(String memberId) {
+		this.memberId = memberId;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
 
 	@Override
 	public String toString() {
-		return "Payment [paymentNo=" + paymentNo + ", amount=" + amount + ", point=" + point + ", subscribeNo="
-				+ subscribeNo + ", paymentDate=" + paymentDate + "]";
+		return "PaymentInfo [paymentNo=" + paymentNo + ", itemNo=" + itemNo + ", point=" + point + ", paymentDate="
+				+ paymentDate + ", memberNo=" + memberNo + ", memberId=" + memberId + ", email=" + email + "]";
 	}
+	
+	
 	
 	
 
