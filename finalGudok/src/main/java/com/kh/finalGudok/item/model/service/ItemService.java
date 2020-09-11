@@ -1,6 +1,8 @@
 package com.kh.finalGudok.item.model.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.kh.finalGudok.item.model.vo.AdminItem;
 import com.kh.finalGudok.item.model.vo.BannerItem;
@@ -12,6 +14,7 @@ import com.kh.finalGudok.item.model.vo.Image;
 import com.kh.finalGudok.item.model.vo.Item;
 import com.kh.finalGudok.item.model.vo.ItemListView;
 import com.kh.finalGudok.item.model.vo.PageInfo;
+import com.kh.finalGudok.item.model.vo.PaymentInfo;
 import com.kh.finalGudok.item.model.vo.Review;
 import com.kh.finalGudok.item.model.vo.ReviewImage;
 import com.kh.finalGudok.item.model.vo.ReviewView;
@@ -265,10 +268,16 @@ public interface ItemService {
 
 	int updateRecommendStatusN(Integer itemNo);
 
-
 	int selectRecommendChk(String string);
-
-
+	
 	int checkDiscount(int no);
+
+	int insertFirstPayment(PaymentInfo payInfo);
+
+	int selectItemPrice(int itemNo);
+
+	int insertSubScribeInfo(HashMap<String, Object> map);
+
+	ArrayList<Subscribe> selectSubscribeStatus(String customerUid);
 
 }

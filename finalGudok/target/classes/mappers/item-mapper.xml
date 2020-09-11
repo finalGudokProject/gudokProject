@@ -23,6 +23,28 @@
 		
 	</resultMap>
 	
+	<resultMap type="mSubscribe" id="subscribeResultSet">
+		<id property="subscribeNo" column="SUBSCRIBE_NO" />
+		<result property="itemNo" column="ITEM_NO" />
+		<result property="cycleNo" column="CYCLE_NO" />
+		<result property="subscribeStatus" column="SUBSCRIBE_STATUS" />
+		<result property="subscribeDate" column="SUBSCRIBE_DATE" />
+		<result property="amount" column="AMOUNT" />
+		<result property="memberNo" column="MEMBER_NO" />
+		<result property="memberId" column="MEMBER_ID" />
+		<result property="email" column="EMAIL" />
+		<result property="exchangeStatus" column="EXCHANGE_STATUS" />
+		<result property="itemName" column="ITEM_NAME" />
+		<result property="address1" column="ADDRESS_1" />
+		<result property="address2" column="ADDRESS_2" />
+		<result property="address3" column="ADDRESS_3" />
+		<result property="phone" column="PHONE"/>
+		<result property="subPrice" column="SUB_PRICE"/>
+		<result property="customerUid" column="CUSTOMER_UID"/>
+		<result property="paymentDate" column="PAYMENT_DATE"/>
+	</resultMap>
+	
+	
 	<select id="getBestCount" resultType="_int">
 		<![CDATA[
 		SELECT COUNT(*)
@@ -94,5 +116,45 @@
 		WHERE ITEM_NO = #{no}
 	</select>
 	
+	<insert id="insertFirstPayment" parameterType="PayInfo">
+		INSERT INTO PAYMENT
+		VALUES(SEQ_PAY_NO.NEXTVAL
+				, #{itemNo}
+				, #{point}
+				, SYSDATE
+				, #{memberNo}
+				, (SELECT MEMBER_ID FROM MEMBER WHERE MEMBER_NO = #{memberNo})
+				, (SELECT EMAIL FROM MEMBER WHERE MEMBER_NO = #{memberNo}))
+	</insert>
+	
+	<select id="selectItemPrice" parameterType="_int" resultType="_int">
+		SELECT ITEM_PRICE FROM ITEM WHERE ITEM_NO = #{itemNo}
+	</select>
+	
+	<insert id="insertSubscribeInfo" parameterType="hashMap">
+		INSERT INTO SUBSCRIBE 
+		VALUES(SEQ_SUBSCRIBE_NO.NEXTVAL
+				, #{subInfo.itemNo}
+				, (SELECT CYCLE_NO FROM CYCLE WHERE CYCLE_PERIOD = #{cycle})
+				, DEFAULT
+				, SYSDATE
+				, #{subInfo.amount}
+				, #{subInfo.memberNo}
+				, (SELECT MEMBER_ID FROM MEMBER WHERE MEMBER_NO = #{subInfo.memberNo})
+				, (SELECT EMAIL FROM MEMBER WHERE MEMBER_NO = #{subInfo.memberNo})
+				, DEFAULT
+				, (SELECT ITEM_NAME FROM ITEM WHERE ITEM_NO = #{subInfo.itemNo})
+				, #{subInfo.address1}
+				, #{subInfo.address2}
+				, #{subInfo.address3}
+				, #{subInfo.phone}
+				, #{subInfo.subPrice}
+				, #{subInfo.customerUid}
+				, SYSDATE)
+	</insert>
+	
+	<select id="selectSubscribeStatus" parameterType="String" resultMap="subscribeResultSet">
+		SELECT * FROM SUBSCRIBE WHERE CUSTOMER_UID = #{customerUid} AND SUBSCRIBE_STATUS = 'N'
+	</select>
 	
 </mapper>

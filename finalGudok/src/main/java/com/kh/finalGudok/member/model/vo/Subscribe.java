@@ -23,12 +23,18 @@ public class Subscribe implements Serializable{
 	private String address1;
 	private String address2;
 	private String address3;
-	
+	private String phone;
+	private int subPrice;
+	private String customerUid;
+	private Date paymentDate;
+	private String deliveryStatus;
+
 	public Subscribe() {}
 
 	public Subscribe(int subscribeNo, int itemNo, int cycleNo, String subscribeStatus, Date subscribeDate, int amount,
 			int memberNo, String memberId, String email, String exchangeStatus, String itemName, String address1,
-			String address2, String address3) {
+			String address2, String address3, String phone, int subPrice, String customerUid, Date paymentDate,
+			String deliveryStatus) {
 		this.subscribeNo = subscribeNo;
 		this.itemNo = itemNo;
 		this.cycleNo = cycleNo;
@@ -43,6 +49,11 @@ public class Subscribe implements Serializable{
 		this.address1 = address1;
 		this.address2 = address2;
 		this.address3 = address3;
+		this.phone = phone;
+		this.subPrice = subPrice;
+		this.customerUid = customerUid;
+		this.paymentDate = paymentDate;
+		this.deliveryStatus = deliveryStatus;
 	}
 
 	public int getSubscribeNo() {
@@ -157,6 +168,46 @@ public class Subscribe implements Serializable{
 		this.address3 = address3;
 	}
 
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public int getSubPrice() {
+		return subPrice;
+	}
+
+	public void setSubPrice(int subPrice) {
+		this.subPrice = subPrice;
+	}
+
+	public String getCustomerUid() {
+		return customerUid;
+	}
+
+	public void setCustomerUid(String customerUid) {
+		this.customerUid = customerUid;
+	}
+
+	public Date getPaymentDate() {
+		return paymentDate;
+	}
+
+	public void setPaymentDate(Date paymentDate) {
+		this.paymentDate = paymentDate;
+	}
+
+	public String getDeliveryStatus() {
+		return deliveryStatus;
+	}
+
+	public void setDeliveryStatus(String deliveryStatus) {
+		this.deliveryStatus = deliveryStatus;
+	}
+
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
@@ -167,7 +218,8 @@ public class Subscribe implements Serializable{
 				+ ", subscribeStatus=" + subscribeStatus + ", subscribeDate=" + subscribeDate + ", amount=" + amount
 				+ ", memberNo=" + memberNo + ", memberId=" + memberId + ", email=" + email + ", exchangeStatus="
 				+ exchangeStatus + ", itemName=" + itemName + ", address1=" + address1 + ", address2=" + address2
-				+ ", address3=" + address3 + "]";
+				+ ", address3=" + address3 + ", phone=" + phone + ", subPrice=" + subPrice + ", customerUid="
+				+ customerUid + ", paymentDate=" + paymentDate + ", deliveryStatus=" + deliveryStatus + "]";
 	}
 	
 }

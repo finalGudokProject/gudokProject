@@ -83,26 +83,51 @@
                         <td>${loginUser.memberName }
                         <input type="hidden" id="memberNo" value="${loginUser.memberNo }">
                         </td>
-                        <td><button class="btn">수정하기</button>
+                        <td></td>
                     </tr>
                     <tr>
                         <td>연락처</td>
-                        <td colspan="2"><input type="tel" placeholder="연락처를 입력하세요" id="phone"></td>
+                        <td><input type="text" placeholder="연락처를 입력하세요" id="phone"></td>
+                        <td>'-'없이 숫자만 입력해주세요</td>
                     </tr>
                     <tr>
-                        <td>주소</td>
-                        <td>${loginUser.address2 }<br>${loginUser.address3 }</td>
-                        <td><button type="button" class="btn">주소 변경</button></td>
+                        <td>우편번호</td>
+                        <td colspan="2"><input type="text" class="postcodify_postcode5" value="${loginUser.address1 }" id="address1" readonly></td>
                     </tr>
+                    <tr>
+                        <td>도로명주소</td>
+                        <td colspan="2"><input type="text" class="postcodify_address" value="${loginUser.address2 }" id="address2" readonly></td>
+                        
+                    </tr>
+                    <tr>
+                    	<td>상세주소</td>
+                    	<td><input type="text" class="postcodify_extra_info" value="${loginUser.address3 }" id="address3" readonly></td>
+                        <td><button type="button" class="btn" id="postcodify_search_button">주소 변경</button></td>
+                    </tr>
+                    <script>
+						$(function() {
+							$("#postcodify_search_button").postcodifyPopUp();
+							$("#postcodify_search_button").on("click", function(){
+								$("#address1").val("");
+								$("#address2").val("");
+								$("#address3").val("");
+								
+								$("#address1").attr("readonly", false);
+								$("#address2").attr("readonly", false);
+								$("#address3").attr("readonly", false);
+							})
+						})
+					</script>
+                    
                     <tr>
                         <td>배송 요청사항</td>
                         <td colspan="2">
                             <select name="deliveryReq" id="deliveryReq">
                                 <option value="0">--</option>
-                                <option value="1"></option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
+                                <option value="1">배송전 연락주세요</option>
+                                <option value="2">문 앞에 두고 가주세요</option>
+                                <option value="3">부재시 경비실에 맡겨주세요</option>
+                                <option value="4">출고시 꼼꼼한 확인 부탁드려요</option>
                             </select>
                         </td>
                     </tr>
@@ -116,7 +141,6 @@
                     <tr>
                         <td colspan="5" align="center">
                             <h4>주문상품</h4>
-                            
                         </td>
                     </tr>
                     <tr>
@@ -142,7 +166,9 @@
                 		<td>적립금</td>
                 		<td>${loginUser.point } 원</td>
                 		<td>사용금액</td>
-                		<td colspan="2"><input type="text" id="usePoint"></td>
+                		<td colspan="2">
+                		<input type="text" id="usePoint">
+                		</td>
 					</tr>
 					<tr>
 						<td colspan="4">배송비</td>
@@ -172,21 +198,35 @@
   
     <script>
 		function requestPay(){
+		
+		var regPhone = /^010\d{8}$/;
+		var phone = "";
+		
+		if(!regPhone.test($("#phone").val())){
+			alert("연락처를 확인해주세요");
+			$("#phone").val("");
+			$("#phone").focus();
+			return false;
+		}else{
+			phone = $("#phone").val();
+		}
+		
 		var IMP = window.IMP; // 생략해도 괜찮습니다.
 		var customerUid = "${loginUser.memberId}" + new Date().getTime();	//카드와 1:1로 대응되는 아이디
 		var email = "${loginUser.email}";
-		var phone = $("#phone").val();
 		var name = "${loginUser.memberName}";
 		var memberNo = "${loginUser.memberNo}";
-		var point = $("#usePoint").val();
+		var point = Number($("#usePoint").val());	// 사용자가 입력한 포인트
 		
 		var nameArr = new Array();
 		var noArr = new Array();
     	var priceArr = new Array();
     	var countArr = new Array();
     	var cycleArr = new Array();
-    	
-    	var finalPrice = $("#checkPrice").html().slice(0,-2);
+    	var finalPrice = Number($("#checkPrice").html().slice(0,-2));	// 결제 전 보여지는 최종 가격
+    	var address1 = $("#address1").val();
+    	var address2 = $("#address2").val();
+    	var address3 = $("#address3").val();
     	
     	<c:forEach items="${list}" var="i">
     		noArr.push("${i.itemNo}");
@@ -195,14 +235,7 @@
     		countArr.push("${i.cartCount}");
     		cycleArr.push("${i.cartSubs}");
   		</c:forEach>
-  		/* alert(noArr);
-  		alert(nameArr);
-  		alert(priceArr);
-  		alert(countArr);
-  		alert(cycleArr); */
-  		
-  		var billingPrice = $("#checkPrice").html().slice(0,-2);	// 결제 전 보여지는 최종 가격
-  		
+
   		
 		IMP.init("imp38859026"); // "imp00000000" 대신 발급받은 "가맹점 식별코드"를 사용합니다.
 		
@@ -212,11 +245,8 @@
 				pay_method : 'card', // 'card'만 지원됩니다.
 				merchant_uid : 'merchant_' + new Date().getTime(),
 				name : '결제',
-				amount : billingPrice, // 결제창에 표시될 금액. 실제 승인이 이뤄지지는 않습니다. (모바일에서는 가격이 표시되지 않음)
+				amount : finalPrice, // 결제창에 표시될 금액. 실제 승인이 이뤄지지는 않습니다. (모바일에서는 가격이 표시되지 않음)
 				customer_uid : customerUid, //customer_uid 파라메터가 있어야 빌링키 발급을 시도합니다.
-				buyer_email : email,
-				buyer_name : name,
-				buyer_tel : phone
 		  }, function (rsp) { // callback
 		    if (rsp.success) {
 		    	alert("빌링키 발급 성공")
@@ -225,12 +255,15 @@
 		            url: "payment.do", // 서비스 웹서버
 		            method: "POST",
 		            traditional:true,
-		            data:{nameArr:nameArr, priceArr:priceArr, countArr:countArr, cycleArr:cycleArr, customerUid:customerUid,
-		            	email:email, phone:phone, memberNo:memberNo, finalPrice:finalPrice, noArr:noArr, point:point},
+		            data:{nameArr:nameArr, priceArr:priceArr, countArr:countArr, cycleArr:cycleArr, 
+		            	customerUid:customerUid, email:email, phone:phone, memberNo:memberNo, finalPrice:finalPrice, 
+		            	noArr:noArr, point:point, address1:address1, address2:address2, address3:address3},
 		            success: function(data){
 		            	if(data == "success"){
 		            		alert("결제가 완료되었습니다.");
 		            		location.href="home.do";
+		            	}else{
+		            		alert("결제에 실패하였습니다.")
 		            	}
 		            },
 		            error : function(request, status, errorData) {
@@ -251,17 +284,26 @@
 	<script>
 		$(function(){
 			$("#usePoint").on("keyup", function(){
-				var point = Number($("#usePoint").val());	// point
-				var checkPrice = "${totalPrice}";	// 합계
+				var memberPoint = Number("${loginUser.point}");		// 사용자가 보유한 포인트
+				var point = Number($("#usePoint").val());	// 사용자가 입력한 포인트
+				var checkPrice = Number("${totalPrice}");	// 합계
+				var totalPrice = checkPrice - point;
 				
-				if(point > 5000 && point <= checkPrice){
-					var totalPrice = checkPrice - point;
-					$("#checkPrice").html(totalPrice+"원");
-					
-				}else{
+				if(memberPoint > 5000 && point <= memberPoint){
+					$("#checkPrice").html(totalPrice+" 원");
+				}
+				if(point > memberPoint){
 					alert("보유하신 적립금 이상으로 사용하실 수 없습니다.");
 					$("#usePoint").val("");
 					$("#checkPrice").html("${totalPrice}"+"원");
+				}else if(totalPrice < 1000){
+					alert("결제금액은 1000원 이상이어야 합니다.");
+					$("#usePoint").val("");
+					$("#checkPrice").html("${totalPrice}"+"원");
+				}
+				if(memberPoint < 5000 && point > 0){
+					alert("포인트는 5000원 이상 보유 시 사용 가능합니다.");
+					$("#usePoint").val("");
 				}
 				
 			});
@@ -282,6 +324,7 @@
         crossorigin="anonymous"></script>
     <script type="text/javascript" src="https://code.jquery.com/jquery-latest.min.js" ></script>
   	<script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
+  	<script src="//d1p7wdleee1q2z.cloudfront.net/post/search.min.js"></script>
 </body>
 
 </html>

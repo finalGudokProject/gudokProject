@@ -25,6 +25,7 @@
 		
 		<typeAlias type="com.kh.finalGudok.item.model.vo.AdminItem" alias="AdminItem"/>
 		<typeAlias type="com.kh.finalGudok.item.model.vo.Event" alias="Event"/>
+		<typeAlias type="com.kh.finalGudok.item.model.vo.PaymentInfo" alias="PayInfo"/>
 
 		<typeAlias type="com.kh.finalGudok.member.model.vo.Point" alias="Point"/>
 		<typeAlias type="com.kh.finalGudok.member.model.vo.Review" alias="mReview"/>

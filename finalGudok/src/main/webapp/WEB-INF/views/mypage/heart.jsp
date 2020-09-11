@@ -382,6 +382,7 @@
 	  					if(data == "success"){ 
 	  						console.log("장바구니 추가 성공");
 	  						cartAfterDelete();
+	  						location.href= "mbasketPage.do?memberNo="+${loginUser.memberNo};
 						}
 	  				},
   					error:function(request, status, errorData){
@@ -473,7 +474,7 @@
 				var $price;
 				var $won;
 				
-				if(data.length > 0 ){	// 댓글이 하나 이상 존재하면
+				if(data.length > 0 ){
 					for(var i in data){
 						var heartNo = parseInt(data[i].heartNo);
 						var itemNo = parseInt(data[i].itemNo);

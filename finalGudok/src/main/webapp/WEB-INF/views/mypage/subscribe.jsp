@@ -236,6 +236,22 @@
     a#cancle_pop:hover {
       border-color: rgb(155, 150, 150);
     }
+    
+    a#detail_pop {
+      border: 1px solid black;
+      color: black;
+      display: block;
+      margin-right: 3%;
+      text-decoration: none;
+      width: 60%;
+      margin: 0 auto;
+      height: 35px;
+      line-height:35px;
+    }
+
+    a#detail_pop:hover {
+      border-color: rgb(155, 150, 150);
+    }
 
     .overlay {
       background-color: rgba(0, 0, 0, 0.6);
@@ -573,14 +589,24 @@
 					            $tr=$("<tr>");
 					            $changeTd=$("<td>");
 					            $cancleTd=$("<td>");
+					            $detailTd=$("<td>");
 					            $data=$("<td>").text(data[i].subscribeDate);
 					            $itemName=$("<td>").text(data[i].itemName);
 					            $change=$("<a href='#cycle_form' id='cycle_pop' onclick='changeCycle(" + data[i].subscribeNo+","+ data[i].memberNo+"," +'"'+data[i].itemName+'"'+","+data[i].cycleNo+")'>").text("구독주기변경");
-					            $cancle=$("<a href='#cancle_form' id='cancle_pop' onclick='cancleClick(" + data[i].subscribeNo+","+ data[i].memberNo+")'>").text("구독취소");
+					            if(data[i].deliveryStatus == 'N'){
+					            	 $cancle=$("<a href='#cancle_form' id='cancle_pop' onclick='cancleClick(" + data[i].subscribeNo+","+ data[i].memberNo+")'>").text("구독취소");
+					            } else{
+					            	$cancle=$("<a href='#cancle_form' id='cancle_pop' onclick='return false;'>").text("구독취소");
+					            }
+					            
+					           
+					            $detail=$("<a href='#detail_form' id='detail_pop' onclick='detailClick(" + data[i].subscribeNo+","+ data[i].memberNo+"," +'"'+data[i].itemName+'"'+","+data[i].cycleNo+","+'"'+data[i].address1+'"'+","+'"'+data[i].address2+'"'+","+'"'+data[i].address3+'"'+")'>").text("구독상세정보");
 					            
 					            
 					            $tr.append($data);
 					            $tr.append($itemName);
+					            $detailTd.append($detail);
+					            $tr.append($detailTd);
 					            $changeTd.append($change);
 					            $tr.append($changeTd);
 					            $cancleTd.append($cancle);
@@ -605,9 +631,10 @@
 	        	<thead>
 		          <tr>
 		            <td style="width: 10%;" class="top bottom">날짜</td>
-		            <td style="width: 45%;" class="top bottom">상품정보</td>
-		            <td style="width: 30%;" class="top bottom">구독주기변경</td>
-		            <td style="width: 25%;" class="top bottom">구독취소</td>
+		            <td style="width: 30%;" class="top bottom">상품정보</td>
+		            <td style="width: 20%;" class="top bottom">구독상세정보</td>
+		            <td style="width: 20%;" class="top bottom">구독주기변경</td>
+		            <td style="width: 10%;" class="top bottom">구독취소</td>
 		          </tr>
 	          	</thead>
 	          	<tbody class="tbody">
@@ -615,6 +642,33 @@
 	          	</tbody>
 	
 	        </table>
+	      </div>
+	      
+	      <!-- 구독상세정보 -->
+	      <a href="#x" class="overlay" id="detail_form"></a>
+	      <div class="popup">
+	        <h4>구독상세정보</h4>
+	        <div>
+	          <table>
+	            <tr>
+	              <td style="width: 100px;"><b>구독번호</b></td>
+	              <td><span id="subscribeNo5"></span></td>
+	            </tr>
+	            <tr>
+	                <td style="width: 100px;"><b>제품명</b></td>
+	                <td><span id="itemName2"></span></td>
+                </tr>
+                <tr>
+	                <td style="width: 100px;"><b>구독주기</b></td>
+	                <td><span id="cycle3"></span></td>
+	            </tr>
+	            <tr>
+	                <td style="width: 100px;"><b>배송지</b></td>
+	                <td><span id="address"></span></td>
+	            </tr>
+	          </table>
+	        </div>
+	        <a class="close" href="#close"></a>
 	      </div>
 		  
 	      <!-- popup form #1 -->
@@ -699,6 +753,24 @@
     <br style="clear:both;">
     <jsp:include page="../common/footer.jsp"/>
     <script>
+    
+	    function detailClick(subscribeNo, memberNo, itemName, cycleNo, address1, address2, address3){
+			
+			$("#subscribeNo5").text(subscribeNo);
+			$("#itemName2").text(itemName);
+			$("#address").text("["+address1+"]" + address2 + address3);
+			
+			if(cycleNo == 1){
+				$("#cycle3").text("1주");
+			} else if(cycleNo == 2){
+				$("#cycle3").text("2주");
+			} else if(cycleNo == 3){
+				$("#cycle3").text("3주");
+			} else{
+				$("#cycle3").text("4주");
+			}
+		}
+	    
 	    function changeCycle(subscribeNo, memberNo, itemName, cycleNo){
 			$("#subscribeNo").val(subscribeNo);
 			$("#memberNo").val(memberNo);

@@ -533,7 +533,14 @@ public class MemberDao {
 
 	public int updateSubscribeDestination(Delivery d) {
 		return sqlSessionTemplate.update("memberMapper.updateSubscribeDestination",d);
+	}
 
+	public int selectUsedPoint(int memberNo) {
+		return sqlSessionTemplate.selectOne("memberMapper.selectUsedPoint", memberNo);
+	}
+
+	public int updateMyPoint(Member loginUser) {
+		return sqlSessionTemplate.update("memberMapper.updateMyPoint", loginUser);
 	}
 
 	public Integer selectSubscribeCancelChart(Search search) {
