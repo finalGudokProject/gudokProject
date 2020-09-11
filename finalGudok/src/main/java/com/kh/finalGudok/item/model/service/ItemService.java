@@ -268,6 +268,8 @@ public interface ItemService {
 
 	int updateRecommendStatusN(Integer itemNo);
 
+	int selectRecommendChk(String string);
+	
 	int checkDiscount(int no);
 
 	int insertFirstPayment(PaymentInfo payInfo);
@@ -277,4 +279,5 @@ public interface ItemService {
 	int insertSubScribeInfo(HashMap<String, Object> map);
 
 	ArrayList<Subscribe> selectSubscribeStatus(String customerUid);
+
 }

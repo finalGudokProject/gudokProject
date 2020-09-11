@@ -25,12 +25,13 @@ public class AdminPayment implements Serializable {
 	private int totalPayment; //총 결제금액
 	private int totalCount; //총 결제건
 	private String categoryNo;
+	private String gradeNo; //등급번호
 	
 	public AdminPayment() {}
 
 	public AdminPayment(int paymentNo, int itemNo, String itemName, int itemPrice, int amount, int point,
 			int subscribeNo, Date paymentDate, int memberNo, String memberId, String email, int totalPayment,
-			int totalCount, String categoryNo) {
+			int totalCount, String categoryNo, String gradeNo) {
 		super();
 		this.paymentNo = paymentNo;
 		this.itemNo = itemNo;
@@ -46,6 +47,7 @@ public class AdminPayment implements Serializable {
 		this.totalPayment = totalPayment;
 		this.totalCount = totalCount;
 		this.categoryNo = categoryNo;
+		this.gradeNo = gradeNo;
 	}
 
 	public int getPaymentNo() {
@@ -160,6 +162,14 @@ public class AdminPayment implements Serializable {
 		this.categoryNo = categoryNo;
 	}
 
+	public String getGradeNo() {
+		return gradeNo;
+	}
+
+	public void setGradeNo(String gradeNo) {
+		this.gradeNo = gradeNo;
+	}
+
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
@@ -170,11 +180,10 @@ public class AdminPayment implements Serializable {
 				+ itemPrice + ", amount=" + amount + ", point=" + point + ", subscribeNo=" + subscribeNo
 				+ ", paymentDate=" + paymentDate + ", memberNo=" + memberNo + ", memberId=" + memberId + ", email="
 				+ email + ", totalPayment=" + totalPayment + ", totalCount=" + totalCount + ", categoryNo=" + categoryNo
-				+ "]";
+				+ ", gradeNo=" + gradeNo + "]";
 	}
 
 
-	
 	
 }
 	

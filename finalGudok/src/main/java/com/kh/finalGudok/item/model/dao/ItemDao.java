@@ -657,8 +657,14 @@ public class ItemDao {
 	public int updateRecommendStatusN(Integer itemNo) {
 		return sqlSessionTemplate.update("adminItemMapper.updateRecommendStatusN",itemNo);
 	}
+
+
+	public int selectRecommendChk(String s) {
+		return sqlSessionTemplate.selectOne("adminItemMapper.selectRecommendChk",s);
+	}
 	public int checkDiscount(int no) {
 		return sqlSessionTemplate.selectOne("itemMapper.checkDiscount", no);
+
 	}
 
 	public int insertFirstPayment(PaymentInfo payInfo) {

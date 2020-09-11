@@ -333,6 +333,7 @@ input, select,textarea{
 
                     <br>
 
+<c:if test="${!empty mList }">
                     <!------페이징 처리----->
                 <div class="page-center">
                     <ul class="pagination-t">
@@ -395,8 +396,14 @@ input, select,textarea{
 </svg></a></li>
 						</c:if>
                     </ul>
+                    
 
                 </div>
+
+</c:if>
+
+
+
 
 
 			</div>
@@ -434,6 +441,7 @@ input, select,textarea{
                     			var sendCnt=0;
                     			var sendGradeMinArr=Array();
                     			var sendGradeArr=Array();
+                    			var page=${pi.currentPage};
                     			
                
                     			
@@ -446,27 +454,9 @@ input, select,textarea{
                         			}
                         		}
                     			
+                    			location.href="gradeMinInfoChang.do?sendGradeMinArr="+sendGradeMinArr+"&sendGradeArr="+sendGradeArr+"&page="+page;
                  
-                    		 		$.ajax({
-                        				url:"gradeMinInfoChang.do",
-                        				type:"post",
-                        				traditional:true,
-                        				data:{"sendGradeMinArr":sendGradeMinArr,"sendGradeArr":sendGradeArr},
-                        				success:function(data){
-                        					
-                        			
-                        					getGradeList();
-                        					alert('정보가 변경되었습니다.');
-                        					$("[data-dismiss=modal]").trigger({ type: "click" });
-                        					
-                        					        					
-                        				},
-                        				error:function(request, status, errorData){
-                		                    alert("error code: " + request.status + "\n"
-                			                           +"message: " + request.responseText
-                			                           +"error: " + errorData);
-                			                  }   
-                        			});
+                    		 	
                     		 		
                     		}
                     			

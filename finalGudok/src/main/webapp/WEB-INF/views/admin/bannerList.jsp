@@ -130,7 +130,7 @@ input, select,textarea{
 
 
 
-
+<c:if test="${!empty list }">
                     <!------페이징 처리----->
                 <div class="page-center">
                     <ul class="pagination-t">
@@ -189,7 +189,7 @@ input, select,textarea{
                     </ul>
 
                 </div>
-
+</c:if>
 				</form>	
             </div><!--내용담은 컨테이너-->
         </div><!--250px띄운 div-->
@@ -216,9 +216,10 @@ input, select,textarea{
         
         function eventSearch(){
         	var word=$("#word").val();
+        	var page=${pi.currentPage};
         	alert(word);
         	
-        	location.href="searchEventA.do?keyword="+keyword;
+        	location.href="eList.do?word="+word+"&page="+page;
         	
         }
         

@@ -123,7 +123,7 @@ input, select,textarea{
                          <c:if test="${empty list }">
                         
                              <tr>
-                                <td colspan="5">이벤트 미등록 상품이 없습니다.</td>
+                                <td colspan="5" onclick='event.cancelBubble=true'>이벤트 미등록 상품이 없습니다.</td>
                         
                             </tr>
                             

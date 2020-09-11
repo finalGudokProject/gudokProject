@@ -691,6 +691,10 @@ public class ItemServiceImpl implements ItemService {
 	}
 
 	@Override
+
+	public int selectRecommendChk(String s) {
+		return iDao.selectRecommendChk(s);
+	}
 	public int checkDiscount(int no) {
 		return iDao.checkDiscount(no);
 	}
@@ -714,7 +718,5 @@ public class ItemServiceImpl implements ItemService {
 	public ArrayList<Subscribe> selectSubscribeStatus(String customerUid) {
 		return iDao.selectSubscribeStatus(customerUid);
 	}
-
-
 
 }

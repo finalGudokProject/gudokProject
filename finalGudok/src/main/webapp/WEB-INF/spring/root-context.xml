@@ -55,9 +55,12 @@
 	
 
 	<!-- 세션리스너용 빈 등록 -->
-	<bean id="mDao" class="com.kh.finalGudok.member.model.dao.MemberDao" scope="session">
+	<bean id="mDao" class="com.kh.finalGudok.member.model.dao.MemberDao">
 		
 	</bean>
 	
+	<bean id="mService"
+		class="com.kh.finalGudok.member.model.service.MemberServiceImpl">
+	</bean>
 
 </beans>

@@ -91,10 +91,7 @@ input, select,textarea{
 			      <input type="hidden" id="startDay" name="startDay" value="${startDay }">
 			      <input type="hidden" id="lastDay" name="lastDay" value="${lastDay }">
 			      <input type="hidden" id="type" name="type" value="${type }">
-			      <c:out value="${startDay}"/>
-			      <c:out value="${lastDay}"/>
-			      <c:out value="${startD}"/>
-			      <c:out value="${type }"/>
+			   
 			
                 
                 <br><br><br>
