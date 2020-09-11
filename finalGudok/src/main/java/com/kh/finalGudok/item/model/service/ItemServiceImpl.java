@@ -719,4 +719,9 @@ public class ItemServiceImpl implements ItemService {
 		return iDao.selectSubscribeStatus(customerUid);
 	}
 
+	@Override
+	public int updateItemBannerStatus(int i) {
+		return iDao.updateItemBannerStatus(i);
+	}
+
 }

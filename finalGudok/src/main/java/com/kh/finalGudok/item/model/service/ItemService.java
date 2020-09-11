@@ -280,4 +280,6 @@ public interface ItemService {
 
 	ArrayList<Subscribe> selectSubscribeStatus(String customerUid);
 
+	int updateItemBannerStatus(int i);
+
 }

@@ -103,16 +103,37 @@ input, select,textarea{
                     <div style="width:100%;">
                     <div style="float:left;">
                   	
-                        <select id="type" name="type">
-                            <option value="">전체</option>
-                            <option value="calcelContent">교환사유</option>
-                            <option value="subscribeNo">구독번호</option>
-                            <option value="memberId">구매자</option></select>
-                            
-                            
-                            
-                            
-                        <input type="text" id="word" name="word" value="">   
+                  		<c:choose>
+                  			<c:when test="${type eq 'cancelContent' }">
+	                       		 <select id="type" name="type">
+	                            <option value="">전체</option>
+	                            <option value="cancelContent" selected>교환사유</option>
+	                            <option value="subscribeNo">구독번호</option>
+	                            <option value="memberId">구매자</option></select>
+                          	</c:when>  
+                          	<c:when test="${type eq 'subscribeNo' }">
+	                       		 <select id="type" name="type">
+	                            <option value="">전체</option>
+	                            <option value="cancelContent">교환사유</option>
+	                            <option value="subscribeNo" selected>구독번호</option>
+	                            <option value="memberId">구매자</option></select>
+                          	</c:when>  
+                          	<c:when test="${type eq 'memberId' }">
+	                       		 <select id="type" name="type">
+	                            <option value="">전체</option>
+	                            <option value="cancelContent">교환사유</option>
+	                            <option value="subscribeNo" >구독번호</option>
+	                            <option value="memberId"selected>구매자</option></select>
+                          	</c:when>  
+                          	<c:otherwise>
+                          		 <select id="type" name="type">
+	                            <option value=""selected>전체</option>
+	                            <option value="cancelContent">교환사유</option>
+	                            <option value="subscribeNo" >구독번호</option>
+	                            <option value="memberId">구매자</option></select>
+                          	</c:otherwise>
+                        </c:choose>
+                        <input type="text" id="word" name="word" value="${word }">   
                         <input type="button" class="btn" value="검색" onclick="search()">
                     </div>
                    
@@ -264,9 +285,12 @@ input, select,textarea{
          			 var page=${pi.currentPage };   
          			 var type="cancel";
          			 var category=$("#type").val();
-         			 alert(type)
+
+                	 var type2=$("#type").val();
+                	 var word=$("#word").val();
+         			
          				
-            		location.href="oDetail.do?subscribeNo="+subscribeNo+"&page="+page+"&type="+type+"&category="+category;
+            		location.href="oDetail.do?subscribeNo="+subscribeNo+"&page="+page+"&type="+type+"&category="+category+"&type2="+type2+"&word="+word;
         		})
         	})
         	

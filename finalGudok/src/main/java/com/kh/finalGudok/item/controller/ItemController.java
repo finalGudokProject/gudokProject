@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -41,6 +40,7 @@ import com.kh.finalGudok.item.model.vo.Image;
 import com.kh.finalGudok.item.model.vo.Item;
 import com.kh.finalGudok.item.model.vo.ItemListView;
 import com.kh.finalGudok.item.model.vo.PageInfo;
+import com.kh.finalGudok.item.model.vo.PaymentInfo;
 import com.kh.finalGudok.item.model.vo.Review;
 import com.kh.finalGudok.item.model.vo.ReviewImage;
 import com.kh.finalGudok.item.model.vo.ReviewView;
@@ -477,6 +477,14 @@ public class ItemController {
 		String renameFileName = sdf.format(new java.sql.Date(System.currentTimeMillis())) + random + "."
 				+ originFileName.substring(originFileName.lastIndexOf(".") + 1);
 		String filePath = folder + "\\" + renameFileName;
+		
+		
+
+		try {
+			file.transferTo(new File(filePath));
+		} catch (IllegalStateException | IOException e) {
+			e.printStackTrace();
+		}
 
 	      return renameFileName;
 
@@ -576,7 +584,7 @@ public class ItemController {
 		PageInfo pi = new PageInfo();
 
 		int pageLimit = 10; // 보여질 페이지 총 갯수
-		int boardLimit = 5; // 게시판 한 페이지에 뿌려질 게시글 수
+		int boardLimit = 14; // 게시판 한 페이지에 뿌려질 게시글 수
 		pi = getPageInfo2(currentPage, listCount, pageLimit, boardLimit);
 
 		ArrayList<BannerItem> list = iService.selectEventListA(word, pi); // 이벤트 리스트
@@ -624,16 +632,19 @@ public class ItemController {
 		int result2 = 0; // 연결된 상품 삭제
 		int result3 = 0; // 배너 이미지 삭제
 		int result4 = 0; // 이미지 삭제
+		int result5 = 0; // 이벤트에 속했던 아이템의 status 변경
 
 		for (int k = 0; k < dEventArr.length; k++) {
 
 			Event e = iService.selectDeleteEvent(dEventArr[k]);
-			System.out.println(e.toString());
+			System.out.println("이게 뭐길래"+e);
+
 			if (e.getImageOriginalName() != null) {
 				deleteFile(e.getImageRename(), request);
 			}
 
 			result1 = iService.deleteEvent(dEventArr[k]);
+			result5 = iService.updateItemBannerStatus(dEventArr[k]);
 			result2 = iService.deleteEventItem(dEventArr[k]);
 			result3 = iService.deleteEventImg(dEventArr[k]);
 			result4 = iService.deleteEventBannerImg(dEventArr[k]);
@@ -897,7 +908,7 @@ public class ItemController {
 		PageInfo pi = new PageInfo();
 
 		int pageLimit = 10; // 보여질 페이지 총 갯수
-		int boardLimit = 5; // 게시판 한 페이지에 뿌려질 게시글 수
+		int boardLimit = 14; // 게시판 한 페이지에 뿌려질 게시글 수
 		pi = getPageInfo2(currentPage, listCount, pageLimit, boardLimit);
 
 		ArrayList<BannerItem> list = iService.selectEventListA(itemCategory, pi); // 이벤트 리스트
@@ -1018,7 +1029,7 @@ public class ItemController {
 		PageInfo pi = new PageInfo();
 
 		int pageLimit = 10; // 보여질 페이지 총 갯수
-		int boardLimit = 5; // 게시판 한 페이지에 뿌려질 게시글 수
+		int boardLimit = 10; // 게시판 한 페이지에 뿌려질 게시글 수
 		pi = getPageInfo2(currentPage, listCount, pageLimit, boardLimit);
 
 		ArrayList<BannerItem> rList = iService.selectRecommendList();
@@ -1283,7 +1294,7 @@ public class ItemController {
 		PageInfo pi = new PageInfo();
 
 		int pageLimit = 10; // 보여질 페이지 총 갯수
-		int boardLimit = 5; // 게시판 한 페이지에 뿌려질 게시글 수
+		int boardLimit = 10; // 게시판 한 페이지에 뿌려질 게시글 수
 		pi = getPageInfo2(currentPage, listCount, pageLimit, boardLimit);
 
 		ArrayList<BannerItem> list = iService.selectItemListA(s, pi);
@@ -1324,7 +1335,8 @@ public class ItemController {
 
 	// 상품 상세보기 -admin
 	@RequestMapping("itemDetail.do")
-	public ModelAndView selectItemDetail(ModelAndView mv, int itemNo, @RequestParam(value="itemCategory",required=false) String itemCategory, @RequestParam(value="eventNo",required=false) Integer eventNo,Integer page, String type) {
+	public ModelAndView selectItemDetail(ModelAndView mv, int itemNo, @RequestParam(value="itemCategory",required=false) String itemCategory, @RequestParam(value="eventNo",required=false) Integer eventNo,Integer page, String type
+			, @RequestParam(value="type2",required=false)String type2, @RequestParam(value="categoryNo",required=false)String categoryNo, @RequestParam(value="word",required=false)String word) {
 
 		System.out.println("아이템 디테일" + type);
 
@@ -1342,6 +1354,9 @@ public class ItemController {
 		mv.addObject("m", m);
 		mv.addObject("type", type);
 		mv.addObject("eventNo", eventNo);
+		mv.addObject("categoryNo", categoryNo);
+		mv.addObject("type2", type);
+		mv.addObject("word", word);
 		mv.addObject("page", currentPage).addObject("itemCategory",itemCategory);
 		mv.setViewName("admin/itemModify");
 
@@ -1406,10 +1421,13 @@ public class ItemController {
 	@RequestMapping("iDelete.do")
 	public ModelAndView deleteItemA(ModelAndView mv, HttpServletRequest request, String sendArr, Integer page) {
 
-		String dEvent = request.getParameter("sendArr");
-		String[] strArr = dEvent.split(",");
+		
+		String[] strArr = sendArr.split(",");
 
 		int[] dEventArr = new int[strArr.length];
+		
+		
+		
 
 		for (int i = 0; i < strArr.length; i++) {
 			dEventArr[i] = Integer.valueOf(strArr[i]);
@@ -1460,7 +1478,7 @@ public class ItemController {
 	public ModelAndView itemEventInsertView(ModelAndView mv, Integer page,
 			@RequestParam(value = "itemCategory", required = false) String itemCategory) {
 
-		System.out.println("받은 아이템카테고리는"+itemCategory);
+		
 		if (itemCategory == "") {
 			itemCategory = null;
 		}
@@ -1471,11 +1489,12 @@ public class ItemController {
 		}
 
 		int listCount = iService.getNonEventItemCnt(itemCategory);
+		
 
 		PageInfo pi = new PageInfo();
 
 		int pageLimit = 10; // 보여질 페이지 총 갯수
-		int boardLimit = 5; // 게시판 한 페이지에 뿌려질 게시글 수
+		int boardLimit = 9; // 게시판 한 페이지에 뿌려질 게시글 수
 		pi = getPageInfo2(currentPage, listCount, pageLimit, boardLimit);
 
 		// 이벤트 목록
@@ -1484,6 +1503,8 @@ public class ItemController {
 		// 이벤트 등록이 안된 상품 리스트
 		ArrayList<BannerItem> list = iService.selectItems(itemCategory, pi);
 
+		
+		
 		if (eArr != null && list != null) {
 
 			mv.addObject("eArr", eArr);
@@ -1641,7 +1662,6 @@ public class ItemController {
 	public void recommendCheck(HttpServletResponse response, Integer sendCnt,String sendArr) throws IOException {
 
 		//선택한 상품이 이미 추천 상품에 있다면 
-		
 		String[] strArr = sendArr.split(",");
 		int chk=0;
 		int result=0;
@@ -1654,12 +1674,13 @@ public class ItemController {
 		
 		
 		
-		
 		//선택한 상품 갯수가 4개를 초과하는지 확인하기 위해 
 		response.setContentType("application/json;charset=utf-8");
 		JSONObject iNum = new JSONObject();
 
+		
 		int cnt = iService.selectRecommendCnt();
+
 		int i = sendCnt + cnt;
 
 		iNum.put("iNum", i);
@@ -2034,10 +2055,7 @@ public class ItemController {
 		out.close();
 
 		
-		
-		
 	}
-	
 	
 
 }

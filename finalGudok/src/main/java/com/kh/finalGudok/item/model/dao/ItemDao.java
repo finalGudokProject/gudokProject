@@ -684,5 +684,9 @@ public class ItemDao {
 		return (ArrayList)sqlSessionTemplate.selectList("itemMapper.selectSubscribeStatus", customerUid);
 	}
 
+	public int updateItemBannerStatus(int i) {
+		return sqlSessionTemplate.update("adminItemMapper.updateItemBannerStatus", i);
+	}
+
 	
 }

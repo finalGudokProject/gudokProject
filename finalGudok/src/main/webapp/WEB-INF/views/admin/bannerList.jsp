@@ -294,6 +294,9 @@ input, select,textarea{
         	 		var $checkBox;
         	 		var $th;
         	 		
+        	 		
+        	 		
+		if(data.bannerList.length>0){		
         	 				
         	 				for(var i in data.bannerList){
         	 					
@@ -316,6 +319,21 @@ input, select,textarea{
         	 				$tableBody.append($tr);
         	 				
         	 			}
+        	 				
+		}else{
+   	 		
+	 			$tr=$("<tr>");
+   	 		$td=$("<td colspan='5' onclick='event.cancelBubble=true'>").text("등록된 이벤트가 없습니다.");
+   	 	
+	   
+	   	 	$tr.append($td);
+	   	 	$tableBody.append($tr);
+	   	 	
+	   	 	$page=$(".page-center");
+	   	 	$page.html("");
+	 	}	
+		
+		
         	 	},
         	 	error:function(request, status, errorData){
                     alert("error code: " + request.status + "\n"

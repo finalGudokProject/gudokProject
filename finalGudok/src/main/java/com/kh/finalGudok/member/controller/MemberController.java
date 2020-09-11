@@ -1,4 +1,5 @@
 package com.kh.finalGudok.member.controller;
+import static com.kh.finalGudok.common.pagination2.getPageInfo2;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -850,7 +851,7 @@ public class MemberController {
 		PageInfo pi = new PageInfo();
 
 		int pageLimit = 10; // 보여질 페이지 총 갯수
-		int boardLimit = 5; // 게시판 한 페이지에 뿌려질 게시글 수
+		int boardLimit = 8; // 게시판 한 페이지에 뿌려질 게시글 수
 		pi = getPageInfo2(currentPage, listCount, pageLimit, boardLimit);
 
 		// 탈퇴하지 않은 회원 리스트
@@ -952,7 +953,7 @@ public class MemberController {
 			//1달동안 결제한 회원번호와  총 결제 금액을 가져오기 
 				System.out.println("1달전은?"+startDay);
 				ArrayList<AdminMember> pList=mService.selectMemberPaymentList(startDay);
-				
+				System.out.println("몇명이니"+pList.size());
 			
 		
 			//금액에 따라 등급 설정 
@@ -1183,7 +1184,7 @@ public class MemberController {
 
 	// ★ 회원 정보 상세보기-admin
 	@RequestMapping("mDetail.do")
-	public ModelAndView selectOneMember(ModelAndView mv, Integer page, int memberNo, Integer detailPage, String type) {
+	public ModelAndView selectOneMember(ModelAndView mv, Integer page, int memberNo, Integer detailPage, String type,@RequestParam(value="categoryNo",required=false)String categoryNo,@RequestParam(value="word",required=false)String word) {
 
 		// 상세 페이지로 이동하기전, 회원 리스트의 페이지 번호
 		int beforePage = page;
@@ -1220,6 +1221,7 @@ public class MemberController {
 		if (m != null) {
 			mv.addObject("pList", pList).addObject("totalPayment", totalPayment).addObject("memberNo", memberNo)
 					.addObject("m", m).addObject("pi", pi).addObject("beforePage", beforePage).addObject("type", type)
+					.addObject("categoryNo", categoryNo).addObject("word", word)
 					.setViewName("admin/userDetail");
 			return mv;
 		} else {
@@ -1366,7 +1368,7 @@ public class MemberController {
 		PageInfo pi = new PageInfo();
 
 		int pageLimit = 10; // 보여질 페이지 총 갯수
-		int boardLimit = 5; // 게시판 한 페이지에 뿌려질 게시글 수
+		int boardLimit = 9; // 게시판 한 페이지에 뿌려질 게시글 수
 		pi = getPageInfo2(currentPage, listCount, pageLimit, boardLimit);
 
 		ArrayList<AdminSecession> msList = mService.selectMemberSecession(s, pi);
@@ -1433,11 +1435,11 @@ public class MemberController {
 		PageInfo pi = new PageInfo();
 
 		int pageLimit = 10; // 보여질 페이지 총 갯수
-		int boardLimit = 5; // 게시판 한 페이지에 뿌려질 게시글 수
+		int boardLimit = 14; // 게시판 한 페이지에 뿌려질 게시글 수
 		pi = getPageInfo2(currentPage, listCount, pageLimit, boardLimit);
 
 		ArrayList<AdminSubscribe> oList = mService.selectOrderList(s, pi);
-		System.out.println(oList);
+		System.out.println(oList.size());
 		System.out.println(listCount);
 
 		if (oList != null) {
@@ -1555,6 +1557,7 @@ public class MemberController {
 		pi = getPageInfo2(currentPage, listCount, pageLimit, boardLimit);
 
 		ArrayList<AdminSubscribe> oList = mService.selectOrderList(s, pi);
+		System.out.println("혹인하자"+oList);
 
 		for (int i = 0; i < oList.size(); i++) {
 			if (oList.get(i).getDeliveryStatus().equalsIgnoreCase("N")) {
@@ -1603,7 +1606,7 @@ public class MemberController {
 
 	// 구독내역 상세보기 -admin
 	@RequestMapping("oDetail.do")
-	public ModelAndView selectOrderDetail(ModelAndView mv, Integer page, Integer subscribeNo, String type,@RequestParam(value = "category", required = false) String category) {
+	public ModelAndView selectOrderDetail(ModelAndView mv, Integer page, Integer subscribeNo, String type,@RequestParam(value = "category", required = false) String category,@RequestParam(value = "type2", required = false) String type2,@RequestParam(value = "word", required = false) String word) {
 
 		System.out.println("타입은???" + type);
 		// 구독 상세 내역 조회
@@ -1626,7 +1629,8 @@ public class MemberController {
 		if (sc != null && p != null) {
 
 			mv.addObject("sc", sc).addObject("p", p).addObject("page", page).addObject("type", type).addObject("category", category)
-					.addObject("total", total).setViewName("admin/orderDetail");
+					.addObject("total", total).addObject("word", word).addObject("type2", type2)
+					.setViewName("admin/orderDetail");
 
 			return mv;
 		} else {
@@ -1800,6 +1804,10 @@ public class MemberController {
 			@RequestParam(value = "word", required = false) String word,
 			@RequestParam(value = "type", required = false) String type) throws IOException {
 
+		
+		System.out.println("ca"+category);
+		System.out.println("ca"+word);
+		System.out.println("ca"+type);
 		// 교환리스트
 		if (category == "") {
 			category = null;
@@ -1853,10 +1861,12 @@ public class MemberController {
 			}
 
 		}
+		
+
 
 		response.setContentType("application/json;charset=utf-8");
 
-		if (!eList.isEmpty()) {
+
 
 			JSONArray jarr = new JSONArray();
 
@@ -1887,9 +1897,7 @@ public class MemberController {
 			out.flush();
 			out.close();
 
-		} else {
-			throw new MemberException("이벤트 전체 조회 실패!");
-		}
+	
 
 	}
 
@@ -2150,7 +2158,7 @@ public class MemberController {
 			// 화면에 노출될 매출 리스트 만들기
 			int listCount = mService.getSalesCnt(s);
 			int pageLimit = 10; // 보여질 페이지 총 갯수
-			int boardLimit = 5; // 게시판 한 페이지에 뿌려질 게시글 수
+			int boardLimit = 9; // 게시판 한 페이지에 뿌려질 게시글 수
 			pi = getPageInfo2(currentPage, listCount, pageLimit, boardLimit);
 
 			pList = mService.selectPaymentList(pArr, pi);
@@ -2763,6 +2771,7 @@ public class MemberController {
 		
 		//1달동안 결제한 회원번호와  총 결제 금액을 가져오기 
 			ArrayList<AdminMember> pList=mService.selectMemberPaymentList(startDay);
+			System.out.println("몇명 가져왔니"+pList.size());
 		
 		//등급별 최소금액 가져오기 
 			ArrayList<Grade> gradeChg=mService.selectGradeInfo();
@@ -2884,7 +2893,7 @@ public class MemberController {
 		PageInfo pi = new PageInfo();
 
 		int pageLimit = 10; // 보여질 페이지 총 갯수
-		int boardLimit = 5; // 게시판 한 페이지에 뿌려질 게시글 수
+		int boardLimit = 8; // 게시판 한 페이지에 뿌려질 게시글 수
 		pi = getPageInfo2(currentPage, listCount, pageLimit, boardLimit);
 
 		ArrayList<AdminCancle> eList = mService.selectSubscribeCancel(s, pi);

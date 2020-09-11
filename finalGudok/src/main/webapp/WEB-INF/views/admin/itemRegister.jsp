@@ -379,7 +379,7 @@ float:left;
                 $(this)[0].select();
                 $(this)[0].blur();
                 var imgSrc = document.selection.createRange().text;
-                parent.prepend('<div class="upload-display2"><div class="upload-thumb-wrap2"><img class="upload-thumb2"></div></div>');
+                parent.prepend('<div class="upload-display2"><div class="upload-thumb-wrap2"><img class="upload-thumb2"></div></div><br>');
 
                 var img = $(this).siblings('.upload-display2').find('img');
                 img[0].style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(enable='true',sizingMethod='scale',src=\""+imgSrc+"\")";        
@@ -424,32 +424,27 @@ float:left;
     };
         
         
-    //가격 문자 입력 제한 및 3자리마다 콤마
-        $(function() {
+    //가격 문자 입력 제한 
+       $(function() {
 
          $('input[name=itemPrice]').css('imeMode','disabled').keypress(function(event){
-             if(e.which && (e.which < 48 || e.which > 57) ) e.preventDefault();
-
+          if(event.which && (event.which<48||event.which>57)){
+           event.preventDefault();
+          }
+         }).keyup(function(){
+          if( $(this).val() != null && $(this).val() != '' ){
+           $(this).val( $(this).val().replace(/[^0-9]/g, ''));
+          
+          }
          });
-
-         $(document).on('keyup', 'input[name=itemPrice]', function(e){
-
-             if( $(this).val() != null && $(this).val() != '' ) {
-            	 
-                 var tmps = parseInt($(this).val().replace(/[^0-9]/g, '')) || 0;
-
-                 var tmps2 = tmps.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
-
-                 $(this).val(tmps2);
-
-             }
-
-         });
-
-
          
          
          });
+    
+    
+
+         
+   
          
        
          

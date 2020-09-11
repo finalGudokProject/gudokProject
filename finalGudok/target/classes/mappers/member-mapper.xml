@@ -727,7 +727,7 @@
 			</if>
 
 		</where>
-		ORDER BY SUBSCRIBE_DATE DESC
+		ORDER BY s.SUBSCRIBE_NO DESC
 		)
 		<where>
 			<if test="subscribeNo!=null">
@@ -1349,15 +1349,18 @@
 		from member
 	</select>
 	<select id="selectMemberPaymentList" resultMap="adminMemberResultSet">
-		SELECT *
+		select member_no,nvl(total,0) as total_payment
+        from(
+        SELECT m.member_no,s.total
         FROM MEMBER M
         LEFT JOIN 
-                (SELECT MEMBER_NO,SUM(SUB_PRICE) AS TOTAL_PAYMENT
+                (SELECT MEMBER_NO,SUM(SUB_PRICE) AS TOTAL
                 FROM 
                 (SELECT *
                 FROM SUBSCRIBE
                 WHERE TO_CHAR(PAYMENT_DATE,'YYYY-MM-DD') LIKE '%${value}%' )
         		GROUP BY MEMBER_NO) S ON (M.MEMBER_NO=S.MEMBER_NO)
+        )
 	
 	</select>
 	<update id="updateMemberGrade">

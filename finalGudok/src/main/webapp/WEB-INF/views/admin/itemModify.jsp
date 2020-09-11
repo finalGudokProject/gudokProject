@@ -435,6 +435,10 @@ float:left;
 	                	<c:url var="goItemList" value="itemListA.do">
 	                		<c:param name="page" value="${page }"/>
 	                		<c:param name="itemCategory" value="${itemCategory }"/>
+	                		<c:param name="categoryNo" value="${categoryNo }"/>
+	                		<c:param name="word" value="${word }"/>
+	                		<c:param name="type" value="${type2 }"/>
+	                		
 	                	</c:url>
 		                <input type="button" class="btn" value="목록" onclick="location.href='${goItemList}'">                
 	                </c:if>

@@ -482,6 +482,7 @@ input, select,textarea{
     		var page=${pi.currentPage};
     		var eventNo=$("#eventNo").val();
     		var itemDiscount=$("#itemDiscount").val();
+    		var itemCategory=$("#itemCategory").val();
     		
     	
     		
@@ -500,9 +501,12 @@ input, select,textarea{
 				traditional:true,
 				data:{"sendArr":sendArr,"page":page,"eventNo":eventNo,"itemDiscount":itemDiscount},
 				success:function(data){
-					alert('여기까진 성공')
-					getList();
-					        					
+					
+					
+					location.href="iEventInsertView.do?page="+page+"&itemCategory="+itemCategory;
+					
+					/* getList(); */
+					        			 		
 				},
 				error:function(request, status, errorData){
                     alert("error code: " + request.status + "\n"
@@ -521,7 +525,7 @@ input, select,textarea{
     
   
  // 상태 변경 후 리스트 가져오기
-    function getList(){
+  /*   function getList(){
    	 var page=${pi.currentPage};
    	 var itemCategory=$("#itemCategory").val();
    	 
@@ -611,7 +615,7 @@ input, select,textarea{
    	 })
    	 
     }
-			 
+			  */
 		
         
       //모두 체크
