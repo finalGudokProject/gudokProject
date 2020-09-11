@@ -231,6 +231,9 @@
 		<result property="email" column="EMAIL" />
 		<result property="exchangeStatus" column="EXCHANGE_STATUS" />
 		<result property="itemName" column="ITEM_NAME" />
+		<result property="address1" column="ADDRESS_1" />
+		<result property="address2" column="ADDRESS_2" />
+		<result property="address3" column="ADDRESS_3" />
 	</resultMap>
 
 	<resultMap type="mCancle" id="cancleResultSet">
