@@ -10,9 +10,11 @@ import com.kh.finalGudok.board.model.dao.BoardDao;
 import com.kh.finalGudok.board.model.vo.Board;
 import com.kh.finalGudok.board.model.vo.EventBoard;
 import com.kh.finalGudok.board.model.vo.Inquiry;
+import com.kh.finalGudok.board.model.vo.Reply;
 import com.kh.finalGudok.board.model.vo.Search;
 import com.kh.finalGudok.board.model.vo.bPageInfo;
 import com.kh.finalGudok.board.model.vo.secret;
+import com.kh.finalGudok.member.model.vo.Member;
 
 @Service("bService")
 public class BoardSerivceImpl implements BoardService {
@@ -291,6 +293,27 @@ public class BoardSerivceImpl implements BoardService {
 	public ArrayList<Board> selectSearchListProductProposal(bPageInfo pi, Search search) {
 		return bDao.selectSearchListProductProposal(pi, search);
 	}
+	
+	// 댓글
+	@Override
+	public ArrayList<Reply> selectReplyList(int bBoard_no) {
+		return bDao.selectReplyList(bBoard_no);
+	}
+
+	@Override
+	public int insertReply(Reply r) {
+		return bDao.insertReply(r);
+	}
+	
+	@Override
+	public int deleteReply(int children) {
+		return bDao.deleteReply(children);
+	}
+	
+	@Override
+	public int updateReply(Reply r) {
+		return bDao.updateReply(r);
+	}
 
 	// Inquiry
 	@Override
@@ -349,5 +372,11 @@ public class BoardSerivceImpl implements BoardService {
 	public ArrayList<EventBoard> selectSearchListEvent2(bPageInfo pi,  Search search) {
 		return bDao.selectSearchListEvent2(pi, search);
 	}
+
+	
+
+
+
+	
 	
 }

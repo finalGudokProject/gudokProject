@@ -1,7 +1,13 @@
 package com.kh.finalGudok.board.model.vo;
 
-public class Search {
+import java.io.Serializable;
+
+public class Search implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4139913332687099218L;
 	private String searchType;
 	private String post_yn;
 	private String keyword;
