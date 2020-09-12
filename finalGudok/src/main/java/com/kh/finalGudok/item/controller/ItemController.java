@@ -1763,7 +1763,7 @@ public class ItemController {
 
 	@RequestMapping(value = "payment.do", method = RequestMethod.POST)
 	@ResponseBody
-	public String payment(HttpServletRequest request, HttpSession session)
+	public String payment(HttpServletRequest request, HttpSession session, Model model)
 			throws IamportResponseException, IOException {
 
 		int itemNo = 0;
@@ -1861,6 +1861,9 @@ public class ItemController {
 			m.setMemberNo(memberNo);
 			Member loginUser = mService.selectMember(m);
 			session.setAttribute("loginUser", loginUser);
+			
+			int subscribeCount = mService.subscribeCount(loginUser.getMemberNo());
+			model.addAttribute("subscribeCount", subscribeCount);
 
 			return "success"; // 결제화면단으로 던질 값
 //				System.out.println(loginUser);
