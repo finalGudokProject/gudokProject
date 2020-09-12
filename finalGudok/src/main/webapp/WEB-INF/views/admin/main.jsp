@@ -146,8 +146,8 @@
 									<c:param name="category" value="N"/>
 								</c:url>
 	                            <tr id="cursor"onclick='location.href="${exchangeDetail }"'>
-	                                <td style="width:68%; text-align:left;">${i.exchangeContent }</td>
-	                                <td style="width:32%">${i.exchangeDate }</td>
+	                                <td style="width:60%; text-align:left;">${i.exchangeContent }</td>
+	                                <td style="width:40%">${i.exchangeDate }</td>
 	                            </tr>
                             </c:forEach>
                             </c:if>
@@ -191,7 +191,7 @@
 	                        <tr id="cursor"onclick='location.href="${orderDetail }"'>
 	                            <td style="width:40%">${i.itemName }</td>
 	                            <td style="width:20%">${i.memberId }</td>
-	                            <td style="width:30%">${i.subscribeDate }</td>
+	                            <td style="width:40%">${i.subscribeDate }</td>
 	                        </tr>
                         </c:forEach>
                         </c:if>
@@ -212,8 +212,7 @@
                             <div style="float:left; width:35%;text-align:left;"><h5><b>방문·가입 현황</b></h5></div>
                             <div class="mr-0" style="float:right; width:65%;">
 	                           
-	                                <div style="float:left;width:45%;margin:5px">총 방문자 : ${sessionScope.totalCount }명</div>
-	                                <div style="float:left;width:45%;margin:5px">총 가입자 : ${sessionScope.totalMember }명</div>
+	                                <div style="float:left;width:45%;margin-left:10px">총 방문자  ${sessionScope.totalCount }명 / 총 가입자 ${sessionScope.totalMember }명</div>
 	                                
 	                        
                             </div> 
@@ -229,7 +228,7 @@
                 <tr>
                     <td style="border:none;"colspan="2" rowspan="3">
                         <div id="subBox2"> 
-                            <div style="float:left;margin-bottom:5px;"><h5><b>주간 매출 현황</b></h5></div>
+                            <div style="float:left;margin-bottom:5px;"><h5 style="float:left"><b>주간 매출 현황</b></h5>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<p style="float:right">총  ${sumTotalC }건 / 매출액 ${sumTotalP }원</p></div>
                             <div class="mr-0" style="float:right;">
                             	 <c:url var="goSalesList" value="sDateList.do">
                                     	<c:param name="type" value="N"/>
@@ -356,8 +355,8 @@
 									<c:param name="page" value="1"/>
 								</c:url>
                             <tr id="cursor" onclick="${eventDetail}">
-                                <td style="width:70%; text-align:left">${i.eventName }</td>
-                                <td style="width:30%;">이벤트 상품 ${i.itemCount }개</td>
+                                <td style="width:60%; text-align:left">${i.eventName }</td>
+                                <td style="width:40%;">이벤트 상품 ${i.itemCount }개</td>
                             </tr>
                            </c:forEach>
                            

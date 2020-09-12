@@ -101,7 +101,7 @@ input, select,textarea{
                 	<tr>
                 		<th style="width:25%; border: 1px solid #CCCCCC;background-color:rgba(69,75,77,0.2);padding:0.25rem !important;vertical-align:middle;"onclick="event.cancelBubble=true">기간 선택</th>
                 		<th  style="text-align:left ;padding:0.3rem !important; border: 1px solid #CCCCCC;"onclick="event.cancelBubble=true">
-			                &nbsp;&nbsp;<input type="date" id="date1" name="date1" value="">~ <input type="date" id="date2" name="date3" value="">&nbsp;&nbsp;
+			                &nbsp;&nbsp;<input type="date" id="date1" name="date1" value="${startDay }">~ <input type="date" id="date2" name="date3" value="${lastDay }">&nbsp;&nbsp;
 			               <input type="button" class="btn1" value="오늘" onclick="goList('T');">
 			               <input type="button" class="btn1" value="일주일" onclick="goList('W');">
 			               <input type="button" class="btn1" value="한달" onclick="goList('O');">
@@ -184,7 +184,7 @@ input, select,textarea{
    	       			var lastDay=$("#lastDay").val();
    	        		var categoryNo=$(this).children().eq(0).text();
    	        		
-   	        		alert(categoryNo)
+   	      
    	        		
    	        
    	        		 
@@ -203,7 +203,7 @@ input, select,textarea{
        }
        
         function checkDate(type){
-    	   alert('????')
+
     	  var type=type;
     	  
     	  if($("#date1").val()<$("#date2").val()){
