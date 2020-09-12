@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>1:1문의</title>
 <!-- Bootstrap CSS -->
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
@@ -178,8 +178,6 @@
       height: 50px;
       width: 300px;
     }
-    
-   
 
     .inquiry_btn{
       border: none;
@@ -192,7 +190,7 @@
     }
     
     .reply {
-    	background:#ccc;
+    	background: #f1f1f1;
 	    animation: fadein 2s;
 	   	-webkit-animation: fadein 2s; /* Safari and Chrome */
 	}

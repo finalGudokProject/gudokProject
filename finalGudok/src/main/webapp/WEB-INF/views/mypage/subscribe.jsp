@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>구독조회</title>
 <!-- Bootstrap CSS -->
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
@@ -596,7 +596,7 @@
 					            if(data[i].deliveryStatus == 'N'){
 					            	 $cancle=$("<a href='#cancle_form' id='cancle_pop' onclick='cancleClick(" + data[i].subscribeNo+","+ data[i].memberNo+")'>").text("구독취소");
 					            } else{
-					            	$cancle=$("<a href='#cancle_form' id='cancle_pop' onclick='return false;'>").text("구독취소");
+					            	$cancle=$("<a id='cancle_pop' onclick='cancleNo();'>").text("구독취소");
 					            }
 					            
 					           
@@ -795,12 +795,16 @@
 			
 			if(cycleNo == 1){
 				$("#cycle").text("1주");
+				$("#cycleNo").val(1);
 			} else if(cycleNo == 2){
 				$("#cycle").text("2주");
+				$("#cycleNo").val(2);
 			} else if(cycleNo == 3){
 				$("#cycle").text("3주");
+				$("#cycleNo").val(3);
 			} else{
 				$("#cycle").text("4주");
+				$("#cycleNo").val(4);
 			}
 		}
 	    
@@ -824,6 +828,12 @@
         		}
     		})
     	})
+    	
+    	function cancleNo(){
+	    	alert("배송 중, 배송 완료 상태의 상품은 구독 취소가 불가능합니다.")
+	    	
+	    	return false;
+	    }
     </script>
 </body>
 </html>

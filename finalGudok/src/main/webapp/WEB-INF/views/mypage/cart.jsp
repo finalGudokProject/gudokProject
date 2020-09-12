@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>장바구니</title>
 <!-- Bootstrap CSS -->
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 <!-- sweetalert시작 -->
@@ -383,13 +383,17 @@
 					<input type="hidden" class="iName" value="${c.itemName }">
 					<input type="hidden" class="no" value="${c.itemNo }">
 					<td class="listChk">
+					
+					<!-- 해당 상품에 할인율이 없다면 -->
 					<c:if test="${c.itemDiscount == 0 }">
 					<input type="checkbox" class="chk" value="${c.itemPrice * c.cartCount}" data-cartNo="${c.cartNo }">
 					</c:if>
+					<!-- 해당 상품에 할인율이 있다면 -->
 					<c:if test="${c.itemDiscount != 0 }">
-					<input type="checkbox" class="chk" value="${(c.itemPrice - c.itemPrice*(c.itemDiscount/100)) * c.cartCount}" data-cartNo="${c.cartNo }">
-					<input type="hidden" class="chk" value="${c.itemPrice * c.cartCount}" data-cartNo="${c.cartNo }">
+						<input type="checkbox" class="chk" value="${(c.itemPrice - c.itemPrice*(c.itemDiscount/100)) * c.cartCount}" data-cartNo="${c.cartNo }">
+						<input type="hidden" class="chk" value="${c.itemPrice * c.cartCount}" data-cartNo="${c.cartNo }">
 					</c:if>
+					
 					</td>
 					<td colspan="2" style="width:25rem;text-align:center;">
 						<img src="${contextPath }/resources/uploadFiles/${c.itemRename}" class="basketImg">
@@ -397,20 +401,23 @@
 					<td><input type="hidden" id="totalPriceInput" class="totalPriceInput" style="width:10rem;">${c.itemName }</td>
 					<td class="countTd" style="width:20rem;">
 						<c:if test="${c.cartCount == 1 }">
-						<img src="${contextPath }/resources/images/XSIGN.png" class="signImgM" id="signM">
+							<img src="${contextPath }/resources/images/XSIGN.png" class="signImgM" id="signM">
 						</c:if>
 						<c:if test="${c.cartCount != 1 }">
-						<img src="${contextPath }/resources/images/minus.png" class="signImgM" id="signM">
+							<img src="${contextPath }/resources/images/minus.png" class="signImgM" id="signM">
 						</c:if>
 						
+						<!-- 상품 수량에 따른 상품 가격(할인율이 존재한다면 반영해서)이 들어갈 input -->
 						<input type="hidden">
 						
+						<!-- 상품 가격 체크(할인율 여부) -->
 						<c:if test="${c.itemDiscount != 0}">
 		                	<input type="hidden" value="${c.itemPrice - c.itemPrice*(c.itemDiscount/100)}">
 						</c:if>
 						<c:if test="${c.itemDiscount == 0}">
 							<input type="hidden" value="${c.itemPrice }">
 						</c:if>
+						
 						<input type="text" readonly class="amountT" value="${c.cartCount }" style="width:50px;text-align:center;">
 						<img src="${contextPath }/resources/images/plus.png" class="signImgP" id="signP">
 						<input type="hidden" value="${c.itemDiscount }" class="discount">
@@ -419,7 +426,7 @@
 					<td style="width:10rem;">
 					<c:choose>
 						<c:when test="${c.cartSubs == 1 }">
-							<select style="width:80px;height:30px;" name="cartSubs">
+							<select style="width:80px;height:30px;" name="cartSubs" class="cartSubs">
 								<option value="1" selected>1주일</option>
 								<option value="2">2주일</option>
 								<option value="3">3주일</option>
@@ -427,7 +434,7 @@
 							</select>
 						</c:when>
 						<c:when test="${c.cartSubs == 2 }">
-							<select style="width:80px;height:30px;" name="cartSubs">
+							<select style="width:80px;height:30px;" name="cartSubs" class="cartSubs">
 								<option value="1">1주일</option>
 								<option value="2" selected>2주일</option>
 								<option value="3">3주일</option>
@@ -435,7 +442,7 @@
 							</select>
 						</c:when>
 						<c:when test="${c.cartSubs == 3 }">
-							<select style="width:80px;height:30px;" name="cartSubs">
+							<select style="width:80px;height:30px;" name="cartSubs" class="cartSubs">
 								<option value="1">1주일</option>
 								<option value="2">2주일</option>
 								<option value="3" selected>3주일</option>
@@ -443,7 +450,7 @@
 							</select>
 						</c:when>
 						<c:otherwise>
-							<select style="width:80px;height:30px;" name="cartSubs">
+							<select style="width:80px;height:30px;" name="cartSubs" class="cartSubs">
 								<option value="1">1주일</option>
 								<option value="2">2주일</option>
 								<option value="3">3주일</option>

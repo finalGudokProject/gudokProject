@@ -133,6 +133,8 @@
 					<div class="col-9">
 						<span style="font-size:40px;padding-left:2%;">${r.memberId }님의 상품평</span>
 					</div>
+					
+					<!-- 본인이 쓴 상품평이라면 -->
 					<c:if test="${loginUser.memberId == r.memberId }">
 						<div class="col-3" style="text-align:right;padding-right:2%;">
 							<input type="hidden" value="${r.reviewNo }">
@@ -143,6 +145,7 @@
 							<img src="resources/images/reDelete.png" class="deleteImgC" style="width:3.5rem;border:1px solid lightgray;" title="상품평 삭제하기">
 						</div>
 					</c:if>
+					
 				</div>
 				</td>
 			</tr>
@@ -197,12 +200,15 @@
 								<span class="starRv on">5</span>
 							</c:otherwise>
 						</c:choose>
+						
 						<c:if test="${!empty r.reviewDate && empty r.reviewModify }">
 							<div style="display:inline-block;color:gray;">등록일 : ${r.reviewDate }</div>
 						</c:if>
+						<!-- 상품평이 수정되었다면 -->
 						<c:if test="${!empty r.reviewDate && !empty r.reviewModify }">
 							<div style="display:inline-block;color:gray;">등록일 : ${r.reviewDate } / 수정일 : ${r.reviewModify}</div>
 						</c:if>
+						
 					</div>
 				</td>
 			</tr>
@@ -211,11 +217,14 @@
 				<tr>
 					<td>
 						<div class="reviewImgD">
+						
+						<!-- 상품평에 이미지가 존재한다면 -->
 						<c:forEach var="i" items="${img }">
 							<c:if test="${i.reviewNo == r.reviewNo && !empty i.imageRename}">
 								<img src="${contextPath }/resources/iuploadFiles/${i.imageRename}" class="reviewImgClass">
 							</c:if>
 						</c:forEach>
+						
 						</div>
 					</td>
 				</tr>
@@ -233,18 +242,25 @@
 		
 		</div>
 	</div>
+	
+	<!-- 상품평 수정, 삭제 툴팁 -->
 	<script type="text/javascript">
 	    $(document).ready(function(){
 	        $(".retouchImgC, .deleteImgC").tooltip();
 	    });
 	</script>
 	
+	<!-- 상품평 수정 버튼, 삭제 버튼 -->
 	<script>
 		$(function(){
+			
+			/* 수정하기 버튼 CSS */
 			$(".retouchImgC").on("mouseenter", function(){
 				$(this).attr("src","${contextPath }/resources/images/retouchHover.png").css("cursor","pointer");
 			}).on("mouseleave", function(){
 				$(this).attr("src","${contextPath }/resources/images/retouch.png");
+				
+			/* 수정하기 버튼 클릭 시 */
 			}).on("click", function(){
 				swal({
 					text : "상품평을 수정하시겠습니까?",
@@ -269,10 +285,14 @@
 					}
 				})
 			})
+			
+			/* 삭제하기 버튼 CSS */
 			$(".deleteImgC").on("mouseenter", function(){
 				$(this).attr("src","${contextPath }/resources/images/reDeleteHover.jpg").css("cursor","pointer");
 			}).on("mouseleave", function(){
 				$(this).attr("src","${contextPath }/resources/images/reDelete.png");
+				
+			/* 삭제하기 버튼 클릭 시 */
 			}).on("click", function(){
 				swal({
 					text : "상품평을 삭제하시겠습니까?",
