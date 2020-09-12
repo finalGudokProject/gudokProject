@@ -257,20 +257,14 @@
 		
 	</resultMap>
 
-	<select id="selectOne" parameterType="Member"
-		resultMap="memberResultSet">
-		<!-- SELECT * FROM MEMBER WHERE MEMBER_ID=#{memberId} AND MEMBER_PWD=#{memberPwd} 
-			AND MEMBER_STATUS='N' -->
-
-		<!-- 암호화 처리 후 로그인 -->
+	<select id="selectOne" parameterType="Member" resultMap="memberResultSet">
 		SELECT *
 		FROM MEMBER
 		WHERE MEMBER_ID=#{memberId}
 		AND MEMBER_STATUS='N'
 	</select>
 
-	<select id="memberConfirm" parameterType="Member"
-		resultMap="memberResultSet">
+	<select id="memberConfirm" parameterType="Member" resultMap="memberResultSet">
 		SELECT *
 		FROM MEMBER
 		WHERE MEMBER_NO=#{memberNo}
@@ -286,25 +280,20 @@
 		WHERE M.MEMBER_NO = #{memberNo}
 	</select>
 
-	<select id="reviewList" parameterType="int"
-		resultMap="reviewResultSet">
+	<select id="reviewList" parameterType="int" resultMap="reviewResultSet">
 		SELECT *
 		FROM REVIEW
 		WHERE MEMBER_NO=#{memberNo}
 		ORDER BY REVIEW_DATE DESC
 	</select>
 
-	<select id="exchangeList" parameterType="int"
-		resultMap="exchangeResultSet">
+	<select id="exchangeList" parameterType="int" resultMap="exchangeResultSet">
 		SELECT E.*, I.ITEM_NAME
 		FROM EXCHANGE E
-		JOIN SUBSCRIBE S ON
-		(E.SUBSCRIBE_NO = S.SUBSCRIBE_NO)
-		JOIN MEMBER M ON (S.MEMBER_NO =
-		M.MEMBER_NO)
+		JOIN SUBSCRIBE S ON (E.SUBSCRIBE_NO = S.SUBSCRIBE_NO)
+		JOIN MEMBER M ON (S.MEMBER_NO = M.MEMBER_NO)
 		JOIN ITEM I ON (S.ITEM_NO = I.ITEM_NO)
-		WHERE S.MEMBER_NO =
-		#{memberNo}
+		WHERE S.MEMBER_NO = #{memberNo}
 		ORDER BY E.EXCHANGE_DATE DESC
 	</select>
 
@@ -321,8 +310,7 @@
 		resultMap="cartResultSet">
 		SELECT C.*, I.IMAGE_PATH, I.IMAGE_RENAME
 		FROM CART C
-		LEFT JOIN
-		ITEM I ON (C.ITEM_NO = I.ITEM_NO)
+		LEFT JOIN ITEM I ON (C.ITEM_NO = I.ITEM_NO)
 		WHERE MEMBER_NO = #{memberNo}
 	</select>
 
@@ -334,8 +322,7 @@
 
 	<update id="updateSubscribe" parameterType="_int">
 		UPDATE SUBSCRIBE
-		SET
-		EXCHANGE_STATUS = 'Y'
+		SET EXCHANGE_STATUS = 'Y'
 		WHERE SUBSCRIBE_NO=#{subscribeNo}
 	</update>
 
@@ -383,8 +370,7 @@
 		#{secessionCategory}, #{secessionContent}, SYSDATE)
 	</insert>
 
-	<select id="selectInquiryList" parameterType="int"
-		resultMap="inquiryResultSet">
+	<select id="selectInquiryList" parameterType="int" resultMap="inquiryResultSet">
 		SELECT *
 		FROM BOARD B
 		LEFT JOIN INQUIRY I ON (B.BOARD_NO = I.BOARD_NO)
@@ -393,8 +379,7 @@
 		ORDER BY WRITE_DATE DESC
 	</select>
 
-	<select id="selectHeartList" parameterType="int"
-		resultMap="heartResultSet">
+	<select id="selectHeartList" parameterType="int" resultMap="heartResultSet">
 		SELECT H.*, T.ITEM_PRICE, T.IMAGE_PATH,
 		T.IMAGE_RENAME,T.ITEM_NAME
 		FROM HEART H
@@ -408,8 +393,7 @@
 		HEART_NO=#{heartNo} AND MEMBER_NO=#{memberNo}
 	</delete>
 
-	<select id="selectItem" parameterType="_int"
-		resultMap="itemResultSet">
+	<select id="selectItem" parameterType="_int" resultMap="itemResultSet">
 		SELECT *
 		FROM ITEM
 		WHERE ITEM_NO=#{itemNo}
@@ -489,13 +473,9 @@
 	<select id="selectGradeList" resultMap="gradeResultSet">
 		SELECT *
 		FROM GRADE
-
 		ORDER BY GRADE_NO DESC
-
 	</select>
 	<select id="selectMemberCnt" resultType="_int">
-
-		
 		SELECT count(*)
 		from(
 		select *
@@ -799,8 +779,6 @@
 
 	
 	<select id="selectTotalPayment" parameterType="_int" resultType="integer">
-
-
 		SELECT SUM(SUB_PRICE) AS TOTAL_PAYMENT
 		FROM
 		SUBSCRIBE
@@ -832,8 +810,7 @@
 		WHERE SUBSCRIBE_NO=#{subscribeNo}
 	</update>
 
-	<select id="selectExchangeChart" parameterType="object"
-		resultType="int">
+	<select id="selectExchangeChart" parameterType="object" resultType="int">
 		SELECT COUNT(*)
 		FROM (SELECT *
 		FROM EXCHANGE
@@ -910,8 +887,7 @@
 		</foreach>
 	</update>
 
-	<select id="selectDateList" parameterType="object"
-		resultType="string">
+	<select id="selectDateList" parameterType="object" resultType="string">
 		SELECT TO_CHAR(TO_DATE(#{startDay},'YYYY-MM-DD') + LEVEL-1,
 		'YYYY-MM-DD') AS "SEARCHDATE"
 		FROM DUAL
@@ -920,8 +896,7 @@
 		]]>
 	</select>
 
-	<select id="selectPaymentList" parameterType="java.util.List"
-		resultMap="adminPaymentResultSet">
+	<select id="selectPaymentList" parameterType="java.util.List" resultMap="adminPaymentResultSet">
 		SELECT TO_CHAR(PAYMENT_DATE,'yyyy-mm-dd') AS
 		PAYMENT_DATE,SUM(SUB_PRICE) AS TOTAL_PAYMENT,COUNT(*)
 		AS TOTAL_COUNT
@@ -935,8 +910,7 @@
 		ORDER BY PAYMENT_DATE DESC
 	</select>
 
-	<select id="selectSalesCnt" parameterType="object"
-		resultType="_int">
+	<select id="selectSalesCnt" parameterType="object" resultType="_int">
 		SELECT COUNT(*)
 		FROM(
         SELECT PAYMENT_DATE,COUNT(*)
@@ -947,8 +921,7 @@
 			  ]]>
 	</select>
 
-	<select id="selectYearList" parameterType="object"
-		resultType="string">
+	<select id="selectYearList" parameterType="object" resultType="string">
 		SELECT TO_CHAR(#{lastDay})-LEVEL+1 AS "SEARCHDATE"
 		FROM DUAL 
 			<![CDATA[
@@ -956,8 +929,7 @@
 			]]>
 	</select>
 
-	<select id="selectSalesYearCnt" parameterType="object"
-		resultType="_int">
+	<select id="selectSalesYearCnt" parameterType="object" resultType="_int">
 		SELECT COUNT(*)
 		FROM(
 		SELECT TO_CHAR(PAYMENT_DATE,'yyyy') AS
@@ -973,8 +945,7 @@
 		ORDER BY PAYMENT_DATE DESC)
 	</select>
 
-	<select id="selectPaymentYearsList"
-		parameterType="java.util.List" resultMap="adminPaymentResultSet">
+	<select id="selectPaymentYearsList" parameterType="java.util.List" resultMap="adminPaymentResultSet">
 		SELECT TO_DATE(TO_CHAR(PAYMENT_DATE,'yyyy'),'yyyy') AS
 		PAYMENT_DATE,SUM(SUB_PRICE) AS TOTAL_PAYMENT,COUNT(*)
 		AS TOTAL_COUNT
@@ -988,8 +959,7 @@
 		ORDER BY PAYMENT_DATE DESC
 	</select>
 
-	<select id="selectSalesMonthsCnt" parameterType="object"
-		resultType="_int">
+	<select id="selectSalesMonthsCnt" parameterType="object" resultType="_int">
 		SELECT COUNT(*)
 		FROM(
 		SELECT TO_CHAR(PAYMENT_DATE,'yyyy-MM') AS
@@ -1005,8 +975,7 @@
 		ORDER BY PAYMENT_DATE DESC)
 	</select>
 
-	<select id="selectPaymentMonthsList"
-		parameterType="java.util.List" resultMap="adminPaymentResultSet">
+	<select id="selectPaymentMonthsList" parameterType="java.util.List" resultMap="adminPaymentResultSet">
 		SELECT TO_DATE(TO_CHAR(PAYMENT_DATE,'yyyy-MM'),'yyyy-MM') AS
 		PAYMENT_DATE,SUM(SUB_PRICE) AS TOTAL_PAYMENT,COUNT(*)
 		AS TOTAL_COUNT
@@ -1020,8 +989,7 @@
 		ORDER BY PAYMENT_DATE DESC
 	</select>
 
-	<select id="selectMonthList" parameterType="object"
-		resultType="string">
+	<select id="selectMonthList" parameterType="object" resultType="string">
 		SELECT *
 		FROM(SELECT TO_CHAR(TO_DATE(#{startDay},'YYYY-MM') + LEVEL-1, 'YYYY-MM') AS
 		"SEARCHDATE"
@@ -1033,8 +1001,7 @@
 		ORDER BY SEARCHDATE DESC
 	</select>
 
-	<select id="selectMemberCntY" parameterType="object"
-		resultType="_int">
+	<select id="selectMemberCntY" parameterType="object" resultType="_int">
 		SELECT COUNT(*)
 		FROM(SELECT M.*,S.SECESSION_CONTENT
 		FROM MEMBER M
@@ -1070,9 +1037,7 @@
 		</where>
 	</select>
 
-	<select id="selectPaymentCategoryList" parameterType="object"
-		resultMap="adminPaymentResultSet">
-
+	<select id="selectPaymentCategoryList" parameterType="object" resultMap="adminPaymentResultSet">
 		SELECT CATEGORY_NO,SUM(SUB_PRICE) AS TOTAL_PAYMENT,COUNT(*) AS TOTAL_COUNT
 		FROM(
 		SELECT *
@@ -1086,9 +1051,7 @@
 		GROUP BY CATEGORY_NO
 	</select>
 
-	<select id="selectSalesDetailCnt" parameterType="object"
-		resultType="_int">
-
+	<select id="selectSalesDetailCnt" parameterType="object" resultType="_int">
 		select count(*)
 		from (
 		SELECT p.*,i.item_name
@@ -1127,8 +1090,7 @@
 
 	</select>
 
-	<select id="selectPaymentDetail" parameterType="object"
-		resultMap="adminPaymentResultSet">
+	<select id="selectPaymentDetail" parameterType="object" resultMap="adminPaymentResultSet">
 		select *
 		from(
 		SELECT
@@ -1192,8 +1154,7 @@
 		WHERE TO_CHAR(VISIT_TIME,'yyyy-mm-dd') = #{value}
 	</select>
 
-	<select id="selectPaymentMainList"
-		resultMap="adminPaymentResultSet">
+	<select id="selectPaymentMainList" resultMap="adminPaymentResultSet">
 		SELECT TO_CHAR(PAYMENT_DATE,'yyyy-mm-dd') AS
 		PAYMENT_DATE,SUM(SUB_PRICE) AS TOTAL_PAYMENT,COUNT(*)
 		AS TOTAL_COUNT
@@ -1207,8 +1168,7 @@
 		ORDER BY PAYMENT_DATE desc
 	</select>
 
-	<select id="selectExchangeMain"
-		resultMap="adminExchangeResultSet">
+	<select id="selectExchangeMain" resultMap="adminExchangeResultSet">
 		SELECT *
 		FROM(
 		SELECT *
@@ -1222,8 +1182,7 @@
 
 	</select>
 
-	<select id="selectDeliveryMain"
-		resultMap="adminSubscribeResultSet">
+	<select id="selectDeliveryMain" resultMap="adminSubscribeResultSet">
 		SELECT *
 		FROM(
 		SELECT *
@@ -1304,16 +1263,14 @@
 	</select>
 
 	<select id="pointCount" resultType="_int" parameterType="_int">
-		SELECT
-		COUNT(*)
+		SELECT COUNT(*)
 		FROM POINT P
-		JOIN SUBSCRIBE S ON (P.SUBSCRIBE_NO =
-		S.SUBSCRIBE_NO)
+		JOIN SUBSCRIBE S ON (P.SUBSCRIBE_NO = S.SUBSCRIBE_NO)
 		JOIN ITEM I ON (I.ITEM_NO = S.ITEM_NO)
-		JOIN MEMBER M
-		ON(S.MEMBER_NO = M.MEMBER_NO)
+		JOIN MEMBER M ON(S.MEMBER_NO = M.MEMBER_NO)
 		WHERE M.MEMBER_NO = #{memberNo}
 	</select>
+	
 	<update id="updateItemCmStatus" parameterType="java.util.ArrayList">
 		UPDATE ITEM
             SET ITEM_CM_SALES=(ITEM_CM_SALES+1)
@@ -1438,12 +1395,7 @@
 				or member_Id  LIKE <![CDATA['%${memberId}%']]>
 			</if>
 		</where>
-	
-	
-	
 	</select>
-	
-
 	
 	<select id="selectUsedPoint" parameterType="_int" resultType="_int">
 		SELECT POINT
