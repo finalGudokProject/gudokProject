@@ -211,7 +211,7 @@
       display: block;
       margin-right: 3%;
       text-decoration: none;
-      width: 40%;
+      width: 52%;
       margin: 0 auto;
       height: 35px;
       line-height:35px;
@@ -243,7 +243,7 @@
       display: block;
       margin-right: 3%;
       text-decoration: none;
-      width: 60%;
+      width: 40%;
       margin: 0 auto;
       height: 35px;
       line-height:35px;
@@ -592,7 +592,7 @@
 					            $detailTd=$("<td>");
 					            $data=$("<td>").text(data[i].subscribeDate);
 					            $itemName=$("<td>").text(data[i].itemName);
-					            $change=$("<a href='#cycle_form' id='cycle_pop' onclick='changeCycle(" + data[i].subscribeNo+","+ data[i].memberNo+"," +'"'+data[i].itemName+'"'+","+data[i].cycleNo+")'>").text("구독주기변경");
+					            $change=$("<a href='#cycle_form' id='cycle_pop' onclick='changeCycle(" + data[i].subscribeNo+","+ data[i].memberNo+"," +'"'+data[i].itemName+'"'+","+data[i].cycleNo+","+ data[i].amount+")'>").text("구독주기/수량변경");
 					            if(data[i].deliveryStatus == 'N'){
 					            	 $cancle=$("<a href='#cancle_form' id='cancle_pop' onclick='cancleClick(" + data[i].subscribeNo+","+ data[i].memberNo+")'>").text("구독취소");
 					            } else{
@@ -600,7 +600,7 @@
 					            }
 					            
 					           
-					            $detail=$("<a href='#detail_form' id='detail_pop' onclick='detailClick(" + data[i].subscribeNo+","+ data[i].memberNo+"," +'"'+data[i].itemName+'"'+","+data[i].cycleNo+","+'"'+data[i].address1+'"'+","+'"'+data[i].address2+'"'+","+'"'+data[i].address3+'"'+")'>").text("구독상세정보");
+					            $detail=$("<a href='#detail_form' id='detail_pop' onclick='detailClick(" + data[i].subscribeNo+","+ data[i].memberNo+"," +'"'+data[i].itemName+'"'+","+data[i].cycleNo+","+'"'+data[i].address1+'"'+","+'"'+data[i].address2+'"'+","+'"'+data[i].address3+'"'+","+ data[i].amount+")'>").text("구독상세정보");
 					            
 					            
 					            $tr.append($data);
@@ -633,7 +633,7 @@
 		            <td style="width: 10%;" class="top bottom">날짜</td>
 		            <td style="width: 30%;" class="top bottom">상품정보</td>
 		            <td style="width: 20%;" class="top bottom">구독상세정보</td>
-		            <td style="width: 20%;" class="top bottom">구독주기변경</td>
+		            <td style="width: 20%;" class="top bottom">구독주기/수량변경</td>
 		            <td style="width: 10%;" class="top bottom">구독취소</td>
 		          </tr>
 	          	</thead>
@@ -659,6 +659,10 @@
 	                <td><span id="itemName2"></span></td>
                 </tr>
                 <tr>
+	                <td style="width: 100px;"><b>수량</b></td>
+	                <td><span id="count3"></span></td>
+                </tr>
+                <tr>
 	                <td style="width: 100px;"><b>구독주기</b></td>
 	                <td><span id="cycle3"></span></td>
 	            </tr>
@@ -674,7 +678,7 @@
 	      <!-- popup form #1 -->
 	      <a href="#x" class="overlay" id="cycle_form"></a>
 	      <div class="popup">
-	        <h4>구독주기 변경</h4>
+	        <h4>구독주기/수량 변경</h4>
 	        <form action="cycleChange.do" method="post">
 	        	<input type="hidden" id="subscribeNo" name="subscribeNo">
 	        	<input type="hidden" id="memberNo" name="memberNo">
@@ -687,6 +691,14 @@
 		            <tr>
 		                <td style="width: 100px;"><b>제품명</b></td>
 		                <td><span id="itemName"></span></td>
+	                </tr>
+	                <tr>
+		                <td style="width: 100px;"><b>수량</b></td>
+		                <td><span id="count2"></span></td>
+	                </tr>
+	                <tr>
+		                <td style="width: 100px;"><b>변경 할 수량</b></td>
+		                <td><input type="number" name="amount" id="amount"></td>
 	                </tr>
 	                <tr>
 		                <td style="width: 100px;"><b>구독주기</b></td>
@@ -754,11 +766,12 @@
     <jsp:include page="../common/footer.jsp"/>
     <script>
     
-	    function detailClick(subscribeNo, memberNo, itemName, cycleNo, address1, address2, address3){
+	    function detailClick(subscribeNo, memberNo, itemName, cycleNo, address1, address2, address3,amount){
 			
 			$("#subscribeNo5").text(subscribeNo);
 			$("#itemName2").text(itemName);
 			$("#address").text("["+address1+"]" + address2 + address3);
+			$("#count3").text(amount);
 			
 			if(cycleNo == 1){
 				$("#cycle3").text("1주");
@@ -771,10 +784,12 @@
 			}
 		}
 	    
-	    function changeCycle(subscribeNo, memberNo, itemName, cycleNo){
+	    function changeCycle(subscribeNo, memberNo, itemName, cycleNo, amount){
 			$("#subscribeNo").val(subscribeNo);
 			$("#memberNo").val(memberNo);
 			
+			$("#count2").text(amount);
+			$("#amount").val(amount);
 			$("#subscribeNo2").text(subscribeNo);
 			$("#itemName").text(itemName);
 			

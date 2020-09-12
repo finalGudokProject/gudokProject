@@ -1271,8 +1271,7 @@
 
 	<update id="changeCycle" parameterType="mSubscribe">
 		UPDATE SUBSCRIBE
-		SET
-		CYCLE_NO=#{cycleNo}
+		SET CYCLE_NO=#{cycleNo},AMOUNT=#{amount}
 		WHERE SUBSCRIBE_NO=#{subscribeNo}
 	</update>
 
