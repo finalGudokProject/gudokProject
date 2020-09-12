@@ -178,8 +178,6 @@
       height: 50px;
       width: 300px;
     }
-    
-   
 
     .inquiry_btn{
       border: none;
@@ -192,7 +190,7 @@
     }
     
     .reply {
-    	background:#ccc;
+    	background: #f1f1f1;
 	    animation: fadein 2s;
 	   	-webkit-animation: fadein 2s; /* Safari and Chrome */
 	}

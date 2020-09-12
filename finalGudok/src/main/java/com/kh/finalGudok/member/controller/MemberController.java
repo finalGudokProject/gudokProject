@@ -1,8 +1,6 @@
 package com.kh.finalGudok.member.controller;
 import static com.kh.finalGudok.common.pagination2.getPageInfo2;
 
-import static com.kh.finalGudok.common.pagination2.getPageInfo2;
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
@@ -44,6 +42,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
+
 import com.kh.finalGudok.item.model.service.ItemService;
 import com.kh.finalGudok.item.model.vo.BannerItem;
 import com.kh.finalGudok.item.model.vo.Cart;
@@ -2905,12 +2904,4 @@ public class MemberController {
 			throw new MemberException("취소 내역 조회 실패!");
 		}
 	}
-	
-	
-	
-	
-	
-	
-	
-	
 }

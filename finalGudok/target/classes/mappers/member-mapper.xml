@@ -86,8 +86,7 @@
 		<result property="memberNo" column="MEMBER_NO" />
 		<result property="itemPrice" column="ITEM_PRICE" />
 		<result property="imagePath" column="IMAGE_PATH" />
-		<result property="imageOriginalName"
-			column="IMAGE_ORIGINAL_NAME" />
+		<result property="imageOriginalName" column="IMAGE_ORIGINAL_NAME" />
 		<result property="imageRename" column="IMAGE_RENAME" />
 		<result property="itemName" column="ITEM_NAME" />
 	</resultMap>
@@ -275,9 +274,10 @@
 		SELECT P.*, S.SUBSCRIBE_DATE, I.ITEM_NAME, M.POINT AS MEMBER_POINT
 		FROM POINT P
 		JOIN SUBSCRIBE S ON (P.SUBSCRIBE_NO = S.SUBSCRIBE_NO)
+		JOIN DELIVERY D ON (S.SUBSCRIBE_NO = D.DELIVERY_NO)
 		JOIN ITEM I ON (I.ITEM_NO = S.ITEM_NO)
 		JOIN MEMBER M ON(S.MEMBER_NO = M.MEMBER_NO)
-		WHERE M.MEMBER_NO = #{memberNo}
+		WHERE M.MEMBER_NO = #{memberNo} AND D.DELIVERY_STATUS = 'Y'
 	</select>
 
 	<select id="reviewList" parameterType="int" resultMap="reviewResultSet">
@@ -687,11 +687,12 @@
 	</select>
 
 	<select id="selectSubscribeList" resultMap="subscribeResultSet" parameterType="int">
-		SELECT S.*, I.ITEM_NAME, D.DELIVERY_STATUS
-		FROM SUBSCRIBE S
-		JOIN ITEM I ON (S.ITEM_NO = I.ITEM_NO)
-		JOIN DELIVERY D ON (D.SUBSCRIBE_NO = S.SUBSCRIBE_NO)
-		WHERE MEMBER_NO=#{memberNo} AND SUBSCRIBE_STATUS='N'
+		SELECT *
+		FROM (SELECT S.*, D.DELIVERY_STATUS, RANK() OVER(ORDER BY D.DELIVERY_NO DESC) AS RANK
+		    FROM SUBSCRIBE S
+		    JOIN ITEM I ON (S.ITEM_NO = I.ITEM_NO)
+		    JOIN DELIVERY D ON (D.SUBSCRIBE_NO = S.SUBSCRIBE_NO)) R
+		WHERE RANK = 1
 	</select>
 
 	<select id="selectOrderList" resultMap="adminSubscribeResultSet">
