@@ -150,8 +150,12 @@
 	
 	<select id="selectDeleteEvent" parameterType="_int" resultMap="eventResultSet">
 		SELECT *
-		FROM EIMAGE
-		WHERE EVENT_NO IN(#{i}) 
+		FROM(  
+		SELECT *
+		FROM IMAGE I
+		LEFT JOIN BANNER_IMG B ON(I.IMAGE_NO=B.BANNERIMAGE_NO)
+		)
+		WHERE EVENT_NO IN (#{i}) 
 	</select>
 	<update id="updateEventStatusY" parameterType="java.util.ArrayList">
 		UPDATE EVENT
@@ -439,5 +443,13 @@
 		)
 		where item_no=#{value}
 	</select>
+	<update id="updateItemBannerStatus" parameterType="_int">
+		UPDATE ITEM
+		SET ITEM_EVENT_STATUS='N'
+		WHERE ITEM_NO IN (SELECT ITEM_NO
+                FROM EVENT_ITEM
+                WHERE EVENT_NO=#{value})
+	
+	</update>
 	
 </mapper>

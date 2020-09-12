@@ -74,11 +74,11 @@ input, select,textarea{
                          <c:if test="${!empty list }">
                         	 <c:forEach var="i" items="${list }" varStatus="cnt">
                         	 <input type="hidden" id="eventNo" name="eventNo" value="${i.eventNo }">
-	                             <tr>
+	                             <tr  id="cursor">
 	                                <td onclick='event.cancelBubble=true'><input type="checkbox" class="common" id="itemNo${cnt.index}" name="itemNo" value="${i.itemNo }"></td>
 	                                <td onclick='event.cancelBubble=true'>${i.eventNo }
 	                                <td onclick='event.cancelBubble=true'>${i.itemNo }</td>
-	                                <td  id="cursor">${i.itemName }</td>
+	                                <td >${i.itemName }</td>
 	                                <td onclick='event.cancelBubble=true'>${i.itemPrice }</td>
 	                                <td onclick='event.cancelBubble=true'>${i.itemDpStatus }</td>
 	                            </tr>
@@ -97,7 +97,7 @@ input, select,textarea{
 
                     <br>
 
-
+<c:if test="${!empty list }">
                      <!------페이징 처리----->
                 <div class="page-center">
                     <ul class="pagination-t">
@@ -163,7 +163,7 @@ input, select,textarea{
 
                 </div>
 
-
+</c:if>
 		
 		<script>
 		//상품 상세보기 
@@ -200,12 +200,12 @@ input, select,textarea{
 				traditional:true,
 				data:{"sendArr":sendArr},
 				success:function(data){
-					alert('여기까진 온다');
+					
 					getList();
 					        					
 				},
 				error:function(request, status, errorData){
-					alert('첫번째 오류인가');
+		
                     alert("error code: " + request.status + "\n"
 	                           +"message: " + request.responseText
 	                           +"error: " + errorData);
@@ -242,7 +242,7 @@ input, select,textarea{
        	 		var $itemDpStatus;
        	 	
        	 		
-       	 				
+       	   	 	if(data.list.length>0){ 				
        	 				 for(var i in data.list){
        	 					
        	 				
@@ -264,11 +264,22 @@ input, select,textarea{
        	 				$tableBody.append($tr);
        	 				
        	 			} 
-       	 			
+       	 	}else{
+       	 		
+   	 			$tr=$("<tr>");
+	   	 		$td=$("<td colspan='6' onclick='event.cancelBubble=true'>").text("등록된 상품이 없습니다.");
+	   	 	
+		   
+		   	 	$tr.append($td);
+		   	 	$tableBody.append($tr);
+		   	 	
+		   	 	$page=$(".page-center");
+		   	 	$page.html("");
+   	 	}		
        	 		
        	 	},
        	 	error:function(request, status, errorData){
-       	 		alert('두번째 오류인가');
+       	 
                    alert("error code: " + request.status + "\n"
 	                           +"message: " + request.responseText
 	                           +"error: " + errorData);

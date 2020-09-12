@@ -116,17 +116,41 @@ input, select,textarea{
 	                            <option value="Y">교환 완료</option></select>
 	                    
 	                    </c:otherwise>
-                    </c:choose>        
-                        <select id="type" name="type">
-                            <option value="">전체</option>
-                            <option value="exchangeContent">교환사유</option>
-                            <option value="subscribeNo">구독번호</option>
-                            <option value="memberId">구매자</option></select>
+                    </c:choose>    
+                    <c:choose>    
+                    	<c:when test="${type eq 'exchangeContent' }">
+	                        <select id="type" name="type">
+	                            <option value="">전체</option>
+	                            <option value="exchangeContent" selected>교환사유</option>
+	                            <option value="subscribeNo">구독번호</option>
+	                            <option value="memberId">구매자</option></select>
+                       </c:when>
+                       <c:when test="${type eq 'subscribeNo' }">
+	                        <select id="type" name="type">
+	                            <option value="">전체</option>
+	                            <option value="exchangeContent" >교환사유</option>
+	                            <option value="subscribeNo"selected>구독번호</option>
+	                            <option value="memberId">구매자</option></select>
+                       </c:when>
+                       <c:when test="${type eq 'memberId' }">
+	                        <select id="type" name="type">
+	                            <option value="">전체</option>
+	                            <option value="exchangeContent" >교환사유</option>
+	                            <option value="subscribeNo">구독번호</option>
+	                            <option value="memberId"selected>구매자</option></select>
+                       </c:when>
+                       <c:otherwise>
+                       		<select id="type" name="type">
+	                            <option value=""selected>전체</option>
+	                            <option value="exchangeContent" >교환사유</option>
+	                            <option value="subscribeNo">구독번호</option>
+	                            <option value="memberId">구매자</option></select>
+                       </c:otherwise>
+                     </c:choose>       
                             
                             
                             
-                            
-                        <input type="text" id="word" name="word" value="">   
+                        <input type="text" id="word" name="word" value="${word }">   
                         <input type="button" class="btn" value="검색" onclick="search()">
                     </div>
                     <div style="float:right;">                    	
@@ -157,9 +181,20 @@ input, select,textarea{
                              </tr>   
                          </thead>
                          <tbody id="e">
+                         <c:if test="${!empty eList }">
                          	<c:forEach var="i" items="${eList }" varStatus="cnt">
 	                             <tr>
+	                             
+	                             <c:choose>
+		                            <c:when test="${i.exchangeStatus eq '교환 완료' }">
+	                                <td><input type="checkbox"  id="exchangeNo${cnt.index}" name="exchangeNo" value="${i.exchangeNo }" onclick='event.cancelBubble=true' disabled></td>
+	                               </c:when>
+	                               <c:when test="${i.exchangeStatus ne '교환 완료' }">
 	                                <td><input type="checkbox" class="common" id="exchangeNo${cnt.index}" name="exchangeNo" value="${i.exchangeNo }" onclick='event.cancelBubble=true'></td>
+	                               </c:when>
+	                               </c:choose>
+	                               
+	                               
 	                                <td  onclick='event.cancelBubble=true'>${i.exchangeDate }</td>
 	                                <td>${i.exchangeContent }</td>
 	                                <td>${i.subscribeNo }</td>
@@ -169,6 +204,15 @@ input, select,textarea{
 	                                <td>${i.exchangeStatus }</td>
 	                            </tr>
                             </c:forEach>
+                          </c:if>
+                          <c:if test="${empty eList }">
+                         
+	                             <tr>
+	                                
+	                                <td colspan="8">해당 교환 내역이 없습니다.</td>
+	                            </tr>
+                          
+                          </c:if>
                          </tbody>
                     </table>
 
@@ -176,6 +220,7 @@ input, select,textarea{
 
                     <br>
 
+ 	<c:if test="${!empty eList }">
 
                       <!------페이징 처리----->
                 <div class="page-center">
@@ -236,7 +281,7 @@ input, select,textarea{
 
                 </div>
 
-
+</c:if>
 
 
             </div><!--내용담은 컨테이너-->
@@ -251,9 +296,7 @@ input, select,textarea{
         	 var category=$("#category").val();
         	 var type=$("#type").val();
         	 var word=$("#word").val();
-        	 alert(category)
-        	 alert(type)
-        	 alert(word)
+
         	 
         	 if(type=="subscribeNo"){
         		 if(word.replace(/[0-9]/g, "").length > 0) {
@@ -281,8 +324,7 @@ input, select,textarea{
         	   var page=${pi.currentPage};
         	   var type='N';
         	   
-        	   alert(page);
-        	   alert(type);
+        	  
         	   
         	   for(i=0; i<chkbox.length;i++){
        			if(chkbox[i].checked==true){
@@ -290,6 +332,11 @@ input, select,textarea{
        				sendCnt++;
        			}
        		}
+        	   
+        	   if(sendCnt==0){
+          			alert("교환 내역을 선택해주세요.")
+          			return false;
+          		}
         	   
         	   $.ajax({
    				url:"eChange.do",
@@ -357,11 +404,17 @@ input, select,textarea{
            function getList(){
         	 alert('교환 페이지 왔고')
           	 var page=${pi.currentPage};
+        	 var category=$("#category").val();
+        	 var type=$("#type").val();
+        	 var word=$("#word").val();
+          	 
+          	 
+          	 
           	 
           	 $.ajax({
           		 
           	 	url:"exchangeListChange.do", 
-          	 	data:{"page":page},
+          	 	data:{"page":page,"category":category,"type":type,"word":word},
           	 	dataType:"json",
           	 	success:function(data){
           	 		
@@ -381,14 +434,17 @@ input, select,textarea{
           	 		var $memberId;
           	 		var $th;
           	 		
-          	 				
-          	 	
-          	 			 	for(var i in data.list){
+          	   	 	
+   	   	 	if(data.list.length>0){   	 		
+   	   	 		
+          	 		for(var i in data.list){
+          	 			
+	   	   	 			if(data.list[i].exchangeStatus=="교환 완료"){
           	 					
           	 				
           	 				$tr=$("<tr id='cursor'>");
           	 				$td=$("<td onclick='event.cancelBubble=true'>");
-          	 				$checkBox=$("<input type='checkbox' class='common' name='exchangeNo'>").val(data.list[i].exchangeNo);     	 			
+          	 				$checkBox=$("<input type='checkbox' name='exchangeNo'disabled>").val(data.list[i].exchangeNo);     	 			
           	 				$exchangeDate=$("<td onclick='event.cancelBubble=true'>").text(data.list[i].exchangeDate);     	 			
           	 				$exchangeContent=$("<td>").text(data.list[i].exchangeContent);
           	 				$subscribeNo=$("<td>").text(data.list[i].subscribeNo);
@@ -397,7 +453,27 @@ input, select,textarea{
           	 				$itemPrice=$("<td>").text(data.list[i].itemPrice);
           	 				$exchangeStatus=$("<td>").text(data.list[i].exchangeStatus);
           	 				
-          	 				
+	   	   	 			}else{
+	   	   	 				
+		   	   	 			$tr=$("<tr id='cursor'>");
+	      	 				$td=$("<td onclick='event.cancelBubble=true'>");
+	      	 				$checkBox=$("<input type='checkbox' class='common' name='exchangeNo'>").val(data.list[i].exchangeNo);     	 			
+	      	 				$exchangeDate=$("<td onclick='event.cancelBubble=true'>").text(data.list[i].exchangeDate);     	 			
+	      	 				$exchangeContent=$("<td>").text(data.list[i].exchangeContent);
+	      	 				$subscribeNo=$("<td>").text(data.list[i].subscribeNo);
+	      	 				$itemName=$("<td>").text(data.list[i].itemName);
+	      	 				$memberId=$("<td>").text(data.list[i].memberId);
+	      	 				$itemPrice=$("<td>").text(data.list[i].itemPrice);
+	      	 				$exchangeStatus=$("<td>").text(data.list[i].exchangeStatus);
+      	 				
+	   	   	 				
+	   	   	 				
+	   	   	 				
+	   	   	 				
+	   	   	 				
+	   	   	 				
+	   	   	 				
+	   	   	 			}	
           	 				$td.append($checkBox);
           	 				$tr.append($td);
           	 				$tr.append($exchangeDate);
@@ -410,6 +486,19 @@ input, select,textarea{
           	 				$tableBody.append($tr);
           	 				
           	 			} 
+          	  	}else{
+           	 		
+       	 			$tr=$("<tr>");
+    	   	 		$td=$("<td colspan='8' onclick='event.cancelBubble=true'>").text("해당 교환 내역이 없습니다.");
+    	   	 	
+    		   
+    		   	 	$tr.append($td);
+    		   	 	$tableBody.append($tr);
+    		   	 	
+    		   	 	$page=$(".page-center");
+    		   	 	$page.html("");
+       	 	}		 	
+   	 			 	
           	 	},
           	 	error:function(request, status, errorData){
                       alert("error code: " + request.status + "\n"
@@ -430,8 +519,13 @@ input, select,textarea{
          			 var page=${pi.currentPage };   
          			 var type="exchange";
          			 var category=$("#category").val();
+         			 
+
+                	 var type2=$("#type").val();
+                	 var word=$("#word").val();
+         			
          				
-            		location.href="oDetail.do?subscribeNo="+subscribeNo+"&page="+page+"&type="+type+"&category="+category;
+            		location.href="oDetail.do?subscribeNo="+subscribeNo+"&page="+page+"&type="+type+"&category="+category+"&type2="+type2+"&word="+word;
         		})
         	})
         	

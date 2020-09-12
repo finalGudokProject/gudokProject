@@ -71,11 +71,11 @@ input, select,textarea{
                      
                         	<thead>
                         		<tr>
-	                                <th onclick="event.cancelBubble=true">등급 </th>
-	                                <th onclick="event.cancelBubble=true">등급명</th>
-	                                <th onclick="event.cancelBubble=true">회원 수</th>
-	                                <th onclick="event.cancelBubble=true">최소 구매금액</th>
-	                                <th onclick="event.cancelBubble=true">적립율</th>
+	                                <th>등급 </th>
+	                                <th>등급명</th>
+	                                <th>회원 수</th>
+	                                <th >최소 구매금액</th>
+	                                <th>적립율</th>
 	                            </tr>
                         	</thead>
                         	<tbody id="tbody1">
@@ -83,17 +83,17 @@ input, select,textarea{
                         		<c:forEach var="i" items="${gList }" varStatus="cnt">
 		                            <tr>
 		                            <c:choose>
-		                            	<c:when test="${i.gradeNo eq '4'}"><td onclick="event.cancelBubble=true">1등급</td></c:when>
-		                            	<c:when test="${i.gradeNo eq '3'}"><td onclick="event.cancelBubble=true">2등급</td></c:when>
-		                            	<c:when test="${i.gradeNo eq '2'}"><td onclick="event.cancelBubble=true">3등급</td></c:when>
-		                            	<c:when test="${i.gradeNo eq '1'}"><td onclick="event.cancelBubble=true">4등급</td></c:when>
+		                            	<c:when test="${i.gradeNo eq '4'}"><td>1등급</td></c:when>
+		                            	<c:when test="${i.gradeNo eq '3'}"><td>2등급</td></c:when>
+		                            	<c:when test="${i.gradeNo eq '2'}"><td>3등급</td></c:when>
+		                            	<c:when test="${i.gradeNo eq '1'}"><td>4등급</td></c:when>
 			                        </c:choose>
 			                        	
 
-			                                <td onclick="event.cancelBubble=true">${i.gradeName }</td>
-			                                <td onclick="event.cancelBubble=true">${i.total }명</td>
-			                                <td onclick="event.cancelBubble=true">${i.gradeMin }원</td>
-			                                <td onclick="event.cancelBubble=true">${i.gradeRate } %</td>
+			                                <td>${i.gradeName }</td>
+			                                <td>${i.total }명</td>
+			                                <td>${i.gradeMin }원</td>
+			                                <td>${i.gradeRate } %</td>
 		                            </tr>
 	                            </c:forEach>
 	                            
@@ -124,27 +124,27 @@ input, select,textarea{
 					        <div class="modal-body">
 					          <table>
 					            <tr>
-					                <td onclick="event.cancelBubble=true">
+					                <td>
 					                <input type="hidden" class="gradeM" name="grade" value="4">1등급</td>
-					                <td onclick="event.cancelBubble=true">
+					                <td>
 					                <input type="number" min="0" class="gradeMin" id="gradeMin1" name="gradeMin1"></td>
 					            </tr>
 					            <tr>
-					               <td onclick="event.cancelBubble=true">
+					               <td>
 					               <input type="hidden" class="gradeM" name="grade" value="3">2등급</td>
-					                <td onclick="event.cancelBubble=true">
+					                <td>
 					                <input type="number" min="0" class="gradeMin" id="gradeMin2" name="gradeMin2"></td>
 					            </tr>
 					             <tr>
-					               <td onclick="event.cancelBubble=true">
+					               <td>
 					               <input type="hidden" class="gradeM" name="grade" value="2">3등급</td>
-					                <td onclick="event.cancelBubble=true">
+					                <td>
 					                <input type="number" min="0" class="gradeMin" id="gradeMin3" name="gradeMin3"></td>
 					            </tr>
 					            <tr>
-					                <td onclick="event.cancelBubble=true">
+					                <td>
 					                <input type="hidden" class="gradeM" name="grade" value="1">4등급</td>
-					                <td onclick="event.cancelBubble=true">
+					                <td>
 					                <input type="number" min="0" class="gradeMin" id="gradeMin4" name="gradeMin4"></td>
 					            </tr>
 					          </table>
@@ -169,30 +169,30 @@ input, select,textarea{
 					          
 					        </div>
 					        <div class="modal-body">
-					          <table  onclick="event.cancelBubble=true">
+					          <table>
 					            <tr>
-					                <td onclick="event.cancelBubble=true">
+					                <td>
 					                <input type="hidden" class="grade" name="grade" value="4">1등급</td>
-					                <td onclick="event.cancelBubble=true">
+					                <td>
 					                <input type="number" min="0" max="100" class="gradeRate" id="rate1" name="gradeRate"></td>
 					            </tr>
 					             <tr>
-					                <td onclick="event.cancelBubble=true">
+					                <td>
 					                <input type="hidden" class="grade" name="grade" value="3">2등급</td>
 					                
-					                <td onclick="event.cancelBubble=true">
+					                <td>
 					                <input type="number" min="0" max="100" class="gradeRate" id="rate2" name="gradeRate"></td>
 					            </tr>
 					             <tr>
-					                <td onclick="event.cancelBubble=true">
+					                <td>
 					                <input type="hidden" class="grade" name="grade" value="2">3등급</td>
-					                <td onclick="event.cancelBubble=true">
+					                <td>
 					                <input type="number" min="0" max="100" class="gradeRate" id="rate3" name="gradeRate"></td>
 					            </tr>
 					             <tr>
-					                <td onclick="event.cancelBubble=true">
+					                <td>
 					                <input type="hidden" class="grade" name="grade" value="1">4등급</td>
-					                <td onclick="event.cancelBubble=true">
+					                <td>
 					                <input type="number" min="0" max="100" class="gradeRate" id="rate4" name="gradeRate"></td>
 					            </tr>
 					
@@ -262,17 +262,17 @@ input, select,textarea{
                          <tbody id="tbody2">
                          	<c:if test="${!empty mList }">
                          	<c:forEach var="i" items="${mList }" varStatus="cnt">
-	                             <tr>
-	                                <td onclick="event.cancelBubble=true">${i.memberNo }</td>
-	                                <td id="cursor">${i.memberId } (${i.memberName })</td>
-	                              	<td onclick="event.cancelBubble=true">${i.totalPay }원</td>
+	                             <tr id="cursor">
+	                                <td>${i.memberNo }</td>
+	                                <td >${i.memberId } (${i.memberName })</td>
+	                              	<td>${i.totalPay }원</td>
 		                               <c:choose>
-			                            	<c:when test="${i.gradeNo eq '4'}"><td onclick="event.cancelBubble=true">1등급</td></c:when>
-			                            	<c:when test="${i.gradeNo eq '3'}"><td onclick="event.cancelBubble=true">2등급</td></c:when>
-			                            	<c:when test="${i.gradeNo eq '2'}"><td onclick="event.cancelBubble=true">3등급</td></c:when>
-			                            	<c:when test="${i.gradeNo eq '1'}"><td onclick="event.cancelBubble=true">4등급</td></c:when>
+			                            	<c:when test="${i.gradeNo eq '4'}"><td>1등급</td></c:when>
+			                            	<c:when test="${i.gradeNo eq '3'}"><td>2등급</td></c:when>
+			                            	<c:when test="${i.gradeNo eq '2'}"><td>3등급</td></c:when>
+			                            	<c:when test="${i.gradeNo eq '1'}"><td>4등급</td></c:when>
 				                        </c:choose>
-	                                <td onclick="event.cancelBubble=true">${i.enrollDate }</td>
+	                                <td>${i.enrollDate }</td>
 	                            </tr>
                             </c:forEach>
                             </c:if>
@@ -302,8 +302,7 @@ input, select,textarea{
             	 	}
             	 }
             	
-            	alert(categoryNo)
-            	alert(word)
+            	
             	location.href="gradeList.do?categoryNo="+categoryNo+"&word="+word;
             	
             }
@@ -313,16 +312,17 @@ input, select,textarea{
             //회원 상세 정보보기
           	$(function(){
    	       		
-   	       		$("tr").on("click",function(){
+   	       		$(".table").children().on("click",function(){
    	       		
    	       			var type='user';
-   	       			var memberNo=$(this).children().eq(0).text();
+   	       			var memberNo=$(this).children().children().eq(0).text();
    	        		 var page=${pi.currentPage };   
-   	        		 alert(memberNo);
-   	        		 alert(page);
-   	        		 alert(type);
+   	        		var categoryNo=$("#categoryNo").val();
+   	            	var word=$("#word").val();
+   	        		
    	        		 
-   	           		location.href="mDetail.do?memberNo="+memberNo+"&page="+page+"&type="+type;
+   	        		 
+   	           		location.href="mDetail.do?memberNo="+memberNo+"&page="+page+"&type="+type+"&categoryNo="+categoryNo+"&word="+word;
    	       		})
    	       	})
                     
@@ -425,13 +425,13 @@ input, select,textarea{
                       
                       function gradeMinChg(){
                     	  
-                    		if($("#gradeMin1").val().trim()==0){
+                    		if($("#gradeMin1").val().trim().length==0){
                     			alert('최소 구매금액을 입력해주세요.');
-                    		}else if($("#gradeMin2").val().trim()==0){
+                    		}else if($("#gradeMin2").val().trim().length==0){
                     			alert('최소 구매금액을 입력해주세요.');
-                    		}else if($("#gradeMin3").val().trim()==0){
+                    		}else if($("#gradeMin3").val().trim().length==0){
                     			alert('최소 구매금액을 입력해주세요.');
-                    		}else if($("#gradeMin4").val().trim()==0){
+                    		}else if($("#gradeMin4").val().trim().length==0){
                     			alert('최소 구매금액을 입력해주세요.');
                     		
                     		}else{

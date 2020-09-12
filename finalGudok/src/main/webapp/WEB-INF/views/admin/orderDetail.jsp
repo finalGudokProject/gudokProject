@@ -173,11 +173,16 @@ input, select,textarea{
 
 
         <c:out value="${type }"/>
+        <c:out value="${type2 }"/>
+        <c:out value="${word }"/>
+        <c:out value="${category }"/>
 
             </div><!--내용담은 컨테이너-->
         </div><!--250px띄운 div-->
         
         <input type="hidden" id="category" name="category" value="${category }">
+        <input type="hidden" id="type2" name="type2" value="${type2 }">
+        <input type="hidden" id="word" name="word" value="${word }">
  
         
         <script>
@@ -185,17 +190,21 @@ input, select,textarea{
         	function goList(){
         		
         		var type=$("#type").val();
-        	  	var page=${page }
+        	  	var page=${page };
         	  	var category=$("#category").val();
+        	  	var type2=$("#type2").val();
+        	  	var word=$("#word").val();
+        	  
+        	  	
         	  	
         	  	
         	  	if(type=="order"){
-           			location.href="oList.do?page="+page+"&category="+category;
+           			location.href="oList.do?page="+page+"&category="+category+"&type="+type2+"&word="+word;
            			
         	  	}else if(type=="cancel"){	
-        	  		location.href="cList.do?page="+page+"&category="+category;
+        	  		location.href="cList.do?page="+page+"&type="+type2+"&word="+word;
         	  	}else{
-        	  		location.href="exchangList.do?page="+page+"&category="+category; 
+        	  		location.href="exchangList.do?page="+page+"&category="+category+"&type="+type2+"&word="+word;
         	  	}
         		 
         	}

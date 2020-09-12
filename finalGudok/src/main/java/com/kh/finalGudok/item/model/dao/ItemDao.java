@@ -711,4 +711,9 @@ public class ItemDao {
 	public ArrayList<Item> selectHomeRecommendList() {
 		return (ArrayList)sqlSessionTemplate.selectList("itemMapper.selectRecommendList");
 	}
+
+	public int updateItemBannerStatus(int i) {
+		return sqlSessionTemplate.update("adminItemMapper.updateItemBannerStatus", i);
+	}
+
 }

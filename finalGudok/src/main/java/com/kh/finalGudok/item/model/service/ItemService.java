@@ -291,4 +291,6 @@ public interface ItemService {
 	
 	double selectPointRate(int memberNo);
 
+	int updateItemBannerStatus(int i);
+
 }

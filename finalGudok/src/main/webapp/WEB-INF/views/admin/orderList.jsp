@@ -64,7 +64,7 @@ cursor: pointer;
                     <div style="float:left;">
                       
                     <c:if test="${empty category }">
-                    <select id="category" name="category" style="width:200px">
+                    <select id="category" name="category" style="width:100px">
                         <option value="" selected>전체</option>
                         <option value="N">배송대기</option>
                         <option value="D">배송중</option>
@@ -72,7 +72,7 @@ cursor: pointer;
                     </select>
                     </c:if>
                      <c:if test="${category eq 'N' }">
-                    <select id="category" name="category" style="width:200px">
+                    <select id="category" name="category" style="width:100px">
                         <option value="">전체</option>
                         <option value="N" selected>배송대기</option>
                         <option value="D">배송중</option>
@@ -80,7 +80,7 @@ cursor: pointer;
                     </select>
                     </c:if>
                     <c:if test="${category eq 'D' }">
-                    <select id="category" name="category" style="width:200px">
+                    <select id="category" name="category" style="width:100px">
                         <option value="">전체</option>
                         <option value="N">배송대기</option>
                         <option value="D" selected>배송중</option>
@@ -88,7 +88,7 @@ cursor: pointer;
                     </select>
                     </c:if>
                     <c:if test="${category eq 'Y' }">
-                    <select id="category" name="category" style="width:200px">
+                    <select id="category" name="category" style="width:100px">
                         <option value="">전체</option>
                         <option value="N">배송대기</option>
                         <option value="D">배송중</option>
@@ -130,19 +130,8 @@ cursor: pointer;
 		                </select>
 		            </c:otherwise>
                 </c:choose>
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
+     
+                 
                    <input type="text" id="word" name="word" value="${word }">
                    <input type="button" class="btn" value="검색" onclick="search()">
                     </div>  
@@ -170,38 +159,38 @@ cursor: pointer;
                              </tr>   
                          </thead>
                          <tbody>
-                         <c:out value="${oList }"/>
+               
                             <c:if test="${!empty oList }"> 
 	                         	<c:forEach var="e" items="${oList }" varStatus="cnt">
-		                             <tr>
+		                             <tr id="cursor">
+		                             		<c:choose>
+		                             		<c:when test="${e.deliveryStatus eq 'Y' }">
+				                                	<td onclick="event.cancelBubble=true"><input type="checkbox" id="subscribeNo${cnt.index}" name="subscribeNo" value="${e.subscribeNo }" disabled></td>
+					                         </c:when>
+					                         <c:otherwise>
+				                                	<td onclick="event.cancelBubble=true"><input type="checkbox" class="common" id="subscribeNo${cnt.index}" name="subscribeNo" value="${e.subscribeNo }"></td>
+					                         </c:otherwise>
+					                         </c:choose>
+					                         
+					                         
+					                         
+					                                <td >${e.subscribeDate }</td>
+					                                <td>${e.subscribeNo }</td>
+					                                <td>${e.itemName }</td>
+					                                <td>${e.amount }</td>
+					                                <td>${e.memberId }</td>
+					                                
 		                                	<c:choose>
 				                                <c:when test="${e.deliveryStatus eq 'N' }">
-				                                	<td onclick="event.cancelBubble=true"><input type="checkbox" class="common" id="subscribeNo${cnt.index}" name="subscribeNo" value="${e.subscribeNo }"></td>
-					                                <td onclick="event.cancelBubble=true">${e.subscribeDate }</td>
-					                                <td id="cursor">${e.subscribeNo }</td>
-					                                <td onclick="event.cancelBubble=true">${e.itemName }</td>
-					                                <td onclick="event.cancelBubble=true">${e.amount }</td>
-					                                <td onclick="event.cancelBubble=true">${e.memberId }</td>
-				                                	<td onclick="event.cancelBubble=true">배송 대기</td>
+				                                	<td>배송 대기</td>
 				                                </c:when>
 				                                <c:when test="${e.deliveryStatus eq 'D' }">
-				                                	<td onclick="event.cancelBubble=true"><input type="checkbox" class="common" id="subscribeNo${cnt.index}" name="subscribeNo" value="${e.subscribeNo }"></td>
-					                                <td onclick="event.cancelBubble=true">${e.subscribeDate }</td>
-					                                <td id="cursor">${e.subscribeNo }</td>
-					                                <td onclick="event.cancelBubble=true">${e.itemName }</td>
-					                                <td onclick="event.cancelBubble=true">${e.amount }</td>
-					                                <td onclick="event.cancelBubble=true">${e.memberId }</td>
-				                                	<td onclick="event.cancelBubble=true">배송 중</td>
+				                                	<td>배송중</td>
 				                                </c:when>
 				                                <c:when test="${e.deliveryStatus eq 'Y' }">
-					                                <td onclick="event.cancelBubble=true"><input type="checkbox" id="subscribeNo${cnt.index}" name="subscribeNo" value="${e.subscribeNo }" disabled></td>
-					                                <td onclick="event.cancelBubble=true">${e.subscribeDate }</td>
-					                                <td id="cursor">${e.subscribeNo }</td>
-					                                <td onclick="event.cancelBubble=true">${e.itemName }</td>
-					                                <td onclick="event.cancelBubble=true">${e.amount }</td>
-					                                <td onclick="event.cancelBubble=true">${e.memberId }</td>
-				                                	<td onclick="event.cancelBubble=true">배송 완료</td>
+				                                	<td>배송 완료</td>
 				                                </c:when>
+				                               
 				                            </c:choose>
                            			 </tr>
                            		</c:forEach>
@@ -219,7 +208,7 @@ cursor: pointer;
 
                     <br>
 
-
+<c:if test="${!empty oList }">
                       <!------페이징 처리----->
                 <div class="page-center">
                     <ul class="pagination-t">
@@ -287,6 +276,8 @@ cursor: pointer;
                     </ul>
 
                 </div>
+                
+                </c:if>
 </div>
 
 
@@ -350,7 +341,7 @@ cursor: pointer;
    				data:{"sendArr":sendArr,"deliveryStatus":deliveryStatus},
    				success:function(data){
    					
-   					alert('도오오착');
+   				
    					getList();
    					        					
    				},
@@ -373,10 +364,11 @@ cursor: pointer;
      			var subscribeNo=$(this).children().eq(2).text();
      			var type="order";
       			 var page=${pi.currentPage };   
-      				 alert(subscribeNo);
-      				 alert(page);
+      			var category=$("#category").val();
+      			var type2=$("#type").val();
+      			var word=$("#word").val();
       				 
-         		location.href="oDetail.do?subscribeNo="+subscribeNo+"&page="+page+"&type="+type;
+         		location.href="oDetail.do?subscribeNo="+subscribeNo+"&page="+page+"&type="+type+"&type2="+type2+"&category="+category+"&word="+word;
      		})
      	})
      	
@@ -411,7 +403,7 @@ cursor: pointer;
    	 		var $checkBox;
    	 		var $th;
    	 		
-   	 				if(data.list!=null){
+   	 	if(data.list.length>0){
    	 	
 	   	 			 	for(var i in data.list){
 	   	 			 		

@@ -342,7 +342,7 @@ height:80%;
                           </c:if>
                           <c:if test="${empty list}">
                            	<tr>
-                           		<td colspan="5">등록된 상품이 없습니다.</td>
+                           		<td colspan="6">등록된 상품이 없습니다.</td>
                            	</tr>
                            </c:if>
                          </tbody>
@@ -541,6 +541,7 @@ height:80%;
     					if(data.result>0){
     						
     						alert('이미 추천된 상품입니다.')
+    						return false;
     						
     					}else{
     			
@@ -638,9 +639,7 @@ height:80%;
         	 var categoryNo=$("#categoryNo").val();
         	 var type=$("#type").val();
         	 var word=$("#word").val();
-        	 alert(categoryNo)
-        	 alert(type)
-        	 alert(word)
+        	
         	 
         	 if(type=="itemNo"){
         		 if(word.replace(/[0-9]/g, "").length > 0) {
@@ -665,8 +664,12 @@ height:80%;
        		 var itemNo=iNum;
        		 var page=${pi.currentPage };
        		 var type="itemList"
+       		 var categoryNo=$("#categoryNo").val();
+        	 var type2=$("#type").val();
+        	 var word=$("#word").val();
        		   
-        	location.href="itemDetail.do?itemNo="+itemNo+"&page="+page+"&type="+type;
+        	location.href="itemDetail.do?itemNo="+itemNo+"&page="+page+"&type="+type+"&type2="+type2+"&word="+word+"&categoryNo="+categoryNo;
+        			
  		}
         
         //상품 게시
@@ -711,11 +714,7 @@ height:80%;
     	 var type=$("#type").val();
     	 var word=$("#word").val();
     	 
-    	 alert(categoryNo);
-    	 alert(type);
-    	 alert(word);
-       	 
-       	
+   
        	
        	 
        	 $.ajax({
@@ -736,7 +735,7 @@ height:80%;
        	       			var itemNo=$(this).children().eq(1).text();
        	        		 var page=${pi.currentPage };   
        	        		 var type="itemList"
-       	        		 alert(itemNo);
+       	        		
        	           		location.href="itemDetail.do?itemNo="+itemNo+"&page="+page+"&type="+type;
        	       		})
        	        	
@@ -754,6 +753,9 @@ height:80%;
        	 		var $th;
        	 		var $itemDiscount;
        	 	
+       	 		
+       	 		
+       	 	if(data.list.length>0){
        	 				for(var i in data.list){
        	 					
        	 				$tr=$("<tr>");
@@ -778,7 +780,18 @@ height:80%;
        	 				$tableBody.append($tr);
        	 	
        	 				}
-       	 			
+       		}else{
+       	 		
+   	 			$tr=$("<tr>");
+	   	 		$td=$("<td colspan='6' onclick='event.cancelBubble=true'>").text("등록된 상품이 없습니다.");
+	   	 	
+		   
+		   	 	$tr.append($td);
+		   	 	$tableBody.append($tr);
+		   	 	
+		   	 	$page=$(".page-center");
+		   	 	$page.html("");
+   	 	}			
        	 			
        	 		
        	 	},
@@ -829,6 +842,8 @@ height:80%;
         				
         }
         
+    	  
+
     
     
      //선택 삭제
@@ -846,14 +861,44 @@ height:80%;
     			}
     		}
     		
+    		
+    		
     		$.ajax({
-				url:"iDelete.do",
+				url:"recommendChk.do",
 				traditional:true,
-				data:{"sendArr":sendArr,"page":page},
+				data:{"sendArr":sendArr,"sendCnt":sendCnt,"page":page},
 				success:function(data){
 					
-					getList();
-					        					
+					
+				
+					     if(data.result>0){
+					    	 
+					    	 alert("추천 상품이 포함되어있습니다. 추천 상품 해제 후 삭제해주세요.")
+					    	 return false;
+					    	 
+					     }else{			
+			
+    
+							    		$.ajax({
+											url:"iDelete.do",
+											traditional:true,
+											data:{"sendArr":sendArr,"page":page},
+											success:function(data){
+												
+												
+												getList();
+												        					
+											},
+											error:function(request, status, errorData){
+							                    alert("error code: " + request.status + "\n"
+								                           +"message: " + request.responseText
+								                           +"error: " + errorData);
+								                  }   
+										});
+		    		
+					     }
+    		
+    		
 				},
 				error:function(request, status, errorData){
                     alert("error code: " + request.status + "\n"
@@ -861,6 +906,17 @@ height:80%;
 	                           +"error: " + errorData);
 	                  }   
 			});
+
+
+    		
+    		
+    		
+    		
+    		
+    		
+    		
+    		
+    		
     		
     	} 
     	

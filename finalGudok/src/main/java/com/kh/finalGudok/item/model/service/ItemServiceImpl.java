@@ -753,5 +753,9 @@ public class ItemServiceImpl implements ItemService {
 	public ArrayList<Item> selectHomeRecommendList() {
 		return iDao.selectHomeRecommendList();
 	}
+	
+	public int updateItemBannerStatus(int i) {
+		return iDao.updateItemBannerStatus(i);
+	}
 
 }
