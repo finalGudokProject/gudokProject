@@ -303,6 +303,8 @@
 	      <br><br><br>
 	
 	      <div class="pointList" style="width:80%;">
+	      	<h5 style="text-align:right;">사용 가능 적립금 : ${loginUser.point }</h5>
+	      	<br>
 	        <table>
 	          <tr>
 	            <td style="width: 20%;" class="top bottom">주문일자</td>

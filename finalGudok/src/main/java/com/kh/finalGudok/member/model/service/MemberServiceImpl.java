@@ -12,6 +12,7 @@ import com.kh.finalGudok.item.model.vo.PageInfo;
 
 import com.kh.finalGudok.member.model.dao.MemberDao;
 import com.kh.finalGudok.member.model.vo.AdminBoard;
+import com.kh.finalGudok.member.model.vo.AdminCancle;
 import com.kh.finalGudok.member.model.vo.AdminExchange;
 import com.kh.finalGudok.member.model.vo.AdminMember;
 import com.kh.finalGudok.member.model.vo.AdminPayment;
@@ -31,6 +32,7 @@ import com.kh.finalGudok.member.model.vo.Reply;
 import com.kh.finalGudok.member.model.vo.Review;
 import com.kh.finalGudok.member.model.vo.Search;
 import com.kh.finalGudok.member.model.vo.Subscribe;
+import com.kh.finalGudok.member.model.vo.Visitor;
 import com.kh.finalGudok.member.model.vo.Withdrawal;
 
 @Service("mService")
@@ -553,9 +555,57 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
+	public ArrayList<AdminMember> selectMemberPaymentList(String startDay) {
+		return mDao.selectMemberPaymentList(startDay);
+	}
+
+	@Override
+	public int updateMemberGrade(AdminMember adminMember) {
+		return mDao.updateMemberGrade(adminMember);
+	}
+
+	@Override
+	public ArrayList<Grade> selectGradeInfo() {
+		return mDao.selectGradeInfo();
+	}
+
+	
+
 	public int selectPointMember(AdminSubscribe adminSubscribe) {
 		return mDao.selectPointMember(adminSubscribe);
 	}
+
+	@Override
+	public int updateSubscribeDestination(Delivery d) {
+		return mDao.updateSubscribeDestination(d);
+	}
+
+	@Override
+	public Integer selectSubscribeCancelChart(Search search) {
+		return mDao.selectSubscribeCancelChart(search);
+	}
+
+	@Override
+	public int getSubscribeCancelCnt(Search s) {
+		return mDao.getSubscribeCancelCnt(s);
+	}
+
+	@Override
+	public ArrayList<AdminCancle> selectSubscribeCancel(Search s, PageInfo pi) {
+		return mDao.selectSubscribeCancel(s,pi);
+	}
+
+
+	public int selectUsedPoint(int memberNo) {
+		return mDao.selectUsedPoint(memberNo);
+	}
+
+
+	@Override
+	public int updateMyPoint(Member loginUser) {
+		return mDao.updateMyPoint(loginUser);
+	}
+
 
 
 

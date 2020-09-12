@@ -384,13 +384,14 @@
 	</select>
 	<select id="selectEventMain" resultMap="bannerItemResultSet">
 		SELECT *
-            FROM(SELECT EVENT_NO,EVENT_NAME,COUNT(*) AS ITEM_COUNT
+            FROM( SELECT  E.EVENT_NO,E.EVENT_NAME,COUNT(ITEM_NO) AS ITEM_COUNT
                FROM(SELECT I.ITEM_NO,I.ITEM_DISCOUNT,I.EVENT_NO,E.EVENT_NAME,E.EVENT_STATUS
                    FROM EVENT_ITEM I
                    LEFT JOIN EVENT E ON(E.EVENT_NO=I.EVENT_NO) 
-                   WHERE E.EVENT_STATUS='Y' )
-               GROUP BY EVENT_NAME, EVENT_NO     
-               ORDER BY EVENT_NO DESC )
+                   WHERE E.EVENT_STATUS='Y' ) F
+               FULL JOIN EVENT E ON (F.EVENT_NO=E.EVENT_NO)
+               GROUP BY E.EVENT_NO,E.EVENT_NAME
+               ORDER BY E.EVENT_NO DESC )
                <![CDATA[
             WHERE ROWNUM<5
 	]]>
@@ -398,11 +399,11 @@
 	<select id="selectRecommendCnt" resultType="_int">
 		SELECT COUNT(*)
 		FROM ITEM
-		WHERE ITEM_EVENT_STATUS='R'
+		WHERE ITEM_recommend='R'
 	</select>
 	<update id="updateItemRecommend" parameterType="java.util.List">
 		UPDATE ITEM
-		SET ITEM_EVENT_STATUS='R'
+		SET ITEM_recommend='R'
 		WHERE ITEM_NO IN 
 			<foreach item="e" index="index" collection="array" open="(" separator="," close=")">
 				#{e}
@@ -412,7 +413,7 @@
 	<select id="selectRecommendList" resultMap="bannerItemResultSet">
 		select *
 		from item
-		where item_event_status='R'
+		where item_recommend='R'
 	</select>
 
 	<update id="updateItemEventStatusN" parameterType="java.util.ArrayList">
@@ -424,7 +425,19 @@
 		</foreach>
 	
 	</update>
-	
-	
+	<update id="updateRecommendStatusN" parameterType="int">
+		UPDATE ITEM
+	    SET ITEM_RECOMMEND='C'
+	    WHERE ITEM_NO=#{value}
+	</update>
+	<select id="selectRecommendChk" parameterType="string" resultType="_int">
+		select count(*)
+		from(
+		select *
+		from item
+		where item_recommend='R'
+		)
+		where item_no=#{value}
+	</select>
 	
 </mapper>

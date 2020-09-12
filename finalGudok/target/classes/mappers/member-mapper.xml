@@ -51,6 +51,9 @@
 		<result property="itemName" column="ITEM_NAME" />
 		<result property="subscribeDate" column="SUBSCRIBE_DATE" />
 		<result property="exchangeStatus" column="EXCHANGE_STATUS" />
+		<result property="address1" column="ADDRESS_1" />
+		<result property="address2" column="ADDRESS_2" />
+		<result property="address3" column="ADDRESS_3" />
 	</resultMap>
 
 	<resultMap type="mCart" id="cartResultSet">
@@ -137,7 +140,7 @@
 		<result property="emailStatus" column="EMAIL_STATUS" />
 		<result property="point" column="POINT" />
 		<result property="gradeNo" column="GRADE_NO" />
-		<result property="totalPay" column="TOTAL_PAY" />
+		<result property="totalPay" column="TOTAL_PAYMENT" />
 		<result property="secessionDate" column="SECESSION_DATE" />
 		<result property="secessionContent" column="SECESSION_CONTENT" />
 	</resultMap>
@@ -228,6 +231,10 @@
 		<result property="email" column="EMAIL" />
 		<result property="exchangeStatus" column="EXCHANGE_STATUS" />
 		<result property="itemName" column="ITEM_NAME" />
+		<result property="address1" column="ADDRESS_1" />
+		<result property="address2" column="ADDRESS_2" />
+		<result property="address3" column="ADDRESS_3" />
+		<result property="deliveryStatus" column="DELIVERY_STATUS"/>
 	</resultMap>
 
 	<resultMap type="mCancle" id="cancleResultSet">
@@ -236,6 +243,18 @@
 		<result property="cancleCategory" column="CANCLE_CATEGORY" />
 		<result property="cancleContent" column="CANCLE_CONTENT" />
 		<result property="cancleDate" column="CANCLE_DATE" />
+	</resultMap>
+	
+	<resultMap type="AdminCancle" id="adminCancleResultSet">
+		<id property="cancleNo" column="CANCLE_NO" />
+		<result property="subscribeNo" column="SUBSCRIBE_NO" />
+		<result property="cancleCategory" column="CANCLE_CATEGORY" />
+		<result property="cancleContent" column="CANCLE_CONTENT" />
+		<result property="cancleDate" column="CANCLE_DATE" />
+		<result property="memberId" column="MEMBER_ID" />
+		<result property="itemName" column="ITEM_NAME" />
+		<result property="subPrice" column="SUB_PRICE" />
+		
 	</resultMap>
 
 	<select id="selectOne" parameterType="Member"
@@ -258,9 +277,8 @@
 		AND MEMBER_STATUS='N'
 	</select>
 
-	<select id="pointList" parameterType="int"
-		resultMap="pointResultSet">
-		SELECT P.*, S.SUBSCRIBE_DATE, I.ITEM_NAME
+	<select id="pointList" parameterType="int" resultMap="pointResultSet">
+		SELECT P.*, S.SUBSCRIBE_DATE, I.ITEM_NAME, M.POINT AS MEMBER_POINT
 		FROM POINT P
 		JOIN SUBSCRIBE S ON (P.SUBSCRIBE_NO = S.SUBSCRIBE_NO)
 		JOIN ITEM I ON (I.ITEM_NO = S.ITEM_NO)
@@ -292,7 +310,7 @@
 
 	<select id="deliveryList" parameterType="int"
 		resultMap="deliveryResultSet">
-		SELECT D.*, I.ITEM_NAME, S.SUBSCRIBE_DATE, S.EXCHANGE_STATUS
+		SELECT D.*, I.ITEM_NAME, S.SUBSCRIBE_DATE, S.EXCHANGE_STATUS, S.ADDRESS_1, S.ADDRESS_2, S.ADDRESS_3
 		FROM DELIVERY D
 		JOIN SUBSCRIBE S ON (D.SUBSCRIBE_NO = S.SUBSCRIBE_NO)
 		JOIN ITEM I ON (S.ITEM_NO = I.ITEM_NO)
@@ -362,7 +380,7 @@
 	<insert id="insertSecession" parameterType="Withdrawal">
 		INSERT INTO SECESSION
 		VALUES(SEQ_SECESSION.NEXTVAL, #{memberNo}, #{memberId}, #{email},
-		#{secessionCategory}, #{secessionContent}, DEFAULT)
+		#{secessionCategory}, #{secessionContent}, SYSDATE)
 	</insert>
 
 	<select id="selectInquiryList" parameterType="int"
@@ -567,16 +585,16 @@
 	</select>
 	<select id="selectMemberPay" parameterType="_int"
 		resultMap="adminPaymentResultSet">
-		SELECT PAYMENT_DATE, ITEM_NAME, AMOUNT,
-		((ITEM_PRICE*AMOUNT)-POINT) AS TOTAL_PAYMENT
-		FROM PAYLIST
+		SELECT S.PAYMENT_DATE, I.ITEM_NAME, S.AMOUNT,S.SUB_PRICE AS TOTAL_PAYMENT
+		FROM SUBSCRIBE S
+		LEFT JOIN ITEM I ON(S.ITEM_NO=I.ITEM_NO)
 		WHERE
 		MEMBER_NO=#{memberNo}
 	</select>
 	<select id="selectMemberPayCnt" parameterType="_int"
 		resultType="_int">
 		SELECT COUNT(*)
-		FROM PAYLIST
+		FROM SUBSCRIBE
 		WHERE MEMBER_NO=#{memberNo}
 	</select>
 
@@ -688,24 +706,21 @@
 		
 	</select>
 
-	<select id="selectSubscribeList" resultMap="subscribeResultSet"
-		parameterType="int">
-		SELECT S.*, I.ITEM_NAME
+	<select id="selectSubscribeList" resultMap="subscribeResultSet" parameterType="int">
+		SELECT S.*, I.ITEM_NAME, D.DELIVERY_STATUS
 		FROM SUBSCRIBE S
-		JOIN ITEM I ON
-		(S.ITEM_NO = I.ITEM_NO)
-		WHERE MEMBER_NO=#{memberNo} AND
-		SUBSCRIBE_STATUS='N'
+		JOIN ITEM I ON (S.ITEM_NO = I.ITEM_NO)
+		JOIN DELIVERY D ON (D.SUBSCRIBE_NO = S.SUBSCRIBE_NO)
+		WHERE MEMBER_NO=#{memberNo} AND SUBSCRIBE_STATUS='N'
 	</select>
 
 	<select id="selectOrderList" resultMap="adminSubscribeResultSet">
 		select *
 		from(
-		SELECT *
+		SELECT S.*,I.ITEM_NAME,D.DELIVERY_STATUS
 		FROM SUBSCRIBE S
 		LEFT JOIN ITEM I ON(S.ITEM_NO=I.ITEM_NO)
 		LEFT JOIN DELIVERY D ON(S.SUBSCRIBE_NO=D.SUBSCRIBE_NO)
-		LEFT JOIN PAYMENT P ON(S.SUBSCRIBE_NO=P.SUBSCRIBE_NO)
 		<where>
 			<if test="category1 !=null">
 				DELIVERY_STATUS=#{category1}
@@ -730,7 +745,7 @@
 	<select id="selectOrderCnt" resultType="_int">
 		select count(*)
 		from(
-		SELECT S.SUBSCRIBE_NO, I.ITEM_NAME, S.MEMBER_ID
+		SELECT S.SUBSCRIBE_NO, I.ITEM_NAME, S.MEMBER_ID,D.DELIVERY_STATUS
 		FROM SUBSCRIBE S
 		LEFT JOIN DELIVERY D ON(S.SUBSCRIBE_NO=D.SUBSCRIBE_NO)
 		LEFT JOIN ITEM I ON(S.ITEM_NO=I.ITEM_NO)
@@ -771,14 +786,13 @@
 		LEFT JOIN ITEM I ON(S.ITEM_NO=I.ITEM_NO)
 		LEFT JOIN MEMBER M ON(S.MEMBER_NO=M.MEMBER_NO)
 		LEFT JOIN DELIVERY D ON(S.SUBSCRIBE_NO=D.SUBSCRIBE_NO)
-		LEFT JOIN PAYMENT P ON(S.SUBSCRIBE_NO=P.SUBSCRIBE_NO)
 		WHERE S.SUBSCRIBE_NO=#{subscribeNo}
 	</select>
 
 	<select id="selectPayment" parameterType="_int"
 		resultMap="adminPaymentResultSet">
 		SELECT *
-		FROM PAYMENT P
+		FROM subscribe p
 		LEFT JOIN ITEM I ON(P.ITEM_NO=I.ITEM_NO)
 		WHERE SUBSCRIBE_NO=#{subscribeNo}
 	</select>
@@ -787,28 +801,25 @@
 	<select id="selectTotalPayment" parameterType="_int" resultType="integer">
 
 
-		SELECT SUM((ITEM_PRICE*AMOUNT)-POINT) AS TOTAL_PAYMENT
+		SELECT SUM(SUB_PRICE) AS TOTAL_PAYMENT
 		FROM
-		PAYMENT P
-		LEFT JOIN ITEM I ON(P.ITEM_NO=I.ITEM_NO)
+		SUBSCRIBE
 		GROUP BY SUBSCRIBE_NO
 		HAVING
 		SUBSCRIBE_NO=#{subscribeNo}
 	</select>
 
 	<select id="selectTotalPay" parameterType="_int" resultType="int">
-		SELECT SUM((ITEM_PRICE*AMOUNT)-POINT) AS TOTAL_PAYMENT
-		FROM PAYLIST
+		SELECT SUM(SUB_PRICE) AS TOTAL_PAYMENT
+		FROM SUBSCRIBE
 		GROUP BY MEMBER_NO
 		HAVING MEMBER_NO=#{value}
 	</select> 
 	
 	<select id="selectItemTotalP" parameterType="_int" resultType="int">
 
-		SELECT SUM(ITEM_PRICE*AMOUNT) AS TOTAL_PAYMENT
-		FROM PAYMENT
-		P
-		LEFT JOIN ITEM I ON(P.ITEM_NO=I.ITEM_NO)
+		SELECT SUM(SUB_PRICE) AS TOTAL_PAYMENT
+		FROM SUBSCRIBE
 		GROUP BY SUBSCRIBE_NO
 		HAVING
 		SUBSCRIBE_NO=#{subscribeNo}
@@ -827,7 +838,7 @@
 		FROM (SELECT *
 		FROM EXCHANGE
              <![CDATA[
-            WHERE EXCHANGE_DATE >= #{lastDay} AND EXCHANGE_DATE < #{startDay}
+            WHERE EXCHANGE_DATE >= #{lastDay} AND EXCHANGE_DATE <= #{startDay}
              ]]>
 		)
 		GROUP BY EXCHANGE_CATEGORY
@@ -912,10 +923,9 @@
 	<select id="selectPaymentList" parameterType="java.util.List"
 		resultMap="adminPaymentResultSet">
 		SELECT TO_CHAR(PAYMENT_DATE,'yyyy-mm-dd') AS
-		PAYMENT_DATE,NVL(SUM(ITEM_PRICE*AMOUNT),0) AS TOTAL_PAYMENT,COUNT(*)
+		PAYMENT_DATE,SUM(SUB_PRICE) AS TOTAL_PAYMENT,COUNT(*)
 		AS TOTAL_COUNT
-		FROM PAYMENT P
-		LEFT JOIN ITEM I ON(P.ITEM_NO=I.ITEM_NO)
+		FROM SUBSCRIBE
 		GROUP BY TO_CHAR(PAYMENT_DATE,'yyyy-mm-dd')
 		HAVING TO_CHAR(PAYMENT_DATE,'yyyy-mm-dd') IN
 		<foreach item="i" index="index" collection="list" open="("
@@ -928,12 +938,13 @@
 	<select id="selectSalesCnt" parameterType="object"
 		resultType="_int">
 		SELECT COUNT(*)
-		FROM(SELECT PAYMENT_DATE,COUNT(*)
-		FROM PAYMENT P
+		FROM(
+        SELECT PAYMENT_DATE,COUNT(*)
+		FROM SUBSCRIBE
 		GROUP BY PAYMENT_DATE
-			    <![CDATA[
-			    HAVING PAYMENT_DATE >= #{startDay} AND PAYMENT_DATE <= #{lastDay})
-			    ]]>
+<![CDATA[
+			    HAVING TO_CHAR(PAYMENT_DATE,'yyyy-mm-dd') >=#{startDay} AND TO_CHAR(PAYMENT_DATE,'yyyy-mm-dd') <= #{lastDay})
+			  ]]>
 	</select>
 
 	<select id="selectYearList" parameterType="object"
@@ -950,10 +961,9 @@
 		SELECT COUNT(*)
 		FROM(
 		SELECT TO_CHAR(PAYMENT_DATE,'yyyy') AS
-		PAYMENT_DATE,NVL(SUM(ITEM_PRICE*AMOUNT),0) AS TOTAL_PAYMENT,COUNT(*)
+		PAYMENT_DATE,SUM(SUB_PRICE) AS TOTAL_PAYMENT,COUNT(*)
 		AS TOTAL_COUNT
-		FROM PAYMENT P
-		LEFT JOIN ITEM I ON(P.ITEM_NO=I.ITEM_NO)
+		FROM subscribe
 		GROUP BY TO_CHAR(PAYMENT_DATE,'yyyy')
 		HAVING
 		<foreach item="i" index="index" collection="list" open="("
@@ -966,10 +976,9 @@
 	<select id="selectPaymentYearsList"
 		parameterType="java.util.List" resultMap="adminPaymentResultSet">
 		SELECT TO_DATE(TO_CHAR(PAYMENT_DATE,'yyyy'),'yyyy') AS
-		PAYMENT_DATE,NVL(SUM(ITEM_PRICE*AMOUNT),0) AS TOTAL_PAYMENT,COUNT(*)
+		PAYMENT_DATE,SUM(SUB_PRICE) AS TOTAL_PAYMENT,COUNT(*)
 		AS TOTAL_COUNT
-		FROM PAYMENT P
-		LEFT JOIN ITEM I ON(P.ITEM_NO=I.ITEM_NO)
+		FROM subscribe
 		GROUP BY TO_CHAR(PAYMENT_DATE,'yyyy')
 		HAVING
 		<foreach item="i" index="index" collection="list" open="("
@@ -984,10 +993,9 @@
 		SELECT COUNT(*)
 		FROM(
 		SELECT TO_CHAR(PAYMENT_DATE,'yyyy-MM') AS
-		PAYMENT_DATE,NVL(SUM(ITEM_PRICE*AMOUNT),0) AS TOTAL_PAYMENT,COUNT(*)
+		PAYMENT_DATE,SUM(SUB_PRICE) AS TOTAL_PAYMENT,COUNT(*)
 		AS TOTAL_COUNT
-		FROM PAYMENT P
-		LEFT JOIN ITEM I ON(P.ITEM_NO=I.ITEM_NO)
+		FROM subscribe
 		GROUP BY TO_CHAR(PAYMENT_DATE,'yyyy-MM')
 		HAVING
 		<foreach item="i" index="index" collection="list" open="("
@@ -1000,10 +1008,9 @@
 	<select id="selectPaymentMonthsList"
 		parameterType="java.util.List" resultMap="adminPaymentResultSet">
 		SELECT TO_DATE(TO_CHAR(PAYMENT_DATE,'yyyy-MM'),'yyyy-MM') AS
-		PAYMENT_DATE,NVL(SUM(ITEM_PRICE*AMOUNT),0) AS TOTAL_PAYMENT,COUNT(*)
+		PAYMENT_DATE,SUM(SUB_PRICE) AS TOTAL_PAYMENT,COUNT(*)
 		AS TOTAL_COUNT
-		FROM PAYMENT P
-		LEFT JOIN ITEM I ON(P.ITEM_NO=I.ITEM_NO)
+		FROM subscribe
 		GROUP BY TO_CHAR(PAYMENT_DATE,'yyyy-MM')
 		HAVING
 		<foreach item="i" index="index" collection="list" open="("
@@ -1066,16 +1073,14 @@
 	<select id="selectPaymentCategoryList" parameterType="object"
 		resultMap="adminPaymentResultSet">
 
-		SELECT CATEGORY_NO,NVL(SUM(ITEM_PRICE*AMOUNT),0) AS
-		TOTAL_PAYMENT,COUNT(*) AS TOTAL_COUNT
+		SELECT CATEGORY_NO,SUM(SUB_PRICE) AS TOTAL_PAYMENT,COUNT(*) AS TOTAL_COUNT
 		FROM(
-		SELECT
-		I.*,P.PAYMENT_NO,P.AMOUNT,P.POINT,P.SUBSCRIBE_NO,P.PAYMENT_DATE,P.MEMBER_NO,P.MEMBER_ID,P.EMAIL
-		FROM PAYMENT P
-		LEFT JOIN ITEM I ON (I.ITEM_NO=P.ITEM_NO)
-		WHERE P.PAYMENT_DATE <![CDATA[>= ]]>#{startDay}
-		AND P.PAYMENT_DATE <![CDATA[ <= ]]>#{lastDay}
-		AND CATEGORY_NO=#{category1}
+		SELECT *
+		FROM SUBSCRIBE S
+        LEFT JOIN ITEM I ON(S.ITEM_NO=I.ITEM_NO)
+		WHERE S.PAYMENT_DATE <![CDATA[>= ]]>#{startDay}
+		AND S.PAYMENT_DATE <![CDATA[ <= ]]>#{lastDay}
+		AND I.CATEGORY_NO=#{category1}
 
 		)
 		GROUP BY CATEGORY_NO
@@ -1086,30 +1091,36 @@
 
 		select count(*)
 		from (
-		SELECT *
-		FROM payment p
+		SELECT p.*,i.item_name
+		FROM subscribe p
 		left join item i on(i.item_no=p.item_no)
 		where
 
 		p.PAYMENT_DATE <![CDATA[>= ]]>
 		#{startDay}
 
-		and p.PAYMENT_DATE <![CDATA[<]]>
+		and p.PAYMENT_DATE <![CDATA[<=]]>
 		#{lastDay}
+		
+		<if test="categoryNo!=null">
+			<trim prefix="AND">
+				CATEGORY_NO=#{categoryNo}
+			</trim>
+		</if>
 		)
 
 		<where>
 			<if test="subscribeNo!=null">
-				or subscribe_no = #{subscribeNo}
+				or subscribe_no like '%${subscribeNo}%'
 			</if>
 			<if test="itemNo!=null">
-				or item_no = #{itemNo}
+				or item_no like '%${itemNo}%'
 			</if>
 			<if test="itemName!=null">
-				or item_name = #{itemName}
+				or item_name like '%${itemName}%'
 			</if>
 			<if test="memberId!=null">
-				or member_id = #{memberId}
+				or member_id  like '%${memberId}%'
 			</if>
 		</where>
 		order by payment_date desc
@@ -1121,12 +1132,11 @@
 		select *
 		from(
 		SELECT
-		I.*,P.PAYMENT_DATE,P.PAYMENT_NO,P.AMOUNT,P.POINT,P.SUBSCRIBE_NO,P.MEMBER_NO,P.MEMBER_ID,P.EMAIL,(i.ITEM_PRICE*p.AMOUNT-p.POINT)
-		AS TOTAL_PAYMENT
-		FROM PAYMENT P
+		I.*,P.PAYMENT_DATE,P.AMOUNT,P.SUBSCRIBE_NO,P.MEMBER_NO,P.MEMBER_ID,P.EMAIL,SUB_PRICE AS TOTAL_PAYMENT
+		FROM SUBSCRIBE P
 		LEFT JOIN ITEM I ON (I.ITEM_NO=P.ITEM_NO)
 		WHERE P.PAYMENT_DATE <![CDATA[>= ]]>
-		to_date(#{startDay},'yyyy-mm-dd') AND P.PAYMENT_DATE <![CDATA[<]]>
+		to_date(#{startDay},'yyyy-mm-dd') AND P.PAYMENT_DATE <![CDATA[<=]]>
 		to_date(#{lastDay},'yyyy-mm-dd')
 		<if test="categoryNo!=null">
 			<trim prefix="AND">
@@ -1136,18 +1146,17 @@
 		order by p.payment_date
 		)
 		<where>
-
 			<if test="subscribeNo!=null">
-				or subscribe_no = #{subscribeNo}
+				or subscribe_no like '%${subscribeNo}%'
 			</if>
 			<if test="itemNo!=null">
-				or item_no = #{itemNo}
+				or item_no like '%${itemNo}%'
 			</if>
 			<if test="itemName!=null">
-				or item_name = #{itemName}
+				or item_name like '%${itemName}%'
 			</if>
 			<if test="memberId!=null">
-				or member_id = #{memberId}
+				or member_id  like '%${memberId}%'
 			</if>
 		</where>
 		order by payment_date desc
@@ -1155,7 +1164,7 @@
 
 	<insert id="insertVisitor" parameterType="object">
 		INSERT INTO VISITOR
-		VALUES(SEQ_VID.NEXTVAL,#{visitIp},SYSDATE,#{visitRefer},#{visitAgent})
+		VALUES(SEQ_VID.NEXTVAL,#{visitIp},sysdate,#{visitRefer},#{visitAgent})
 	</insert>
 
 	<select id="getVisitTodayCount" resultType="_int">
@@ -1174,7 +1183,7 @@
 		SELECT COUNT(*)
 		FROM
 		MEMBER
-		WHERE ENROLL_DATE=#{value}
+		WHERE to_char(ENROLL_DATE,'yyyy-mm-dd') =#{value}
 	</select>
 	<select id="selectTodayVisitor" resultType="_int">
 		SELECT count(*)
@@ -1186,9 +1195,9 @@
 	<select id="selectPaymentMainList"
 		resultMap="adminPaymentResultSet">
 		SELECT TO_CHAR(PAYMENT_DATE,'yyyy-mm-dd') AS
-		PAYMENT_DATE,NVL(SUM(ITEM_PRICE*AMOUNT),0) AS TOTAL_PAYMENT,COUNT(*)
+		PAYMENT_DATE,SUM(SUB_PRICE) AS TOTAL_PAYMENT,COUNT(*)
 		AS TOTAL_COUNT
-		FROM PAYMENT P
+		FROM SUBSCRIBE P
 		LEFT JOIN ITEM I ON(P.ITEM_NO=I.ITEM_NO)
 		GROUP BY TO_CHAR(PAYMENT_DATE,'yyyy-mm-dd')
 		HAVING TO_CHAR(PAYMENT_DATE,'yyyy-mm-dd') IN
@@ -1205,7 +1214,7 @@
 		SELECT *
 		FROM EXCHANGE
 		WHERE EXCHANGE_STATUS='N'
-		ORDER BY EXCHANGE_NO ASC
+		ORDER BY EXCHANGE_NO desc
 		)
              <![CDATA[
          WHERE ROWNUM<5
@@ -1221,8 +1230,8 @@
 		FROM SUBSCRIBE S
 		LEFT JOIN DELIVERY D ON(S.SUBSCRIBE_NO=D.SUBSCRIBE_NO)
 		left join item i on(s.item_no=i.item_no)
-		WHERE S.SUBSCRIBE_STATUS='N' AND S.SUBSCRIBE_STATUS='N'
-		ORDER BY S.SUBSCRIBE_NO ASC
+		WHERE S.SUBSCRIBE_STATUS='N' AND d.delivery_STATUS='N'
+		ORDER BY S.SUBSCRIBE_NO desc
 		)
                     <![CDATA[
                 WHERE ROWNUM<5
@@ -1257,6 +1266,8 @@
                   ]]>
 
 	</select>
+	
+
 
 	<update id="changeCycle" parameterType="mSubscribe">
 		UPDATE SUBSCRIBE
@@ -1332,9 +1343,116 @@
         LEFT JOIN POINT P ON(S.SUBSCRIBE_NO=P.SUBSCRIBE_NO)
         WHERE S.SUBSCRIBE_NO=#{value}
 	</select>
+
+	<select id="getMemberCount" resultType="_int">
+		select count(*)
+		from member
+	</select>
+	<select id="selectMemberPaymentList" resultMap="adminMemberResultSet">
+		SELECT *
+        FROM MEMBER M
+        LEFT JOIN 
+                (SELECT MEMBER_NO,SUM(SUB_PRICE) AS TOTAL_PAYMENT
+                FROM 
+                (SELECT *
+                FROM SUBSCRIBE
+                WHERE TO_CHAR(PAYMENT_DATE,'YYYY-MM-DD') LIKE '%${value}%' )
+        		GROUP BY MEMBER_NO) S ON (M.MEMBER_NO=S.MEMBER_NO)
+	
+	</select>
+	<update id="updateMemberGrade">
+		update member
+		set grade_no = #{gradeNo}
+		where member_no=#{memberNo}
+	</update>
+	<select id="selectGradeInfo" resultMap="gradeResultSet">
+		select *
+		from grade
+		order by grade_no
+	</select>
+
 	<select id="selectPointMember" parameterType="object" resultType="_int">
 		SELECT MEMBER_NO
         FROM SUBSCRIBE
         WHERE SUBSCRIBE_NO=#{subscribeNo}
 	</select>
+	
+	<update id="updateSubscribeDestination" parameterType="mDelivery">
+		UPDATE SUBSCRIBE
+		SET ADDRESS_1=#{address1}, ADDRESS_2=#{address2}, ADDRESS_3=#{address3}
+		WHERE SUBSCRIBE_NO=#{subscribeNo}
+	</update>
+
+	<select id="selectSubscribeCancelChart" parameterType="object" resultType="int">
+	        	SELECT COUNT(*)
+		FROM (SELECT *
+		FROM cancle
+   <![CDATA[
+            WHERE cancle_date >= #{lastDay} AND cancle_date <= #{startDay}
+             ]]>
+		)
+		GROUP BY cancle_category
+		HAVING cancle_category=#{temp1}
+	
+	</select>
+	<select id="getSubscribeCancelCnt" parameterType="object" resultType="_int">
+	  SELECT COUNT(*)
+		FROM(
+		SELECT E.*,S.MEMBER_ID,S.SUB_PRICE,I.ITEM_NAME
+		FROM CANCLE E
+		LEFT JOIN SUBSCRIBE S ON (E.SUBSCRIBE_NO=S.SUBSCRIBE_NO)
+		LEFT JOIN ITEM I ON (S.ITEM_NO=I.ITEM_NO)
+		ORDER BY E.CANCLE_DATE DESC
+		)
+		<where>
+			<if test="subscribeNo!=null">
+				subscribe_no like <![CDATA['%${subscribeNo}%']]>
+			</if>
+			<if test="word!=null">
+				or CANCLE_content LIKE <![CDATA['%${word}%']]>
+			</if>
+			<if test="memberId!=null">
+				or member_Id  LIKE <![CDATA['%${memberId}%']]>
+			</if>
+		</where>
+	</select>
+	<select id="selectSubscribeCancel" parameterType="object" resultMap="adminCancleResultSet">
+	  SELECT *
+		FROM(
+		SELECT E.*,S.MEMBER_ID,S.SUB_PRICE,I.ITEM_NAME
+		FROM CANCLE E
+		LEFT JOIN SUBSCRIBE S ON (E.SUBSCRIBE_NO=S.SUBSCRIBE_NO)
+		LEFT JOIN ITEM I ON (S.ITEM_NO=I.ITEM_NO)
+		ORDER BY E.CANCLE_DATE DESC
+		)
+		<where>
+			<if test="subscribeNo!=null">
+				subscribe_no like <![CDATA['%${subscribeNo}%']]>
+			</if>
+			<if test="word!=null">
+				or CANCLE_content LIKE <![CDATA['%${word}%']]>
+			</if>
+			<if test="memberId!=null">
+				or member_Id  LIKE <![CDATA['%${memberId}%']]>
+			</if>
+		</where>
+	
+	
+	
+	</select>
+	
+
+	
+	<select id="selectUsedPoint" parameterType="_int" resultType="_int">
+		SELECT POINT
+		FROM PAYMENT
+		WHERE MEMBER_NO = #{memberNo}
+	</select>
+	
+	<update id="updateMyPoint" parameterType="Member">
+		UPDATE MEMBER
+		SET POINT = #{point}
+		WHERE MEMBER_NO = #{memberNo}
+	</update>
+
 </mapper>

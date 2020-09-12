@@ -165,11 +165,19 @@ display:inline-block !important;
 		</c:if>
 		<c:if test="${!empty sessionScope.loginUser }">
 			<ul class="menu-list">
-				<li><c:out value="${loginUser.memberName }님 환영합니다" /></li>
+				<c:if test="${loginUser.memberId ne 'admin' }">
+					<li><c:out value="${loginUser.memberName }님 환영합니다" /></li>
+				</c:if>
+				<c:if test="${loginUser.memberId eq 'admin' }">
+					<li><c:out value="${loginUser.memberName }님 환영합니다" /></li>
+					<li><a href='aMain.do'>관리자 페이지</a></li>
+				</c:if>
+				
+				
 				<c:url var="slist" value="subscribeView.do">
 					<c:param name="memberNo" value="${loginUser.memberNo}"/>
 				</c:url> 
-				<li><a href="${slist}">마이페이지</li>
+				<li><a href="${slist}">마이페이지</a></li>
 				<li><a href="logout.do">로그아웃</a></li>
 				<li><a href="noticeList.do">고객센터</a></li>
 				<li><a href="#">Who is JH?</a></li>
@@ -251,6 +259,7 @@ display:inline-block !important;
           </form>
         </div>
 	</nav>
+	
 
 	<script
        src="https://code.jquery.com/jquery-3.4.1.min.js"

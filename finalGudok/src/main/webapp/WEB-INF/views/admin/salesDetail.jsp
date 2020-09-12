@@ -61,24 +61,63 @@ input, select,textarea{
 			      <input type="hidden" id="type" name="type" value="${type }">
 			      <input type="hidden" id="type2" name="type2" value="${type2 }">
 			      <input type="hidden" id="categoryNo" name="categoryNo" value="${categoryNo }">
-			       <c:out value="${startDay}"/>
-			      <c:out value="${lastDay}"/>
-			      <c:out value="${startD}"/>
-			      <c:out value="${type }"/>
-			      <c:out value="${categoryNo }"/>
-		
-			   
-					
+			
+		<c:out value="${category }"/>
                 </div>
                 <div style="float:right;">
-                    <select id="category" name="category" style="width:200px">
-                        <option value="" selected>전체</option>
-                        <option value="subscribeNo">구독번호</option>
-                        <option value="itemNo">상품번호</option>
-                        <option value="itemName">상품명</option>
-                        <option value="memberId">구매자</option>
-                    </select>
-                    <input type="text" id="word" name="word" value="">
+                	<c:choose>
+	                	<c:when test="${category eq 'subscribeNo' }">
+		                    <select id="category" name="category" style="width:200px">
+		                        <option value="">전체</option>
+		                        <option value="subscribeNo" selected>구독번호</option>
+		                        <option value="itemNo">상품번호</option>
+		                        <option value="itemName">상품명</option>
+		                        <option value="memberId">구매자ID</option>
+		                    </select>
+	                    </c:when>
+	                    <c:when test="${category eq 'itemNo' }">
+		                    <select id="category" name="category" style="width:200px">
+		                        <option value="">전체</option>
+		                        <option value="subscribeNo">구독번호</option>
+		                        <option value="itemNo" selected>상품번호</option>
+		                        <option value="itemName">상품명</option>
+		                        <option value="memberId">구매자ID</option>
+		                    </select>
+	                    </c:when>
+	                     <c:when test="${category eq 'itemName'}">
+		                    <select id="category" name="category" style="width:200px">
+		                        <option value="">전체</option>
+		                        <option value="subscribeNo">구독번호</option>
+		                        <option value="itemNo">상품번호</option>
+		                        <option value="itemName" selected>상품명</option>
+		                        <option value="memberId">구매자ID</option>
+		                    </select>
+	                    </c:when>
+	                     <c:when test="${category eq 'memberId'}">
+		                    <select id="category" name="category" style="width:200px">
+		                        <option value="">전체</option>
+		                        <option value="subscribeNo">구독번호</option>
+		                        <option value="itemNo">상품번호</option>
+		                        <option value="itemName">상품명</option>
+		                        <option value="memberId" selected>구매자ID</option>
+		                    </select>
+	                    </c:when>
+	                    <c:otherwise>
+	                    	<select id="category" name="category" style="width:200px">
+		                        <option value="" selected>전체</option>
+		                        <option value="subscribeNo">구독번호</option>
+		                        <option value="itemNo">상품번호</option>
+		                        <option value="itemName">상품명</option>
+		                        <option value="memberId">구매자ID</option>
+		                    </select>
+	                    
+	                    </c:otherwise>
+                    
+                    
+                    
+                    
+                    </c:choose>
+                    <input type="text" id="word" name="word" value="${word }">
                     <input type="button" class="btn" value="검색" onclick="search()">
                 </div>
             
@@ -96,6 +135,7 @@ input, select,textarea{
                              </tr>   
                          </thead>
                          <tbody>
+                         	<c:if test="${!empty pList }">
                         	 <c:forEach var="i" items="${pList }" varStatus="cnt">
 	                             <tr>
 	                                <td>${i.paymentDate }</td>
@@ -106,6 +146,15 @@ input, select,textarea{
 	                                <td>${i.totalPayment }</td>
 	                            </tr>
                             </c:forEach>
+                          </c:if>
+                          <c:if test="${empty pList }">
+                       
+	                             <tr>
+	                                <td colspan="6">결제 내역이 없습니다.</td>
+	                             
+	                            </tr>
+                       
+                          </c:if>
                           
                          </tbody>
                     </table>
@@ -114,6 +163,7 @@ input, select,textarea{
 
                     <br>
 
+<c:if test="${!empty pList }">
 
                      <!------페이징 처리----->
                 <div class="page-center">
@@ -192,7 +242,7 @@ input, select,textarea{
 
                 </div>
 
-
+</c:if>
 
 
 
@@ -239,8 +289,8 @@ input, select,textarea{
 	function goList(){
 		
 			var page=$("#beforePage").val(); 
-			var startD=$("#startD").val();
-			var lastD=$("#lastD").val();
+			var startD=$("#startDay").val();
+			var lastD=$("#lastDay").val();
 			var type=$("#type").val();
 			var type2=$("#type2").val();
 			

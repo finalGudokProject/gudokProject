@@ -280,7 +280,8 @@
 	              	<span class="grade">황금거위 <span class="etc">&nbsp;등급</span></span>
 	              </c:if>
 	              <br>
-	              <span><a href="#" style="color: black; font-size: 0.8em;">등급 혜택보기</a></span>
+	              <c:url var="grade" value="gradeView.do"></c:url> 
+	              <span><a href="${grade}" style="color: black; font-size: 0.8em;">등급 혜택보기</a></span>
 	            </div>
 	          </div>
 	          <div class="subscribe">

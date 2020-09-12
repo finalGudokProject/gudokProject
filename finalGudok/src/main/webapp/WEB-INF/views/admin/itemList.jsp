@@ -43,6 +43,7 @@ float:left;
 margin-left:1.5%;
 margin-top:10px;
 
+
 }
 
 .btn2{
@@ -58,7 +59,11 @@ margin-top:10px;
 	font-size:14px;
 }
 
+#recommendItem img{
 
+width:auto;
+height:80%;
+}
 
 </style>
 
@@ -82,7 +87,7 @@ margin-top:10px;
 		            			<p style="margin-top:13px;">${i.itemNo }번  ${i.itemName }</p></div>
 		            			<input type="hidden" id="itemNo" name="itemNo" value="${i.itemNo }">
 		            			<div style="width:20%; float:right;">
-		            			<button class="btn2" id="rDelete" value="x" style="margin-top:13px;">x</button>
+		            			<button class="btn2" id="del" value="x" style="margin-top:13px;" onclick="del();">x</button>
 		            			</div>
 	            			</div> 
 	            			</c:forEach>
@@ -347,6 +352,7 @@ margin-top:10px;
 
                     <br>
 
+				<c:if test="${!empty list }">
 
                      <!------페이징 처리----->
                 <div class="page-center">
@@ -415,6 +421,7 @@ margin-top:10px;
                     </ul>
 
                 </div>
+</c:if>
 
 
 
@@ -427,7 +434,7 @@ margin-top:10px;
         
         //추천상품 취소하기
         
-          	$(function(){
+          	function del(){
 
        	       		$("button").on("click",function(){
        	       			var itemNo=$(this).parent().parent().find("#itemNo").val();
@@ -441,31 +448,46 @@ margin-top:10px;
        						dataType:"json",
        						success:function(data){
        							
-       					
+       			
        					
        							var html=$("#recommendArea");
        							html.html("");
        							
-       							
-       							for(var i in data.list){
-       							
-       							
-       							var div="";
-       						
+       								if(data.list.length>0){
+		       							
+		       							for(var i in data.list){
+		       							
+		       							
+		       							var div="";
+		       						
+		       								
+		       						
+		       							div+='<div id="recommendItem">';
+		       		            	  	div+='<img src="/finalGudok/resources/uploadFiles/'+data.list[i].imageRename+'"><br>';
+		       		            		div+='<div style="width:80%; float:left;text-align:left; padding-left:15px;">';
+		       		            		div+='<p  style="margin-top:13px;">'+data.list[i].itemNo+'번  '+data.list[i].itemName+'</p></div>';
+		       		            		div+='<input type="hidden" id="itemNo" name="itemNo" value="'+data.list[i].itemNo+'">';
+		       		            		div+='<div style="width:20%; float:right;">';
+		       		            		div+='<button class="btn2" id="del" value="x" style="margin-top:13px;" onclick="del();">x</button></div></div>'; 
+       								html.append(div);
+		       	        			 
+       									}
+		       							
+		       							
+       								}else{
+       									
+       								
+       									var div="";
+       									div+= '<div id="recommendItem">';
+       									div+='<p style="padding:50px;">추천상품이 없습니다.</p>';
+       									
+       								html.append(div);
+       									
+       								}
+       								
        								
        						
-       							div+= '<div id="recommendItem">';
-       		            	  	div+='<img src="/finalGudok/resources/uploadFiles/'+data.list[i].imageRename+'"><br>';
-       		            		div+='<div style="width:80%; float:left;text-align:left; padding-left:15px;">';
-       		            		div+='<p  style="margin-top:13px;">'+data.list[i].itemNo+'번  '+data.list[i].itemName+'</p></div>';
-       		            		div+='<input type="hidden" id="itemNo" name="itemNo" value="'+data.list[i].itemNo+'">';
-       		            		div+='<div style="width:20%; float:right;">';
-       		            		div+='<button class="btn2" value="x"  style="margin-top:13px;">x</button></div></div>'; 
-       	        			 
-       						
-       	        				html.append(div);
-       							}
-       							
+	       							
        						},
        						error:function(request, status, errorData){
        		                    alert("error code: " + request.status + "\n"
@@ -488,12 +510,7 @@ margin-top:10px;
        	       		
        	       		})
        	        	
-       	       	})
-        
-        
-        
-        
-        
+       	       	}
         
         
         
@@ -518,16 +535,20 @@ margin-top:10px;
     				url:"recommendChk.do",
     				type:"post",
     				traditional:true,
-    				data:{"sendCnt":sendCnt},
+    				data:{"sendCnt":sendCnt,"sendArr":sendArr},
     				success:function(data){
     					
-    					
-    			
-    					if(data.iNum==3){
-    						alert("추천 상품은 3개까지만 등록 가능합니다.")
-    					}else{
-    						recommendList();
+    					if(data.result>0){
     						
+    						alert('이미 추천된 상품입니다.')
+    						
+    					}else{
+    			
+	    					if(data.iNum>4){
+	    						alert("추천 상품은 4개까지만 등록 가능합니다.")
+	    					}else{
+    							recommendList();
+	    					}
     					}
     					
     					
@@ -586,7 +607,7 @@ margin-top:10px;
 	            		div+='<p  style="margin-top:13px;">'+data.list[i].itemNo+'번  '+data.list[i].itemName+'</p></div>';
 	            		div+='<input type="hidden" id="itemNo" name="itemNo" value="'+data.list[i].itemNo+'">';
 	            		div+='<div style="width:20%; float:right;">';
-	            		div+='<button class="btn2" value="x"  style="margin-top:13px;">x</button></div></div>'; 
+	            		div+='<button class="btn2" id="del" value="x"  style="margin-top:13px;"  onclick="del();">x</button></div></div>'; 
         			 
 					
         				html.append(div);

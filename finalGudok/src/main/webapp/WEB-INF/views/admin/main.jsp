@@ -79,8 +79,8 @@
     
     td{
       text-overflow: ellipsis;
-        overflow:hidden;
-		white-space:nowrap;
+      overflow:hidden;
+	  white-space:nowrap;
     }
    
    
@@ -89,7 +89,7 @@
     
     float:left;
     background-color: #E1F5FE;
-    margin-right:10px;
+    margin-right:5px;
     font:12px;
     font-weight: 550;
     padding-left:5px;
@@ -102,10 +102,10 @@
     
     float:left;
     background-color: #E1F5FE;
-     font:12px;
+    font:12px;
     font-weight: 550;
-     margin-right:15px;
-      padding-left:5px;
+    margin-right:5px;
+    padding-left:5px;
     padding-right:5px;
 
     
@@ -129,7 +129,7 @@
                             <div style="float:left; margin-bottom:5px;"><h5><b>교환 대기</b></h5></div>
                             
                             <div class="mr-0" style="float:right;">
-                            <a href="exchangList.do"><svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-arrow-right-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <a href="exchangList.do?category=N"><svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-arrow-right-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                             <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
                             <path fill-rule="evenodd" d="M7.646 11.354a.5.5 0 0 1 0-.708L10.293 8 7.646 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0z"/>
                             <path fill-rule="evenodd" d="M4.5 8a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5z"/>
@@ -139,13 +139,20 @@
                         <table class="table">
                         	<c:if test="${!empty exList }">
                         	<c:forEach var="i" items="${exList }" varStatus="cnt">
-	                            <tr>
+	                            <c:url var="exchangeDetail" value="oDetail.do">
+									<c:param name="subscribeNo" value="${i.subscribeNo }"/>
+									<c:param name="page" value="1"/>
+									<c:param name="type" value="exchange"/>
+									<c:param name="category" value="N"/>
+								</c:url>
+	                            <tr id="cursor"onclick='location.href="${exchangeDetail }"'>
 	                                <td style="width:68%; text-align:left;">${i.exchangeContent }</td>
 	                                <td style="width:32%">${i.exchangeDate }</td>
 	                            </tr>
                             </c:forEach>
                             </c:if>
                             <c:if test="${empty exList }">
+                            
                         	
 	                            <tr>
 	                                <td colspan="2">교환 내역이 없습니다.</td>
@@ -163,7 +170,7 @@
                         <div style="float:left; margin-bottom:5px;"><h5><b>배송 대기</b></h5></div>
                             
                         <div class="mr-0" style="float:right;">
-                        <a href="oList.do"><svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-arrow-right-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <a href="oList.do?category=N"><svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-arrow-right-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                         <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
                         <path fill-rule="evenodd" d="M7.646 11.354a.5.5 0 0 1 0-.708L10.293 8 7.646 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0z"/>
                         <path fill-rule="evenodd" d="M4.5 8a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5z"/>
@@ -174,8 +181,14 @@
                     <table class="table">
                     	<c:if test="${!empty dList }">
                         <c:forEach var="i" items="${dList }" varStatus="cnt">
-	                        <tr>
-	                            <td style="width:10%">${i.subscribeNo }</td>
+                       		 <c:url var="orderDetail" value="oDetail.do">
+									<c:param name="subscribeNo" value="${i.subscribeNo }"/>
+									<c:param name="page" value="1"/>
+									<c:param name="type" value="order"/>
+									<c:param name="category" value="N"/>
+								</c:url>
+                        
+	                        <tr id="cursor"onclick='location.href="${orderDetail }"'>
 	                            <td style="width:40%">${i.itemName }</td>
 	                            <td style="width:20%">${i.memberId }</td>
 	                            <td style="width:30%">${i.subscribeDate }</td>
@@ -196,18 +209,18 @@
 
                     <td id="maintd1">
                         <div id=subBox1>
-                            <div style="float:left;  margin-bottom:5px;"><h5><b>방문 및 가입 현황</b></h5></div>
-                            <div class="mr-0" style="float:right;">
-	                            <div>
-	                                <div id="visitor1">총 가입자  명</div>
-	                                <div id="visitor2">총 방문자 : ${sessionScope.totalCount }명</div>
+                            <div style="float:left; width:35%;text-align:left;"><h5><b>방문·가입 현황</b></h5></div>
+                            <div class="mr-0" style="float:right; width:65%;">
+	                           
+	                                <div style="float:left;width:45%;margin:5px">총 방문자 : ${sessionScope.totalCount }명</div>
+	                                <div style="float:left;width:45%;margin:5px">총 가입자 : ${sessionScope.totalMember }명</div>
 	                                
-	                        	</div>
+	                        
                             </div> 
                           <br>
                         
                     
-                        <div id="visitor_chart" style="width:500px;height:180px; background-color:red;">
+                        <div id="visitor_chart" style="height:180px;">
                             구글차트 삽입예정
                         </div>
                         </div>
@@ -227,7 +240,7 @@
                             <path fill-rule="evenodd" d="M4.5 8a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5z"/>
                             </svg></a></div> 
                         <br><br>
-                        <div  id="salesChart" style="width:900px;height:300px; background-color:red;">구글차트 삽입</div>
+                        <div  id="salesChart" style="height:300px;">구글차트 삽입</div>
                       
                        <table class="table" style="border:1px solid #E0E0E0;margin-top:30px;; width:100%">
                         <thead>
@@ -338,11 +351,17 @@
                         <table class="table">
                              <c:if test="${!empty eList }">
                              <c:forEach var="i" items="${eList }" varStatus="cnt">
-                            <tr>
+                              <c:url var="eventDetail" value="bannerDetail.do">
+									<c:param name="eventNo" value="${i.eventNo }"/>
+									<c:param name="page" value="1"/>
+								</c:url>
+                            <tr id="cursor" onclick="${eventDetail}">
                                 <td style="width:70%; text-align:left">${i.eventName }</td>
                                 <td style="width:30%;">이벤트 상품 ${i.itemCount }개</td>
                             </tr>
                            </c:forEach>
+                           
+                           
                            </c:if>
                            <c:if test="${empty eList }">
                          
@@ -403,7 +422,8 @@
               subtitle: '일일 방문자 및 가입자 현황'
             },
             width: '100%',
-            height: 200
+            legend: { position: 'bottom' },
+            chartArea:{left:20,right:20,top:25,bottom:35,width:'90%',height:'100%'}
           };
 
         var chart = new google.visualization.LineChart(document.getElementById('visitor_chart'));

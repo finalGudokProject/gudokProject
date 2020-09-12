@@ -26,6 +26,7 @@
 		
 		<typeAlias type="com.kh.finalGudok.item.model.vo.AdminItem" alias="AdminItem"/>
 		<typeAlias type="com.kh.finalGudok.item.model.vo.Event" alias="Event"/>
+		<typeAlias type="com.kh.finalGudok.item.model.vo.PaymentInfo" alias="PayInfo"/>
 
 		<typeAlias type="com.kh.finalGudok.member.model.vo.Point" alias="Point"/>
 		<typeAlias type="com.kh.finalGudok.member.model.vo.Review" alias="mReview"/>
@@ -49,6 +50,7 @@
 		<typeAlias type="com.kh.finalGudok.member.model.vo.AdminSubscribe" alias="AdminSubscribe"/>
       	<typeAlias type="com.kh.finalGudok.member.model.vo.AdminExchange" alias="AdminExchange"/>
       	<typeAlias type="com.kh.finalGudok.member.model.vo.AdminBoard" alias="AdminBoard"/>
+      	<typeAlias type="com.kh.finalGudok.member.model.vo.AdminCancle" alias="AdminCancle"/>
 	</typeAliases>
 	
 	<mappers>

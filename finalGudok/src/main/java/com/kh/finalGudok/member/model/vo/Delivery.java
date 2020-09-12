@@ -16,11 +16,14 @@ public class Delivery implements Serializable{
 	private Date subscribeDate;
 	private String exchangeStatus;
 	private int itemNo;
+	private String address1;
+	private String address2;
+	private String address3;
 	
 	public Delivery() {}
 
 	public Delivery(int deliveryNo, String deliveryStatus, int subscribeNo, String itemName, Date subscribeDate,
-			String exchangeStatus, int itemNo) {
+			String exchangeStatus, int itemNo, String address1, String address2, String address3) {
 		this.deliveryNo = deliveryNo;
 		this.deliveryStatus = deliveryStatus;
 		this.subscribeNo = subscribeNo;
@@ -28,6 +31,9 @@ public class Delivery implements Serializable{
 		this.subscribeDate = subscribeDate;
 		this.exchangeStatus = exchangeStatus;
 		this.itemNo = itemNo;
+		this.address1 = address1;
+		this.address2 = address2;
+		this.address3 = address3;
 	}
 
 	public int getDeliveryNo() {
@@ -86,6 +92,30 @@ public class Delivery implements Serializable{
 		this.itemNo = itemNo;
 	}
 
+	public String getAddress1() {
+		return address1;
+	}
+
+	public void setAddress1(String address1) {
+		this.address1 = address1;
+	}
+
+	public String getAddress2() {
+		return address2;
+	}
+
+	public void setAddress2(String address2) {
+		this.address2 = address2;
+	}
+
+	public String getAddress3() {
+		return address3;
+	}
+
+	public void setAddress3(String address3) {
+		this.address3 = address3;
+	}
+
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
@@ -94,6 +124,7 @@ public class Delivery implements Serializable{
 	public String toString() {
 		return "Delivery [deliveryNo=" + deliveryNo + ", deliveryStatus=" + deliveryStatus + ", subscribeNo="
 				+ subscribeNo + ", itemName=" + itemName + ", subscribeDate=" + subscribeDate + ", exchangeStatus="
-				+ exchangeStatus + ", itemNo=" + itemNo + "]";
+				+ exchangeStatus + ", itemNo=" + itemNo + ", address1=" + address1 + ", address2=" + address2
+				+ ", address3=" + address3 + "]";
 	}
 }

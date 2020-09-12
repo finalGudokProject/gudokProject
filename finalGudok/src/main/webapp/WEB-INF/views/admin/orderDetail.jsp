@@ -172,10 +172,13 @@ input, select,textarea{
                 </div>
 
 
+        <c:out value="${type }"/>
 
             </div><!--내용담은 컨테이너-->
         </div><!--250px띄운 div-->
         
+        <input type="hidden" id="category" name="category" value="${category }">
+ 
         
         <script>
         	
@@ -183,12 +186,16 @@ input, select,textarea{
         		
         		var type=$("#type").val();
         	  	var page=${page }
-        	  	alert(type);
+        	  	var category=$("#category").val();
+        	  	
         	  	
         	  	if(type=="order"){
-           			location.href="oList.do?page="+page; 
+           			location.href="oList.do?page="+page+"&category="+category;
+           			
+        	  	}else if(type=="cancel"){	
+        	  		location.href="cList.do?page="+page+"&category="+category;
         	  	}else{
-        	  		location.href="exchangList.do?page="+page; 
+        	  		location.href="exchangList.do?page="+page+"&category="+category; 
         	  	}
         		 
         	}

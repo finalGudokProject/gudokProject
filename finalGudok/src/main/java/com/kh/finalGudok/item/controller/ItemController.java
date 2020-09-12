@@ -1,5 +1,4 @@
 package com.kh.finalGudok.item.controller;
-
 import static com.kh.finalGudok.common.pagination.getPageInfo;
 import static com.kh.finalGudok.common.pagination2.getPageInfo2;
 
@@ -11,18 +10,17 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -92,6 +90,7 @@ public class ItemController {
 		}
 		return mv;
 	}
+
 
 	@RequestMapping("itemBest.do")
 	private ModelAndView itemBest(ModelAndView mv, @RequestParam(value = "page", required = false) Integer page,
@@ -465,27 +464,22 @@ public class ItemController {
 
 	private String saveFile(HttpServletRequest request, MultipartFile file) {
 
-		String root = request.getSession().getServletContext().getRealPath("resources");
-		String savePath = root + "\\uploadFiles";
-		File folder = new File(savePath);
+	      String root = request.getSession().getServletContext().getRealPath("resources");
+	      String savePath = root + "\\uploadFiles";
+	      File folder = new File(savePath);
 
 		if (!folder.exists()) {
 			folder.mkdir();
 		}
-
+		int random = (int) (Math.random() * 100000 + 1);
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
 		String originFileName = file.getOriginalFilename();
-		String renameFileName = sdf.format(new java.sql.Date(System.currentTimeMillis())) + "."
+		String renameFileName = sdf.format(new java.sql.Date(System.currentTimeMillis())) + random + "."
 				+ originFileName.substring(originFileName.lastIndexOf(".") + 1);
 		String filePath = folder + "\\" + renameFileName;
 
-		try {
-			file.transferTo(new File(filePath));
-		} catch (IllegalStateException | IOException e) {
-			e.printStackTrace();
-		}
+	      return renameFileName;
 
-		return renameFileName;
 	}
 
 	// 상품등록-admin
@@ -496,7 +490,7 @@ public class ItemController {
 
 		int result1 = 0;
 		int result2 = 0;
-
+		
 		String renameFileName = saveFile(request, uploadFile1);
 		String root = request.getSession().getServletContext().getRealPath("resources");
 		String savePath = root + "\\uploadFiles";
@@ -507,6 +501,8 @@ public class ItemController {
 
 		result1 = iService.insertItem(i);
 
+		
+		
 		String renameFileName2 = saveFile(request, uploadFile2);
 		String root2 = request.getSession().getServletContext().getRealPath("resources");
 		String savePath2 = root2 + "\\uploadFiles";
@@ -538,7 +534,7 @@ public class ItemController {
 		String renameFileName = saveFile(request, file);
 		String root = request.getSession().getServletContext().getRealPath("resources");
 		String savePath = root + "\\uploadFiles";
-
+		
 		e.setImageOriginalName(file.getOriginalFilename());
 		e.setImageRename(renameFileName);
 		e.setImagePath(savePath);
@@ -804,7 +800,7 @@ public class ItemController {
 			scb.setMemberNo(memberNo);
 			scb.setItemNo(itemNo);
 			int currentPage = page;
-
+			System.out.println("memberNo : " + memberNo + ", itemNo : " + itemNo);
 			int deliveryChk = iService.selectDelChk(scb);
 			int reviewChk = iService.selectReviewChk(scb);
 			System.out.println("del값 확인 : " + deliveryChk);
@@ -951,13 +947,22 @@ public class ItemController {
 
 	// 이벤트 검색-admin
 	@RequestMapping("searchEventA.do")
-	public String searchEventA(String keyword) {
+	public String searchEventA(String word) {
 
 		Event e = new Event();
-		e.setEventName(keyword);
-		System.out.println("도착?" + keyword);
+		e.setEventName(word);
+		System.out.println("도착?" + word);
 
 		return null;
+		
+		
+		
+		
+		
+		
+		
+		
+		
 
 	}
 
@@ -1035,7 +1040,7 @@ public class ItemController {
 
 	// 같은 이벤트 번호를 지닌 아이템들 리스트 보기-admin
 	@RequestMapping("bannerDetail.do")
-	public ModelAndView bannerDetail(ModelAndView mv, int eventNo, Integer page) throws IOException {
+	public ModelAndView bannerDetail(ModelAndView mv, Integer eventNo, Integer page) throws IOException {
 
 		int currentPage = 1;
 
@@ -1319,7 +1324,7 @@ public class ItemController {
 
 	// 상품 상세보기 -admin
 	@RequestMapping("itemDetail.do")
-	public ModelAndView selectItemDetail(ModelAndView mv, int itemNo, @RequestParam(value="eventNo",required=false) Integer eventNo,Integer page, String type) {
+	public ModelAndView selectItemDetail(ModelAndView mv, int itemNo, @RequestParam(value="itemCategory",required=false) String itemCategory, @RequestParam(value="eventNo",required=false) Integer eventNo,Integer page, String type) {
 
 		System.out.println("아이템 디테일" + type);
 
@@ -1337,7 +1342,7 @@ public class ItemController {
 		mv.addObject("m", m);
 		mv.addObject("type", type);
 		mv.addObject("eventNo", eventNo);
-		mv.addObject("page", currentPage);
+		mv.addObject("page", currentPage).addObject("itemCategory",itemCategory);
 		mv.setViewName("admin/itemModify");
 
 		return mv;
@@ -1379,7 +1384,16 @@ public class ItemController {
 //			int result3=iService.deleteEventItem(i); //이벤트 등록 테이블에서 상품 삭제
 
 		if (result1 > 0 || result2 > 0) {
+			
+			
+			
+			
 			mv.addObject("page", page).setViewName("redirect:itemListA.do");
+			
+			
+			
+			
+			
 		} else {
 			throw new ItemException("상품 정보 수정 실패!");
 		}
@@ -1446,6 +1460,7 @@ public class ItemController {
 	public ModelAndView itemEventInsertView(ModelAndView mv, Integer page,
 			@RequestParam(value = "itemCategory", required = false) String itemCategory) {
 
+		System.out.println("받은 아이템카테고리는"+itemCategory);
 		if (itemCategory == "") {
 			itemCategory = null;
 		}
@@ -1557,8 +1572,7 @@ public class ItemController {
 		pi = getPageInfo2(currentPage, listCount, pageLimit, boardLimit);
 
 		// 이벤트 등록이 안된 상품 목록
-		System.out.println("여기 확인해보자");
-		System.out.println("category는" + itemCategory);
+		
 		ArrayList<BannerItem> list = iService.selectItems(itemCategory, pi);
 
 		response.setContentType("application/json;charset=utf-8");
@@ -1576,6 +1590,8 @@ public class ItemController {
 				jList.put("itemName", list.get(i).getItemName());
 				jList.put("itemPrice", list.get(i).getItemPrice());
 				jList.put("itemRate", list.get(i).getItemRate());
+				
+	
 
 				jarr.add(jList);
 			}
@@ -1622,8 +1638,24 @@ public class ItemController {
 	// 추천 갯수 확인 -admin
 
 	@RequestMapping("recommendChk.do")
-	public void recommendCheck(HttpServletResponse response, Integer sendCnt) throws IOException {
+	public void recommendCheck(HttpServletResponse response, Integer sendCnt,String sendArr) throws IOException {
 
+		//선택한 상품이 이미 추천 상품에 있다면 
+		
+		String[] strArr = sendArr.split(",");
+		int chk=0;
+		int result=0;
+
+		
+		for(int i=0;i<strArr.length;i++) {
+			chk=iService.selectRecommendChk(strArr[i]);
+			result+=chk;
+		}
+		
+		
+		
+		
+		//선택한 상품 갯수가 4개를 초과하는지 확인하기 위해 
 		response.setContentType("application/json;charset=utf-8");
 		JSONObject iNum = new JSONObject();
 
@@ -1631,6 +1663,7 @@ public class ItemController {
 		int i = sendCnt + cnt;
 
 		iNum.put("iNum", i);
+		iNum.put("result", result);
 
 		PrintWriter out = response.getWriter();
 
@@ -1682,81 +1715,183 @@ public class ItemController {
 	}
 
 	// ------------------------------결제 구현-----------------------------------------
+	@RequestMapping("moveToPayment.do")
+	@ResponseBody
+	public ModelAndView moveToPayment(ModelAndView mv, @RequestParam(value="itemNo") String[] itemNo, @RequestParam("name") String[] name, @RequestParam("price") String[] price, 
+			@RequestParam("cycle") String[] cycle, @RequestParam("amount") String[] amount){
+		
+		ArrayList<Cart> list = new ArrayList<>();
+		int itemPrice = 0;
+		int itemAmount = 0;
+		int totalPrice = 0;
+		int discount = 0;
+		
+		for(int i = 0 ; i < itemNo.length ; i++) {	
+			Cart cart = new Cart();
+			int no = Integer.valueOf(itemNo[i]);
+			cart.setItemNo(no);
+			itemPrice = Integer.valueOf(price[i]);
+			
+			discount = iService.checkDiscount(no);
+//			System.out.println("할인율: " + discount);
+			
+			if(discount > 0) {
+				itemPrice = itemPrice - (int)(itemPrice*(double)discount/100);
+				cart.setItemPrice(itemPrice);
+			}else {
+				cart.setItemPrice(itemPrice);
+			}		
+//			System.out.println(itemPrice);
+			itemAmount = Integer.valueOf(amount[i]);
+			cart.setCartCount(itemAmount);
+			cart.setCartSubs(cycle[i]);
+			cart.setItemName(name[i]);
+			list.add(cart);
+			
+			totalPrice += itemPrice * itemAmount;
+		}
+		
+//		System.out.println(discount);
+//		System.out.println(list);
+		mv.addObject("list",list);
+		mv.addObject("totalPrice", totalPrice);
+		mv.setViewName("items/payment");
+		return mv;
+	}
+	
+	
 
 	IamportClient client = new IamportClient("3086404975484077",
 			"EsAndJxwJmc8oD49ezXFzHqWyessiK4XcFlpoSW8f8hDMmN0VLFus6r1kTtDDyBQdWfCOcK4l2I7ow7j");
 
 	@RequestMapping(value = "payment.do", method = RequestMethod.POST)
 	@ResponseBody
-	public String payment(@RequestBody String param) throws ParseException, IamportResponseException, IOException {
-		JSONParser parser = new JSONParser();
-		JSONObject json = new JSONObject();
-		JSONObject jobj = (JSONObject) parser.parse(param);
+	public String payment(HttpServletRequest request) throws IamportResponseException, IOException {
+		
+		int itemNo = 0;
+		int amount = 0;
+		int price = 0;
+		int cycle = 0;
+		int subPrice = 0;
+		int point = Integer.valueOf((String)request.getParameter("point"));	// 사용 포인트
+		int memberNo = Integer.valueOf(request.getParameter("memberNo"));	// 회원번호
+		
+		String firstPrice = request.getParameter("finalPrice");		// 처음 결제될 금액
+		String customerUid = request.getParameter("customerUid");	// 카드번호
+		String email = request.getParameter("email");				// 회원 이메일
+		String phone = request.getParameter("phone");				// 전화번호
+		String address1 = request.getParameter("address1");			// 우편번호
+		String address2 = request.getParameter("address2");			// 주소
+		String address3 = request.getParameter("address3");			// 상세주소
+		
+		String[] noArr = request.getParameterValues("noArr");		// 상품번호
+		String[] nameArr = request.getParameterValues("nameArr");	// 상품이름
+		String[] priceArr = request.getParameterValues("priceArr");	// 상품가격
+		String[] countArr = request.getParameterValues("countArr");	// 상품수량
+		String[] cycleArr = request.getParameterValues("cycleArr");	// 구독주기
+		
+//		System.out.println(point);
+//		System.out.println(firstPrice);
+		
+		BigDecimal firstPayPrice = new BigDecimal(firstPrice);
+		String name = "최초결제";
+		int firstPayResult = 0;	// 최초결제정보 insert 결과 받을 변수
+		
+		String result = firstPayment(customerUid, firstPayPrice, name, point);	// 최초결제 실행결과
+		PaymentInfo payInfo = new PaymentInfo();
+		payInfo.setMemberNo(memberNo);
+		payInfo.setPoint(point);
+		System.out.println("DB로 보낼 결제정보 : " + payInfo);
+		firstPayResult = iService.insertFirstPayment(payInfo);
+		
+		
+//			for(int i = 0 ; i < noArr.length ; i++) {	// 결제페이지에서 넘어온 결제정보로 결제성공 후 DB에 결제결과 저장 
+//				itemNo = Integer.valueOf(noArr[i]);
+//				
+//				payInfo.setItemNo(itemNo);
+//				payInfo.setPoint(point);
+//				payInfo.setMemberNo(memberNo);
+//				
+//				
+//				System.out.println("최초 결제 insert 결과: " + firstPayResult);
+//
+//			}
+		if(result.equalsIgnoreCase("success")) {	// 최초결제 실행이 성공이면
+			if(firstPayResult == 1) {
+				Subscribe subInfo = new Subscribe();
+				HashMap<String, Object> map = new HashMap<>();
+				
+				subInfo.setAddress1(address1);
+				subInfo.setAddress2(address2);
+				subInfo.setAddress3(address3);
+				subInfo.setCustomerUid(customerUid);
+				subInfo.setMemberNo(memberNo);
+				subInfo.setPhone(phone);
+				
+				for(int i = 0 ; i < noArr.length ; i++) {
+					itemNo = Integer.valueOf(noArr[i]);
+					amount = Integer.valueOf(countArr[i]);
+//					price = Integer.valueOf(priceArr[i]);
+					cycle = Integer.valueOf(cycleArr[i]);
+					name = nameArr[i];
 
-		String customerUid = (String) jobj.get("customer_uid");
-//					String merchantUid = (String) jobj.get("merchant_uid");
-		BigDecimal price = new BigDecimal(((Long) jobj.get("price")).intValue());
-		String name = (String) jobj.get("name");
-//					String impUid = (String)jobj.get("imp_uid");
-		int cycle = 1;
+					subInfo.setItemNo(itemNo);
+					subInfo.setAmount(amount);
+					subInfo.setItemName(name);
+//					System.out.println("정기결제 정보 : " + subInfo);
+					price = iService.selectItemPrice(itemNo);
+					subPrice = price * amount;
+					subInfo.setSubPrice(subPrice);
+					
+					map.put("subInfo", subInfo);
+					map.put("cycle", cycle);
+					
+					int insertSubResult = iService.insertSubScribeInfo(map);
+					if(insertSubResult > 0) {
+						
+						BigDecimal cyclePrice = new BigDecimal(subPrice);
+						subscriptionPayment(customerUid, cyclePrice, cycle);
+					}
+				}
+				
+			}else {
+				
+			}
+			return "success";	// 결제화면단으로 던질 
+		}else{
+			return "fail";
 
-		System.out.println("customerUid : " + customerUid);
-//					System.out.println("merchatUid : " + merchantUid);
-		System.out.println("price : " + price);
-		System.out.println("name : " + name);
-//					System.out.println("impUid : " + impUid);
-
-		firstPayment(customerUid, price, name, cycle);
-
-		return "success";
-
+		}
+		
 	}
 
 	// ------------------------------즉시 결제 요청-------------------------------------
 
-	private void firstPayment(String customerUid, BigDecimal price, String name, int cycle)
-			throws IamportResponseException, IOException {
-
+	private String firstPayment(String customerUid, BigDecimal price, String name, int point){
+		
 		AgainPaymentData againData = new AgainPaymentData(customerUid, getRandomMerchantUid(), price);
 		againData.setName(name);
 		String firstPaymentStatus = "";
-		String impUid = "";
+//		String impUid = "";
+		String failMessage = "";
 
-		try {
 			// 최초 결제 실행
-			IamportResponse<Payment> payment_response = client.againPayment(againData);
-//						assertEquals(payment_response.getResponse().getStatus(), "paid");
-			// 결제 성공 여부
-			firstPaymentStatus = payment_response.getResponse().getStatus();
-			impUid = payment_response.getResponse().getImpUid();
-
-		} catch (IamportResponseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-//					System.out.println("최초결제 결과 : " + firstPaymentStatus);
-		if (firstPaymentStatus.equalsIgnoreCase("paid") == true) {
-			if ((client.paymentByImpUid(impUid).getResponse().getStatus()).equalsIgnoreCase("paid") == true) {
-
-				// DB에 customerUid, price저장
-
-				// DB에 저장했으면 정기결제 스케쥴 예약
-				subscriptionPayment(customerUid, price, cycle);
-			}
-		} else {
+			IamportResponse<Payment> payment_response;
 			try {
-				client.againPayment(againData);
+				payment_response = client.againPayment(againData);
+				firstPaymentStatus = payment_response.getResponse().getStatus();
+//				impUid = payment_response.getResponse().getImpUid();
+				
 			} catch (IamportResponseException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			
+		if(firstPaymentStatus.equalsIgnoreCase("paid")) {
+			return "success";
+		}else {
+			return "fail";
 		}
 
 	}
@@ -1780,7 +1915,7 @@ public class ItemController {
 		Date date = new Date();
 
 //					for(int i = 0 ; i<5; i++) {
-
+		
 		switch (cycle) {
 		case 1:
 			subscriptionTime = currentTime + 120;
@@ -1808,27 +1943,35 @@ public class ItemController {
 		}
 
 		ScheduleEntry schduleEntry = new ScheduleEntry(merchantUid, date, price);
+		
 
-		ScheduleData scheduleData = new ScheduleData(customerUid);
-
-		scheduleData.addSchedule(schduleEntry);
-
-//					}
-
-		IamportResponse<List<Schedule>> schedule_response = client.subscribeSchedule(scheduleData);
-
-		List<Schedule> schedules = schedule_response.getResponse();
+		ArrayList<Subscribe> list = new ArrayList<>();
+		
+		list = iService.selectSubscribeStatus(customerUid);
+		System.out.println("구독중인 상품 : " + list);
+		
+		if(list != null) {
+			
+			ScheduleData scheduleData = new ScheduleData(customerUid);
+			
+			scheduleData.addSchedule(schduleEntry);
+			
+			IamportResponse<List<Schedule>> schedule_response = client.subscribeSchedule(scheduleData);
+			
+			List<Schedule> schedules = schedule_response.getResponse();
 //					System.out.println(schedule_response.getResponse().size());
 //					List<ScheduleEntry> req_schedules = scheduleData.getSchedules();
-
-		// 예약 시간에 결제 됐다고 가정해서 구현해 놓은 것
-		for (int i = 0; i < schedules.size(); i++) {
-			if ((schedules.get(i).getMerchantUid()).equalsIgnoreCase(merchantUid)
-					&& (schedules.get(i).getScheduleAt()).equals(date)) {
-				System.out.println("예약 결제 성공");
+			
+			// 예약 시간에 결제 됐다고 가정해서 구현해 놓은 것
+			for (int i = 0; i < schedules.size(); i++) {
+				if ((schedules.get(i).getMerchantUid()).equalsIgnoreCase(merchantUid)
+						&& (schedules.get(i).getScheduleAt()).equals(date)) {
+					System.out.println("예약 결제 성공");
+					
+			
+				}
 			}
 		}
-
 	}
 
 	private String getRandomMerchantUid() {
@@ -1852,13 +1995,22 @@ public class ItemController {
 	public void cancelRecommendStatus(HttpServletResponse response,Integer itemNo) throws IOException {
 		
 		//추천 status 변경 (R->N)
-		ArrayList<BannerItem> rList = new ArrayList<>();
+		int result=iService.updateRecommendStatusN(itemNo);
 		
-//		if (result > 0) {
+		ArrayList<BannerItem> rList = new ArrayList<>();
+
+				
+				
+		//리스트 가져오기
+		if (result > 0) {
+
 
 			rList = iService.selectRecommendList();
 
-//		}
+
+		}
+		System.out.println("여기왔고"+rList);
+
 
 		response.setContentType("application/json;charset=utf-8");
 		JSONArray jarr = new JSONArray();

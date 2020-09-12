@@ -12,6 +12,7 @@ import com.kh.finalGudok.item.model.vo.BannerItem;
 import com.kh.finalGudok.item.model.vo.Item;
 import com.kh.finalGudok.item.model.vo.PageInfo;
 import com.kh.finalGudok.member.model.vo.AdminBoard;
+import com.kh.finalGudok.member.model.vo.AdminCancle;
 import com.kh.finalGudok.member.model.vo.AdminExchange;
 import com.kh.finalGudok.member.model.vo.AdminMember;
 import com.kh.finalGudok.member.model.vo.AdminPayment;
@@ -433,16 +434,16 @@ public class MemberDao {
 		return (ArrayList) sqlSessionTemplate.selectList("memberMapper.selectPaymentDetailY", s, rowBounds);
 	}
 
-	public int insertVisitor(Visitor vo) {
-		return sqlSessionTemplate.insert("memberMapper.insertVisitor", vo);
+	public int insertVisitor(Visitor vo, SqlSessionTemplate sqlsessiontemplate) {
+		return sqlsessiontemplate.insert("memberMapper.insertVisitor",vo);
 	}
 
-	public int getVisitTodayCount() {
-		return sqlSessionTemplate.selectOne("memberMapper.getVisitTodayCount");
+	public int getVisitTodayCount(SqlSessionTemplate sqlsessiontemplate) {
+		return sqlsessiontemplate.selectOne("memberMapper.getVisitTodayCount");
 	}
 
-	public int getVisitTotalCount() {
-		return sqlSessionTemplate.selectOne("memberMapper.getVisitTotalCount");
+	public int getVisitTotalCount(SqlSessionTemplate sqlsessiontemplate) {
+		return sqlsessiontemplate.selectOne("memberMapper.getVisitTotalCount");
 	}
 
 	public int selectTodayMember(String s) {
@@ -510,7 +511,49 @@ public class MemberDao {
 		return sqlSessionTemplate.selectOne("memberMapper.selectPoint",subscribeNo);
 	}
 
+
+	public int getMemberCount(SqlSessionTemplate sqlsessiontemplate2) {
+		return sqlsessiontemplate2.selectOne("memberMapper.getMemberCount");
+	}
+
+	public ArrayList<AdminMember> selectMemberPaymentList(String startDay) {
+		return (ArrayList)sqlSessionTemplate.selectList("memberMapper.selectMemberPaymentList",startDay);
+	}
+
+	public int updateMemberGrade(AdminMember adminMember) {
+		return sqlSessionTemplate.update("memberMapper.updateMemberGrade",adminMember);
+	}
+
+	public ArrayList<Grade> selectGradeInfo() {
+		return (ArrayList)sqlSessionTemplate.selectList("memberMapper.selectGradeInfo");
+	}
 	public int selectPointMember(AdminSubscribe adminSubscribe) {
 		return sqlSessionTemplate.update("memberMapper.selectPointMember",adminSubscribe);
+	}
+
+	public int updateSubscribeDestination(Delivery d) {
+		return sqlSessionTemplate.update("memberMapper.updateSubscribeDestination",d);
+	}
+
+	public int selectUsedPoint(int memberNo) {
+		return sqlSessionTemplate.selectOne("memberMapper.selectUsedPoint", memberNo);
+	}
+
+	public int updateMyPoint(Member loginUser) {
+		return sqlSessionTemplate.update("memberMapper.updateMyPoint", loginUser);
+	}
+
+	public Integer selectSubscribeCancelChart(Search search) {
+		return sqlSessionTemplate.selectOne("memberMapper.selectSubscribeCancelChart",search);
+	}
+
+	public int getSubscribeCancelCnt(Search s) {
+		return sqlSessionTemplate.selectOne("memberMapper.getSubscribeCancelCnt",s);
+	}
+
+	public ArrayList<AdminCancle> selectSubscribeCancel(Search s, PageInfo pi) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		return (ArrayList) sqlSessionTemplate.selectList("memberMapper.selectSubscribeCancel", s, rowBounds);
 	}
 }

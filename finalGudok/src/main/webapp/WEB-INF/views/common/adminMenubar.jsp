@@ -438,8 +438,8 @@ label > span {
 		}
 		 #cursor:hover{
 		cursor: pointer;
-		
-		text-decoration: underline;
+		font-weight:600;
+	
 		
 		}
     </style>
@@ -527,6 +527,7 @@ label > span {
                                       </svg>&nbsp;&nbsp;매출 관리&nbsp;&nbsp;</b></label>
                                   <ul class="group-list sd_ul">
                                     <li><a href="oList.do">구독 / 배송 내역</a></li>
+                                    <li><a href="cList.do">구독 취소 내역</a></li>
                                     <li><a href="exchangList.do">교환 요청 내역</a></li>
                                     <c:url var="goSalesList" value="sDateList.do">
                                     	<c:param name="type" value="N"/>

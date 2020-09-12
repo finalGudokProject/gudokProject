@@ -45,18 +45,19 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
 import com.kh.finalGudok.item.model.service.ItemService;
 import com.kh.finalGudok.item.model.vo.BannerItem;
+import com.kh.finalGudok.item.model.vo.Cart;
 import com.kh.finalGudok.item.model.vo.Item;
 import com.kh.finalGudok.item.model.vo.PageInfo;
 import com.kh.finalGudok.member.model.exception.MemberException;
 import com.kh.finalGudok.member.model.service.MemberService;
 import com.kh.finalGudok.member.model.vo.AdminBoard;
+import com.kh.finalGudok.member.model.vo.AdminCancle;
 import com.kh.finalGudok.member.model.vo.AdminExchange;
 import com.kh.finalGudok.member.model.vo.AdminMember;
 import com.kh.finalGudok.member.model.vo.AdminPayment;
 import com.kh.finalGudok.member.model.vo.AdminSecession;
 import com.kh.finalGudok.member.model.vo.AdminSubscribe;
 import com.kh.finalGudok.member.model.vo.Cancle;
-import com.kh.finalGudok.item.model.vo.Cart;
 import com.kh.finalGudok.member.model.vo.Chart;
 import com.kh.finalGudok.member.model.vo.DeleteHeart;
 import com.kh.finalGudok.member.model.vo.Delivery;
@@ -73,7 +74,7 @@ import com.kh.finalGudok.member.model.vo.Subscribe;
 import com.kh.finalGudok.member.model.vo.Tempkey;
 import com.kh.finalGudok.member.model.vo.Withdrawal;
 
-@SessionAttributes({"loginUser","cartCount", "pointCount", "subscribeCount"})
+@SessionAttributes({ "loginUser", "cartCount", "pointCount", "subscribeCount" })
 @Controller
 public class MemberController {
 
@@ -86,7 +87,7 @@ public class MemberController {
 	@Autowired
 	private Member m;
 	@Autowired
-	ItemService iService;
+	private ItemService iService;
 
 	@RequestMapping("moveToLogin.do")
 	public String moveTologin() {
@@ -119,9 +120,9 @@ public class MemberController {
 		int cartCount = mService.cartCount(loginUser.getMemberNo());
 		int pointCount = mService.pointCount(loginUser.getMemberNo());
 
-		System.out.println("구독" + subscribeCount);
-		System.out.println("장바구니" + cartCount);
-		System.out.println("포인트" + pointCount);
+		System.out.println("구독 : " + subscribeCount);
+		System.out.println("장바구니 : " + cartCount);
+		System.out.println("포인트 : " + pointCount);
 
 		if (bcryptPasswordEncoder.matches(m.getMemberPwd(), loginUser.getMemberPwd())) {
 			session.setAttribute("loginUser", loginUser);
@@ -130,7 +131,7 @@ public class MemberController {
 			session.setAttribute("pointCount", pointCount);
 
 			if (loginUser.getMemberId().equalsIgnoreCase("admin")) {
-				mv.setViewName("admin/main");
+				mv.setViewName("redirect:aMain.do");
 			} else {
 				mv.setViewName("home");
 			}
@@ -142,8 +143,9 @@ public class MemberController {
 	}
 
 	@RequestMapping(value = "logout.do", method = RequestMethod.GET)
-	public String logout(SessionStatus status) {
+	public String logout(SessionStatus status, HttpSession session) {
 		status.setComplete();
+		session.invalidate();
 		return "home";
 	}
 
@@ -199,7 +201,7 @@ public class MemberController {
 		out.flush();
 		out.close();
 	}
-	
+
 	@RequestMapping("emailDupCheck.do")
 	public ModelAndView emailDupCheck(ModelAndView mv, String email) {
 
@@ -240,7 +242,7 @@ public class MemberController {
 		mv.setViewName("jsonView");
 		return mv;
 	}
-	
+
 	@RequestMapping(value = "findId.do", method = RequestMethod.POST)
 	public ModelAndView findId(ModelAndView mv, String name, String email) {
 
@@ -310,7 +312,7 @@ public class MemberController {
 		return mv;
 	}
 
-	// ------------------------------ 마이페이지 ----------------------------------------------
+	// ------------------------------ 마이페이지  ----------------------------------------------
 
 	// 마이페이지 이동
 	@RequestMapping("mypage.do")
@@ -335,7 +337,7 @@ public class MemberController {
 	public String heartView() {
 		return "mypage/heart";
 	}
-	
+
 	// 회원 등급 페이지
 	@RequestMapping("gradeView.do")
 	public String gradeView() {
@@ -353,7 +355,7 @@ public class MemberController {
 	public String cartView() {
 		return "mypage/cart";
 	}
-	
+
 	// 장바구니 페이지 리스트 불러오기
 	@RequestMapping("mbasketPage.do")
 	public ModelAndView basketPage(ModelAndView mv, Integer memberNo) {
@@ -362,7 +364,7 @@ public class MemberController {
 		System.out.println("basketList : " + list);
 		return mv;
 	}
-	
+
 	// 구독 조회
 	@RequestMapping("subscribeList.do")
 	@ResponseBody
@@ -405,12 +407,6 @@ public class MemberController {
 			return "mypage/memberInfoView";
 		} else { // 로그인 실패시
 			throw new MemberException("본인확인 실패");
-			// 예외를 발생시켜서 에러페이지로 넘어갈 껀데
-			// 우선 예외 클래스는 RuntimeException을 상속 받아
-			// 예외 처리가 따로 필요 없다.
-
-			// 그리고 예외가 발생 했을 때 common에 있는 errorPage에서
-			// 처리될 수 있도록 web.xml에 공용 에러 페이지를 등록하러 가자!
 		}
 
 	}
@@ -424,10 +420,6 @@ public class MemberController {
 		System.out.println("회원정보 수정 후  : " + m);
 
 		if (result > 0) {
-			// 회원정보가 수정되면 현재 로그인 한 사람의 정보를
-			// 업데이트 시키기 위해 session에 수정된 객체를 담아줘야 된다.
-			// @SessionAttribute("loginUser")를 클래스 위에 달아줬기 때문에
-			// model에 수정된 회원 객체를 담자
 			model.addAttribute("loginUser", m);
 		} else {
 			throw new MemberException("수정 실패!");
@@ -506,8 +498,10 @@ public class MemberController {
 
 	// 배송 내역
 	@RequestMapping(value = "deliveryList.do")
-	public ModelAndView deliveryList(ModelAndView mv, Integer memberNo) { // 민지
-		ArrayList<Delivery> list = mService.selectDeliveryList(memberNo);
+	public ModelAndView deliveryList(HttpSession session, ModelAndView mv, Integer memberNo) { // 민지
+		Member loginUser = (Member) session.getAttribute("loginUser");
+
+		ArrayList<Delivery> list = mService.selectDeliveryList(loginUser.getMemberNo());
 
 		System.out.println("배송 내역 : " + list);
 
@@ -521,25 +515,10 @@ public class MemberController {
 		return mv;
 	}
 
-	/*
-	 * // 장바구니 내역
-	 * 
-	 * @RequestMapping("cartList.do")
-	 * 
-	 * @ResponseBody public void cartList(HttpServletResponse response, Integer
-	 * memberNo) throws JsonIOException, IOException { // 민지 ArrayList<Cart> list =
-	 * mService.selectCartList(memberNo);
-	 * 
-	 * System.out.println("장바구니 내역 : " + list);
-	 * 
-	 * response.setContentType("application/json;charset=utf-8");
-	 * 
-	 * new Gson().toJson(list, response.getWriter()); }
-	 */
-
 	// 교환 신청
 	@RequestMapping("exchangeInsert.do")
-	public String exchangeInsert(HttpServletRequest request, Exchange e) { // 민지
+	public String exchangeInsert(HttpSession session, HttpServletRequest request, Exchange e) { // 민지
+		Member loginUser = (Member) session.getAttribute("loginUser");
 
 		if (e.getExchangeCategory() == 1) {
 			e.setExchangeContent("품질불량");
@@ -553,16 +532,16 @@ public class MemberController {
 		int result2 = mService.updateSubscribe(e.getSubscribeNo());
 
 		if (result > 0 && result2 > 0) {
-			return "redirect:exchangeList.do";
+			return "redirect:exchangeList.do?" + "memberNo=" + loginUser.getMemberNo();
 		} else {
 			throw new MemberException("교환 신청 실패");
 		}
 	}
 
-
 	// 탈퇴하기
 	@RequestMapping("withdrawalInsert.do")
-	public String withdrawalInsert(HttpServletRequest request, Withdrawal w) {
+	public String withdrawalInsert(SessionStatus status, HttpSession session, HttpServletRequest request,
+			Withdrawal w) {
 		if (w.getSecessionCategory() == 1) {
 			w.setSecessionContent("서비스가 마음에 들지 않음");
 		} else if (w.getSecessionCategory() == 2) {
@@ -579,6 +558,8 @@ public class MemberController {
 		int result2 = mService.updateMemberStatus(w.getMemberNo());
 
 		if (result > 0 && result2 > 0) {
+			status.setComplete();
+			session.invalidate();
 			return "home";
 		} else {
 			throw new MemberException("탈퇴 실패");
@@ -588,14 +569,14 @@ public class MemberController {
 	// 리뷰 삭제
 	@RequestMapping("mreviewDelete.do")
 	public String reviewDelete(HttpServletRequest request, int reviewNo) {// 민지
-		
+
 		System.out.println(reviewNo);
-		
+
 		int chkImg = mService.checkImage(reviewNo);
 		System.out.println("ReviewImage 조회 되나? : " + chkImg);
 		if (chkImg > 0) {
 			int imResult = mService.imageDelete(reviewNo);
-			
+
 			if (imResult > 0) {
 				mService.deleteReviewImage(reviewNo);
 				System.out.println("reviewimage테이블 삭제");
@@ -663,12 +644,12 @@ public class MemberController {
 			result = mService.deleteHeart(dh);
 			result += result;
 		}
-		
+
 		int cartCount = mService.cartCount(loginUser.getMemberNo());
-		
-		model.addAttribute("cartCount",cartCount);
-		
-		if (result > 0) {		
+		System.out.println("찜목록에서 장바구니  : " + cartCount);
+		model.addAttribute("cartCount", cartCount);
+
+		if (result > 0) {
 			return "success";
 		} else {
 			throw new MemberException("찜 삭제 실패");
@@ -679,7 +660,7 @@ public class MemberController {
 	@RequestMapping("subscribeCancle.do")
 	public String subscribeCancle(HttpSession session, HttpServletRequest request, Cancle c, Model model) { // 민지
 		Member loginUser = (Member) session.getAttribute("loginUser");
-		
+
 		if (c.getCancleCategory() == 1) {
 			c.setCancleContent("상품이 불필요");
 		} else if (c.getCancleCategory() == 2) {
@@ -690,128 +671,64 @@ public class MemberController {
 
 		int result = mService.insertCancle(c);
 		int result2 = mService.updateSubscribeStatus(c.getSubscribeNo());
+		
+		int point = mService.selectUsedPoint(loginUser.getMemberNo());
+		
+		System.out.println("사용한 포인트 : " + point);
+		
+		loginUser.setPoint(loginUser.getPoint() + point);
+		
+		System.out.println("돌아온 포인트 : " + loginUser.getPoint());
 
-		if (result > 0 && result2 > 0) {
+		int result3 = mService.updateMyPoint(loginUser);
+		
+		if (result > 0 && result2 > 0 && result3 > 0) {
 			int subscribeCount = mService.subscribeCount(loginUser.getMemberNo());
-			
-			model.addAttribute("subscribeCount",subscribeCount);
-			
+			model.addAttribute("subscribeCount", subscribeCount);
+			model.addAttribute("loginUser", loginUser);
+
 			return "mypage/subscribe";
 		} else {
 			throw new MemberException("취소 신청 실패");
 		}
 	}
 
-	/*
-	 * // 장바구니 삭제
-	 * 
-	 * @RequestMapping("cartDelete.do")
-	 * 
-	 * @ResponseBody public String cartDelete(HttpSession session,
-	 * HttpServletRequest request, Model model,
-	 * 
-	 * @RequestParam(value = "checkArr[]") List<String> cartList) { Member loginUser
-	 * = (Member) session.getAttribute("loginUser");
-	 * 
-	 * System.out.println("선택삭제 실행됨");
-	 * 
-	 * System.out.println(cartList);
-	 * 
-	 * DeleteHeart dh = new DeleteHeart();
-	 * 
-	 * int cartNo;
-	 * 
-	 * int memberNo = loginUser.getMemberNo();
-	 * 
-	 * int result = 0;
-	 * 
-	 * for (int i = 0; i < cartList.size(); i++) { cartNo =
-	 * Integer.parseInt(cartList.get(i));
-	 * 
-	 * HashMap map = new HashMap<Integer, Integer>();
-	 * 
-	 * map.put("cartNo", cartNo); map.put("memberNo", memberNo);
-	 * 
-	 * result = mService.deleteCart(map);
-	 * 
-	 * result += result;
-	 * 
-	 * }
-	 * 
-	 * int cartCount = mService.cartCount(loginUser.getMemberNo());
-	 * 
-	 * if (result > 0) { model.addAttribute("loginUser", loginUser);
-	 * model.addAttribute("cartCount",cartCount); return "success"; } else { throw
-	 * new MemberException("장바구니 삭제 실패"); } }
-	 */
-	
 	// 장바구니 추가
-		@RequestMapping("mbasket.do")
-		@ResponseBody
-		public String maddCart(HttpSession session, HttpServletRequest request, Model model,
-				@RequestParam(value = "checkArr[]") List<String> cartList) {
-			Member loginUser = (Member) session.getAttribute("loginUser");
+	@RequestMapping("mbasket.do")
+	@ResponseBody
+	public String maddCart(HttpSession session, HttpServletRequest request, Model model,
+			@RequestParam(value = "checkArr[]") List<String> cartList) {
+		Member loginUser = (Member) session.getAttribute("loginUser");
+		
+		int itemNo;
+		int result = 0;
 
-//			System.out.println("장바구니 추가");
+		for (int i = 0; i < cartList.size(); i++) {
+			itemNo = Integer.parseInt(cartList.get(i));
+			Item item = mService.selectItem(itemNo);
 
-			int itemNo;
-			int result = 0;
+			HashMap map = new HashMap<Object, Object>();
 
-			for (int i = 0; i < cartList.size(); i++) {
-				itemNo = Integer.parseInt(cartList.get(i));
-				Item item = mService.selectItem(itemNo);
+			System.out.println("선택한 찜 상품 : " + item);
 
-				HashMap map = new HashMap<Object, Object>();
+			if (item != null) {
+				map.put("item", item);
+				map.put("member", loginUser);
+				result = mService.addCart(map);
 
-				System.out.println("선택한 찜 상품 : " + item);
+				int cartCount = mService.cartCount(loginUser.getMemberNo());
 
-				if (item != null) {
-					map.put("item", item);
-					map.put("member", loginUser);
-					result = mService.addCart(map);
-					
-					int cartCount = mService.cartCount(loginUser.getMemberNo());
-					
-					model.addAttribute("cartCount",cartCount);
-				}
-				result += result;
+				model.addAttribute("cartCount", cartCount);
 			}
-
-			if (result > 0) {
-				return "success";
-			} else {
-				throw new MemberException("장바구니 추가 실패");
-			}
+			result += result;
 		}
 
-		/*
-		 * // 장바구니 추가
-		 * 
-		 * @RequestMapping("addCart.do")
-		 * 
-		 * @ResponseBody public String addCart(HttpSession session, HttpServletRequest
-		 * request,
-		 * 
-		 * @RequestParam(value = "checkArr[]") List<String> cartList) { Member loginUser
-		 * = (Member) session.getAttribute("loginUser");
-		 * 
-		 * // System.out.println("장바구니 추가");
-		 * 
-		 * int itemNo; int result = 0;
-		 * 
-		 * for (int i = 0; i < cartList.size(); i++) { itemNo =
-		 * Integer.parseInt(cartList.get(i)); Item item = mService.selectItem(itemNo);
-		 * 
-		 * HashMap map = new HashMap<Object, Object>();
-		 * 
-		 * System.out.println("선택한 찜 상품 : " + item);
-		 * 
-		 * if (item != null) { map.put("item", item); map.put("member", loginUser);
-		 * result = mService.addCart(map); } result += result; }
-		 * 
-		 * if (result > 0) { return "success"; } else { throw new
-		 * MemberException("장바구니 추가 실패"); } }
-		 */
+		if (result > 0) {
+			return "success";
+		} else {
+			throw new MemberException("장바구니 추가 실패");
+		}
+	}
 
 	// 1:1문의 답변
 	@RequestMapping("inquiryReply.do")
@@ -834,9 +751,6 @@ public class MemberController {
 	public String modifyPassword(Member m, Model model,
 			@RequestParam(value = "changeMemberPwd") String changeMemberPwd) {
 		Member loginUser = mService.loginMember(m);
-
-//		System.out.println(m);
-//		System.out.println(loginUser);
 
 		if (bcryptPasswordEncoder.matches(m.getMemberPwd(), loginUser.getMemberPwd())) {
 
@@ -861,9 +775,25 @@ public class MemberController {
 			throw new MemberException("비밀번호 변경 실패");
 		}
 	}
-	
-	// ------------------------------ 마이페이지 ----------------------------------------------
-	
+
+	@RequestMapping("destinationModify.do")
+	public String destinationModify(Delivery d, Model model) { // 민지
+		System.out.println("전달받은 배송지 : " + d);
+
+		int result = mService.updateSubscribeDestination(d);
+
+		System.out.println("배송지 수정 후  : " + d);
+
+		if (result > 0) {
+			return "redirect:deliveryList.do";
+		} else {
+			throw new MemberException("수정 실패!");
+		}
+
+	}
+
+	// ------------------------------ 마이페이지  ----------------------------------------------
+
 	// ------------------------------ 관리자 ----------------------------------------------
 	// 관리자 등급 & 회원 리스트 보기-admin
 	@RequestMapping("gradeList.do")
@@ -931,7 +861,6 @@ public class MemberController {
 		// 회원별 총 구매금액 주입
 		for (int i = 0; i < mList.size(); i++) {
 
-			
 			Integer cnt = mService.selectTotalPay(mList.get(i).getMemberNo());
 
 			if (cnt == null) {
@@ -992,16 +921,14 @@ public class MemberController {
 	// 등급별 최소 금액 변경-admin
 	@RequestMapping("gradeMinInfoChang.do")
 	@ResponseBody
-	public String updateGradeMin(String sendGradeMinArr, String sendGradeArr) {
-
-		System.out.println(sendGradeArr);
-		System.out.println(sendGradeMinArr);
+	public ModelAndView updateGradeMin(ModelAndView mv, String sendGradeMinArr, String sendGradeArr, Integer page) {
 
 		String[] gArr = sendGradeArr.split(",");
 		String[] rArr = sendGradeMinArr.split(",");
 
 		ArrayList<Grade> g = new ArrayList<>();
-		int result = 0;
+		int result1 = 0; //등급 변경 확인
+		int result2 = 0; //변경된 등급에 따라 회원 등급 변경
 
 		for (int k = 0; k < gArr.length; k++) {
 
@@ -1013,10 +940,56 @@ public class MemberController {
 			g.add(grade);
 		}
 
-		result = mService.updateGradeMin(g);
-
-		if (result < 0) {
-			return "success";
+		result1 = mService.updateGradeMin(g);
+		System.out.println("g는"+g);
+		
+		//최소금액 변경 시 회원 전체 등급 업데이트
+			//전월 날짜 데이터 설정 
+				Calendar last = Calendar.getInstance(); // 현재 시간
+				SimpleDateFormat sdfm = new SimpleDateFormat("yyyy-MM");
+				last.add(Calendar.MONTH, -1);
+				Date lastDate = new Date(last.getTimeInMillis());
+				String startDay = sdfm.format(lastDate); // 1달전
+		
+			//1달동안 결제한 회원번호와  총 결제 금액을 가져오기 
+				System.out.println("1달전은?"+startDay);
+				ArrayList<AdminMember> pList=mService.selectMemberPaymentList(startDay);
+				
+			
+		
+			//금액에 따라 등급 설정 
+				
+				ArrayList<Grade> gradeChg=new ArrayList<>();
+				for(int i=g.size()-1;i>-1;i--) {
+					Grade temp=g.get(i);
+					gradeChg.add(temp);
+				}
+				
+				for(int i=0;i<gradeChg.size();i++) {
+					
+			
+						int gradeMin=gradeChg.get(i).getGradeMin();
+						int gradeNo=gradeChg.get(i).getGradeNo();
+				
+						
+						
+						for(int k=0;k<pList.size();k++) {
+							if(pList.get(k).getTotalPay()>=gradeMin) { 
+								System.out.println("등급은"+gradeNo);
+								System.out.println("등급 최소금액은"+gradeMin);
+								System.out.println("고객 최소금액은"+pList.get(k).getTotalPay());
+								System.out.println("고객 이름은"+pList.get(k).getMemberId());
+								pList.get(k).setGradeNo(gradeNo);
+								result2=mService.updateMemberGrade(pList.get(k));
+							}
+						}
+					}
+					
+		if (result1 < 0) {
+			
+			mv.addObject("page",page).setViewName("redirect:gradeList.do");
+			return mv;
+			
 
 		} else {
 			throw new MemberException("적립율 변경 실패!");
@@ -1038,19 +1011,19 @@ public class MemberController {
 		}
 
 		Search s = new Search();
-		
-		if(categoryNo==null) {
+
+		if (categoryNo == null) {
 			s.setMemberNo(word);
 			s.setMemberName(word);
 			s.setMemberId(word);
-			
+
 		} else if (categoryNo.equalsIgnoreCase("memberNo")) {
 			s.setMemberNo(word);
 		} else if (categoryNo.equalsIgnoreCase("memberId")) {
 			s.setMemberId(word);
 		} else if (categoryNo.equalsIgnoreCase("memberName")) {
 			s.setMemberName(word);
-		} 
+		}
 
 		// 현재 등급정보
 		ArrayList<Grade> gList = mService.selectGradeList();
@@ -1498,35 +1471,32 @@ public class MemberController {
 
 		System.out.println(dArr);
 
-		//배송상태 변경
+		// 배송상태 변경
 		int result = mService.updateDelivery(dArr);
-		
-		
-		//배송 완료일 경우 
-		if(deliveryStatus.equalsIgnoreCase("Y")) {
-		
-			//판매량 +1 
-			int result2=mService.updateItemCmStatus(dArr);
-			
-			for(int i=0;i<dArr.size();i++) {
-			//포인트 뽑아오기 
-			int point=mService.selectPoint(dArr.get(i).getSubscribeNo());
-			dArr.get(i).setPoint(point);
-			System.out.println(dArr);
-			//회원에게 적립금 부여
-			int result3=mService.updateMemberPoint(dArr.get(i));
-			
-			
-			int memberNo = mService.selectPointMember(dArr.get(i));
-			int pointCount = mService.pointCount(memberNo);
-			model.addAttribute("pointCount",pointCount);
+
+		// 배송 완료일 경우
+		if (deliveryStatus.equalsIgnoreCase("Y")) {
+
+			// 판매량 +1
+			int result2 = mService.updateItemCmStatus(dArr);
+
+			for (int i = 0; i < dArr.size(); i++) {
+				// 포인트 뽑아오기
+				int point = mService.selectPoint(dArr.get(i).getSubscribeNo());
+				dArr.get(i).setPoint(point);
+				System.out.println(dArr);
+				// 회원에게 적립금 부여
+				int result3 = mService.updateMemberPoint(dArr.get(i));
+
+				int memberNo = mService.selectPointMember(dArr.get(i));
+				int pointCount = mService.pointCount(memberNo);
+				model.addAttribute("pointCount", pointCount);
 			}
-			
+
 		}
-		
+
 		System.out.println("결과는" + result);
 		if (result < 0) {
-			
 
 			return "success";
 
@@ -1635,7 +1605,7 @@ public class MemberController {
 
 	// 구독내역 상세보기 -admin
 	@RequestMapping("oDetail.do")
-	public ModelAndView selectOrderDetail(ModelAndView mv, Integer page, Integer subscribeNo, String type) {
+	public ModelAndView selectOrderDetail(ModelAndView mv, Integer page, Integer subscribeNo, String type,@RequestParam(value = "category", required = false) String category) {
 
 		System.out.println("타입은???" + type);
 		// 구독 상세 내역 조회
@@ -1657,7 +1627,7 @@ public class MemberController {
 
 		if (sc != null && p != null) {
 
-			mv.addObject("sc", sc).addObject("p", p).addObject("page", page).addObject("type", type)
+			mv.addObject("sc", sc).addObject("p", p).addObject("page", page).addObject("type", type).addObject("category", category)
 					.addObject("total", total).setViewName("admin/orderDetail");
 
 			return mv;
@@ -1742,7 +1712,7 @@ public class MemberController {
 		Search s = new Search();
 		s.setCategory1(category);
 
-		System.out.println("카테고리 잘 왔나"+category);
+		System.out.println("카테고리 잘 왔나" + category);
 		if (type == null) {
 			s.setSubscribeNo(word);
 			s.setWord(word);
@@ -2624,6 +2594,7 @@ public class MemberController {
 			// 카테고리에서 왔으면
 		} else {
 
+				System.out.println("카테고리에서 와썽요");
 			if (word == "") {
 				word = null;
 			}
@@ -2640,7 +2611,7 @@ public class MemberController {
 			Search s = new Search();
 			s.setStartDay(start); // 검색 날짜
 			s.setLastDay(last);
-			s.setCategoryNo(categoryNo); // 카테고리
+			s.setCategoryNo(categoryNo); // 카테고리(f1,f2...)
 			s.setCategory1(category);
 
 			if (category.equalsIgnoreCase("subscribeNo")) {
@@ -2677,7 +2648,7 @@ public class MemberController {
 
 		}
 
-		mv.addObject("pList", pList).addObject("beforePage", beforePage).addObject("startDay", startDay)
+		mv.addObject("pList", pList).addObject("beforePage", beforePage).addObject("startDay", startDay).addObject("word", word)
 				.addObject("lastDay", lastDay).addObject("startD", startD).addObject("categoryNo", categoryNo)
 				.addObject("pi", pi).addObject("type", type).addObject("type2", type2).setViewName("admin/salesDetail");
 		return mv;
@@ -2719,6 +2690,7 @@ public class MemberController {
 			c.setvDay(vDay);
 			c.setMemberNum(mCnt);
 			cArr.add(c);
+			System.out.println("확인이 필요함"+cArr);
 		}
 
 		// 주간 매출현황 차트
@@ -2779,6 +2751,165 @@ public class MemberController {
 	}
 
 	// ------------------------------ 관리자 ----------------------------------------------
+
+	
+	@RequestMapping("updateGradeAuto")
+	public ModelAndView updateGradeAuto(ModelAndView mv){
+	
+		//전월 날짜 데이터 설정 
+			Calendar last = Calendar.getInstance(); // 현재 시간
+			SimpleDateFormat sdfm = new SimpleDateFormat("yyyy-MM");
+			last.add(Calendar.MONTH, -1);
+			Date lastDate = new Date(last.getTimeInMillis());
+			String startDay = sdfm.format(lastDate); // 1달전
+		
+		//1달동안 결제한 회원번호와  총 결제 금액을 가져오기 
+			ArrayList<AdminMember> pList=mService.selectMemberPaymentList(startDay);
+		
+		//등급별 최소금액 가져오기 
+			ArrayList<Grade> gradeChg=mService.selectGradeInfo();
+		
+			int result=0;
+		
+			System.out.println("등급이 잘 가져와졌나"+gradeChg);
+		
+			for(int i=0;i<gradeChg.size();i++) {
+				
+		
+					int gradeMin=gradeChg.get(i).getGradeMin();
+					int gradeNo=gradeChg.get(i).getGradeNo();
+			
+					
+					
+					for(int k=0;k<pList.size();k++) {
+						if(pList.get(k).getTotalPay()>=gradeMin) { 
+							System.out.println("등급은"+gradeNo);
+							System.out.println("등급 최소금액은"+gradeMin);
+							System.out.println("고객 최소금액은"+pList.get(k).getTotalPay());
+							System.out.println("고객 이름은"+pList.get(k).getMemberId());
+							pList.get(k).setGradeNo(gradeNo);
+							result=mService.updateMemberGrade(pList.get(k));
+						}
+					}
+				}
+				
+		if (result > 0) {
+		
+			mv.setViewName("home");
+			return mv;
+		
+		} else {
+		throw new MemberException("자동 등업 실패!");
+		
+		}
+	}
+	
+	
+	@RequestMapping("cList.do")
+	public ModelAndView cancelListView(ModelAndView mv, Integer page,
+			@RequestParam(value = "word", required = false) String word,
+			@RequestParam(value = "type", required = false) String type) {
+		// 주간 사유별 비율을 조회하기 위한 날짜 수집
+		Calendar start = Calendar.getInstance(); // 현재 시간
+		Date startDate = new Date(start.getTimeInMillis()); // Date형으로 변환
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		String startDay = sdf.format(startDate);
+
+		start.add(Calendar.DATE, -7);
+		Date lastDate = new Date(start.getTimeInMillis());
+		String lastDay = sdf.format(lastDate); // 7일전
+		System.out.println(startDay);
+		System.out.println(lastDay);
+
+		// 차트용 리스트
+		ArrayList<Search> list = new ArrayList<>();
+
+		for (int i = 1; i < 6; i++) {
+			Search s = new Search();
+			s.setStartDay(startDay);
+			s.setLastDay(lastDay);
+			s.setTemp1(i);
+			list.add(s);
+
+			Integer temp = mService.selectSubscribeCancelChart(list.get(i - 1));
+
+			if (temp == null) {
+				temp = 0;
+			}
+			s.setTemp2(temp);
+
+			System.out.println(list.get(i - 1).getTemp2());
+		}
+
+		// 교환리스트
+
+	
+		System.out.println("타입은 " + type);
+		System.out.println("검색어는 " + word);
+
+	
+
+		if (word == "") {
+			word = null;
+		}
+
+		if (type == "") {
+			type = null;
+		}
+
+		Search s = new Search();
+	
+		if (type == null) {
+			s.setSubscribeNo(word);
+			s.setWord(word);
+			s.setMemberId(word);
+
+		} else if (type.equalsIgnoreCase("subscribeNo")) {
+			s.setSubscribeNo(word);
+
+		} else if (type.equalsIgnoreCase("calcelContent")) {
+			s.setWord(word);
+		} else if (type.equalsIgnoreCase("memberId")) {
+			s.setMemberId(word);
+		}
+
+		int currentPage = 1;
+
+		if (page != null) {
+			currentPage = page;
+		}
+
+		System.out.println("s는" + s);
+		int listCount = mService.getSubscribeCancelCnt(s);
+
+		System.out.println("몇개?" + listCount);
+		PageInfo pi = new PageInfo();
+
+		int pageLimit = 10; // 보여질 페이지 총 갯수
+		int boardLimit = 5; // 게시판 한 페이지에 뿌려질 게시글 수
+		pi = getPageInfo2(currentPage, listCount, pageLimit, boardLimit);
+
+		ArrayList<AdminCancle> eList = mService.selectSubscribeCancel(s, pi);
+
+	
+
+		if (list != null && eList != null) {
+
+			mv.addObject("list", list).addObject("pi", pi).addObject("eList", eList)
+					.addObject("word", word).addObject("type", type).addObject("pi", pi)
+					.setViewName("admin/cancelList");
+
+			return mv;
+		} else {
+			throw new MemberException("취소 내역 조회 실패!");
+		}
+	}
+	
+	
+	
+	
+	
+	
 	
 	
 }

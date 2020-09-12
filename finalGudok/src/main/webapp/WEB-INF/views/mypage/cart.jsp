@@ -10,7 +10,7 @@
 <title>Insert title here</title>
 <!-- Bootstrap CSS -->
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
- <!-- sweetalert시작 -->
+<!-- sweetalert시작 -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <link rel="stylesheet"href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css" />
@@ -177,84 +177,24 @@
       width: 85%;
     }
 
-    /* .cartTable tr {
-      height: 45px;
-    }
-
-    .image {
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      display: flex;
-      justify-content: center;
-    }
-
-    .image img {
-      float: left;
-      width: 100px;
-      height: 70px;
-    }
-
-    .product {
-      display: inline-block;
-      border: 1px solid pink;
-    }
-
-    .btn2 {
-      width: 90%;
-      margin-top: 5%;
-      text-align: center;
-      margin-left: 10%;
-    }
-
-    .btn2 button {
-      border: none;
-      padding: 2% 8%;
-      margin-right: 10%;
-      margin: 0 auto;
-      margin-left: 3%;
-    }
-
-    .delete button{
-      border: 1px solid black;
-      background: #fff;
-      padding: 0.5% 2%;
-      float: left;
-      margin-left: 10%;
-      margin-top: 3%;
-    }
-
-    .price table{
-      width: 85%;
-      margin-top: 10%;
-      margin-left: 10%;
-    }
-
-    .price td{
-      border: 2px solid #115D8C;
-    } */
-    
     .basketImg{
-		width:20rem;
-		height:20rem;
+		width:10rem;
+		height:10rem;
 	}
 	.listChk{
 		width:5%;
 		height:5%;
 	}
 	input[type=checkbox]{
-		width:30px;
-		height:30px;
+		width:15px;
+		height:15px;
 		display:block;
 		margin:0 auto;
 		
 	}
+	
 	td{
 		vertical-align:middle;
-
-	}
-	th{
-
 	}
 	
 	input[type=button]{
@@ -531,19 +471,18 @@
 			</table>
 			</c:if>
 			<c:if test="${empty list }">
-				<div class="col-2"></div>
-					<div class="col-8" id="emptyDiv" style="margin-top:2%;border:1px solid lightgray;">
+				<div class="col-8" style="margin:0 auto;">
+					<div class="col-20" id="emptyDiv" style="margin-top:10%;border:1px solid lightgray;">
 						<div style="text-align:center;width:100%;"><img src="${contextPath }/resources/images/empty.png" style="width:30%;"></div>
 						<div style="text-align:center;width:100%;font-size:40px;">장바구니에 추가한 상품이 없습니다.</div>
 					</div>
-				<div class="col-2"></div>	
+				</div>
 			</c:if>
 	    </div>
     </div>
     <br style="clear:both;">
     <jsp:include page="../common/footer.jsp"/>
-  		<!-- 수량 버튼 -->
-		<script>
+  	<script>
 		$(function(){
 			function addComma(num) {
 			 	var regexp = /\B(?=(\d{3})+(?!\d))/g;
@@ -610,6 +549,70 @@
 			})
 		})
 	</script>
+	
+	
+	<!-- 수량 버튼 -->
+		<script>
+			function addComma(num) {
+			 	var regexp = /\B(?=(\d{3})+(?!\d))/g;
+				return num.toString().replace(regexp, ',');
+			}
+			$(function(){
+				$(".signImgP").on("click",function(){
+					if($(this).parent().prev().prev().prev("td").find("input").prop("checked") == true){
+						swal("","선택된 상태로는 수량 변경을 할 수 없습니다.","error");
+					}else{
+						var amount = $(this).prev().val();
+						amount = Number(amount) + 1;
+						console.log(amount);
+						$(this).prev().val(amount);
+						
+						var valueCheck = $(this).prev().prev().val();
+						$(this).prev().prev().prev().val("");
+						var realValue = $(this).prev().prev().prev().val(valueCheck * amount);
+						var varPrice = $(this).prev().prev().prev().val();
+	
+						$(this).parent().next("td").next("td").text("");
+						$(this).parent().prev("td").find(".totalPriceInput").val(varPrice);
+						$(this).parent().prev().prev().prev("td").find("input").val(varPrice);
+						$(this).parent().next("td").next("td").text(addComma(varPrice)+"원");
+						
+						if(amount > 1){
+							$(this).prev().prev().prev().prev().attr("src","${contextPath }/resources/images/minus.png");
+						}
+					}
+				})
+				$(".signImgM").on("click",function(){
+					if($(this).parent().prev().prev().prev("td").find("input").prop("checked") == true){
+						swal("","선택된 상태로는 수량 변경을 할 수 없습니다.","error");
+					}else{
+						var amount = $(this).next().next().next().val();
+						if(amount > 1){
+							amount = Number(amount) - 1;
+							$(this).next().next().next().val(amount);
+							/* console.log(amount); */
+							
+							var valueCheck = $(this).next().next().val();
+							$(this).next().val("");
+							var realValue = $(this).next().val(valueCheck * amount);
+							var varPrice = $(this).next().val();
+							
+							$(this).parent().next("td").next("td").text("");
+							$(this).parent().next("td").next("td").text(varPrice);
+							$(this).parent().prev().prev().prev("td").find("input").val(varPrice);
+							$(this).parent().next("td").next("td").text(addComma(varPrice)+"원");
+							/* $("#totalPriceTd").text("총 주문 금액 : " + addComma(varPrice) + "원"); */
+							if(amount == 1){
+								$(this).attr("src","${contextPath }/resources/images/XSIGN.png");
+							}
+							
+						}else if(amount == 1){
+								swal("","1개 미만은 선택하실 수 없습니다.","error");
+						}
+					}
+				})
+			})
+		</script>
 		
 		<!-- 장바구니 목록 삭제버튼 -->
 		<script>

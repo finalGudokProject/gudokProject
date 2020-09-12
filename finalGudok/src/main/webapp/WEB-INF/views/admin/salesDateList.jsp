@@ -109,7 +109,7 @@ input, select,textarea{
                 		
                 	<tr>
                 		<th  style="text-align:left ;padding:0.3rem !important; border: 1px solid #CCCCCC;" onclick="event.cancelBubble=true">
-			                &nbsp;&nbsp;<input type="date" id="date1" name="date1" value="">~ <input type="date" id="date2" name="date3" value="">&nbsp;&nbsp;
+			                &nbsp;&nbsp;<input type="date" id="date1" name="date1" value="${startDay }">~ <input type="date" id="date2" name="date3" value="${lastDay }">&nbsp;&nbsp;
 			               <input type="button" class="btn1" value="오늘" onclick="goList('T');">
 			               <input type="button" class="btn1" value="일주일" onclick="goList('W');">
 			               <input type="button" class="btn1" value="한달" onclick="goList('O');">

@@ -451,7 +451,7 @@
 		            <td>${d.itemName}</td>
 		            <c:if test="${d.deliveryStatus eq 'N'}">
 		            	<td>배송전</td>
-		            	<td><a href="#destination_form" id="destination_pop">배송지 변경</a></td>
+		            	<td><a href="#destination_form" id="destination_pop" onclick="destinationClick(${d.subscribeNo}, '${d.address1}', '${d.address2}', '${d.address3}')">배송지 변경</a></td>
 		            	<td><a href="#exchange_form" id="exchange_pop" onclick="return false;" style="color:#ccc; cursor:deafult;">교환 신청</a></td>
 		            </c:if>
 		            
@@ -510,10 +510,57 @@
 	        </form>
 	        <a class="close" href="#close"></a>
 	      </div>
+	      
+	      <!-- popup form #1 -->
+	      <a href="#x" class="overlay" id="destination_form"></a>
+	      <div class="popup">
+	        <h4>배송지 변경</h4>
+	        
+	        <form action="destinationModify.do" method="post" id="destination">
+	        	<input type="hidden" id="subscribeNo" name="subscribeNo">
+		        <div>
+		          	<table>
+			            <tr>
+		                    <td>우편번호</td>
+		                    <td><input type="text" name="address1" id="address1" class="postcodify_postcode5" size="10">
+		                        <button type="button" id="postcodify_search_button">주소변경</button>
+		                </tr>
+		                <tr>
+		                    <td>도로명 주소</td>
+		                    <td><input type="text" name="address2" id="address2" class="postcodify_address" size="30"></td>
+		                </tr>
+		                <tr>
+		                    <td>상세 주소</td>
+		                    <td><input type="text" name="address3" id="address3" class="postcodify_extra_info" size="30"></td>
+		                </tr>
+		          	</table>
+		        </div>
+		        <div style="text-align: center;">
+		          	<button id="destinationSubmit">배송지변경</button>
+		        </div>
+	        </form>
+	        <a class="close" href="#close"></a>
+	      </div>
 	    </div>
     </div>
     <br style="clear:both;">
     <jsp:include page="../common/footer.jsp"/>
+    <!-- Postcodify를 로딩하자 -->
+    <script src="//d1p7wdleee1q2z.cloudfront.net/post/search.min.js"></script>
+    <script>
+        $(function () {
+            $("#postcodify_search_button").postcodifyPopUp();
+        })
+    </script>
+    
+    <script>
+    	function destinationClick(subscribeNo, address1, address2, address3){
+    		$("#destination #subscribeNo").val(subscribeNo);
+    		$("#destination #address1").val(address1);
+    		$("#destination #address2").val(address2);
+    		$("#destination #address3").val(address3);
+    	}
+    </script>
     
     <script>
     	function exchangeClick(subscribeNo, itemName){

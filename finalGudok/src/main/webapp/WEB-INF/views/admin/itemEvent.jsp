@@ -49,13 +49,16 @@ input, select,textarea{
                 <button type="button" class="btn" onclick="location.href='iInsertView.do'">일반 상품</button>&nbsp;
                 <button type="button" class="btn" onclick="location.href='iEventInsertView.do'">이벤트 상품</button>
                 <br><br>
-                
-                
-             	
+        
+        <script>
+        
+     
+        </script>
                 <table>
+                	
          
                     <tr>
-                        <td id="td1" style="vertical-align: middle;" onclick='event.cancelBubble=true'>
+                        <td style="vertical-align: middle;" onclick='event.cancelBubble=true'>
                            	 이벤트 제목
                         </td>
                         <td colspan="3"  onclick='event.cancelBubble=true'>
@@ -67,36 +70,186 @@ input, select,textarea{
                                 </select>
                         </td>     
                     </tr>
-                    <tr>
-                        <td id="td1"  onclick='event.cancelBubble=true'>
+                    <tr  onclick='event.cancelBubble=true'>
+                        <td id="td1" onclick='event.cancelBubble=true'>
                           	  할인율
                         </td>
-                        <td colspan="3" onclick='event.cancelBubble=true'>
-                            <input type="number" min="0" max="100" id="itemDiscount" name="itemDiscount" style="float:left; width:35%" value=""><label style="float:left"><b>&nbsp;&nbsp;%</b></label>
+                        <td colspan="3"  onclick='event.cancelBubble=true'>
+                            <input type="number" min="0" max="100" id="itemDiscount" name="itemDiscount" style="float:left; width:35%" value=""  ondragstart="return false"><label style="float:left"><b>&nbsp;&nbsp;%</b></label>
                         </td>
                     </tr>
                    
                 </table>
                
+               
                  <label style="margin-left:20px; margin-top:50px;margin-bottom:15px;font-size:20px;"><b>이벤트 미등록 상품</b></label>
                  <form name="select_category">
                  <div style="float:left; margin-left:10px">
-                    <select name="product" id="product" style="width:150px" onchange="itemCategoryList(this.value);">
-                        <option value="">대분류</option>
-                        <option value="F">푸드</option>
-                        <option value="L">리빙</option>
-                    </select>
-                &nbsp; 
-                    <select name="itemCategory" id="itemCategory" style="width:150px">
-                        <option value="">소분류</option>
-                    </select>
+                 
+                 
+                 
+                 
+            
+                    <c:if test="${empty itemCategory }">
+	                    <select name="product" id="product" style="width:150px" onchange="itemCategoryList(this.value);">
+	                        <option value="">대분류</option>
+	                        <option value="F">푸드</option>
+	                        <option value="L">리빙</option>
+	                    </select>
+	                &nbsp; 
+	                    <select name="itemCategory" id="itemCategory" style="width:150px">
+	                        <option value="">소분류</option>
+	                    </select>
+                    </c:if>
+                    <c:if test="${itemCategory eq 'F1'}">
+	                    <select name="product" id="product" style="width:150px" onchange="itemCategoryList(this.value);">
+	                        <option value="">대분류</option>
+	                        <option value="F" selected>푸드</option>
+	                        <option value="L">리빙</option>
+	                    </select>
+	                &nbsp; 
+	                    <select name="itemCategory" id="itemCategory" style="width:150px">
+	                        <option value="F1" selected>음료</option>
+	                        <option value="F2">유제품</option>
+	                        <option value="F3">베이커리</option>
+	                        <option value="F4">간편식</option>
+	                        <option value="F5">건강식품</option>
+	                        <option value="F6">다이어트 식단</option>
+	                    </select>
+                    </c:if>
+                    <c:if test="${itemCategory eq 'F2'}">
+	                    <select name="product" id="product" style="width:150px" onchange="itemCategoryList(this.value);">
+	                        <option value="">대분류</option>
+	                        <option value="F" selected>푸드</option>
+	                        <option value="L">리빙</option>
+	                    </select>
+	                &nbsp; 
+	                    <select name="itemCategory" id="itemCategory" style="width:150px">
+	                        <option value="F1">음료</option>
+	                        <option value="F2" selected>유제품</option>
+	                        <option value="F3">베이커리</option>
+	                        <option value="F4">간편식</option>
+	                        <option value="F5">건강식품</option>
+	                        <option value="F6">다이어트 식단</option>
+	                    </select>
+                    </c:if>
+                     <c:if test="${itemCategory eq 'F3'}">
+	                    <select name="product" id="product" style="width:150px" onchange="itemCategoryList(this.value);">
+	                        <option value="">대분류</option>
+	                        <option value="F" selected>푸드</option>
+	                        <option value="L">리빙</option>
+	                    </select>
+	                &nbsp; 
+	                    <select name="itemCategory" id="itemCategory" style="width:150px">
+	                         <option value="F1">음료</option>
+	                        <option value="F2">유제품</option>
+	                        <option value="F3" selected>베이커리</option>
+	                        <option value="F4">간편식</option>
+	                        <option value="F5">건강식품</option>
+	                        <option value="F6">다이어트 식단</option>
+	                    </select>
+                    </c:if>
+                     <c:if test="${itemCategory eq 'F4'}">
+	                    <select name="product" id="product" style="width:150px" onchange="itemCategoryList(this.value);">
+	                        <option value="">대분류</option>
+	                        <option value="F" selected>푸드</option>
+	                        <option value="L">리빙</option>
+	                    </select>
+	                &nbsp; 
+	                    <select name="itemCategory" id="itemCategory" style="width:150px">
+	                         <option value="F1">음료</option>
+	                        <option value="F2">유제품</option>
+	                        <option value="F3">베이커리</option>
+	                        <option value="F4" selected>간편식</option>
+	                        <option value="F5">건강식품</option>
+	                        <option value="F6">다이어트 식단</option>
+	                    </select>
+                    </c:if>
+                     <c:if test="${itemCategory eq 'F5'}">
+	                    <select name="product" id="product" style="width:150px" onchange="itemCategoryList(this.value);">
+	                        <option value="">대분류</option>
+	                        <option value="F" selected>푸드</option>
+	                        <option value="L">리빙</option>
+	                    </select>
+	                &nbsp; 
+	                    <select name="itemCategory" id="itemCategory" style="width:150px">
+	                        <option value="F1">음료</option>
+	                        <option value="F2">유제품</option>
+	                        <option value="F3">베이커리</option>
+	                        <option value="F4">간편식</option>
+	                        <option value="F5" selected>건강식품</option>
+	                        <option value="F6">다이어트 식단</option>
+	                    </select>
+                    </c:if>
+                     <c:if test="${itemCategory eq 'F6'}">
+	                    <select name="product" id="product" style="width:150px" onchange="itemCategoryList(this.value);">
+	                        <option value="">대분류</option>
+	                        <option value="F" selected>푸드</option>
+	                        <option value="L">리빙</option>
+	                    </select>
+	                &nbsp; 
+	                    <select name="itemCategory" id="itemCategory" style="width:150px">
+	                        <option value="F1">음료</option>
+	                        <option value="F2">유제품</option>
+	                        <option value="F3">베이커리</option>
+	                        <option value="F4">간편식</option>
+	                        <option value="F5">건강식품</option>
+	                        <option value="F6" selected>다이어트 식단</option>
+	                    </select>
+                    </c:if>
+                    <c:if test="${itemCategory eq 'L1'}">
+	                    <select name="product" id="product" style="width:150px" onchange="itemCategoryList(this.value);">
+	                        <option value="">대분류</option>
+	                        <option value="F">푸드</option>
+	                        <option value="L" selected>리빙</option>
+	                    </select>
+	                &nbsp; 
+	                    <select name="itemCategory" id="itemCategory" style="width:150px">
+	                        <option value="L1" selected>홈데코</option>
+	                        <option value="L2">바디케어</option>
+	                        <option value="L3">생활용품</option>
+	                    </select>
+                    </c:if>
+                    <c:if test="${itemCategory eq 'L2'}">
+	                    <select name="product" id="product" style="width:150px" onchange="itemCategoryList(this.value);">
+	                        <option value="">대분류</option>
+	                        <option value="F">푸드</option>
+	                        <option value="L" selected>리빙</option>
+	                    </select>
+	                &nbsp; 
+	                    <select name="itemCategory" id="itemCategory" style="width:150px">
+	                        <option value="L1">홈데코</option>
+	                        <option value="L2" selected>바디케어</option>
+	                        <option value="L3">생활용품</option>
+	                    </select>
+                    </c:if>
+                    <c:if test="${itemCategory eq 'L3'}">
+	                    <select name="product" id="product" style="width:150px" onchange="itemCategoryList(this.value);">
+	                        <option value="">대분류</option>
+	                        <option value="F">푸드</option>
+	                        <option value="L" selected>리빙</option>
+	                    </select>
+	                &nbsp; 
+	                    <select name="itemCategory" id="itemCategory" style="width:150px">
+	                        <option value="L1">홈데코</option>
+	                        <option value="L2">바디케어</option>
+	                        <option value="L3" selected>생활용품</option>
+	                    </select>
+                    </c:if>
+                    
+                    
+                    
+                    
+                    
+                    
+                    
                     <input type="button" class="btn" value="검색" onclick="search()">
                   </div>
                   <br>
                 
                    </form>
 
-                    <table>
+                    <table id="table1">
                         <thead >
                             <tr>
                                 <th style="width:20%" onclick='event.cancelBubble=true'>상품번호</th>
@@ -123,7 +276,7 @@ input, select,textarea{
                          <c:if test="${empty list }">
                         
                              <tr>
-                                <td colspan="5">이벤트 미등록 상품이 없습니다.</td>
+                                <td colspan="5" onclick='event.cancelBubble=true'>이벤트 미등록 상품이 없습니다.</td>
                         
                             </tr>
                             
@@ -219,12 +372,12 @@ input, select,textarea{
   		 	
        	$(function(){
 
-       		$("tr").on("click",function(){
-       			var itemNo=$(this).children().eq(0).text();
+       		   $("#table1").children().on("click",function(){
+       			var itemNo=$(this).children().children().eq(0).text();
         		 var page=${pi.currentPage };   
         		 var type="itemEvent";
         		 
-        		 alert(type);
+        		 alert(itemNo);
            		location.href="itemDetail.do?itemNo="+itemNo+"&page="+page+"&type="+type;
        		})
         	
@@ -386,11 +539,13 @@ input, select,textarea{
    	        
    	        	$(function(){
 
-   	       		$("tr").on("click",function(){
-   	       			var itemNo=$(this).children().eq(1).text();
+   	        	  $("#table1").children().on("click",function(){
+   	       			var itemNo=$(this).children().children().eq(0).text();
    	        		 var page=${pi.currentPage };   
-   	        		
-   	           		location.href="itemDetail.do?itemNo="+itemNo+"&page="+page;
+   	        		 var type="itemEvent";
+   	        		 var itemCategory=$("#itemCategory").val();
+   	        	
+   	           		location.href="itemDetail.do?itemNo="+itemNo+"&page="+page+"&type="+type+"&itemCategory="+itemCategory;
    	       		})
    	        	
    	       	}) 
@@ -405,7 +560,11 @@ input, select,textarea{
    	 		var $eventStatus;
    	 		var $checkBox;
    	 		var $th;
+   	 		var $p;
    	 	
+   	 	
+   	 	if(data.list.length>0){
+   	 		
    	 				for(var i in data.list){
    	 					
    	 				$tr=$("<tr>");
@@ -428,7 +587,18 @@ input, select,textarea{
    	 				$tableBody.append($tr);
    	 	
    	 				}
-   	 			
+   	 	}else{
+   	 		
+   	 			$tr=$("<tr>");
+	   	 		$td=$("<td colspan='5' onclick='event.cancelBubble=true'>").text("이벤트 미등록 상품이 없습니다.");
+	   	 	
+		   
+		   	 	$tr.append($td);
+		   	 	$tableBody.append($tr);
+		   	 	
+		   	 	$page=$(".page-center");
+		   	 	$page.html("");
+   	 	}	
    	 			
    	 		
    	 	},

@@ -416,7 +416,15 @@ float:left;
                 </table>
           
             <div style="text-align: center;">
+            
+            	<input type="hidden" name="type" value="${type }">
+            	<input type="hidden" name="page" value="${page }">
+            	<input type="hidden" name="eventNo" value="${eventNo }">
+            
+            
                 <input type="submit" class="btn" value="수정">
+                
+               
 	                <c:if test="${type eq 'itemEvent' }">
 	                	<c:url var="goItemEvent" value="iEventInsertView.do">
 	                		<c:param name="page" value="${page }"/>
@@ -426,6 +434,7 @@ float:left;
 	                <c:if test="${type eq 'itemList' }">
 	                	<c:url var="goItemList" value="itemListA.do">
 	                		<c:param name="page" value="${page }"/>
+	                		<c:param name="itemCategory" value="${itemCategory }"/>
 	                	</c:url>
 		                <input type="button" class="btn" value="목록" onclick="location.href='${goItemList}'">                
 	                </c:if>
@@ -438,7 +447,7 @@ float:left;
 	                </c:if>
     
                 
-                
+                <c:out value="${eventNo }"/>
                 
                 <input type="reset" class="btn" value="취소">
             </div>

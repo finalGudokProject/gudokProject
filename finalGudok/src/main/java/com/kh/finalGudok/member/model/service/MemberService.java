@@ -3,14 +3,24 @@ package com.kh.finalGudok.member.model.service;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.kh.finalGudok.item.model.vo.BannerItem;
 import com.kh.finalGudok.item.model.vo.Item;
 import com.kh.finalGudok.item.model.vo.PageInfo;
+import com.kh.finalGudok.member.model.vo.AdminBoard;
+import com.kh.finalGudok.member.model.vo.AdminCancle;
+import com.kh.finalGudok.member.model.vo.AdminExchange;
+import com.kh.finalGudok.member.model.vo.AdminMember;
+import com.kh.finalGudok.member.model.vo.AdminPayment;
+import com.kh.finalGudok.member.model.vo.AdminSecession;
+import com.kh.finalGudok.member.model.vo.AdminSubscribe;
+import com.kh.finalGudok.member.model.vo.Cancle;
 import com.kh.finalGudok.member.model.vo.Cart;
 import com.kh.finalGudok.member.model.vo.DeleteHeart;
 import com.kh.finalGudok.member.model.vo.Delivery;
 import com.kh.finalGudok.member.model.vo.Exchange;
 import com.kh.finalGudok.member.model.vo.Grade;
 import com.kh.finalGudok.member.model.vo.Heart;
+import com.kh.finalGudok.member.model.vo.Inquiry;
 import com.kh.finalGudok.member.model.vo.Member;
 import com.kh.finalGudok.member.model.vo.Point;
 import com.kh.finalGudok.member.model.vo.Reply;
@@ -18,15 +28,6 @@ import com.kh.finalGudok.member.model.vo.Review;
 import com.kh.finalGudok.member.model.vo.Search;
 import com.kh.finalGudok.member.model.vo.Subscribe;
 import com.kh.finalGudok.member.model.vo.Withdrawal;
-import com.kh.finalGudok.member.model.vo.AdminBoard;
-import com.kh.finalGudok.item.model.vo.BannerItem;
-import com.kh.finalGudok.member.model.vo.AdminExchange;
-import com.kh.finalGudok.member.model.vo.AdminMember;
-import com.kh.finalGudok.member.model.vo.AdminPayment;
-import com.kh.finalGudok.member.model.vo.AdminSecession;
-import com.kh.finalGudok.member.model.vo.AdminSubscribe;
-import com.kh.finalGudok.member.model.vo.Cancle;
-import com.kh.finalGudok.member.model.vo.Inquiry;
 
 public interface MemberService {
 
@@ -235,6 +236,26 @@ public interface MemberService {
 
 	int selectPoint(int subscribeNo);
 
+	ArrayList<AdminMember> selectMemberPaymentList(String startDay);
+
+	int updateMemberGrade(AdminMember adminMember);
+
+	ArrayList<Grade> selectGradeInfo();
+
 	int selectPointMember(AdminSubscribe adminSubscribe);
+
+	int updateSubscribeDestination(Delivery d);
+
+
+	Integer selectSubscribeCancelChart(Search search);
+
+	int getSubscribeCancelCnt(Search s);
+
+	ArrayList<AdminCancle> selectSubscribeCancel(Search s, PageInfo pi);
+
+	int selectUsedPoint(int memberNo);
+
+	int updateMyPoint(Member loginUser);
+
 
 }

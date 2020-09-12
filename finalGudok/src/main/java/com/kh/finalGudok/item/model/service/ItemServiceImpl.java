@@ -1,6 +1,8 @@
 package com.kh.finalGudok.item.model.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,7 @@ import com.kh.finalGudok.item.model.vo.Image;
 import com.kh.finalGudok.item.model.vo.Item;
 import com.kh.finalGudok.item.model.vo.ItemListView;
 import com.kh.finalGudok.item.model.vo.PageInfo;
+import com.kh.finalGudok.item.model.vo.PaymentInfo;
 import com.kh.finalGudok.item.model.vo.Review;
 import com.kh.finalGudok.item.model.vo.ReviewImage;
 import com.kh.finalGudok.item.model.vo.ReviewView;
@@ -680,6 +683,40 @@ public class ItemServiceImpl implements ItemService {
 	@Override
 	public int updateItemEventStatusN(int[] dEventArr) {
 		return iDao.updateItemEventStatusN(dEventArr);
+	}
+
+	@Override
+	public int updateRecommendStatusN(Integer itemNo) {
+		return iDao.updateRecommendStatusN(itemNo);
+	}
+
+	@Override
+
+	public int selectRecommendChk(String s) {
+		return iDao.selectRecommendChk(s);
+	}
+	public int checkDiscount(int no) {
+		return iDao.checkDiscount(no);
+	}
+
+	@Override
+	public int insertFirstPayment(PaymentInfo payInfo) {
+		return iDao.insertFirstPayment(payInfo);
+	}
+
+	@Override
+	public int selectItemPrice(int itemNo) {
+		return iDao.selectItemPrice(itemNo);
+	}
+
+	@Override
+	public int insertSubScribeInfo(HashMap<String, Object> map) {
+		return iDao.insertSubcribeInfo(map);
+	}
+
+	@Override
+	public ArrayList<Subscribe> selectSubscribeStatus(String customerUid) {
+		return iDao.selectSubscribeStatus(customerUid);
 	}
 
 }
