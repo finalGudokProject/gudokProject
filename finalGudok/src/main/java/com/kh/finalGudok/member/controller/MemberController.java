@@ -372,11 +372,16 @@ public class MemberController {
 	// 구독 조회
 	@RequestMapping("subscribeList.do")
 	@ResponseBody
-	public void subscribeList(HttpServletResponse response, Integer memberNo) throws JsonIOException, IOException { // 민지
+	public void subscribeList(HttpServletResponse response, HttpSession session, Model model, Integer memberNo) throws JsonIOException, IOException { // 민지
 
 		ArrayList<Subscribe> list = mService.selectSubscribeList(memberNo);
 
 		System.out.println("구독 내역  : " + list);
+		
+		Member loginUser = (Member) session.getAttribute("loginUser");
+		
+		int subscribeCount = mService.subscribeCount(loginUser.getMemberNo());
+		model.addAttribute("subscribeCount", subscribeCount);
 
 		response.setContentType("application/json;charset=utf-8");
 
@@ -408,8 +413,7 @@ public class MemberController {
 		// 내부적으로 복호화 처리가 이루어진다. (암호화된 회원만 로그인 가능)
 		if (bcryptPasswordEncoder.matches(m.getMemberPwd(), loginUser.getMemberPwd())) { // 로그인 할 멤버 객체가 조회 되었을 시
 			model.addAttribute("loginUser", loginUser);
-			System.out.println(status);
-			
+
 			if(status.equals("t")) {
 				return "mypage/memberWithdrawal";
 			} else {
