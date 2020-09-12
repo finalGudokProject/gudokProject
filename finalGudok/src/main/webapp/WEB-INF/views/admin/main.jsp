@@ -274,12 +274,18 @@
                     <td id="maintd1">
                         <div id="subBox1">
                             <div style="float:left;"><h5><b>미답변 문의</b></h5></div>
+                            <c:url var="searchInquiryList" value="searchInquiryList.do">
+								<c:param name="searchType" value="All"/>
+								<c:param name="inquiry_yn" value="No"/>
+								<c:param name="keyword" value=""/>
+								<c:param name="page" value="1"/>
+							</c:url>
                             <div class="mr-0" style="float:right;">
-                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-arrow-right-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <a href="${searchInquiryList }"><svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-arrow-right-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                             <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
                             <path fill-rule="evenodd" d="M7.646 11.354a.5.5 0 0 1 0-.708L10.293 8 7.646 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0z"/>
                             <path fill-rule="evenodd" d="M4.5 8a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5z"/>
-                            </svg></div> 
+                            </svg></a></div> 
                             <br><br>
                         <table class="table">
                         	<c:if test="${!empty bList }">
@@ -310,11 +316,11 @@
                         <div id="subBox1">
                             <div style="float:left;"><h5><b>공지사항</b></h5></div>
                             <div class="mr-0" style="float:right;">
-                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-arrow-right-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <a href="adminNoticeList.do"><svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-arrow-right-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                             <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
                             <path fill-rule="evenodd" d="M7.646 11.354a.5.5 0 0 1 0-.708L10.293 8 7.646 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0z"/>
                             <path fill-rule="evenodd" d="M4.5 8a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5z"/>
-                            </svg></div> <br><br>
+                            </svg></a></div> <br><br>
                         <table class="table">
                             <c:if test="${!empty nList }">
                              <c:forEach var="i" items="${nList }" varStatus="cnt">
