@@ -97,7 +97,11 @@
 				<thead>
 				<tr style="border-bottom:1px solid lightgray; vertical-align:middle;">
 					<th class="listChk"  style="width:3%;"><input type="checkbox" id="allChk"></th>
-					<th style="width:7%;"><label for="chk" style="display:block;margin:0px;text-align:left;">전체선택(<span id="frontCount">0</span>/<span id="afterCount">${list.size() }</span>)</label></th>
+					<th style="width:7%;">
+						<label for="chk" style="display:block;margin:0px;text-align:left;">
+							전체선택(<span id="frontCount">0</span>/<span id="afterCount">${list.size() }</span>)
+						</label>
+					</th>
 					<th colspan="2" style="width:35%;text-align:left;">상품정보</th>
 					<th style="width:18%;">수량</th>
 					<th style="width:8%;">구독주기</th>
@@ -112,13 +116,17 @@
 				<fmt:formatNumber var="itemPrice" value="${c.itemPrice * c.cartCount }" type="number"/>
 				<tr style="border-bottom:1px solid lightgray;vertical-align:middle;">
 					<td class="listChk">
+					
+					<!-- 해당 상품에 할인율이 없다면 -->
 					<c:if test="${c.itemDiscount == 0 }">
-					<input type="checkbox" class="chk" value="${c.itemPrice * c.cartCount}" data-cartNo="${c.cartNo }">
+						<input type="checkbox" class="chk" value="${c.itemPrice * c.cartCount}" data-cartNo="${c.cartNo }">
 					</c:if>
+					<!-- 해당 상품에 할인율이 있다면 -->
 					<c:if test="${c.itemDiscount != 0 }">
-					<input type="checkbox" class="chk" value="${(c.itemPrice - c.itemPrice*(c.itemDiscount/100)) * c.cartCount}" data-cartNo="${c.cartNo }">
-					<input type="hidden" class="chk" value="${c.itemPrice * c.cartCount}" data-cartNo="${c.cartNo }">
+						<input type="checkbox" class="chk" value="${(c.itemPrice - c.itemPrice*(c.itemDiscount/100)) * c.cartCount}" data-cartNo="${c.cartNo }">
+						<input type="hidden" class="chk" value="${c.itemPrice * c.cartCount}" data-cartNo="${c.cartNo }">
 					</c:if>
+					
 					</td>
 					<td colspan="2" style="width:25rem;text-align:center;">
 						<img src="${contextPath }/resources/uploadFiles/${c.itemRename}" class="basketImg">
@@ -126,20 +134,23 @@
 					<td><input type="hidden" id="totalPriceInput" class="totalPriceInput" style="width:10rem;">${c.itemName }</td>
 					<td class="countTd" style="width:20rem;">
 						<c:if test="${c.cartCount == 1 }">
-						<img src="${contextPath }/resources/images/XSIGN.png" class="signImgM" id="signM">
+							<img src="${contextPath }/resources/images/XSIGN.png" class="signImgM" id="signM">
 						</c:if>
 						<c:if test="${c.cartCount != 1 }">
-						<img src="${contextPath }/resources/images/minus.png" class="signImgM" id="signM">
+							<img src="${contextPath }/resources/images/minus.png" class="signImgM" id="signM">
 						</c:if>
 						
+						<!-- 상품 수량에 따른 상품 가격(할인율이 존재한다면 반영해서)이 들어갈 input -->
 						<input type="hidden">
 						
+						<!-- 상품 가격 체크(할인율 여부) -->
 						<c:if test="${c.itemDiscount != 0}">
 		                	<input type="hidden" value="${c.itemPrice - c.itemPrice*(c.itemDiscount/100)}">
 						</c:if>
 						<c:if test="${c.itemDiscount == 0}">
 							<input type="hidden" value="${c.itemPrice }">
 						</c:if>
+						
 						<input type="text" readonly class="amountT" value="${c.cartCount }" style="width:50px;text-align:center;">
 						<img src="${contextPath }/resources/images/plus.png" class="signImgP" id="signP">
 						<input type="hidden" value="${c.itemDiscount }">
@@ -212,31 +223,58 @@
 		</div>
 	</div>	<!-- 컨테이너 끝 -->
 	
+	<!-- input[type=checkbox] -->
 	<script>
 		$(function(){
+			
+			/* 3번째 자리마다 컴마를 찍어주는 이벤트 */
 			function addComma(num) {
 			 	var regexp = /\B(?=(\d{3})+(?!\d))/g;
 				return num.toString().replace(regexp, ',');
 			}
+			
+			/* 해당 상품 수량 */
 			var count = "";
+			/* 해당 상품 input[type=checkbox] 체크 여부 */
 			var check = "";
+			/* 해당 상품 총 가격(할인율 적용) */
 			var sum = 0;
+			
+			/* 전체 선택 버튼 클릭 시 */
 			$("#allChk").on("click", function(){
+				
+				/* 전체 선택이 선택되어 있다면 */
 				if($("#allChk").prop("checked")){
+					
+					/* 모든 checkbox를 선택하고 */
 					$("input[type=checkbox]").prop("checked",true);
+					
+					/* check에 선택된 갯수를 담는다. */
 					check = $("input:checkbox[class=chk]:checked").length;
 					$("#delBtn").val(check + "개 상품 삭제하기");
+					
+					/* 전체선택(front/back) front 부분 */
 					$("#frontCount").text(check);
+					
+					/* 선택되어 있지 않은 가격을 초기화 시키고 */
 					sum = 0;
+					
+					/* 선택된 값만 sum에 담는다. */
 					$("input:checkbox[class=chk]:checked").each(function(){
 						sum += Number($(this).val());
 						$("#paymentBtn").val(addComma(sum)+"원 결제하기");
 						$("#totalPriceTd").text("총 주문 금액 : " + addComma(sum)+"원");
 					})
 					console.log(sum);
+				
+				/* 전체 선택이 선택되어 있지 않다면 */
 				}else{
+					
+					/* 모든 checkbox를 선택 해제하고 */
 					$("input[type=checkbox]").prop("checked",false);
 					check = $("input:checkbox[class=chk]:checked").length;
+					
+					/* 관련된 버튼의 값과 front의 값을 바꾸고 sum을 초기화 한다. */
 					$("#delBtn").val("장바구니 삭제하기");
 					$("#frontCount").text("0");
 					sum = 0;
@@ -245,30 +283,44 @@
 					console.log(sum);
 				}
 			})
+			
+			/* 전체 선택이 아닌 개별로 선택하는 경우 */
 			$(".chk").on("click", function(){
 				if($("#allChk").prop("checked")){
 					$("#allChk").prop("checked",false);
 				}
+				
+				/* 개별 선택되었다면 */
 				if($(this).prop("checked")){
 					check++;
 					$("#delBtn").val(check + "개 상품 삭제하기");
 					$("#frontCount").text(check);
 					
 					/* sum += $(this).parent().next().next().find("input").val(); */
+					
+					/* 선택된 checkbox의 값을 sum에 더한다. */
 					sum += Number($(this).val());
 					$("#totalPrice").val(sum);
 					$("#paymentBtn").val(addComma(sum)+"원 결제하기");
 					$("#totalPriceTd").text("총 주문 금액 : " + addComma(sum)+"원");
 					
 					console.log(sum);
+					
+				/* 개별 선택 해제되었다면 */
 				}else{
 					check--;
+					
+					/* 해제된 checkbox의 값을 sum에서 빼고 */
 					sum -= Number($(this).val());
 					$("#frontCount").text(check);
+					
+					/* 선택된 상품이 남아있다면 */
 					if(check != 0){
 						$("#delBtn").val(check + "개 상품 삭제하기");
 						$("#paymentBtn").val(addComma(sum)+"원 결제하기");
 						$("#totalPriceTd").text("총 주문 금액 : " + addComma(sum)+"원");
+					
+					/* 선택된 상품이 남아있지 않다면 */
 					}else{
 						$("#paymentBtn").val("상품을 선택해 주세요.");
 						$("#delBtn").val("장바구니 삭제하기");
@@ -282,30 +334,47 @@
 	</script>
 	
 	
-	<!-- 수량 버튼 -->
+		<!-- 수량 버튼 -->
 		<script>
+			/* 3번째 자리마다 컴마를 찍어주는 이벤트 */
 			function addComma(num) {
 			 	var regexp = /\B(?=(\d{3})+(?!\d))/g;
 				return num.toString().replace(regexp, ',');
 			}
+			
 			$(function(){
+				
+				/* + 이미지 클릭 시 */
 				$(".signImgP").on("click",function(){
+					
+					/* checkbox가 선택되어 있다면 */
 					if($(this).parent().prev().prev().prev("td").find("input").prop("checked") == true){
 						swal("","선택된 상태로는 수량 변경을 할 수 없습니다.","error");
+					
+					/* checkbox가 선택되어 있지 않다면 */
 					}else{
+						
+						/* amount에 현재 수량 input의 값을 담고 */
 						var amount = $(this).prev().val();
+						/* 1을 더해서 다시 input에 담는다. */
 						amount = Number(amount) + 1;
 						console.log(amount);
 						$(this).prev().val(amount);
 						
+						/* 상품 가격을 변수에 담고(할인율이 있다면 적용해서) */
 						var valueCheck = $(this).prev().prev().val();
+						/* 초기화한다. */
 						$(this).prev().prev().prev().val("");
+						
+						/* 다시 realValue에 상품가격*수량의 값을 담는다. */
 						var realValue = $(this).prev().prev().prev().val(valueCheck * amount);
 						var varPrice = $(this).prev().prev().prev().val();
-	
+						
+						/* 상품 가격이 적혀있는 td를 초기화하고 */
 						$(this).parent().next("td").next("td").text("");
 						$(this).parent().prev("td").find(".totalPriceInput").val(varPrice);
 						$(this).parent().prev().prev().prev("td").find("input").val(varPrice);
+						/* 컴마를 추가한 가격을 td에 넣는다. */
 						$(this).parent().next("td").next("td").text(addComma(varPrice)+"원");
 						
 						if(amount > 1){
@@ -313,24 +382,42 @@
 						}
 					}
 				})
+				
+				/* - 이미지 클릭 시 */
 				$(".signImgM").on("click",function(){
+					
+					/* checkbox가 선택되어 있다면 */
 					if($(this).parent().prev().prev().prev("td").find("input").prop("checked") == true){
 						swal("","선택된 상태로는 수량 변경을 할 수 없습니다.","error");
+						
+					/* checkbox가 선택되어 있지 않다면 */	
 					}else{
+						
+						/* amount에 현재 수량 input의 값을 담고 */
 						var amount = $(this).next().next().next().val();
+						
+						/* amount가 1이상이라면 */
 						if(amount > 1){
+							
+							/* 1을 빼서 다시 input에 담는다. */
 							amount = Number(amount) - 1;
 							$(this).next().next().next().val(amount);
 							/* console.log(amount); */
 							
+							/* 상품 가격을 변수에 담고(할인율이 있다면 적용해서) */
 							var valueCheck = $(this).next().next().val();
+							/* 초기화한다. */
 							$(this).next().val("");
+							
+							/* 다시 realValue에 상품가격*수량의 값을 담는다. */
 							var realValue = $(this).next().val(valueCheck * amount);
 							var varPrice = $(this).next().val();
 							
+							/* 상품 가격이 적혀있는 td를 초기화하고 */
 							$(this).parent().next("td").next("td").text("");
 							$(this).parent().next("td").next("td").text(varPrice);
 							$(this).parent().prev().prev().prev("td").find("input").val(varPrice);
+							/* 컴마를 추가한 가격을 td에 넣는다. */
 							$(this).parent().next("td").next("td").text(addComma(varPrice)+"원");
 							/* $("#totalPriceTd").text("총 주문 금액 : " + addComma(varPrice) + "원"); */
 							if(amount == 1){
@@ -363,10 +450,13 @@
 							if(result){
 								
 							}else{
+								
+								/* 선택된 상품을 ArrayList로 담는다.(2개이상일 경우도 있기 때문에) */
 								var checkArr = new Array();
 								$("input:checkbox[class='chk']:checked").each(function(){
 									checkArr.push($(this).attr("data-cartNo"));
 								})
+								
 								$.ajax({
 									url : "basketDel.do",
 									data : {checkboxArr:checkArr},
