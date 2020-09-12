@@ -132,7 +132,9 @@
 	</select>
 	
 	<insert id="insertSubscribeInfo" parameterType="hashMap">
-		INSERT INTO SUBSCRIBE 
+		INSERT ALL
+		INTO SUBSCRIBE (SUBSCRIBE_NO, ITEM_NO, CYCLE_NO, SUBSCRIBE_STATUS, SUBSCRIBE_DATE, AMOUNT, MEMBER_NO, MEMBER_ID, EMAIL, 
+						EXCHANGE_STATUS, ITEM_NAME, ADDRESS_1, ADDRESS_2, ADDRESS_3, PHONE, SUB_PRICE, CUSTOMER_UID, PAYMENT_DATE)
 		VALUES(SEQ_SUBSCRIBE_NO.NEXTVAL
 				, #{subInfo.itemNo}
 				, (SELECT CYCLE_NO FROM CYCLE WHERE CYCLE_PERIOD = #{cycle})
@@ -151,10 +153,43 @@
 				, #{subInfo.subPrice}
 				, #{subInfo.customerUid}
 				, SYSDATE)
+				
+		INTO DELIVERY(DELIVERY_NO, DELIVERY_STATUS, SUBSCRIBE_NO)
+		VALUES(SEQ_DELIVERY_NO.NEXTVAL
+				, DEFAULT
+				, SEQ_SUBSCRIBE_NO.NEXTVAL)
+		
+		SELECT * FROM dual
+		
 	</insert>
 	
 	<select id="selectSubscribeStatus" parameterType="String" resultMap="subscribeResultSet">
-		SELECT * FROM SUBSCRIBE WHERE CUSTOMER_UID = #{customerUid} AND SUBSCRIBE_STATUS = 'N'
+		SELECT * FROM SUBSCRIBE 
+		WHERE CUSTOMER_UID = #{customerUid} AND SUBSCRIBE_STATUS = 'N'
+	</select>
+	
+	<select id="selectPoint" parameterType="_int" resultType="double">
+		SELECT GRADE_RATE FROM GRADE WHERE GRADE_NO = (SELECT GRADE_NO FROM MEMBER WHERE MEMBER_NO = #{memberNo})
+	</select>
+	
+	<update id="updateUsePoint" parameterType="hashMap">
+		UPDATE MEMBER SET POINT = ((SELECT POINT FROM MEMBER WHERE MEMBER_NO = #{memberNo}) - #{point}) WHERE MEMBER_NO = #{memberNo}
+	</update>
+	
+	<delete id="deleteCartList" parameterType="hashMap">
+		DELETE FROM CART
+		WHERE ITEM_NO IN
+		<foreach collection="itemNoArr" item="item" index="index" open="(" close=")" separator=",">		
+			#{item}
+		</foreach>
+	</delete>
+	
+	<select id="selectSubList" parameterType="_int" resultType="_int">
+		SELECT COUNT(*) FROM SUBSCRIBE WHERE ITEM_NO = #{itemNo}
+	</select>
+
+	<select id="selectRecommendList" resultMap="itemResultSet">
+		SELECT * FROM ITEM WHERE ITEM_RECOMMEND = 'C' AND ROWNUM BETWEEN 1 AND 4 
 	</select>
 	
 </mapper>

@@ -204,22 +204,26 @@ public class MemberController {
 	}
 
 	@RequestMapping("emailDupCheck.do")
-	public ModelAndView emailDupCheck(ModelAndView mv, String email) {
-
+	public void emailDupCheck(HttpServletResponse response, String email) throws IOException {
+		response.setContentType("application/json;charset=utf-8");
+		PrintWriter out = response.getWriter();
+		JSONObject sendJson = new JSONObject();
+		
 		boolean emailCheckResult = mService.emailDupCheck(email) == 0 ? true : false;
 //		System.out.println(emailCheckResult);
 		String user = "p.jaemyung91@gmai.com";
 
-		Map map = new HashMap();
-
 		int random = new Random().nextInt(100000) + 10000; // 10000 ~ 99999
 		String authCode = String.valueOf(random);
 
-		map.put("emailCheckResult", emailCheckResult);
-
 		if (emailCheckResult == true) {
+			sendJson.put("emailCheckResult", emailCheckResult);
+			sendJson.put("authCode", authCode);
+			out.print(sendJson);
+			out.flush();
+			out.close();
+			
 			MimeMessage msg = mailSender.createMimeMessage();
-
 			try {
 
 //      MimeMessageHelper messageHelper = new MimeMessageHelper(msg, true, "UTF-8");
@@ -236,12 +240,7 @@ public class MemberController {
 			}
 
 			mailSender.send(msg);
-			map.put("authCode", authCode);
 		}
-
-		mv.addAllObjects(map);
-		mv.setViewName("jsonView");
-		return mv;
 	}
 
 	@RequestMapping(value = "findId.do", method = RequestMethod.POST)
@@ -265,12 +264,11 @@ public class MemberController {
 	}
 
 	@RequestMapping(value = "findPwd.do", method = RequestMethod.POST)
-	public ModelAndView findPwd(ModelAndView mv, String name, String email, String id) {
-
-		Map map = new HashMap();
+	public void findPwd(String name, String email, String id, HttpServletResponse response) throws IOException {
+		PrintWriter out = response.getWriter();
 
 		// Tempkey 클래스 사용해서 난수생성(영어, 숫자, 특수문자 조합)
-		String authCode = new Tempkey().generateKey(10); // 인증키 생성
+		String authCode = new Tempkey().generateKey(10); // 임시비밀번호 생성
 		System.out.println("authCode : " + authCode);
 
 		m.setMemberId(id);
@@ -278,7 +276,10 @@ public class MemberController {
 		m.setMemberName(name);
 		int result = mService.checkMember(m);
 		if (result > 0) { // 사용자가 입력한 값과 일치하는 회원이 존재하면 메일 발송
-
+			out.append("success");
+			out.flush();
+			out.close();
+			
 			String user = "p.jaemyung91@gmai.com";
 			MimeMessage msg = mailSender.createMimeMessage();
 
@@ -302,17 +303,8 @@ public class MemberController {
 
 			m.setMemberPwd(encPwd);
 			int result2 = mService.changePwd(m);
-
-			if (result2 > 0) { // 업데이트 성공 시
-				map.put("msg", "success");
-				mv.addAllObjects(map);
-				mv.setViewName("jsonView");
-			}
-
 		}
-		return mv;
 	}
-
 	// ------------------------------ 마이페이지  ----------------------------------------------
 
 	// 마이페이지 이동

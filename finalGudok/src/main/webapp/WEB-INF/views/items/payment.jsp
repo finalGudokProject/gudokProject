@@ -182,7 +182,7 @@
                         <td colspan="5" rowspan="2" align="center">
                         	<input id="customerUid" type="hidden" value="${loginUser.memberId }">
                             <button type="submit" class="btn" id="payBtn" onclick="requestPay();">결제하기</button>
-                            <button type="button" class="btn" id="goBackBtn">이전으로</button>
+                            <button type="button" class="btn" id="goBackBtn" onclick="history.back();">이전으로</button>
                         </td>
                     </tr>
                 </table>
@@ -199,19 +199,6 @@
     <script>
 		function requestPay(){
 		
-		var regPhone = /^010\d{8}$/;
-		var phone = "";
-		
-		if(!regPhone.test($("#phone").val())){
-			alert("연락처를 확인해주세요");
-			$("#phone").val("");
-			$("#phone").focus();
-			return false;
-		}else{
-			phone = $("#phone").val();
-		}
-		
-		var IMP = window.IMP; // 생략해도 괜찮습니다.
 		var customerUid = "${loginUser.memberId}" + new Date().getTime();	//카드와 1:1로 대응되는 아이디
 		var email = "${loginUser.email}";
 		var name = "${loginUser.memberName}";
@@ -235,53 +222,90 @@
     		countArr.push("${i.cartCount}");
     		cycleArr.push("${i.cartSubs}");
   		</c:forEach>
-
   		
-		IMP.init("imp38859026"); // "imp00000000" 대신 발급받은 "가맹점 식별코드"를 사용합니다.
+  		var regPhone = /^010\d{8}$/;
+		var phone = "";
 		
-		// IMP.request_pay(param, callback) 호출
-		  IMP.request_pay({ // param
-			  	pg : "html5_inicis.INIBillTst", // 실제 계약 후에는 실제 상점아이디로 변경
-				pay_method : 'card', // 'card'만 지원됩니다.
-				merchant_uid : 'merchant_' + new Date().getTime(),
-				name : '결제',
-				amount : finalPrice, // 결제창에 표시될 금액. 실제 승인이 이뤄지지는 않습니다. (모바일에서는 가격이 표시되지 않음)
-				customer_uid : customerUid, //customer_uid 파라메터가 있어야 빌링키 발급을 시도합니다.
-		  }, function (rsp) { // callback
-		    if (rsp.success) {
-		    	alert("빌링키 발급 성공")
-		    	
-		    	jQuery.ajax({
-		            url: "payment.do", // 서비스 웹서버
-		            method: "POST",
-		            traditional:true,
-		            data:{nameArr:nameArr, priceArr:priceArr, countArr:countArr, cycleArr:cycleArr, 
-		            	customerUid:customerUid, email:email, phone:phone, memberNo:memberNo, finalPrice:finalPrice, 
-		            	noArr:noArr, point:point, address1:address1, address2:address2, address3:address3},
-		            success: function(data){
-		            	if(data == "success"){
-		            		alert("결제가 완료되었습니다.");
-		            		location.href="home.do";
-		            	}else{
-		            		alert("결제에 실패하였습니다.")
-		            	}
-		            },
-		            error : function(request, status, errorData) {
-						alert("error code: " + request.status
-								+ "\n" + "message: "
-								+ request.responseText + "error: "
-								+ errorData);
-					}
-		          });
-		    } else {
-		    	alert("빌링키 발급 실패");
-		    }
-		  });
+		if(!regPhone.test($("#phone").val())){
+			alert("연락처를 확인해주세요");
+			$("#phone").val("");
+			$("#phone").focus();
+			return false;
+		}else{
+			phone = $("#phone").val();
 		}
+			
+		$.ajax({
+			url:"subscribeCheck.do",
+			data:{noArr : noArr},
+			traditional:true,
+			success:function(data){
+				if(data == "fail"){
+					alert("이미 구독중인 상품입니다. 취소 후 재구독해주세요.")
+					location.href="home.do";
+				}else{
+					alert("구독가능합니다.")
+					var IMP = window.IMP; // 생략해도 괜찮습니다.
 
-	</script>
-	
-	<script>
+					IMP.init("imp38859026"); // "imp00000000" 대신 발급받은 "가맹점 식별코드"를 사용합니다.
+					
+					// IMP.request_pay(param, callback) 호출
+					  IMP.request_pay({ // param
+						  	pg : "html5_inicis.INIBillTst", // 실제 계약 후에는 실제 상점아이디로 변경
+							pay_method : 'card', // 'card'만 지원됩니다.
+							merchant_uid : 'merchant_' + new Date().getTime(),
+							name : '결제',
+							amount : finalPrice, // 결제창에 표시될 금액. 실제 승인이 이뤄지지는 않습니다. (모바일에서는 가격이 표시되지 않음)
+							customer_uid : customerUid, //customer_uid 파라메터가 있어야 빌링키 발급을 시도합니다.
+							buyer_email : email,
+							buyer_name : name,
+							buyer_tel : phone
+					  }, function (rsp) { // callback
+					    if (rsp.success) {
+					    	/* alert("빌링키 발급 성공") */
+					    	
+					    	jQuery.ajax({
+					            url: "payment.do", // 서비스 웹서버
+					            method: "POST",
+					            traditional:true,
+					            data:{nameArr:nameArr, priceArr:priceArr, countArr:countArr, cycleArr:cycleArr, 
+					            	customerUid:customerUid, email:email, phone:phone, memberNo:memberNo, 
+					            	finalPrice:finalPrice, noArr:noArr, point:point, address1:address1, address2:address2, address3:address3},
+					            success: function(data){
+					            	if(data == "success"){
+					            		alert("결제가 완료되었습니다.");
+					            		location.href="home.do";
+					            	}else{
+					            		alert("결제에 실패하였습니다.");
+					            	}
+					            },
+					            error : function(request, status, errorData) {
+									alert("error code: " + request.status
+											+ "\n" + "message: "
+											+ request.responseText + "error: "
+											+ errorData);
+								}
+					          });
+					    } else {
+					    	alert("결제에 실패하였습니다. 다시 결제를 진행해주세요.");
+					    }
+					  });
+					}
+				},
+				error : function(request, status, errorData) {
+					alert("error code: " + request.status
+							+ "\n" + "message: "
+							+ request.responseText + "error: "
+							+ errorData);
+				}
+			})
+			
+					
+		}
+		
+		</script>
+		
+		<script>
 		$(function(){
 			$("#usePoint").on("keyup", function(){
 				var memberPoint = Number("${loginUser.point}");		// 사용자가 보유한 포인트
@@ -289,7 +313,7 @@
 				var checkPrice = Number("${totalPrice}");	// 합계
 				var totalPrice = checkPrice - point;
 				
-				if(memberPoint > 5000 && point <= memberPoint){
+				if(memberPoint >= 5000 && point <= memberPoint){
 					$("#checkPrice").html(totalPrice+" 원");
 				}
 				if(point > memberPoint){
@@ -308,7 +332,7 @@
 				
 			});
 		})
-	
+
 	</script>
 	
     <!-- Optional JavaScript -->

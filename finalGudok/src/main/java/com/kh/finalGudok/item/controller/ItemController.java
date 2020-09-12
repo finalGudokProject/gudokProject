@@ -1,4 +1,5 @@
 package com.kh.finalGudok.item.controller;
+
 import static com.kh.finalGudok.common.pagination.getPageInfo;
 import static com.kh.finalGudok.common.pagination2.getPageInfo2;
 
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -90,7 +92,6 @@ public class ItemController {
 		}
 		return mv;
 	}
-
 
 	@RequestMapping("itemBest.do")
 	private ModelAndView itemBest(ModelAndView mv, @RequestParam(value = "page", required = false) Integer page,
@@ -404,7 +405,7 @@ public class ItemController {
 				iService.deleteCart(c);
 				int cartCount = mService.cartCount(member.getMemberNo());
 				System.out.println("장바구니 갯수 : " + cartCount);
-				model.addAttribute("cartCount",cartCount);
+				model.addAttribute("cartCount", cartCount);
 			}
 		}
 		return "success";
@@ -418,13 +419,13 @@ public class ItemController {
 		Member member = (Member) session.getAttribute("loginUser");
 		int search = iService.selectCart(c);
 		System.out.println("search : " + search);
-		if(search == 0) {
+		if (search == 0) {
 			iService.insertCart(c);
 			int cartCount = mService.cartCount(member.getMemberNo());
 			System.out.println("장바구니 갯수 : " + cartCount);
-			model.addAttribute("cartCount",cartCount);
+			model.addAttribute("cartCount", cartCount);
 			return "success";
-		}else {
+		} else {
 			return "fail";
 		}
 	}
@@ -464,9 +465,9 @@ public class ItemController {
 
 	private String saveFile(HttpServletRequest request, MultipartFile file) {
 
-	      String root = request.getSession().getServletContext().getRealPath("resources");
-	      String savePath = root + "\\uploadFiles";
-	      File folder = new File(savePath);
+		String root = request.getSession().getServletContext().getRealPath("resources");
+		String savePath = root + "\\uploadFiles";
+		File folder = new File(savePath);
 
 		if (!folder.exists()) {
 			folder.mkdir();
@@ -486,7 +487,7 @@ public class ItemController {
 			e.printStackTrace();
 		}
 
-	      return renameFileName;
+		return renameFileName;
 
 	}
 
@@ -498,7 +499,7 @@ public class ItemController {
 
 		int result1 = 0;
 		int result2 = 0;
-		
+
 		String renameFileName = saveFile(request, uploadFile1);
 		String root = request.getSession().getServletContext().getRealPath("resources");
 		String savePath = root + "\\uploadFiles";
@@ -509,8 +510,6 @@ public class ItemController {
 
 		result1 = iService.insertItem(i);
 
-		
-		
 		String renameFileName2 = saveFile(request, uploadFile2);
 		String root2 = request.getSession().getServletContext().getRealPath("resources");
 		String savePath2 = root2 + "\\uploadFiles";
@@ -542,7 +541,7 @@ public class ItemController {
 		String renameFileName = saveFile(request, file);
 		String root = request.getSession().getServletContext().getRealPath("resources");
 		String savePath = root + "\\uploadFiles";
-		
+
 		e.setImageOriginalName(file.getOriginalFilename());
 		e.setImageRename(renameFileName);
 		e.setImagePath(savePath);
@@ -617,7 +616,6 @@ public class ItemController {
 	// 이벤트 삭제-admin
 	@RequestMapping("eDelete.do")
 	public String deleteEvent(HttpServletRequest request, String sendArr) {
-
 
 		String[] strArr = sendArr.split(",");
 
@@ -799,69 +797,69 @@ public class ItemController {
 	}
 
 	// 리뷰 쓰기
-		@RequestMapping(value = "reviewInsert.do", method = RequestMethod.POST)
-		@ResponseBody
-		public String reviewInsert(Review r, Image i, ReviewImage ri, HttpServletRequest request,
-				@RequestParam(value = "page", required = false) Integer page,
-				@RequestParam(value = "memberNo", required = false) int memberNo,
-				@RequestParam(value = "itemNo", required = false) int itemNo,
-				@RequestParam(value = "uploadFile1", required = false) MultipartFile file1,
-				@RequestParam(value = "uploadFile2", required = false) MultipartFile file2) {
-			Subscribe scb = new Subscribe();
-			scb.setMemberNo(memberNo);
-			scb.setItemNo(itemNo);
-			int currentPage = page;
-			System.out.println("memberNo : " + memberNo + ", itemNo : " + itemNo);
-			int deliveryChk = iService.selectDelChk(scb);
-			int reviewChk = iService.selectReviewChk(scb);
-			System.out.println("del값 확인 : " + deliveryChk);
-			if(deliveryChk > 0 && reviewChk == 0) {
-				int result = iService.insertReview(r);
-				int updateResult = iService.updateReviewRate(itemNo);
-		
-				if (!file1.getOriginalFilename().equals("")) {
-					String renameFileName1 = saveFile(file1, request);
-					i.setImageOriginalName(file1.getOriginalFilename());
-					i.setImageRename(renameFileName1);
-					int imgResult1 = iService.insertReviewImage1(i);
-					if (imgResult1 > 0) {
-						iService.insertRI(ri);
-					}
-				}else {
-					
+	@RequestMapping(value = "reviewInsert.do", method = RequestMethod.POST)
+	@ResponseBody
+	public String reviewInsert(Review r, Image i, ReviewImage ri, HttpServletRequest request,
+			@RequestParam(value = "page", required = false) Integer page,
+			@RequestParam(value = "memberNo", required = false) int memberNo,
+			@RequestParam(value = "itemNo", required = false) int itemNo,
+			@RequestParam(value = "uploadFile1", required = false) MultipartFile file1,
+			@RequestParam(value = "uploadFile2", required = false) MultipartFile file2) {
+		Subscribe scb = new Subscribe();
+		scb.setMemberNo(memberNo);
+		scb.setItemNo(itemNo);
+		int currentPage = page;
+		System.out.println("memberNo : " + memberNo + ", itemNo : " + itemNo);
+		int deliveryChk = iService.selectDelChk(scb);
+		int reviewChk = iService.selectReviewChk(scb);
+		System.out.println("del값 확인 : " + deliveryChk);
+		if (deliveryChk > 0 && reviewChk == 0) {
+			int result = iService.insertReview(r);
+			int updateResult = iService.updateReviewRate(itemNo);
+
+			if (!file1.getOriginalFilename().equals("")) {
+				String renameFileName1 = saveFile(file1, request);
+				i.setImageOriginalName(file1.getOriginalFilename());
+				i.setImageRename(renameFileName1);
+				int imgResult1 = iService.insertReviewImage1(i);
+				if (imgResult1 > 0) {
+					iService.insertRI(ri);
 				}
-		
-				if (!file2.getOriginalFilename().equals("")) {
-					String renameFileName2 = saveFile(file2, request);
-					i.setImageOriginalName(file2.getOriginalFilename());
-					i.setImageRename(renameFileName2);
-					int imgResult2 = iService.insertReviewImage2(i);
-					if (imgResult2 > 0) {
-						iService.insertRI(ri);
-					}
-				}else {
-					
+			} else {
+
+			}
+
+			if (!file2.getOriginalFilename().equals("")) {
+				String renameFileName2 = saveFile(file2, request);
+				i.setImageOriginalName(file2.getOriginalFilename());
+				i.setImageRename(renameFileName2);
+				int imgResult2 = iService.insertReviewImage2(i);
+				if (imgResult2 > 0) {
+					iService.insertRI(ri);
 				}
-		
-				System.out.println("review result : " + result);
-				if (result > 0 && updateResult > 0) {
-					return "success";
+			} else {
+
+			}
+
+			System.out.println("review result : " + result);
+			if (result > 0 && updateResult > 0) {
+				return "success";
+			} else {
+				throw new ItemException("리뷰 등록 실패");
+			}
+		} else {
+			if (deliveryChk == 0) {
+				int delStatus = iService.selectDelStatus(scb);
+				if (delStatus == 0) {
+					return "noDelFail";
 				} else {
-					throw new ItemException("리뷰 등록 실패");
+					return "delFail";
 				}
-			}else {
-				if(deliveryChk == 0) {
-					int delStatus = iService.selectDelStatus(scb);
-					if(delStatus == 0) {
-						return "noDelFail";
-					}else {
-						return "delFail";
-					}
-				}else {
-					return "reviewFail";
-				}
+			} else {
+				return "reviewFail";
 			}
 		}
+	}
 
 	private String saveFile(MultipartFile file, HttpServletRequest request) {
 		String root = request.getSession().getServletContext().getRealPath("resources");
@@ -965,15 +963,6 @@ public class ItemController {
 		System.out.println("도착?" + word);
 
 		return null;
-		
-		
-		
-		
-		
-		
-		
-		
-		
 
 	}
 
@@ -1094,11 +1083,10 @@ public class ItemController {
 		}
 
 		int result = iService.deleteBannerItem(dEventArr);
-		int result2=iService.updateItemEventStatusN(dEventArr);
-		
+		int result2 = iService.updateItemEventStatusN(dEventArr);
 
 		if (result > 0) {
-			
+
 			return "success";
 
 		} else {
@@ -1335,6 +1323,7 @@ public class ItemController {
 
 	// 상품 상세보기 -admin
 	@RequestMapping("itemDetail.do")
+
 	public ModelAndView selectItemDetail(ModelAndView mv, int itemNo, @RequestParam(value="itemCategory",required=false) String itemCategory, @RequestParam(value="eventNo",required=false) Integer eventNo,Integer page, String type
 			, @RequestParam(value="type2",required=false)String type2, @RequestParam(value="categoryNo",required=false)String categoryNo, @RequestParam(value="word",required=false)String word) {
 
@@ -1399,16 +1388,9 @@ public class ItemController {
 //			int result3=iService.deleteEventItem(i); //이벤트 등록 테이블에서 상품 삭제
 
 		if (result1 > 0 || result2 > 0) {
-			
-			
-			
-			
+
 			mv.addObject("page", page).setViewName("redirect:itemListA.do");
-			
-			
-			
-			
-			
+
 		} else {
 			throw new ItemException("상품 정보 수정 실패!");
 		}
@@ -1478,7 +1460,6 @@ public class ItemController {
 	public ModelAndView itemEventInsertView(ModelAndView mv, Integer page,
 			@RequestParam(value = "itemCategory", required = false) String itemCategory) {
 
-		
 		if (itemCategory == "") {
 			itemCategory = null;
 		}
@@ -1593,7 +1574,7 @@ public class ItemController {
 		pi = getPageInfo2(currentPage, listCount, pageLimit, boardLimit);
 
 		// 이벤트 등록이 안된 상품 목록
-		
+
 		ArrayList<BannerItem> list = iService.selectItems(itemCategory, pi);
 
 		response.setContentType("application/json;charset=utf-8");
@@ -1611,8 +1592,6 @@ public class ItemController {
 				jList.put("itemName", list.get(i).getItemName());
 				jList.put("itemPrice", list.get(i).getItemPrice());
 				jList.put("itemRate", list.get(i).getItemRate());
-				
-	
 
 				jarr.add(jList);
 			}
@@ -1659,22 +1638,18 @@ public class ItemController {
 	// 추천 갯수 확인 -admin
 
 	@RequestMapping("recommendChk.do")
-	public void recommendCheck(HttpServletResponse response, Integer sendCnt,String sendArr) throws IOException {
+	public void recommendCheck(HttpServletResponse response, Integer sendCnt, String sendArr) throws IOException {
 
-		//선택한 상품이 이미 추천 상품에 있다면 
+		// 선택한 상품이 이미 추천 상품에 있다면
 		String[] strArr = sendArr.split(",");
-		int chk=0;
-		int result=0;
+		int chk = 0;
+		int result = 0;
 
-		
-		for(int i=0;i<strArr.length;i++) {
-			chk=iService.selectRecommendChk(strArr[i]);
-			result+=chk;
+		for (int i = 0; i < strArr.length; i++) {
+			chk = iService.selectRecommendChk(strArr[i]);
+			result += chk;
 		}
 		
-		
-		
-		//선택한 상품 갯수가 4개를 초과하는지 확인하기 위해 
 		response.setContentType("application/json;charset=utf-8");
 		JSONObject iNum = new JSONObject();
 
@@ -1736,190 +1711,213 @@ public class ItemController {
 	}
 
 	// ------------------------------결제 구현-----------------------------------------
+	// 결제화면으로 이동
 	@RequestMapping("moveToPayment.do")
 	@ResponseBody
-	public ModelAndView moveToPayment(ModelAndView mv, @RequestParam(value="itemNo") String[] itemNo, @RequestParam("name") String[] name, @RequestParam("price") String[] price, 
-			@RequestParam("cycle") String[] cycle, @RequestParam("amount") String[] amount){
-		
+	public ModelAndView moveToPayment(ModelAndView mv, @RequestParam(value = "itemNo") String[] itemNo,
+			@RequestParam("name") String[] name, @RequestParam("price") String[] price,
+			@RequestParam("cycle") String[] cycle, @RequestParam("amount") String[] amount) {
+
 		ArrayList<Cart> list = new ArrayList<>();
 		int itemPrice = 0;
 		int itemAmount = 0;
 		int totalPrice = 0;
 		int discount = 0;
-		
-		for(int i = 0 ; i < itemNo.length ; i++) {	
+
+		for (int i = 0; i < itemNo.length; i++) {
 			Cart cart = new Cart();
 			int no = Integer.valueOf(itemNo[i]);
 			cart.setItemNo(no);
 			itemPrice = Integer.valueOf(price[i]);
-			
+
 			discount = iService.checkDiscount(no);
-//			System.out.println("할인율: " + discount);
-			
-			if(discount > 0) {
-				itemPrice = itemPrice - (int)(itemPrice*(double)discount/100);
+//				System.out.println("할인율: " + discount);
+
+			if (discount > 0) {
+				itemPrice = itemPrice - (int) (itemPrice * (double) discount / 100);
 				cart.setItemPrice(itemPrice);
-			}else {
+			} else {
 				cart.setItemPrice(itemPrice);
-			}		
-//			System.out.println(itemPrice);
+			}
+//				System.out.println(itemPrice);
 			itemAmount = Integer.valueOf(amount[i]);
 			cart.setCartCount(itemAmount);
 			cart.setCartSubs(cycle[i]);
 			cart.setItemName(name[i]);
 			list.add(cart);
-			
+
 			totalPrice += itemPrice * itemAmount;
 		}
-		
-//		System.out.println(discount);
-//		System.out.println(list);
-		mv.addObject("list",list);
+
+//			System.out.println(discount);
+//			System.out.println(list);
+		mv.addObject("list", list);
 		mv.addObject("totalPrice", totalPrice);
 		mv.setViewName("items/payment");
 		return mv;
 	}
-	
-	
 
+	// 결제 구현
 	IamportClient client = new IamportClient("3086404975484077",
 			"EsAndJxwJmc8oD49ezXFzHqWyessiK4XcFlpoSW8f8hDMmN0VLFus6r1kTtDDyBQdWfCOcK4l2I7ow7j");
 
 	@RequestMapping(value = "payment.do", method = RequestMethod.POST)
 	@ResponseBody
-	public String payment(HttpServletRequest request) throws IamportResponseException, IOException {
-		
+	public String payment(HttpServletRequest request, HttpSession session, Model model)
+			throws IamportResponseException, IOException {
+
 		int itemNo = 0;
 		int amount = 0;
 		int price = 0;
 		int cycle = 0;
 		int subPrice = 0;
-		int point = Integer.valueOf((String)request.getParameter("point"));	// 사용 포인트
-		int memberNo = Integer.valueOf(request.getParameter("memberNo"));	// 회원번호
-		
-		String firstPrice = request.getParameter("finalPrice");		// 처음 결제될 금액
-		String customerUid = request.getParameter("customerUid");	// 카드번호
-		String email = request.getParameter("email");				// 회원 이메일
-		String phone = request.getParameter("phone");				// 전화번호
-		String address1 = request.getParameter("address1");			// 우편번호
-		String address2 = request.getParameter("address2");			// 주소
-		String address3 = request.getParameter("address3");			// 상세주소
-		
-		String[] noArr = request.getParameterValues("noArr");		// 상품번호
-		String[] nameArr = request.getParameterValues("nameArr");	// 상품이름
-		String[] priceArr = request.getParameterValues("priceArr");	// 상품가격
-		String[] countArr = request.getParameterValues("countArr");	// 상품수량
-		String[] cycleArr = request.getParameterValues("cycleArr");	// 구독주기
-		
-//		System.out.println(point);
-//		System.out.println(firstPrice);
-		
+		int point = Integer.valueOf((String) request.getParameter("point")); // 사용 포인트
+		int memberNo = Integer.valueOf(request.getParameter("memberNo")); // 회원번호
+
+		String firstPrice = request.getParameter("finalPrice"); // 처음 결제될 금액
+		String customerUid = request.getParameter("customerUid"); // 카드번호
+		String email = request.getParameter("email"); // 회원 이메일
+		String phone = request.getParameter("phone"); // 전화번호
+		String address1 = request.getParameter("address1"); // 우편번호
+		String address2 = request.getParameter("address2"); // 주소
+		String address3 = request.getParameter("address3"); // 상세주소
+
+		String[] noArr = request.getParameterValues("noArr"); // 상품번호
+		String[] nameArr = request.getParameterValues("nameArr"); // 상품이름
+		String[] priceArr = request.getParameterValues("priceArr"); // 상품가격
+		String[] countArr = request.getParameterValues("countArr"); // 상품수량
+		String[] cycleArr = request.getParameterValues("cycleArr"); // 구독주기
+
+//			System.out.println(point);
+//			System.out.println(firstPrice);
+
 		BigDecimal firstPayPrice = new BigDecimal(firstPrice);
 		String name = "최초결제";
-		int firstPayResult = 0;	// 최초결제정보 insert 결과 받을 변수
-		
-		String result = firstPayment(customerUid, firstPayPrice, name, point);	// 최초결제 실행결과
-		PaymentInfo payInfo = new PaymentInfo();
-		payInfo.setMemberNo(memberNo);
-		payInfo.setPoint(point);
-		System.out.println("DB로 보낼 결제정보 : " + payInfo);
-		firstPayResult = iService.insertFirstPayment(payInfo);
-		
-		
-//			for(int i = 0 ; i < noArr.length ; i++) {	// 결제페이지에서 넘어온 결제정보로 결제성공 후 DB에 결제결과 저장 
-//				itemNo = Integer.valueOf(noArr[i]);
-//				
-//				payInfo.setItemNo(itemNo);
-//				payInfo.setPoint(point);
-//				payInfo.setMemberNo(memberNo);
-//				
-//				
-//				System.out.println("최초 결제 insert 결과: " + firstPayResult);
-//
-//			}
-		if(result.equalsIgnoreCase("success")) {	// 최초결제 실행이 성공이면
-			if(firstPayResult == 1) {
-				Subscribe subInfo = new Subscribe();
-				HashMap<String, Object> map = new HashMap<>();
-				
-				subInfo.setAddress1(address1);
-				subInfo.setAddress2(address2);
-				subInfo.setAddress3(address3);
-				subInfo.setCustomerUid(customerUid);
-				subInfo.setMemberNo(memberNo);
-				subInfo.setPhone(phone);
-				
-				for(int i = 0 ; i < noArr.length ; i++) {
-					itemNo = Integer.valueOf(noArr[i]);
-					amount = Integer.valueOf(countArr[i]);
-//					price = Integer.valueOf(priceArr[i]);
-					cycle = Integer.valueOf(cycleArr[i]);
-					name = nameArr[i];
+		int firstPayResult = 0; // 최초결제정보 insert 결과 받을 변수
 
-					subInfo.setItemNo(itemNo);
-					subInfo.setAmount(amount);
-					subInfo.setItemName(name);
-//					System.out.println("정기결제 정보 : " + subInfo);
-					price = iService.selectItemPrice(itemNo);
-					subPrice = price * amount;
-					subInfo.setSubPrice(subPrice);
-					
-					map.put("subInfo", subInfo);
-					map.put("cycle", cycle);
-					
-					int insertSubResult = iService.insertSubScribeInfo(map);
-					if(insertSubResult > 0) {
-						
-						BigDecimal cyclePrice = new BigDecimal(subPrice);
-						subscriptionPayment(customerUid, cyclePrice, cycle);
-					}
-				}
-				
-			}else {
-				
+		String result = firstPayment(customerUid, firstPayPrice, name, point, memberNo); // 최초결제 실행결과
+		String subResult = "";
+
+		// 최초결제 실행이 성공이면
+		if (result.equalsIgnoreCase("success")) {
+
+			int insertSubResult = 0; // 결제 예약 성공여부 담을 변수
+
+			// 최초 결제 실행 후 결제된 장바구니 품목 삭제
+			int[] itemNoArr = new int[noArr.length];
+			HashMap<String, Object> noMap = new HashMap<>();
+			for (int i = 0; i < noArr.length; i++) {
+				int no = Integer.valueOf(noArr[i]);
+				itemNoArr[i] = no;
+				System.out.println("삭제리스트에 담기고 있니 : " + itemNoArr[i]);
+				noMap.put("itemNoArr", itemNoArr);
 			}
-			return "success";	// 결제화면단으로 던질 
-		}else{
-			return "fail";
 
+			int deleteCartList = iService.deleteCartList(noMap); // 장바구니 삭제
+			System.out.println("장바구니 삭제 결과 : " + deleteCartList);
+
+			// 최초결제 성공 & 장바구니 삭제 후 구독정보 insert
+			Subscribe subInfo = new Subscribe(); // 구독정보 담을 객체
+			HashMap<String, Object> map = new HashMap<>(); // 구독정보 insert를 위한 Map
+
+			// 반복되지 않는 변수 세팅
+			subInfo.setAddress1(address1); // 우편번호
+			subInfo.setAddress2(address2); // 주소
+			subInfo.setAddress3(address3); // 상세주소
+			subInfo.setCustomerUid(customerUid); // 카드번호(카드랑 1:1 대응되는 값)
+			subInfo.setMemberNo(memberNo); // 회원번호
+			subInfo.setPhone(phone); // 전화번호
+
+			// 반복되는 변수 세팅
+			for (int i = 0; i < noArr.length; i++) {
+				itemNo = Integer.valueOf(noArr[i]);
+				amount = Integer.valueOf(countArr[i]);
+//					price = Integer.valueOf(priceArr[i]);
+				cycle = Integer.valueOf(cycleArr[i]);
+				name = nameArr[i];
+
+				subInfo.setItemNo(itemNo); // 상품 번호
+				subInfo.setAmount(amount); // 수량
+				subInfo.setItemName(name); // 상품 이름
+//					System.out.println("정기결제 정보 : " + subInfo);
+				price = iService.selectItemPrice(itemNo); // 최초 결제금액은 할인률이 적용되어 있을 수 있기 때문에 구독 결제는 상품의 원래 가격을 가져와야 됨
+				subPrice = price * amount; // 상품 원래가격 * 주문수량
+				subInfo.setSubPrice(subPrice); // 정기결제시 결제 될 금액
+
+				map.put("subInfo", subInfo);
+				map.put("cycle", cycle); // 구독주기 -> 구독번호를 select 해야되서 따로 담음
+				insertSubResult = iService.insertSubScribeInfo(map); // 구독내역, 배송내역 저장
+				BigDecimal cyclePrice = new BigDecimal(subPrice); // 결제 금액 형변환
+				subResult = subscriptionPayment(customerUid, cyclePrice, cycle); // 결제 예약
+
+			}
+
+//				// 구독내역 DB에 저장했으면
+//				if(insertSubResult > 0) {
+//				}else {}
+
+			// 포인트 차감, 장바구니 삭제 후 session 갱신
+			Member m = new Member();
+			m.setMemberNo(memberNo);
+			Member loginUser = mService.selectMember(m);
+			session.setAttribute("loginUser", loginUser);
+			
+			int subscribeCount = mService.subscribeCount(loginUser.getMemberNo());
+			model.addAttribute("subscribeCount", subscribeCount);
+
+			return "success"; // 결제화면단으로 던질 값
+//				System.out.println(loginUser);
+		} else {
+			return "fail";
 		}
-		
+
 	}
 
 	// ------------------------------즉시 결제 요청-------------------------------------
 
-	private String firstPayment(String customerUid, BigDecimal price, String name, int point){
-		
+	private String firstPayment(String customerUid, BigDecimal price, String name, int point, int memberNo) {
+
 		AgainPaymentData againData = new AgainPaymentData(customerUid, getRandomMerchantUid(), price);
 		againData.setName(name);
 		String firstPaymentStatus = "";
-//		String impUid = "";
-		String failMessage = "";
+//			String impUid = "";
+//			String failMessage = "";
+		int firstPayResult = 0;
 
-			// 최초 결제 실행
-			IamportResponse<Payment> payment_response;
-			try {
-				payment_response = client.againPayment(againData);
-				firstPaymentStatus = payment_response.getResponse().getStatus();
-//				impUid = payment_response.getResponse().getImpUid();
-				
-			} catch (IamportResponseException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			
-		if(firstPaymentStatus.equalsIgnoreCase("paid")) {
-			return "success";
-		}else {
-			return "fail";
+		// 최초 결제 실행
+		IamportResponse<Payment> payment_response;
+		try {
+			payment_response = client.againPayment(againData); // 최초결제 호출
+			firstPaymentStatus = payment_response.getResponse().getStatus(); // 결제 상태 확인
+//					impUid = payment_response.getResponse().getImpUid();
+		} catch (IamportResponseException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 
+		if (firstPaymentStatus.equalsIgnoreCase("paid")) { // 최초 결제 완료되었으면
+			PaymentInfo payInfo = new PaymentInfo();
+			payInfo.setMemberNo(memberNo);
+			payInfo.setPoint(point);
+			System.out.println("DB로 보낼 결제정보 : " + payInfo);
+			firstPayResult = iService.insertFirstPayment(payInfo); // 최초결제 DB insert
+
+			// 포인트 차감 DB update
+			Map<String, Object> pointMap = new HashMap<>();
+			pointMap.put("memberNo", memberNo);
+			pointMap.put("point", point);
+			int updatePoint = iService.updateUsePoint(pointMap);
+
+			return "success";
+		} else {
+			return "fail";
+		}
 	}
 
 	// ------------------------------결제 예약-----------------------------------
 
-	private void subscriptionPayment(String customerUid, BigDecimal price, int cycle)
+	private String subscriptionPayment(String customerUid, BigDecimal price, int cycle)
 			throws IamportResponseException, IOException {
 
 		// 현재시간 unixtime으로 가져오기
@@ -1931,12 +1929,12 @@ public class ItemController {
 		// 3주일 : 현재시간 + 1814400
 		// 4주일 : 현재시간 + 2419200
 		String merchantUid = "";
-//					subscriptionTime = currentTime + 180;
-//					merchantUid = getRandomMerchantUid();
+//						subscriptionTime = currentTime + 180;
+//						merchantUid = getRandomMerchantUid();
 		Date date = new Date();
 
-//					for(int i = 0 ; i<5; i++) {
-		
+//						for(int i = 0 ; i<5; i++) {
+
 		switch (cycle) {
 		case 1:
 			subscriptionTime = currentTime + 120;
@@ -1964,37 +1962,70 @@ public class ItemController {
 		}
 
 		ScheduleEntry schduleEntry = new ScheduleEntry(merchantUid, date, price);
-		
 
 		ArrayList<Subscribe> list = new ArrayList<>();
-		
+
 		list = iService.selectSubscribeStatus(customerUid);
 		System.out.println("구독중인 상품 : " + list);
-		
-		if(list != null) {
-			
+
+		if (list != null) {
+
 			ScheduleData scheduleData = new ScheduleData(customerUid);
-			
+
 			scheduleData.addSchedule(schduleEntry);
-			
-			IamportResponse<List<Schedule>> schedule_response = client.subscribeSchedule(scheduleData);
-			
-			List<Schedule> schedules = schedule_response.getResponse();
-//					System.out.println(schedule_response.getResponse().size());
-//					List<ScheduleEntry> req_schedules = scheduleData.getSchedules();
-			
-			// 예약 시간에 결제 됐다고 가정해서 구현해 놓은 것
-			for (int i = 0; i < schedules.size(); i++) {
-				if ((schedules.get(i).getMerchantUid()).equalsIgnoreCase(merchantUid)
-						&& (schedules.get(i).getScheduleAt()).equals(date)) {
-					System.out.println("예약 결제 성공");
-					
-			
-				}
-			}
+
+			IamportResponse<List<Schedule>> schedule_response = client.subscribeSchedule(scheduleData); // 결제예약
+
+			String message = schedule_response.getMessage();
+			System.out.println(message);
+
+//				List<Schedule> schedules = schedule_response.getResponse();
+//						System.out.println(schedule_response.getResponse().size());
+//						List<ScheduleEntry> req_schedules = scheduleData.getSchedules();
+
+//				// 예약 시간에 결제 됐다고 가정해서 구현해 놓은 것
+//				for (int i = 0; i < schedules.size(); i++) {
+//					if ((schedules.get(i).getMerchantUid()).equalsIgnoreCase(merchantUid)
+//							&& (schedules.get(i).getScheduleAt()).equals(date)) {
+//						System.out.println("예약 결제 성공");
+//				
+//					}else {
+//						return "fail";
+//					}
+//				}
+			return "success";
+		} else {
+			return "fail";
 		}
 	}
 
+	// 구독중인 상품인지 확인하는 메소드
+	@RequestMapping("subscribeCheck.do")
+	public void subscribeCheck(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		PrintWriter out = response.getWriter();
+
+		String[] noArr = request.getParameterValues("noArr");
+
+//			System.out.println(noArr);
+		// 기존에 구독중인 상품인지 확인
+		int no = 0;
+		int subCount = 0;
+		for (int i = 0; i < noArr.length; i++) {
+			no = Integer.valueOf(noArr[i]);
+			subCount += iService.selectSubList(no);
+		}
+//			System.out.println("같은 상품 구독중이니  : "+ subCount);
+		if (subCount > 0) {
+			out.append("fail");
+			out.flush();
+		} else {
+			out.append("success");
+			out.flush();
+		}
+		out.close();
+	}
+
+	// 결제시 필요한 결제번호 난수 생성
 	private String getRandomMerchantUid() {
 		DateFormat df = new SimpleDateFormat("$$hhmmssSS");
 		int n = (int) (Math.random() * 100) + 1;
@@ -2002,36 +2033,22 @@ public class ItemController {
 		return df.format(new Date()) + "_" + n;
 	}
 
-	/*
-	 * private void assertDateEquals(Date d1, Date d2) { assertEquals(d1.getTime() /
-	 * 1000L, d2.getTime() / 1000L); }
-	 */
-
-	
-	
-	
-	
-	//추천상품 취소하기--admin
+	// 추천상품 취소하기--admin
 	@RequestMapping("cancelRecommend.do")
-	public void cancelRecommendStatus(HttpServletResponse response,Integer itemNo) throws IOException {
-		
-		//추천 status 변경 (R->N)
-		int result=iService.updateRecommendStatusN(itemNo);
-		
+	public void cancelRecommendStatus(HttpServletResponse response, Integer itemNo) throws IOException {
+
+		// 추천 status 변경 (R->N)
+		int result = iService.updateRecommendStatusN(itemNo);
+
 		ArrayList<BannerItem> rList = new ArrayList<>();
 
-				
-				
-		//리스트 가져오기
+		// 리스트 가져오기
 		if (result > 0) {
-
 
 			rList = iService.selectRecommendList();
 
-
 		}
-		System.out.println("여기왔고"+rList);
-
+		System.out.println("여기왔고" + rList);
 
 		response.setContentType("application/json;charset=utf-8");
 		JSONArray jarr = new JSONArray();
@@ -2053,9 +2070,6 @@ public class ItemController {
 		out.print(sendJson);
 		out.flush();
 		out.close();
-
-		
 	}
-	
 
 }

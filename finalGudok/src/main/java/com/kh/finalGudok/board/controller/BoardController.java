@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,15 +22,20 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonIOException;
 import com.kh.finalGudok.board.model.exception.BoardException;
 import com.kh.finalGudok.board.model.service.BoardService;
 import com.kh.finalGudok.board.model.vo.Board;
 import com.kh.finalGudok.board.model.vo.EventBoard;
 import com.kh.finalGudok.board.model.vo.Inquiry;
+import com.kh.finalGudok.board.model.vo.Reply;
 import com.kh.finalGudok.board.model.vo.Search;
 import com.kh.finalGudok.board.model.vo.bPageInfo;
 import com.kh.finalGudok.board.model.vo.secret;
 import com.kh.finalGudok.item.model.exception.ItemException;
+import com.kh.finalGudok.member.model.vo.Member;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -285,7 +291,8 @@ public class BoardController {
 	// 검색
 	@RequestMapping("searchNoticeList.do")
 	public ModelAndView searchNoticeList(ModelAndView mv, @RequestParam(value = "page", required = false) Integer page,
-			@RequestParam("searchType") String searchType, @RequestParam("keyword") String keyword) {
+			@RequestParam(value = "searchType", required = false) String searchType,
+			@RequestParam(value = "keyword", required = false) String keyword) {
 
 		int currentPage = 1;
 		if (page != null) {
@@ -323,7 +330,8 @@ public class BoardController {
 	// 검색 후 삭제 후 페이지
 	@RequestMapping("noticeSearchListDelete.do")
 	public ModelAndView noticeSearchListDelete(ModelAndView mv, 
-			@RequestParam("searchType") String searchType, @RequestParam("keyword") String keyword, 
+			@RequestParam(value = "searchType", required = false) String searchType,
+			@RequestParam(value = "keyword", required = false) String keyword, 
 			HttpServletRequest request, String sendArr){
 
 		String[] strArr = sendArr.split(",");
@@ -507,7 +515,8 @@ public class BoardController {
 	// 검색
 	@RequestMapping("searchFAQList.do")
 	public ModelAndView searchFAQList(ModelAndView mv, @RequestParam(value = "page", required = false) Integer page,
-			@RequestParam("searchType") String searchType, @RequestParam("keyword") String keyword) {
+			@RequestParam(value = "searchType", required = false) String searchType, 
+			@RequestParam(value = "keyword", required = false) String keyword) {
 
 		int currentPage = 1;
 		if (page != null) {
@@ -545,7 +554,8 @@ public class BoardController {
 	// 검색 후 삭제 후 페이지
 	@RequestMapping("FAQSearchListDelete.do")
 	public ModelAndView searchFAQList(ModelAndView mv, 
-			@RequestParam("searchType") String searchType, @RequestParam("keyword") String keyword, 
+			@RequestParam(value = "searchType", required = false) String searchType,
+			@RequestParam(value = "keyword", required = false) String keyword, 
 			HttpServletRequest request, String sendArr){
 
 		String[] strArr = sendArr.split(",");
@@ -701,8 +711,9 @@ public class BoardController {
 	// 검색
 	@RequestMapping("searchProposalList.do")
 	public ModelAndView searchProposalList(ModelAndView mv,
-			@RequestParam(value = "page", required = false) Integer page, @RequestParam("searchType") String searchType,
-			@RequestParam("keyword") String keyword) {
+			@RequestParam(value = "page", required = false) Integer page, 
+			@RequestParam(value = "searchType", required = false) String searchType,
+			@RequestParam(value = "keyword", required = false) String keyword) {
 
 		int currentPage = 1;
 		if (page != null) {
@@ -740,7 +751,8 @@ public class BoardController {
 	// 검색 후 삭제 후 페이지
 	@RequestMapping("proposalSearchListDelete.do")
 	public ModelAndView proposalSearchListDelete(ModelAndView mv, 
-				@RequestParam("searchType") String searchType, @RequestParam("keyword") String keyword, 
+				@RequestParam(value = "searchType", required = false) String searchType, 
+				@RequestParam(value = "keyword", required = false) String keyword, 
 				HttpServletRequest request, String sendArr){
 
 		String[] strArr = sendArr.split(",");
@@ -943,8 +955,9 @@ public class BoardController {
 	// 검색
 	@RequestMapping("searchInquiryList.do")
 	public ModelAndView searchInquiryList(ModelAndView mv, @RequestParam(value = "page", required = false) Integer page,
-			@RequestParam("searchType") String searchType, @RequestParam("keyword") String keyword,
-			@RequestParam("inquiry_yn") String inquiry_yn) {
+			@RequestParam(value = "searchType", required = false) String searchType, 
+			@RequestParam(value = "keyword", required = false) String keyword,
+			@RequestParam(value = "inquiry_yn", required = false) String inquiry_yn) {
 
 		int currentPage = 1;
 		if (page != null) {
@@ -993,8 +1006,9 @@ public class BoardController {
 	// 검색 후 삭제 후 페이지
 	@RequestMapping("inquirySearchListDelete.do")
 	public ModelAndView inquirySearchListDelete(ModelAndView mv, 
-			@RequestParam("searchType") String searchType, @RequestParam("keyword") String keyword, 
-			@RequestParam("inquiry_yn") String inquiry_yn,
+			@RequestParam(value = "searchType", required = false) String searchType, 
+			@RequestParam(value = "keyword", required = false) String keyword, 
+			@RequestParam(value = "inquiry_yn", required = false) String inquiry_yn,
 			HttpServletRequest request, String sendArr){
 
 		String[] strArr = sendArr.split(",");
@@ -1435,8 +1449,9 @@ public class BoardController {
 	// 검색
 	@RequestMapping("adminEventSearch.do")
 	public ModelAndView searchEventList(ModelAndView mv, @RequestParam(value = "page", required = false) Integer page,
-			@RequestParam("post_yn") String post_yn, @RequestParam("searchType") String searchType,
-			@RequestParam("keyword") String keyword) {
+			@RequestParam(value = "post_yn", required = false) String post_yn, 
+			@RequestParam(value = "searchType", required = false) String searchType,
+			@RequestParam(value = "keyword", required = false) String keyword) {
 
 		int currentPage = 1;
 		if (page != null) {
@@ -1481,8 +1496,9 @@ public class BoardController {
 	// 검색 후 상태 변환 후 페이지
 	@RequestMapping("eventSearchListChange.do")
 	public void eventSearchListChange(HttpServletResponse response, Integer page,
-			@RequestParam("searchType") String searchType, @RequestParam("keyword") String keyword,
-			@RequestParam("post_yn") String post_yn) throws IOException {
+			@RequestParam(value = "searchType", required = false) String searchType, 
+			@RequestParam(value = "keyword", required = false) String keyword,
+			@RequestParam(value = "post_yn", required = false) String post_yn) throws IOException {
 
 		System.out.println("검색 후 변환 페이지 : " + searchType);
 		System.out.println(keyword);
@@ -1543,8 +1559,9 @@ public class BoardController {
 	
 	@RequestMapping("eventSearchListDelete.do")
 	public ModelAndView eventSearchListDelete(ModelAndView mv, 
-			@RequestParam("searchType") String searchType, @RequestParam("keyword") String keyword,
-			@RequestParam("post_yn") String post_yn,
+			@RequestParam(value = "searchType", required = false) String searchType,
+			@RequestParam(value = "keyword", required = false) String keyword,
+			@RequestParam(value = "post_yn", required = false) String post_yn,
 			HttpServletRequest request, String sendArr){
 
 		String[] strArr = sendArr.split(",");
@@ -1662,7 +1679,8 @@ public class BoardController {
 	// Notice Search
 	@RequestMapping("searchsNoticeList.do")
 	public ModelAndView searchsNoticeList(ModelAndView mv, @RequestParam(value = "page", required = false) Integer page,
-			@RequestParam("searchType") String searchType, @RequestParam("keyword") String keyword) {
+			@RequestParam(value = "searchType", required = false) String searchType, 
+			@RequestParam(value = "keyword", required = false) String keyword) {
 
 		int currentPage = 1;
 		if (page != null) {
@@ -1698,6 +1716,8 @@ public class BoardController {
 
 		return mv;
 	}
+	
+	//------------------------------------------------------------------------
 
 	// FAQ List
 	@RequestMapping("FAQList.do")
@@ -1753,7 +1773,8 @@ public class BoardController {
 	// FAQ 검색
 	@RequestMapping("searchsFAQList.do")
 	public ModelAndView searchsFAQList(ModelAndView mv, @RequestParam(value = "page", required = false) Integer page,
-			@RequestParam("searchType") String searchType, @RequestParam("keyword") String keyword) {
+			@RequestParam(value = "searchType", required = false) String searchType,
+			@RequestParam(value = "keyword", required = false) String keyword) {
 
 		int currentPage = 1;
 		if (page != null) {
@@ -1787,6 +1808,8 @@ public class BoardController {
 
 		return mv;
 	}
+	
+	//------------------------------------------------------------------
 
 	// productProposal List
 	@RequestMapping("productProposalList.do")
@@ -1987,12 +2010,95 @@ public class BoardController {
 		return mv;
 
 	}
-
-	// Inquiry 검색
+	
+	// 댓글 관련 부분
+		// 1. 댓글 리스트 불러오기
+		@RequestMapping("replyList.do")
+		public void getReplyList(HttpServletResponse response, int bBoard_no) throws JsonIOException, IOException {
+			ArrayList<Reply> replyList = bService.selectReplyList(bBoard_no);
+			
+			response.setContentType("application/json;charset=utf-8");
+			
+			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+			gson.toJson(replyList, response.getWriter());
+		}
+		
+		// 2. 댓글 달기
+		@RequestMapping("addReply.do")
+		@ResponseBody
+		public String addReply(Reply r, HttpSession session) {
+			
+			Member loginUser = (Member)session.getAttribute("loginUser");
+			String rWriter = loginUser.getMemberId();
+			
+			r.setReply_writer(rWriter);
+			
+			System.out.println(r);
+			
+			
+			int result = bService.insertReply(r);
+			
+			if(result>0) {
+				return "success";
+			}else {
+				throw new BoardException("댓글 등록 실패!");
+			}
+			
+			
+		}
+		
+		// 3. 댓글 삭제
+		@RequestMapping("deleteReply.do")
+		@ResponseBody
+		public String deleteReply(HttpSession session,
+				@RequestParam("children") int children) {
+			
+			System.out.println(children);
+			
+			
+			int result = bService.deleteReply(children);
+			
+			if(result>0) {
+				return "success";
+			}else {
+				throw new BoardException("댓글 등록 실패!");
+			}
+			
+			
+		}
+		
+		// 3. 댓글 수정
+		@RequestMapping("updateReply.do")
+		@ResponseBody
+		public String updateReply(HttpSession session,
+				@RequestParam("children1") int children1,
+				@RequestParam("children2") String children2) {
+			
+			System.out.println(children1);
+			System.out.println(children2);
+			
+			Reply r = new Reply();
+			r.setReply_no(children1);
+			r.setReply_content(children2);
+			
+			
+			int result = bService.updateReply(r);
+			
+			if(result>0) {
+				return "success";
+			}else {
+				throw new BoardException("댓글 등록 실패!");
+			}
+			
+			
+		}
+	
+	// proposal 검색
 	@RequestMapping("searchsProposalList.do")
 	public ModelAndView searchsProposalList(ModelAndView mv,
-			@RequestParam(value = "page", required = false) Integer page, @RequestParam("searchType") String searchType,
-			@RequestParam("keyword") String keyword) {
+			@RequestParam(value = "page", required = false) Integer page, 
+			@RequestParam(value = "searchType", required = false) String searchType,
+			@RequestParam(value = "keyword", required = false) String keyword) {
 
 		int currentPage = 1;
 		if (page != null) {
@@ -2027,6 +2133,9 @@ public class BoardController {
 		return mv;
 	}
 
+	//----------------------------------------------------------------------------
+
+	
 	// Inquiry List
 	@RequestMapping("sinquiryList")
 	public ModelAndView inquirylList(ModelAndView mv, @RequestParam(value = "page", required = false) Integer page) { 
@@ -2339,8 +2448,9 @@ public class BoardController {
 	// inquiry 검색
 	@RequestMapping("searchsInquiryList.do")
 	public ModelAndView searchsInquiryList(ModelAndView mv,
-			@RequestParam(value = "page", required = false) Integer page, @RequestParam("searchType") String searchType,
-			@RequestParam("keyword") String keyword) {
+			@RequestParam(value = "page", required = false) Integer page, 
+			@RequestParam(value = "searchType", required = false) String searchType,
+			@RequestParam(value = "keyword", required = false) String keyword) {
 
 		int currentPage = 1;
 		if (page != null) {
@@ -2383,6 +2493,9 @@ public class BoardController {
 		return mv;
 	}
 
+	
+	//-----------------------------------------------------------------------------
+	
 	// event
 	// List
 	@RequestMapping("eventList.do")

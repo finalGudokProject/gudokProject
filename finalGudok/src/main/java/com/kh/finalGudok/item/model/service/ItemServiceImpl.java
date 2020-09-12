@@ -720,6 +720,40 @@ public class ItemServiceImpl implements ItemService {
 	}
 
 	@Override
+	public double selectPointRate(int memberNo) {
+		return iDao.selectPointRate(memberNo);
+	}
+
+	@Override
+	public int updateUsePoint(Map<String, Object> pointMap) {
+		return iDao.updateUsePoint(pointMap);
+	}
+
+	@Override
+	public int deleteCartList(HashMap<String, Object> map) {
+		return iDao.deleteCartList(map);
+	}
+
+	@Override
+	public int selectSubList(Integer no) {	
+		return iDao.selectSubList(no);
+	}
+
+	@Override
+	public ArrayList<Item> selectBestList() {
+		return iDao.selectBestList();
+	}
+
+	@Override
+	public ArrayList<Item> selectnewList() {
+		return iDao.selectNewList();
+	}
+
+	@Override
+	public ArrayList<Item> selectHomeRecommendList() {
+		return iDao.selectHomeRecommendList();
+	}
+	
 	public int updateItemBannerStatus(int i) {
 		return iDao.updateItemBannerStatus(i);
 	}

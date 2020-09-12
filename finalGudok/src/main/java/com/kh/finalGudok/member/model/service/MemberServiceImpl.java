@@ -606,7 +606,10 @@ public class MemberServiceImpl implements MemberService {
 		return mDao.updateMyPoint(loginUser);
 	}
 
-
+	@Override
+	public Member selectMember(Member m) {
+		return mDao.selectMember(m);
+	}
 
 
 }

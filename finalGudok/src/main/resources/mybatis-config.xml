@@ -22,6 +22,7 @@
 		<typeAlias type="com.kh.finalGudok.board.model.vo.secret" alias="Secret"/>
 		<typeAlias type="com.kh.finalGudok.board.model.vo.Inquiry" alias="Inquiry"/>
 		<typeAlias type="com.kh.finalGudok.board.model.vo.EventBoard" alias="EventBoard"/>
+		<typeAlias type="com.kh.finalGudok.board.model.vo.Reply" alias="Reply"/>
 		
 		<typeAlias type="com.kh.finalGudok.item.model.vo.AdminItem" alias="AdminItem"/>
 		<typeAlias type="com.kh.finalGudok.item.model.vo.Event" alias="Event"/>

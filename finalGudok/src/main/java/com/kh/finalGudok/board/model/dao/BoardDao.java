@@ -11,9 +11,11 @@ import org.springframework.stereotype.Repository;
 import com.kh.finalGudok.board.model.vo.Board;
 import com.kh.finalGudok.board.model.vo.EventBoard;
 import com.kh.finalGudok.board.model.vo.Inquiry;
+import com.kh.finalGudok.board.model.vo.Reply;
 import com.kh.finalGudok.board.model.vo.Search;
 import com.kh.finalGudok.board.model.vo.bPageInfo;
 import com.kh.finalGudok.board.model.vo.secret;
+import com.kh.finalGudok.member.model.vo.Member;
 
 @Repository("bDao")
 public class BoardDao {
@@ -280,6 +282,23 @@ public class BoardDao {
 		return (ArrayList)sqlSessionTemplate.selectList("boardMapper.selectSearchListProductProposal", search, rowBounds);
 	}
 	
+	// 댓글
+	public ArrayList<Reply> selectReplyList(int bBoard_no) {
+		return (ArrayList)sqlSessionTemplate.selectList("boardMapper.selectReplyList", bBoard_no);
+	}
+
+	public int insertReply(Reply r) {
+		return sqlSessionTemplate.insert("boardMapper.insertReply", r);
+	}
+	
+	public int deleteReply(int children) {
+		return sqlSessionTemplate.delete("boardMapper.deleteReply",children);
+	}
+	
+	public int updateReply(Reply r) {
+		return sqlSessionTemplate.update("boardMapper.updateReply", r);
+	}
+	
 	// Inquiry
 	public int getSearchListCountInquiry(Search search) {
 		return sqlSessionTemplate.selectOne("boardMapper.getSearchListCountInquiry", search);
@@ -353,5 +372,11 @@ public class BoardDao {
 	public int getSearchListCountEventSearch(Search search) {
 		return sqlSessionTemplate.selectOne("boardMapper.getSearchListCountEventSearch", search);
 	}
+
+	
+
+	
+
+	
 
 }
