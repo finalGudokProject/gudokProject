@@ -56,6 +56,17 @@
 		<id property="eBoard_no" column="BOARD_NO"/>
 		<result property="eE_status" column="E_STATUS"/>
 	</resultMap>
+
+	<resultMap type="Reply" id="reply">
+		<id property="reply_no" column="REPLY_NO"/>
+		<result property="reply_content" column="REPLY_CONTENT"/>
+		<result property="reply_createDate" column="R_CREATE_DATE"/>
+		<result property="reply_modifyDate" column="R_MODIFY_DATE"/>
+		<result property="rBoard_no" column="BOARD_NO"/>
+		<result property="rMember_no" column="MEMBER_NO"/>
+		<result property="reply_writer" column="MEMBER_ID"/>
+		<result property="rEmail" column="EMAIL"/>
+	</resultMap>
 	
 	
 	<!-- List 게시판 리스트 불러오기 -->
@@ -1257,4 +1268,33 @@
 		DELETE FROM INQUIRY 
 		WHERE BOARD_NO = #{bBoard_no}
 	</delete>
+	
+	
+	<!-- 댓글 -->
+	<select id="selectReplyList" parameterType="_int" resultMap="reply">
+		SELECT *
+		FROM REPLY R
+		LEFT JOIN BOARD B ON (R.BOARD_NO = B.BOARD_NO)
+		WHERE R.BOARD_NO = #{bBoard_no}
+		ORDER BY REPLY_NO DESC
+	</select>
+	
+	<insert id="insertReply" parameterType="reply">
+		INSERT INTO REPLY VALUES
+		(SEQ_REPLY_NO.NEXTVAL, #{reply_content},
+		SYSDATE, SYSDATE, #{rBoard_no}, #{rMember_no}, #{reply_writer}, #{rEmail})
+	</insert>
+	
+	<!-- 댓글 수정 -->
+	<update id="updateReply" parameterType="reply">
+		UPDATE REPLY SET REPLY_CONTENT = #{reply_content}, R_MODIFY_DATE = SYSDATE
+		WHERE REPLY_NO = #{reply_no}
+	</update>
+	
+	<!-- 댓글 삭제 -->
+	<delete id="deleteReply" parameterType="int">
+		DELETE FROM REPLY 
+		WHERE REPLY_NO = #{reply_no}
+	</delete>
+	
 </mapper>

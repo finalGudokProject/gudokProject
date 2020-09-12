@@ -425,7 +425,7 @@ float:left;
         
         
     //가격 문자 입력 제한 및 3자리마다 콤마
-        $(function() {
+       /*  $(function() {
 
          $('input[name=itemPrice]').css('imeMode','disabled').keypress(function(event){
              if(e.which && (e.which < 48 || e.which > 57) ) e.preventDefault();
@@ -449,7 +449,7 @@ float:left;
 
          
          
-         });
+         }); */
          
        
          

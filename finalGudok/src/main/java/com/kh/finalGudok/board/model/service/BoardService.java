@@ -6,9 +6,11 @@ import java.util.List;
 import com.kh.finalGudok.board.model.vo.Board;
 import com.kh.finalGudok.board.model.vo.EventBoard;
 import com.kh.finalGudok.board.model.vo.Inquiry;
+import com.kh.finalGudok.board.model.vo.Reply;
 import com.kh.finalGudok.board.model.vo.Search;
 import com.kh.finalGudok.board.model.vo.bPageInfo;
 import com.kh.finalGudok.board.model.vo.secret;
+import com.kh.finalGudok.member.model.vo.Member;
 
 public interface BoardService {
 
@@ -126,6 +128,15 @@ public interface BoardService {
 	
 	ArrayList<Board> selectSearchListProductProposal(bPageInfo pi, Search search);
 
+	// 댓글
+	ArrayList<Reply> selectReplyList(int bBoard_no);
+
+	int insertReply(Reply r);
+	
+	int deleteReply(int children);
+	
+	int updateReply(Reply r);
+	
 	// inquiry
 	int getSearchListCountInquiry(Search search);
 	
@@ -150,5 +161,15 @@ public interface BoardService {
 	ArrayList<Board> selectSearchListEvent1(bPageInfo pi, Search search);
 
 	ArrayList<EventBoard> selectSearchListEvent2(bPageInfo pi, Search search);
+
+	
+
+	
+
+	
+
+	
+
+	
 
 }
