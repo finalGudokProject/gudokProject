@@ -289,8 +289,8 @@ input, select,textarea{
                          	<c:if test="${!empty msList }">
                          	<c:forEach var="i" items="${msList }">
 	                             <tr>
-	                                <td>${i.memberNo }</td>
-	                                <td id="cursor">${i.memberId } (${i.memberName })</td>
+	                                <td onclick="event.cancelBubble=true">${i.memberNo }</td>
+	                                <td class="cursor"id="cursor">${i.memberId } (${i.memberName })</td>
 	                                <td id="cursor" class="secession" data-toggle="modal" data-target="#myModal">${i.secessionContent }</td>
 	                                 <c:choose>
 		                            	<c:when test="${i.gradeNo eq '4'}"><td>1등급</td></c:when>
@@ -298,7 +298,7 @@ input, select,textarea{
 		                            	<c:when test="${i.gradeNo eq '2'}"><td>3등급</td></c:when>
 		                            	<c:when test="${i.gradeNo eq '1'}"><td>4등급</td></c:when>
 			                        </c:choose>
-	                                <td >${i.secessionDate }</td>
+	                                <td class="cursor" onclick="event.cancelBubble=true">${i.secessionDate }</td>
 	                            </tr>
                             </c:forEach>
                             </c:if>
@@ -424,12 +424,6 @@ input, select,textarea{
     	 
 			
 			 location.href="sList.do?categoryNo="+categoryNo+"&type="+type+"&word="+word;
-    	
-    	
-    	 
-    	 
-    	 
-    	 
     	 
      }
      
@@ -455,15 +449,15 @@ input, select,textarea{
      //회원 상세 정보보기
    	$(function(){
        		
-       		$("#table1").children().on("click",function(){
+       		$("td[class=cursor]").on("click",function(){
        		
        			var type='secession';
-       			var memberNo=$(this).children().children().eq(0).text();
+       			var memberNo=$(this).parent().children().eq(0).text();
         		var page=${pi.currentPage };  
         		var categoryNo=$("#categoryNo").val();
         		var type2=$("#type").val();
         		var word=$("#word").val();
-        		
+        	
         		 location.href="mDetail.do?memberNo="+memberNo+"&page="+page+"&type="+type+"&type2="+type2+"&categoryNo="+categoryNo+"&word="+word;
        		})
        	})

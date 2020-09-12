@@ -149,8 +149,8 @@ input, select,textarea{
                     <!--결제 금액 계산-->
                     <div style="width:100%; text-align:right;">
                         <div id="count">총 금액 : <input type="text" readonly value="${total }"></div>
-                        <div id="count">- 할인 금액  (포인트 사용) : <input type="text" readonly value="${p.point }"></div>
-                        <div id="count">배송비 : <input type="text" readonly></div>
+                      
+                        <div id="count">배송비 : <input type="text" readonly value="0"></div>
                     </div>
                     <div style="width:400px; float:right;"><b><hr></b></div><br>
                     <div style="width:100%; text-align:right;">
@@ -171,11 +171,6 @@ input, select,textarea{
                    <input type="button" class="btn" value="구독취소" onclick="updateS()">
                 </div>
 
-
-        <c:out value="${type }"/>
-        <c:out value="${type2 }"/>
-        <c:out value="${word }"/>
-        <c:out value="${category }"/>
 
             </div><!--내용담은 컨테이너-->
         </div><!--250px띄운 div-->

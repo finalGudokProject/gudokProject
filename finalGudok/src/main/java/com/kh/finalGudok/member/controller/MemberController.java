@@ -2744,7 +2744,7 @@ public class MemberController {
 		System.out.println(eList);
 
 		mv.addObject("cArr", cArr).addObject("pList", pList).addObject("exList", exList).addObject("dList", dList)
-				.addObject("bList", bList).addObject("eList", eList).addObject("nList", nList)
+				.addObject("bList", bList).addObject("eList", eList).addObject("nList", nList).addObject("sumTotalC", sumTotalC).addObject("sumTotalP", sumTotalP)
 				.setViewName("admin/main");
 		return mv;
 	}

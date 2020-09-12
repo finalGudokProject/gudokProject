@@ -41,6 +41,17 @@
 input, select,textarea{
     border: 1px solid #CCCCCC;
 }
+
+
+
+ .table{
+     padding: 0.75rem;
+       margin:auto;
+        word-wrap:break-word;
+        word-break:break-all;
+        table-layout:fixed;
+         
+    }
  table{
    
         word-wrap:break-word;
@@ -152,7 +163,7 @@ input, select,textarea{
                             <tr>
                              <!--    <th onclick='event.cancelBubble=true' style="width:20px;"><input type="checkbox" id="checkAll"></th> -->
                                 <th onclick='event.cancelBubble=true' style="width:130px;">신청 일자</th>
-                                <th onclick='event.cancelBubble=true' style="width:150px;">교환 사유</th>
+                                <th onclick='event.cancelBubble=true' style="width:150px;">취소 사유</th>
                                 <th onclick='event.cancelBubble=true' style="width:100px;">구독 번호</th>
                                 <th onclick='event.cancelBubble=true' style="width:250px;">상품명</th>
                                 <th onclick='event.cancelBubble=true' style="width:100px;">구매자</th>
@@ -165,11 +176,11 @@ input, select,textarea{
 	                             <tr>
 	                               <%--  <td><input type="checkbox" class="common" id="exchangeNo${cnt.index}" name="exchangeNo" value="${i.exchangeNo }" onclick='event.cancelBubble=true'></td> --%>
 	                                <td  onclick='event.cancelBubble=true'>${i.cancleDate }</td>
-	                                <td>${i.cancleContent }</td>
-	                                <td>${i.subscribeNo }</td>
-	                                <td>${i.itemName }</td>
-	                                <td>${i.memberId }</td>
-	                                <td>${i.subPrice }</td>
+	                                <td id="cursor" class="secession" data-toggle="modal" data-target="#myModal">${i.cancleContent }</td>
+	                                <td class="cursor">${i.subscribeNo }</td>
+	                                <td class="cursor">${i.itemName }</td>
+	                                <td class="cursor">${i.memberId }</td>
+	                                <td class="cursor">${i.subPrice }</td>
 	                               
 	                            </tr>
                             </c:forEach>
@@ -246,9 +257,52 @@ input, select,textarea{
             </div><!--내용담은 컨테이너-->
         </div><!--250px띄운 div-->
         
+        
+         <div id="myModal" class="modal" tabindex="-1">
+			  <div class="modal-dialog">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <h5 class="modal-title">탈퇴 사유</h5>
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			          <span aria-hidden="true">&times;</span>
+			        </button>
+			      </div>
+			      <div class="modal-body">
+			      	<div>
+			        <p id="secessionContent" style="word-break:break-all;"></p>
+			        </div>
+			      </div>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+			      </div>
+			    </div>
+			  </div>
+			</div>
+        
+       
         <input type="hidden" id="type" name="type" value="${type }">
         
            <script>
+           
+           
+         	// 사유 상세보기(modal)
+          $(function(){
+       	  
+       	  $("td[class=secession]").on("click",function(){
+       	  
+       	  	var content=$(this).text();
+       	   	$("#secessionContent").text(content);
+       	  	
+       	 
+       	  	
+       	  	$('#myModal').on('shown.bs.modal', function () {
+       	  	  $('#myInput').trigger('focus')
+       	  	})
+       		 
+       	  })
+        }) 
+           
+           
            //검색
             function search(){
         
@@ -256,9 +310,7 @@ input, select,textarea{
         	 var type=$("#type").val();
         	 var word=$("#word").val();
         
-        	 alert(type)
-        	 alert(word)
-        	 
+        	
         	 if(type=="subscribeNo"){
         		 if(word.replace(/[0-9]/g, "").length > 0) {
         		        alert("숫자만 입력해 주십시오.");
@@ -280,8 +332,8 @@ input, select,textarea{
            
         	$(function(){
         		
-        		$("tr").on("click",function(){
-        			var subscribeNo=$(this).children().eq(2).text();
+        		  $("td[class=cursor]").on("click",function(){
+        			var subscribeNo=$(this).parent().children().eq(2).text();
          			 var page=${pi.currentPage };   
          			 var type="cancel";
          			 var category=$("#type").val();
@@ -354,6 +406,7 @@ input, select,textarea{
         
        <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+     <script src="https://code.jquery.com/jquery-3.4.1.js" type="text/javascript"></script>
     <script integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>

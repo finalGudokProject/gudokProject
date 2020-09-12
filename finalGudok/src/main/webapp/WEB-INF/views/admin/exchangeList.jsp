@@ -41,6 +41,18 @@
 input, select,textarea{
     border: 1px solid #CCCCCC;
 }
+ .table{
+     padding: 0.75rem;
+       margin:auto;
+        word-wrap:break-word;
+        word-break:break-all;
+        table-layout:fixed;
+         
+    }
+
+
+
+
  table{
    
         word-wrap:break-word;
@@ -196,10 +208,10 @@ input, select,textarea{
 	                               
 	                               
 	                                <td  onclick='event.cancelBubble=true'>${i.exchangeDate }</td>
-	                                <td>${i.exchangeContent }</td>
-	                                <td>${i.subscribeNo }</td>
-	                                <td>${i.itemName }</td>
-	                                <td>${i.memberId }</td>
+	                                 <td id="cursor" class="secession" data-toggle="modal" data-target="#myModal">${i.exchangeContent }</td>
+	                                <td class="cursor">${i.subscribeNo }</td>
+	                                <td class="cursor">${i.itemName }</td>
+	                                <td class="cursor">${i.memberId }</td>
 	                                <td>${i.itemPrice }</td>
 	                                <td>${i.exchangeStatus }</td>
 	                            </tr>
@@ -287,9 +299,47 @@ input, select,textarea{
             </div><!--내용담은 컨테이너-->
         </div><!--250px띄운 div-->
         
+        
+        
+          <div id="myModal" class="modal" tabindex="-1">
+			  <div class="modal-dialog">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <h5 class="modal-title">교환 사유</h5>
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			          <span aria-hidden="true">&times;</span>
+			        </button>
+			      </div>
+			      <div class="modal-body">
+			      	<div>
+			        <p id="secessionContent" style="word-break:break-all;"></p>
+			        </div>
+			      </div>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+			      </div>
+			    </div>
+			  </div>
+			</div>
         <input type="hidden" id="category" name="category" value="${category }">
         
            <script>
+       	//탈퇴 사유 상세보기(modal)
+           $(function(){
+        	  
+        	  $("td[class=secession]").on("click",function(){
+        	  
+        	  	var content=$(this).text();
+        	   	$("#secessionContent").text(content);
+        	  	
+        	 
+        	  	
+        	  	$('#myModal').on('shown.bs.modal', function () {
+        	  	  $('#myInput').trigger('focus')
+        	  	})
+        		 
+        	  })
+         }) 
            //검색
             function search(){
         
@@ -344,7 +394,7 @@ input, select,textarea{
    				data:{"sendArr":sendArr,"page":page,"type":type},
    				success:function(data){
    					
-   					alert('성공이다');
+   					
    					getList();
    					        					
    				},
@@ -368,8 +418,7 @@ input, select,textarea{
         	   var page=${pi.currentPage};
         	   var type='Y';
         	   
-        	   alert(page);
-        	   alert(type);
+        
         	   
         	   for(i=0; i<chkbox.length;i++){
        			if(chkbox[i].checked==true){
@@ -384,7 +433,7 @@ input, select,textarea{
    				data:{"sendArr":sendArr,"page":page,"type":type},
    				success:function(data){
    					
-   					alert('성공이다');
+   				
    					getList();
    					        					
    				},
@@ -402,7 +451,7 @@ input, select,textarea{
            
          //상태 변경 후 리스트 가져오기
            function getList(){
-        	 alert('교환 페이지 왔고')
+        
           	 var page=${pi.currentPage};
         	 var category=$("#category").val();
         	 var type=$("#type").val();
@@ -419,7 +468,7 @@ input, select,textarea{
           	 	success:function(data){
           	 		
           	 		
-             	     alert('바꾸는데까지 왔는데')
+             	  
           	 		$tableBody=$("#e");
           	 		$tableBody.html("");
           	 		
@@ -512,10 +561,11 @@ input, select,textarea{
          
          //게시물 상세보기(ajax후)
            
-        	$(function(){
-        		
-        		$("tr").on("click",function(){
-        			var subscribeNo=$(this).children().eq(3).text();
+        	  $(function(){
+	  
+	  $("td[class=cursor]").on("click",function(){
+        			var subscribeNo=$(this).parent().children().eq(3).text();
+        			
          			 var page=${pi.currentPage };   
          			 var type="exchange";
          			 var category=$("#category").val();
@@ -585,6 +635,7 @@ input, select,textarea{
         
        <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+     <script src="https://code.jquery.com/jquery-3.4.1.js" type="text/javascript"></script>
     <script integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>

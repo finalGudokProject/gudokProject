@@ -1296,4 +1296,5 @@
 		DELETE FROM REPLY 
 		WHERE REPLY_NO = #{reply_no}
 	</delete>
+	
 </mapper>

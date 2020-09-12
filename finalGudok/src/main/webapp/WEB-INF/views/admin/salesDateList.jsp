@@ -100,9 +100,29 @@ input, select,textarea{
                 		<th rowspan="2" style="width:25%; border: 1px solid #CCCCCC;background-color:rgba(69,75,77,0.2);padding:0.25rem !important;vertical-align:middle;">기간 선택</th>
                 		<td style="text-align:left; padding:0.3rem !important; border: 1px solid #CCCCCC;" onclick="event.cancelBubble=true">
                 			&nbsp;
-                			<input type="radio" id="type" name="type" value="Y"> 연도별&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                			<input type="radio" id="type" name="type" value="M"> 월별&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                			<input type="radio" id="type" name="type" value="D"> 일별&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                			<c:choose>
+                				<c:when test="${type eq 'Y' }">
+		                			<input type="radio" id="type" name="type" value="Y" checked> 연도별&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		                			<input type="radio" id="type" name="type" value="M"> 월별&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		                			<input type="radio" id="type" name="type" value="D"> 일별&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                				</c:when>
+                				<c:when test="${type eq 'M' }">
+		                			<input type="radio" id="type" name="type" value="Y" > 연도별&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		                			<input type="radio" id="type" name="type" value="M"checked> 월별&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		                			<input type="radio" id="type" name="type" value="D"> 일별&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                				</c:when>
+                				<c:when test="${type eq 'D' }">
+		                			<input type="radio" id="type" name="type" value="Y" > 연도별&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		                			<input type="radio" id="type" name="type" value="M"> 월별&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		                			<input type="radio" id="type" name="type" value="D"checked> 일별&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                				</c:when>
+                				<c:otherwise>
+                					<input type="radio" id="type" name="type" value="Y" > 연도별&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		                			<input type="radio" id="type" name="type" value="M"> 월별&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		                			<input type="radio" id="type" name="type" value="D"> 일별&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                				
+                				</c:otherwise>
+                			</c:choose>
                 		</td>
                 		
                 	</tr>
