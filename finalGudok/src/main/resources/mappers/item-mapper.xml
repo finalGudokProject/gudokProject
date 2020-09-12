@@ -192,4 +192,21 @@
 		SELECT * FROM ITEM WHERE ITEM_RECOMMEND = 'C' AND ROWNUM BETWEEN 1 AND 4 
 	</select>
 	
+	<select id="selectRecommendCList" resultMap="itemResultSet">
+		SELECT * FROM ITEM WHERE ITEM_RECOMMEND = 'C' AND ROWNUM BETWEEN 1 AND 4 
+	</select>
+	
+	<select id="selectRecommendMList" resultMap="itemResultSet">
+		SELECT * FROM ITEM WHERE ITEM_RECOMMEND = 'M' AND ROWNUM BETWEEN 1 AND 4 
+	</select>
+	
+	<select id="selectRecommendFList" resultMap="itemResultSet">
+		SELECT * FROM ITEM WHERE ITEM_RECOMMEND = 'F' AND ROWNUM BETWEEN 1 AND 4 
+	</select>
+	
+	<select id="selectHotList" resultMap="itemResultSet">
+		SELECT * FROM (SELECT * FROM ITEM ORDER BY ITEM_COUNT DESC)
+		WHERE ROWNUM BETWEEN 1 AND 4
+	</select>
+	
 </mapper>

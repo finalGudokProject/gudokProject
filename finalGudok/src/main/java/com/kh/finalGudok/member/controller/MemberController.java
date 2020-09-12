@@ -133,7 +133,7 @@ public class MemberController {
 			if (loginUser.getMemberId().equalsIgnoreCase("admin")) {
 				mv.setViewName("redirect:aMain.do");
 			} else {
-				mv.setViewName("home");
+				mv.setViewName("redirect:home.do");
 			}
 
 		} else {
@@ -143,10 +143,11 @@ public class MemberController {
 	}
 
 	@RequestMapping(value = "logout.do", method = RequestMethod.GET)
-	public String logout(SessionStatus status, HttpSession session) {
+	public ModelAndView logout(SessionStatus status, HttpSession session, HttpServletResponse response, ModelAndView mv) {
 		status.setComplete();
 		session.invalidate();
-		return "home";
+		mv.setViewName("redirect:home.do");
+		return mv;
 	}
 
 	@RequestMapping(value = "signUp.do", method = RequestMethod.POST)
@@ -317,6 +318,17 @@ public class MemberController {
 	public String myInfoView() {
 		return "mypage/memberConfirm";
 	}
+	
+	// 회원탈퇴 전 본인 확인
+	@RequestMapping("myInfo2.do")
+	public ModelAndView myInfo2View(ModelAndView mv, String status) {
+		status = "t";
+		
+		mv.addObject("status", status);
+		mv.setViewName("mypage/memberConfirm");
+		
+		return mv;
+	}
 
 	// 회원 탈퇴 페이지
 	@RequestMapping("myWithdrawal.do")
@@ -387,7 +399,7 @@ public class MemberController {
 
 	// 본인 확인
 	@RequestMapping(value = "memberConfirm.do", method = RequestMethod.POST)
-	public String memberConfirm(Member m, HttpSession session, Model model) { // 민지
+	public String memberConfirm(Member m, HttpSession session, Model model, @RequestParam(value = "status") String status) { // 민지
 		Member loginUser = mService.loginMember(m);
 
 		System.out.println(m);
@@ -396,7 +408,14 @@ public class MemberController {
 		// 내부적으로 복호화 처리가 이루어진다. (암호화된 회원만 로그인 가능)
 		if (bcryptPasswordEncoder.matches(m.getMemberPwd(), loginUser.getMemberPwd())) { // 로그인 할 멤버 객체가 조회 되었을 시
 			model.addAttribute("loginUser", loginUser);
-			return "mypage/memberInfoView";
+			System.out.println(status);
+			
+			if(status.equals("t")) {
+				return "mypage/memberWithdrawal";
+			} else {
+				return "mypage/memberInfoView";
+			}
+			
 		} else { // 로그인 실패시
 			throw new MemberException("본인확인 실패");
 		}

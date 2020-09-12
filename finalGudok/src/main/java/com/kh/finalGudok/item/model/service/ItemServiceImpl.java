@@ -740,6 +740,15 @@ public class ItemServiceImpl implements ItemService {
 	}
 
 	@Override
+	public ArrayList<Item> selectHomeRecommendList() {
+		return iDao.selectHomeRecommendList();
+	}
+	
+	public int updateItemBannerStatus(int i) {
+		return iDao.updateItemBannerStatus(i);
+	}
+	
+	@Override
 	public ArrayList<Item> selectBestList() {
 		return iDao.selectBestList();
 	}
@@ -750,12 +759,23 @@ public class ItemServiceImpl implements ItemService {
 	}
 
 	@Override
-	public ArrayList<Item> selectHomeRecommendList() {
-		return iDao.selectHomeRecommendList();
+	public ArrayList<Item> selectHomeRecommendCList() {
+		return iDao.selectHomeRecommendCList();
 	}
-	
-	public int updateItemBannerStatus(int i) {
-		return iDao.updateItemBannerStatus(i);
+
+	@Override
+	public ArrayList<Item> selectHomeRecommendMList() {
+		return iDao.selectHomeRecommendMList();
+	}
+
+	@Override
+	public ArrayList<Item> selectHomeRecommendFList() {
+		return iDao.selectHomeRecommendFList();
+	}
+
+	@Override
+	public ArrayList<Item> selecthotList() {
+		return iDao.selectHotList();
 	}
 
 }

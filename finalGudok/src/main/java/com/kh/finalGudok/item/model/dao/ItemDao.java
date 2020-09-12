@@ -700,6 +700,14 @@ public class ItemDao {
 		return sqlSessionTemplate.selectOne("itemMapper.selectSubList", no);
 	}
 
+	public ArrayList<Item> selectHomeRecommendList() {
+		return (ArrayList)sqlSessionTemplate.selectList("itemMapper.selectRecommendList");
+	}
+
+	public int updateItemBannerStatus(int i) {
+		return sqlSessionTemplate.update("adminItemMapper.updateItemBannerStatus", i);
+	}
+	
 	public ArrayList<Item> selectBestList() {
 		return (ArrayList)sqlSessionTemplate.selectList("itemListMapper.selectBestList");
 	}
@@ -708,12 +716,20 @@ public class ItemDao {
 		return (ArrayList)sqlSessionTemplate.selectList("itemListMapper.selectHomeNewList");
 	}
 
-	public ArrayList<Item> selectHomeRecommendList() {
-		return (ArrayList)sqlSessionTemplate.selectList("itemMapper.selectRecommendList");
+	public ArrayList<Item> selectHomeRecommendCList() {
+		return (ArrayList)sqlSessionTemplate.selectList("itemMapper.selectRecommendCList");
 	}
 
-	public int updateItemBannerStatus(int i) {
-		return sqlSessionTemplate.update("adminItemMapper.updateItemBannerStatus", i);
+	public ArrayList<Item> selectHomeRecommendMList() {
+		return (ArrayList)sqlSessionTemplate.selectList("itemMapper.selectRecommendMList");
+	}
+
+	public ArrayList<Item> selectHomeRecommendFList() {
+		return (ArrayList)sqlSessionTemplate.selectList("itemMapper.selectRecommendFList");
+	}
+
+	public ArrayList<Item> selectHotList() {
+		return (ArrayList)sqlSessionTemplate.selectList("itemMapper.selectHotList");
 	}
 
 }

@@ -241,10 +241,10 @@
 						<c:param name="memberNo" value="${loginUser.memberNo}"/>
 					</c:url>
                     <li><a href="${myInfo}">회원정보 확인</a></li>
-                    <c:url var="withdrawal" value="myWithdrawal.do">
+                    <c:url var="myInfo2" value="myInfo2.do">
 						<c:param name="memberNo" value="${loginUser.memberNo}"/>
 					</c:url>
-                    <li><a href="${withdrawal}">회원탈퇴</a></li>
+                    <li><a href="${myInfo2}">회원탈퇴</a></li>
                 </ul>
             </li>
         </ul>
@@ -302,6 +302,7 @@
 			<form action="memberConfirm.do" method="post">
 				<input type="hidden" name="memberId" value="${loginUser.memberId}">
 				<input type="password" name="memberPwd" placeholder="비밀번호를 입력해주세요.">
+				<input type="hidden" name="status" value="${status}">
 		        <br>
 		        <button>확인</button>
 	        </form>

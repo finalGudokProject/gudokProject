@@ -453,4 +453,24 @@
 		ORDER BY CART_NO DESC
 	</select>
 	
+	<select id="selectBestList" resultMap="itemListResultSet">
+		<![CDATA[
+		SELECT *
+		FROM (SELECT * FROM ITEM_LIST_VIEW ILV
+		LEFT JOIN ITEM I ON(ILV.ITEM_NO = I.ITEM_NO)
+		WHERE ITEM_DP_STATUS='Y' AND ITEM_CM_SALES >= 30
+        ORDER BY ITEM_CM_SALES DESC)
+		WHERE ROWNUM BETWEEN 1 AND 4
+		]]> 
+	</select>
+	
+	<select id="selectHomeNewList" resultMap="itemListResultSet">
+		SELECT *
+		FROM (SELECT * FROM ITEM_LIST_VIEW ILV
+		LEFT JOIN ITEM I ON(ILV.ITEM_NO = I.ITEM_NO)
+		WHERE ITEM_DP_STATUS='Y' AND ILV.ITEM_DATE BETWEEN SYSDATE-30 AND SYSDATE
+        ORDER BY ILV.ITEM_DATE DESC)
+		WHERE ROWNUM BETWEEN 1 AND 4
+	</select>
+	
 </mapper>

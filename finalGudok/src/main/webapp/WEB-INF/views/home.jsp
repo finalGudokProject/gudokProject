@@ -68,145 +68,100 @@
       <br><br><br><br><br>
 
       <div class=cardWrap>
-        <p style="font-size:2em;"><a href="#">오늘의 신상품 ></a></p>
+        <p style="font-size:2em;"><a href="itemNew.do">오늘의 신상품 ></a></p>
         <br>
 
+        <c:forEach items="${newList }" var="newList">
         <div class="card" style="width: 18rem;">
-          <a href="#"><img src="resources/images/salad1.jpg" class="card-img-top" alt="..."></a>
+          <a href="idetail.do?itemNo=${newList.itemNo }&page=1" class="moveToDetail"><img src="resources/images/salad1.jpg" class="card-img-top" alt="..."></a>
+          <input type="hidden" value="${newList.itemNo }">
           <div class="card-body">
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <p class="card-text">${newList.itemName }</p>
+            <p class="card-text">${newList.itemMemo }</p>
           </div>
         </div>
-
-        <div class="card" style="width: 18rem;">
-          <a href="#"><img src="resources/images/salad1.jpg" class="card-img-top" alt="..."></a>
-          <div class="card-body">
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-          </div>
-        </div>
-
-        <div class="card" style="width: 18rem;">
-          <a href="#"><img src="resources/images/salad1.jpg" class="card-img-top" alt="..."></a>
-          <div class="card-body">
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-          </div>
-        </div>
-
-        <div class="card" style="width: 18rem;">
-          <a href="#"><img src="resources/images/salad1.jpg" class="card-img-top" alt="..."></a>
-          <div class="card-body">
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-          </div>
-        </div>
+        </c:forEach>
       </div>
 
       <br><br><br><br><br>
 
       <div class=cardWrap>
-        <p style="font-size:2em;"><a href="#">베스트 상품 ></a></p>
+        <p style="font-size:2em;"><a href="itemBest.do">베스트 상품 ></a></p>
         <br>
-
+		
+		<c:forEach items="${bestList }" var="best">
         <div class="card" style="width: 18rem;">
-          <a href="#"><img src="resources/images/salad1.jpg" class="card-img-top" alt="..."></a>
+          <a href="idetail.do?itemNo=${best.itemNo }&page=1" class="moveToDetail"><img src="resources/images/salad1.jpg" class="card-img-top" alt="..."></a>
+          <input type="hidden" value="${best.itemNo }">
           <div class="card-body">
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <p class="card-text">${best.itemName }</p>
+            <p class="card-text">${best.itemMemo }</p>
           </div>
         </div>
-
-        <div class="card" style="width: 18rem;">
-          <a href="#"><img src="resources/images/salad1.jpg" class="card-img-top" alt="..."></a>
-          <div class="card-body">
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-          </div>
-        </div>
-
-        <div class="card" style="width: 18rem;">
-          <a href="#"><img src="resources/images/salad1.jpg" class="card-img-top" alt="..."></a>
-          <div class="card-body">
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-          </div>
-        </div>
-
-        <div class="card" style="width: 18rem;">
-          <a href="#"><img src="resources/images/salad1.jpg" class="card-img-top" alt="..."></a>
-          <div class="card-body">
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-          </div>
-        </div>
+        </c:forEach>
       </div>
 
       <br><br><br><br><br>
-
+      
       <div class=cardWrap>
         <p style="font-size:2em;">지금 가장 핫한 상품</p>
         <br>
 
+		<c:forEach items="${hotList }" var="hot">
         <div class="card" style="width: 18rem;">
-          <a href="#"><img src="resources/images/salad1.jpg" class="card-img-top" alt="..."></a>
+          <a href="idetail.do?itemNo=${hot.itemNo }&page=1" class="moveToDetail"><img src="resources/images/salad1.jpg" class="card-img-top" alt="..."></a>
           <div class="card-body">
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <p class="card-text">${hot.itemName }</p>
+            <p class="card-text">${hot.itemMemo }</p>
           </div>
         </div>
-
-        <div class="card" style="width: 18rem;">
-          <a href="#"><img src="resources/images/salad1.jpg" class="card-img-top" alt="..."></a>
-          <div class="card-body">
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-          </div>
-        </div>
-
-        <div class="card" style="width: 18rem;">
-          <a href="#"><img src="resources/images/salad1.jpg" class="card-img-top" alt="..."></a>
-          <div class="card-body">
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-          </div>
-        </div>
-
-        <div class="card" style="width: 18rem;">
-          <a href="#"><img src="resources/images/salad1.jpg" class="card-img-top" alt="..."></a>
-          <div class="card-body">
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-          </div>
-        </div>
+        </c:forEach>
       </div>
 
       <br><br><br><br><br>
 
       <div class=cardWrap>
-        <p style="font-size:2em;">JM's 추천</p>
+        <p style="font-size:2em;">추천상품</p>
         <br>
-
+		
+		<c:if test="${loginUser.gender == 'M' }">
+        <c:forEach items="${recommendMList }" var="recommend">
         <div class="card" style="width: 18rem;">
-          <a href="#"><img src="resources/images/salad1.jpg" class="card-img-top" alt="..."></a>
+          <a href="idetail.do?itemNo=${recommend.itemNo }&page=1" class="moveToDetail"><img src="resources/images/salad1.jpg" class="card-img-top" alt="..."></a>
+          <input type="hidden" value="${recommend.itemNo }">
           <div class="card-body">
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <p class="card-text">${recommend.itemName }</p>
+            <p class="card-text">${recommend.itemMemo }</p>
           </div>
         </div>
-
+        </c:forEach>
+        </c:if>
+        <c:if test="${loginUser.gender == 'F' }">
+        <c:forEach items="${recommendFList }" var="recommend">
         <div class="card" style="width: 18rem;">
-          <a href="#"><img src="resources/images/salad1.jpg" class="card-img-top" alt="..."></a>
+          <a href="idetail.do?itemNo=${recommend.itemNo }&page=1" class="moveToDetail"><img src="resources/images/salad1.jpg" class="card-img-top" alt="..."></a>
+          <input type="hidden" value="${recommend.itemNo }">
           <div class="card-body">
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <p class="card-text">${recommend.itemName }</p>
+            <p class="card-text">${recommend.itemMemo }</p>
           </div>
         </div>
-
+        </c:forEach>
+        </c:if>
+        <c:if test="${loginUser.gender == 'N' || empty loginUser }">
+        <c:forEach items="${recommendCList }" var="recommend">
         <div class="card" style="width: 18rem;">
-          <a href="#"><img src="resources/images/salad1.jpg" class="card-img-top" alt="..."></a>
+          <a href="idetail.do?itemNo=${recommend.itemNo }&page=1" class="moveToDetail"><img src="resources/images/salad1.jpg" class="card-img-top" alt="…"></a>
+          <input type="hidden" value="${recommend.itemNo }">
           <div class="card-body">
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <p class="card-text">${recommend.itemName }</p>
+            <p class="card-text">${recommend.itemMemo }</p>
           </div>
         </div>
-
-        <div class="card" style="width: 18rem;">
-          <a href="#"><img src="resources/images/salad1.jpg" class="card-img-top" alt="..."></a>
-          <div class="card-body">
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-          </div>
-        </div>
+        </c:forEach>
+        </c:if>
       </div>
-
       <br><br><br>
-      <hr>
 	</section>
 	
       <!-- Footer -->

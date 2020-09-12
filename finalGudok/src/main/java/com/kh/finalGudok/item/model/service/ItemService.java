@@ -293,4 +293,11 @@ public interface ItemService {
 
 	int updateItemBannerStatus(int i);
 
+	ArrayList<Item> selectHomeRecommendCList();
+	
+	ArrayList<Item> selectHomeRecommendFList();
+	
+	ArrayList<Item> selectHomeRecommendMList();
+
+	ArrayList<Item> selecthotList();
 }
