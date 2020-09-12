@@ -560,4 +560,8 @@ public class MemberDao {
 	public Member selectMember(Member m) {
 		return sqlSessionTemplate.selectOne("memberMapper.selectMember", m);
 	}
+
+//	public ArrayList<Subscribe> selectSubscribeListTable(Integer memberNo) {
+//		return (ArrayList)sqlSessionTemplate.selectList("memberMapper.selectSubscribeListTable", memberNo);
+//	}
 }

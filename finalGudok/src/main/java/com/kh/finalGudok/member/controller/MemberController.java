@@ -372,7 +372,7 @@ public class MemberController {
 	// 구독 조회
 	@RequestMapping("subscribeList.do")
 	@ResponseBody
-	public void subscribeList(HttpServletResponse response, HttpSession session, Model model, Integer memberNo) throws JsonIOException, IOException { // 민지
+	public void subscribeList(HttpServletResponse response, HttpSession session, Model model, Integer memberNo) throws JsonIOException, IOException {
 
 		ArrayList<Subscribe> list = mService.selectSubscribeList(memberNo);
 
@@ -388,6 +388,25 @@ public class MemberController {
 		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
 		gson.toJson(list, response.getWriter());
 	}
+	
+//	@RequestMapping("subscribeListTable.do")
+//	@ResponseBody
+//	public void subscribeListTable(HttpServletResponse response, HttpSession session, Model model, Integer memberNo) throws JsonIOException, IOException {
+//
+//		ArrayList<Subscribe> list = mService.selectSubscribeListTable(memberNo);
+//
+//		System.out.println("구독 내역 테이블  : " + list);
+//		
+//		Member loginUser = (Member) session.getAttribute("loginUser");
+//		
+//		int subscribeCount = mService.subscribeCount(loginUser.getMemberNo());
+//		model.addAttribute("subscribeCount", subscribeCount);
+//
+//		response.setContentType("application/json;charset=utf-8");
+//
+//		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+//		gson.toJson(list, response.getWriter());
+//	}
 
 	// 찜 목록 불러오기(ajax)
 	@RequestMapping("heartList.do")
@@ -404,14 +423,13 @@ public class MemberController {
 
 	// 본인 확인
 	@RequestMapping(value = "memberConfirm.do", method = RequestMethod.POST)
-	public String memberConfirm(Member m, HttpSession session, Model model, @RequestParam(value = "status") String status) { // 민지
+	public String memberConfirm(Member m, HttpSession session, Model model, @RequestParam(value = "status") String status) {
 		Member loginUser = mService.loginMember(m);
 
 		System.out.println(m);
 		System.out.println(loginUser);
 
-		// 내부적으로 복호화 처리가 이루어진다. (암호화된 회원만 로그인 가능)
-		if (bcryptPasswordEncoder.matches(m.getMemberPwd(), loginUser.getMemberPwd())) { // 로그인 할 멤버 객체가 조회 되었을 시
+		if (bcryptPasswordEncoder.matches(m.getMemberPwd(), loginUser.getMemberPwd())) {
 			model.addAttribute("loginUser", loginUser);
 
 			if(status.equals("t")) {
@@ -428,7 +446,7 @@ public class MemberController {
 
 	// 회원 정보 수정
 	@RequestMapping(value = "memberModify.do", method = RequestMethod.POST)
-	public String memberModify(Member m, Model model) { // 민지
+	public String memberModify(Member m, Model model) {
 
 		int result = mService.updateMember(m);
 
@@ -445,7 +463,7 @@ public class MemberController {
 
 	// 적립금 내역
 	@RequestMapping(value = "pointList.do")
-	public ModelAndView pointList(ModelAndView mv, Integer memberNo) { // 민지
+	public ModelAndView pointList(ModelAndView mv, Integer memberNo) {
 		ArrayList<Point> list = mService.selectPointList(memberNo);
 
 		System.out.println("적립금 내역  : " + list);
@@ -462,7 +480,7 @@ public class MemberController {
 
 	// 리뷰 목록
 	@RequestMapping(value = "reviewList.do")
-	public ModelAndView reviewList(ModelAndView mv, Integer memberNo) { // 민지
+	public ModelAndView reviewList(ModelAndView mv, Integer memberNo) {
 		ArrayList<Review> list = mService.selectReviewList(memberNo);
 
 		System.out.println("리뷰 내역  : " + list);
@@ -496,7 +514,7 @@ public class MemberController {
 
 	// 교환 내역
 	@RequestMapping(value = "exchangeList.do")
-	public ModelAndView exchangeList(ModelAndView mv, Integer memberNo) { // 민지
+	public ModelAndView exchangeList(ModelAndView mv, Integer memberNo) {
 		ArrayList<Exchange> list = mService.selectExchangeList(memberNo);
 
 		System.out.println("교환 내역 : " + list);
@@ -513,7 +531,7 @@ public class MemberController {
 
 	// 배송 내역
 	@RequestMapping(value = "deliveryList.do")
-	public ModelAndView deliveryList(HttpSession session, ModelAndView mv, Integer memberNo) { // 민지
+	public ModelAndView deliveryList(HttpSession session, ModelAndView mv, Integer memberNo) {
 		Member loginUser = (Member) session.getAttribute("loginUser");
 
 		ArrayList<Delivery> list = mService.selectDeliveryList(loginUser.getMemberNo());
@@ -532,7 +550,7 @@ public class MemberController {
 
 	// 교환 신청
 	@RequestMapping("exchangeInsert.do")
-	public String exchangeInsert(HttpSession session, HttpServletRequest request, Exchange e) { // 민지
+	public String exchangeInsert(HttpSession session, HttpServletRequest request, Exchange e) {
 		Member loginUser = (Member) session.getAttribute("loginUser");
 
 		if (e.getExchangeCategory() == 1) {
@@ -583,7 +601,7 @@ public class MemberController {
 
 	// 리뷰 삭제
 	@RequestMapping("mreviewDelete.do")
-	public String reviewDelete(HttpServletRequest request, int reviewNo) {// 민지
+	public String reviewDelete(HttpServletRequest request, int reviewNo) {
 
 		System.out.println(reviewNo);
 
@@ -673,7 +691,7 @@ public class MemberController {
 
 	// 구독취소
 	@RequestMapping("subscribeCancle.do")
-	public String subscribeCancle(HttpSession session, HttpServletRequest request, Cancle c, Model model) { // 민지
+	public String subscribeCancle(HttpSession session, HttpServletRequest request, Cancle c, Model model) {
 		Member loginUser = (Member) session.getAttribute("loginUser");
 
 		if (c.getCancleCategory() == 1) {
@@ -689,11 +707,7 @@ public class MemberController {
 		
 		int point = mService.selectUsedPoint(loginUser.getMemberNo());
 		
-		System.out.println("사용한 포인트 : " + point);
-		
 		loginUser.setPoint(loginUser.getPoint() + point);
-		
-		System.out.println("돌아온 포인트 : " + loginUser.getPoint());
 
 		int result3 = mService.updateMyPoint(loginUser);
 		
@@ -792,8 +806,7 @@ public class MemberController {
 	}
 
 	@RequestMapping("destinationModify.do")
-	public String destinationModify(Delivery d, Model model) { // 민지
-		System.out.println("전달받은 배송지 : " + d);
+	public String destinationModify(Delivery d, Model model) {
 
 		int result = mService.updateSubscribeDestination(d);
 

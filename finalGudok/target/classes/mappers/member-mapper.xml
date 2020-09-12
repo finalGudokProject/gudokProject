@@ -687,13 +687,20 @@
 	</select>
 
 	<select id="selectSubscribeList" resultMap="subscribeResultSet" parameterType="int">
-		SELECT *
-		FROM (SELECT S.*, D.DELIVERY_STATUS, RANK() OVER(ORDER BY D.DELIVERY_NO DESC) AS RANK
-		    FROM SUBSCRIBE S
-		    JOIN ITEM I ON (S.ITEM_NO = I.ITEM_NO)
-		    JOIN DELIVERY D ON (D.SUBSCRIBE_NO = S.SUBSCRIBE_NO)) R
-		WHERE RANK = 1 AND SUBSCRIBE_STATUS = 'N'
+		SELECT S.*, D.DELIVERY_STATUS
+        FROM SUBSCRIBE S
+        JOIN ITEM I ON (S.ITEM_NO = I.ITEM_NO)
+        JOIN DELIVERY D ON (S.SUBSCRIBE_NO = D.SUBSCRIBE_NO)
+        WHERE SUBSCRIBE_STATUS='N'
 	</select>
+	
+	<!-- <select id="selectSubscribeListTable" resultMap="subscribeResultSet" parameterType="int">
+		SELECT S.*, D.DELIVERY_STATUS
+		FROM SUBSCRIBE S
+		JOIN ITEM I ON (S.ITEM_NO = I.ITEM_NO)
+		JOIN DELIVERY D ON (D.SUBSCRIBE_NO = S.SUBSCRIBE_NO)
+		WHERE SUBSCRIBE_STATUS='N' AND DELIVERY_STATUS = 'N'
+	</select> -->
 
 	<select id="selectOrderList" resultMap="adminSubscribeResultSet">
 		select *
