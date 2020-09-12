@@ -556,4 +556,8 @@ public class MemberDao {
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
 		return (ArrayList) sqlSessionTemplate.selectList("memberMapper.selectSubscribeCancel", s, rowBounds);
 	}
+	
+	public Member selectMember(Member m) {
+		return sqlSessionTemplate.selectOne("memberMapper.selectMember", m);
+	}
 }

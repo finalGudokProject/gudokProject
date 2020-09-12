@@ -684,5 +684,31 @@ public class ItemDao {
 		return (ArrayList)sqlSessionTemplate.selectList("itemMapper.selectSubscribeStatus", customerUid);
 	}
 
-	
+	public double selectPointRate(int memberNo) {
+		return sqlSessionTemplate.selectOne("itemMapper.selectPoint", memberNo);
+	}
+
+	public int updateUsePoint(Map<String, Object> pointMap) {
+		return sqlSessionTemplate.update("itemMapper.updateUsePoint", pointMap);
+	}
+
+	public int deleteCartList(HashMap<String, Object> map) {
+		return sqlSessionTemplate.delete("itemMapper.deleteCartList", map);
+	}
+
+	public int selectSubList(Integer no) {
+		return sqlSessionTemplate.selectOne("itemMapper.selectSubList", no);
+	}
+
+	public ArrayList<Item> selectBestList() {
+		return (ArrayList)sqlSessionTemplate.selectList("itemListMapper.selectBestList");
+	}
+
+	public ArrayList<Item> selectNewList() {
+		return (ArrayList)sqlSessionTemplate.selectList("itemListMapper.selectHomeNewList");
+	}
+
+	public ArrayList<Item> selectHomeRecommendList() {
+		return (ArrayList)sqlSessionTemplate.selectList("itemMapper.selectRecommendList");
+	}
 }

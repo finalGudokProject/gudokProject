@@ -246,7 +246,6 @@ public interface MemberService {
 
 	int updateSubscribeDestination(Delivery d);
 
-
 	Integer selectSubscribeCancelChart(Search search);
 
 	int getSubscribeCancelCnt(Search s);
@@ -256,6 +255,7 @@ public interface MemberService {
 	int selectUsedPoint(int memberNo);
 
 	int updateMyPoint(Member loginUser);
-
+	
+	Member selectMember(Member m);
 
 }

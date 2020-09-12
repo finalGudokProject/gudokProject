@@ -324,6 +324,7 @@ span {
 							$.ajax({
 								url : "emailDupCheck.do",
 								data : {email : memberEmail},
+								dataType:"json",
 								success : function(data) {
 									// 중복되는 이메일이 없을 경우
 									if (data.emailCheckResult == true) {

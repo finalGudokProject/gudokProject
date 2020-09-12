@@ -1453,5 +1453,9 @@
 		SET POINT = #{point}
 		WHERE MEMBER_NO = #{memberNo}
 	</update>
+	
+	<select id="selectMember" parameterType="Member" resultMap="memberResultSet">
+		SELECT * FROM MEMBER WHERE MEMBER_NO = #{memberNo}
+	</select>
 
 </mapper>

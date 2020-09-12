@@ -174,9 +174,9 @@ td {
 			var inputEmail = $("#inputIdTable").find("#email").val();
 			
 			if (inputName == "" || !regName.test(inputName)) {
-				alert("이름");
+				alert("이름을 확인해주세요");
 			} else if (inputEmail == "" || !regEmail.test(inputEmail)) {
-				alert("이메일");
+				alert("이메일을 확인해주세요");
 			} else {
 				
 				$.ajax({
@@ -208,11 +208,11 @@ td {
 			var inputEmail = $("#inputPwdTable").find("#email").val();
 			
 			if (inputId == "" || !regId.test(inputId)) {
-				alert("아이디");
+				alert("아이디를 확인해주세요");
 			} else if (inputName == "" || !regName.test(inputName)) {
-				alert("이름")
+				alert("이름을 확인해주세요")
 			} else if (inputEmail == "" || !regEmail.test(inputEmail)) {
-				alert("이메일");
+				alert("이메일을 확인해주세요");
 			} else {
 				
 				$.ajax({
@@ -222,12 +222,12 @@ td {
 					/* data:JSON.stringify(obj), */
 					/* contentType:"application/json;charset=utf-8", */
 					success : function(data){
-						if(data.msg == "success"){
+						if(data == "success"){
 							alert("회원님의 메일로 임시비밀번호를 발송하였습니다.");
+							location.href="moveToLogin.do";
 						}else{
 							alert("존재하지 않는 회원입니다. 정보를 다시 확인해주세요.");
 						}
-						
 					},
 					error : function(request, status, errorData) {
 						alert("error code: " + request.status + "\n"

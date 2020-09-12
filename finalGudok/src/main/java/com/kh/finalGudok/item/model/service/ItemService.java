@@ -59,9 +59,7 @@ public interface ItemService {
 
 	int updateEventStatusY(ArrayList<Event> dEventArr);
 
-
 	ArrayList<Review> selectAllReview(int itemNo);
-
 
 	int insertChoice(Heart h);
 
@@ -181,7 +179,6 @@ public interface ItemService {
 
 	int deleteBannerItem(int[] dEventArr);
 
-
 	int updateItemStatusY(ArrayList<BannerItem> iArr);
 
 	int updateItemStatusN(ArrayList<BannerItem> iArr);
@@ -279,5 +276,19 @@ public interface ItemService {
 	int insertSubScribeInfo(HashMap<String, Object> map);
 
 	ArrayList<Subscribe> selectSubscribeStatus(String customerUid);
+	
+	int updateUsePoint(Map<String, Object> pointMap);
+
+	int deleteCartList(HashMap<String, Object> map);
+
+	int selectSubList(Integer no);
+
+	ArrayList<Item> selectBestList();
+
+	ArrayList<Item> selectnewList();
+
+	ArrayList<Item> selectHomeRecommendList();
+	
+	double selectPointRate(int memberNo);
 
 }
