@@ -271,6 +271,8 @@
                <td style="width:10%;" id="foodDiet" class="sortCate"><input type="hidden" value="F6">다이어트 식단</td>
             </tr>
          </table>
+         
+         <!-- 대분류 카테고리 클릭 시 중분류 초기화 -->
          <script>
             $(function(){
                $(".cateName span").on("click", function(){
@@ -278,6 +280,8 @@
                })
             })
          </script>
+         
+         <!-- 정렬 CSS -->
          <script>
             $(function(){
                $(".sortTable td").on("mouseenter", function(){
@@ -296,6 +300,8 @@
                })
             })
          </script>
+         
+         <!-- 카테고리 세부 정렬 CSS -->
          <script>
             $(function(){
                console.log("${sortNo}");
@@ -310,6 +316,8 @@
                }
             })
          </script>
+         
+         <!-- 중분류 카테고리 CSS -->
          <script>
             $(function(){
                /* console.log("${categoryNo}"); */
@@ -328,12 +336,13 @@
                }
             })
          </script>
+         
+         <!-- 중분류 카테고리 클릭 시 -->
          <script>
             $(function(){
                $(".sortCate").on("click", function(){
                   var categoryNo = $(this).find("input").val();
                   location.href="foodSort.do?categoryNo=" + categoryNo;
-                  
                })
                $(".detailDiv").on("mouseenter", function(){
                   $(this).css({"box-shadow":"1px 1px 20px lightgray", "transition":"0.3s"});
@@ -342,6 +351,7 @@
                })
             })
          </script>
+         
       </div>
          <div style="border-top:1px solid lightgray;border-bottom:1px solid lightgray;">
          <table align="center" style="margin-bottom:1%;" class="sortTable">
@@ -361,32 +371,39 @@
             </tr>
          </table>
          </div>
+         
+         <!-- 정렬 클릭 시 -->
          <script>
             $(function(){
-               $(".sortRank").on("click", function(){
-                  var hidden1 = $("#hiddenCategory").val();
-                  $(".catchHidden").val(hidden1);
-                  var categoryNo = $(this).find("input:nth-child(1)").val();
-                  var sortNo = $(this).find("input:nth-child(2)").val();
+				$(".sortRank").on("click", function(){
+					var hidden1 = $("#hiddenCategory").val();
+                 	$(".catchHidden").val(hidden1);
+                 	var categoryNo = $(this).find("input:nth-child(1)").val();
+                 	var sortNo = $(this).find("input:nth-child(2)").val();
                   
-                  if($("#categoryF0").val() == ""){
-                     /* console.log(categoryNo);
-                     console.log(sortNo); */
-                     if(categoryNo != ""){
-                        location.href="fSort.do?categoryNo=" + categoryNo + "&sortNo=" + sortNo;
-                     }else if(categoryNo == ""){
-                        swal("","정렬할 상품이 없습니다.","error");
-                     }
-                  }else if($("#categoryF0").val() == "F0"){
-                     location.href="itemFood.do?sortNo=" + sortNo;
-                  }
-               })
-            })
-         </script>
-      </div>
+            		if($("#categoryF0").val() == ""){
+                    /* console.log(categoryNo);
+                    console.log(sortNo); */
+                     
+                    /* categoryNo가 있다면 해당 중분류 상품 리스트 정렬 */
+                    if(categoryNo != ""){
+                    	location.href="fSort.do?categoryNo=" + categoryNo + "&sortNo=" + sortNo;
+                    /* categoryNo가 없다면 리스트가 존재하지 않는 상태 */
+                    }else if(categoryNo == ""){
+                    	swal("","정렬할 상품이 없습니다.","error");
+                    }
+					
+                  	/* categoryNo가 F0이면 대분류 정렬 */
+					}else if($("#categoryF0").val() == "F0"){
+                	location.href="itemFood.do?sortNo=" + sortNo;
+					}
+				})
+			})
+		</script>
+	</div>
    
    
-      
+      <!-- 리스트가 존재하지 않을 시 출력할 폼 -->
       <c:if test="${empty list }">
       <div class="row" id="itemsRowDiv" style="width:63rem;">
          <div class="col-md-12" id="emptyDiv" style="margin-top:2%;border:1px solid lightgray;">
@@ -396,6 +413,7 @@
       </div>
       </c:if>
       
+      <!-- 리스트가 1개 또는 2개일 때 출력할 폼 -->
       <c:if test="${!empty list && list.size() == 1 || list.size() == 2}">
       <div class="row" id="itemsRowDiv">
       <c:forEach var="i" items="${list }" varStatus="vs">
@@ -516,6 +534,7 @@
       </div>
       </c:if>
       
+      <!-- 리스트 갯수가 3개이상이라면 출력할 폼 -->
       <c:if test="${!empty list && list.size() >= 3}">
       <div class="row" id="itemsRowDiv">
       <c:forEach var="i" items="${list }" varStatus="vs">
@@ -636,6 +655,7 @@
       </div>
       </c:if>
       
+      <!-- 상품평 보러가기 버튼 클릭 시 -->
       <c:forEach var="i" items="${list }" varStatus="vs">
       <script>
          $(function(){
@@ -644,6 +664,8 @@
                console.log(preview);
                var review = $(this).next().val();
                console.log(review);
+               
+               /* 버튼 클릭 시 location으로  이동하는 것을 막아주는 이벤트 */
                event.stopPropagation();
             })
             $("#preview${vs.index}").on("click",function(){
@@ -651,23 +673,26 @@
                location.href="itemReview.do?itemNo="+itemNo;
             })
          })
-         
-      
       </script>
       </c:forEach>
+      
       
       <c:if test="${empty list}">
       
       </c:if>
+      
+      <!-- 상품 리스트가 존재한다면 페이지네이션을 만든다. -->
       <c:if test="${!empty list}">
          <div class="col-12">
          
          <nav aria-label="Page navigation example">
             <ul class="pagination justify-content-center">
             <c:if test = "${pi.currentPage == 1}">
-               <li class="page-item disabled">
-                  <a class="page-link" href="#" tabindex="-1">이전</a>
-                </li>
+				<li class="page-item disabled">
+					
+					<!-- tabindex가 -1이면 비활성화 -->               
+					<a class="page-link" href="#" tabindex="-1">이전</a>
+				</li>
             </c:if>
             <c:if test = "${pi.currentPage > 1 }">
                <c:url var = "ilistBack" value = "itemFood.do">
@@ -709,39 +734,6 @@
       </c:if>
    </div>
 </div>
-
-   <!-- <script>
-      $(function(){
-         $(".btn-primary").on("click", function(){
-            swal("","확인","warning").then((value)=>{
-               swal("","여기서 값 넣어요","info");
-            });
-         })
-      })
-   </script> -->
-
-   
-   <!-- 사이드 메뉴바 -->
-   <script>
-   $(function(){
-      $(".menu").mouseenter(function(){
-         $(this).find("li").css("display","block").css("background","white");
-      }).mouseleave(function(){
-         $(this).find("li").css("display","none");
-      })
-   })
-   </script>
-   <!-- <script>
-      $(function(){
-         $(".cardHeader, .cardBody, #btnBlank, .cardFooter").click(function(){
-            var itemNo = $(this).find("input[type=hidden]").val();
-            console.log(itemNo);
-            location.href="itemDetail.do?itemNo+" + ${i.itemNo} + "&page="+${pi.currentPage};
-         }).mouseenter(function(){
-            $(this).css("cursor","pointer");
-         })
-      })
-   </script> -->
    
 <jsp:include page="../common/footer.jsp"/>
 </body>
