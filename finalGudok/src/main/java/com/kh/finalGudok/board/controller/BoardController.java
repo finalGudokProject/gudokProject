@@ -291,7 +291,8 @@ public class BoardController {
 	// 검색
 	@RequestMapping("searchNoticeList.do")
 	public ModelAndView searchNoticeList(ModelAndView mv, @RequestParam(value = "page", required = false) Integer page,
-			@RequestParam("searchType") String searchType, @RequestParam("keyword") String keyword) {
+			@RequestParam(value = "searchType", required = false) String searchType,
+			@RequestParam(value = "keyword", required = false) String keyword) {
 
 		int currentPage = 1;
 		if (page != null) {
@@ -329,7 +330,8 @@ public class BoardController {
 	// 검색 후 삭제 후 페이지
 	@RequestMapping("noticeSearchListDelete.do")
 	public ModelAndView noticeSearchListDelete(ModelAndView mv, 
-			@RequestParam("searchType") String searchType, @RequestParam("keyword") String keyword, 
+			@RequestParam(value = "searchType", required = false) String searchType,
+			@RequestParam(value = "keyword", required = false) String keyword, 
 			HttpServletRequest request, String sendArr){
 
 		String[] strArr = sendArr.split(",");
@@ -513,7 +515,8 @@ public class BoardController {
 	// 검색
 	@RequestMapping("searchFAQList.do")
 	public ModelAndView searchFAQList(ModelAndView mv, @RequestParam(value = "page", required = false) Integer page,
-			@RequestParam("searchType") String searchType, @RequestParam("keyword") String keyword) {
+			@RequestParam(value = "searchType", required = false) String searchType, 
+			@RequestParam(value = "keyword", required = false) String keyword) {
 
 		int currentPage = 1;
 		if (page != null) {
@@ -551,7 +554,8 @@ public class BoardController {
 	// 검색 후 삭제 후 페이지
 	@RequestMapping("FAQSearchListDelete.do")
 	public ModelAndView searchFAQList(ModelAndView mv, 
-			@RequestParam("searchType") String searchType, @RequestParam("keyword") String keyword, 
+			@RequestParam(value = "searchType", required = false) String searchType,
+			@RequestParam(value = "keyword", required = false) String keyword, 
 			HttpServletRequest request, String sendArr){
 
 		String[] strArr = sendArr.split(",");
@@ -707,8 +711,9 @@ public class BoardController {
 	// 검색
 	@RequestMapping("searchProposalList.do")
 	public ModelAndView searchProposalList(ModelAndView mv,
-			@RequestParam(value = "page", required = false) Integer page, @RequestParam("searchType") String searchType,
-			@RequestParam("keyword") String keyword) {
+			@RequestParam(value = "page", required = false) Integer page, 
+			@RequestParam(value = "searchType", required = false) String searchType,
+			@RequestParam(value = "keyword", required = false) String keyword) {
 
 		int currentPage = 1;
 		if (page != null) {
@@ -746,7 +751,8 @@ public class BoardController {
 	// 검색 후 삭제 후 페이지
 	@RequestMapping("proposalSearchListDelete.do")
 	public ModelAndView proposalSearchListDelete(ModelAndView mv, 
-				@RequestParam("searchType") String searchType, @RequestParam("keyword") String keyword, 
+				@RequestParam(value = "searchType", required = false) String searchType, 
+				@RequestParam(value = "keyword", required = false) String keyword, 
 				HttpServletRequest request, String sendArr){
 
 		String[] strArr = sendArr.split(",");
@@ -949,8 +955,9 @@ public class BoardController {
 	// 검색
 	@RequestMapping("searchInquiryList.do")
 	public ModelAndView searchInquiryList(ModelAndView mv, @RequestParam(value = "page", required = false) Integer page,
-			@RequestParam("searchType") String searchType, @RequestParam("keyword") String keyword,
-			@RequestParam("inquiry_yn") String inquiry_yn) {
+			@RequestParam(value = "searchType", required = false) String searchType, 
+			@RequestParam(value = "keyword", required = false) String keyword,
+			@RequestParam(value = "inquiry_yn", required = false) String inquiry_yn) {
 
 		int currentPage = 1;
 		if (page != null) {
@@ -999,8 +1006,9 @@ public class BoardController {
 	// 검색 후 삭제 후 페이지
 	@RequestMapping("inquirySearchListDelete.do")
 	public ModelAndView inquirySearchListDelete(ModelAndView mv, 
-			@RequestParam("searchType") String searchType, @RequestParam("keyword") String keyword, 
-			@RequestParam("inquiry_yn") String inquiry_yn,
+			@RequestParam(value = "searchType", required = false) String searchType, 
+			@RequestParam(value = "keyword", required = false) String keyword, 
+			@RequestParam(value = "inquiry_yn", required = false) String inquiry_yn,
 			HttpServletRequest request, String sendArr){
 
 		String[] strArr = sendArr.split(",");
@@ -1441,8 +1449,9 @@ public class BoardController {
 	// 검색
 	@RequestMapping("adminEventSearch.do")
 	public ModelAndView searchEventList(ModelAndView mv, @RequestParam(value = "page", required = false) Integer page,
-			@RequestParam("post_yn") String post_yn, @RequestParam("searchType") String searchType,
-			@RequestParam("keyword") String keyword) {
+			@RequestParam(value = "post_yn", required = false) String post_yn, 
+			@RequestParam(value = "searchType", required = false) String searchType,
+			@RequestParam(value = "keyword", required = false) String keyword) {
 
 		int currentPage = 1;
 		if (page != null) {
@@ -1487,8 +1496,9 @@ public class BoardController {
 	// 검색 후 상태 변환 후 페이지
 	@RequestMapping("eventSearchListChange.do")
 	public void eventSearchListChange(HttpServletResponse response, Integer page,
-			@RequestParam("searchType") String searchType, @RequestParam("keyword") String keyword,
-			@RequestParam("post_yn") String post_yn) throws IOException {
+			@RequestParam(value = "searchType", required = false) String searchType, 
+			@RequestParam(value = "keyword", required = false) String keyword,
+			@RequestParam(value = "post_yn", required = false) String post_yn) throws IOException {
 
 		System.out.println("검색 후 변환 페이지 : " + searchType);
 		System.out.println(keyword);
@@ -1549,8 +1559,9 @@ public class BoardController {
 	
 	@RequestMapping("eventSearchListDelete.do")
 	public ModelAndView eventSearchListDelete(ModelAndView mv, 
-			@RequestParam("searchType") String searchType, @RequestParam("keyword") String keyword,
-			@RequestParam("post_yn") String post_yn,
+			@RequestParam(value = "searchType", required = false) String searchType,
+			@RequestParam(value = "keyword", required = false) String keyword,
+			@RequestParam(value = "post_yn", required = false) String post_yn,
 			HttpServletRequest request, String sendArr){
 
 		String[] strArr = sendArr.split(",");
@@ -1668,7 +1679,8 @@ public class BoardController {
 	// Notice Search
 	@RequestMapping("searchsNoticeList.do")
 	public ModelAndView searchsNoticeList(ModelAndView mv, @RequestParam(value = "page", required = false) Integer page,
-			@RequestParam("searchType") String searchType, @RequestParam("keyword") String keyword) {
+			@RequestParam(value = "searchType", required = false) String searchType, 
+			@RequestParam(value = "keyword", required = false) String keyword) {
 
 		int currentPage = 1;
 		if (page != null) {
@@ -1761,7 +1773,8 @@ public class BoardController {
 	// FAQ 검색
 	@RequestMapping("searchsFAQList.do")
 	public ModelAndView searchsFAQList(ModelAndView mv, @RequestParam(value = "page", required = false) Integer page,
-			@RequestParam("searchType") String searchType, @RequestParam("keyword") String keyword) {
+			@RequestParam(value = "searchType", required = false) String searchType,
+			@RequestParam(value = "keyword", required = false) String keyword) {
 
 		int currentPage = 1;
 		if (page != null) {
@@ -2083,8 +2096,9 @@ public class BoardController {
 	// proposal 검색
 	@RequestMapping("searchsProposalList.do")
 	public ModelAndView searchsProposalList(ModelAndView mv,
-			@RequestParam(value = "page", required = false) Integer page, @RequestParam("searchType") String searchType,
-			@RequestParam("keyword") String keyword) {
+			@RequestParam(value = "page", required = false) Integer page, 
+			@RequestParam(value = "searchType", required = false) String searchType,
+			@RequestParam(value = "keyword", required = false) String keyword) {
 
 		int currentPage = 1;
 		if (page != null) {
@@ -2434,8 +2448,9 @@ public class BoardController {
 	// inquiry 검색
 	@RequestMapping("searchsInquiryList.do")
 	public ModelAndView searchsInquiryList(ModelAndView mv,
-			@RequestParam(value = "page", required = false) Integer page, @RequestParam("searchType") String searchType,
-			@RequestParam("keyword") String keyword) {
+			@RequestParam(value = "page", required = false) Integer page, 
+			@RequestParam(value = "searchType", required = false) String searchType,
+			@RequestParam(value = "keyword", required = false) String keyword) {
 
 		int currentPage = 1;
 		if (page != null) {
