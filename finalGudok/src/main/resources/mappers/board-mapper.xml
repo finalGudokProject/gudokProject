@@ -1285,6 +1285,8 @@
 		SYSDATE, SYSDATE, #{rBoard_no}, #{rMember_no}, #{reply_writer}, #{rEmail})
 	</insert>
 	
+	
+	
 	<!-- 댓글 수정 -->
 	<update id="updateReply" parameterType="reply">
 		UPDATE REPLY SET REPLY_CONTENT = #{reply_content}, R_MODIFY_DATE = SYSDATE
@@ -1295,6 +1297,12 @@
 	<delete id="deleteReply" parameterType="int">
 		DELETE FROM REPLY 
 		WHERE REPLY_NO = #{reply_no}
+	</delete>
+	
+	<!-- 댓글 전체 삭제 -->
+	<delete id="deleteReplyAll" parameterType="int">
+		DELETE FROM REPLY R
+		WHERE BOARD_NO = #{bBoard_no}
 	</delete>
 	
 </mapper>

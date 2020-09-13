@@ -101,6 +101,8 @@ public interface BoardService {
 	int deleteInquiryBoard(Integer bBoard_no);
 
 	int deleteEventBoard(Integer bBoard_no);
+	
+	int deleteReplyAll(Integer bBoard_no);
 
 	// 비밀글 패스워드 일치
 	String selectInquiryPwd(int bBoard_no);
@@ -161,6 +163,8 @@ public interface BoardService {
 	ArrayList<Board> selectSearchListEvent1(bPageInfo pi, Search search);
 
 	ArrayList<EventBoard> selectSearchListEvent2(bPageInfo pi, Search search);
+
+	
 
 	
 
