@@ -342,17 +342,21 @@
 					</c:url>
           		</c:if>
 	          	<c:if test="${i.inquiryYN eq 'N'}">
-	          	<tr id="inquiry">
+	          	<c:url var="bdetail" value="inquiryDetail.do">
+			           <c:param name="bBoard_no" value="${i.boardNo}"/>
+			           <c:param name="page" value="1"/>
+			        </c:url>
+	          	<tr style="cursor:pointer;" onclick="location.href='${bdetail}'" id="inquiry">
 	          			<td>
 			              <div style="border:1px solid black; width: 40%; height:30px; margin: 0 auto;"><span style="line-height:30px;">답변대기</span></div>
 			            </td>
 	          	</c:if>
 	          	
           		<c:if test="${empty i.inquiryYN}">
-          			<tr id="inquiry">
+          			<tr  id="inquiry">
 	          			<td>
 			              <div style="border:1px solid black; width: 40%; height:30px; margin: 0 auto;"><span style="line-height:30px;">답변대기</span></div>
-			            </td>
+			        </td>
           		</c:if>
 	            <c:if test="${i.inquiryYN eq 'Y'}">
 		            <tr style="cursor:pointer;" onclick="getReply(${i.boardNo})" id="inquiry">

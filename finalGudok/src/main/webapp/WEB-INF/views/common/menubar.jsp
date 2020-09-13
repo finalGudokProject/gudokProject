@@ -208,7 +208,7 @@ display:inline-block !important;
 
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
           <!-- <ul class="navbar-nav mr-auto"> -->
-          <ul class="navbar-nav ml-auto">
+          <ul class="navbar-nav ml-auto" style="margin: 0 auto;">
             <li class="nav-item">
               <a class="nav-link" href="itemNew.do"><img src="resources/images/new.png" width="50px" height="50px"><br>신상품</a>
             </li>
@@ -253,10 +253,6 @@ display:inline-block !important;
             </li>
           </ul>
           <!-- </ul> -->
-          <form class="form-inline my-2 my-lg-0" id="searchBar">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-          </form>
         </div>
 	</nav>
 	
