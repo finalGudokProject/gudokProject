@@ -226,6 +226,11 @@ public class BoardDao {
 		return sqlSessionTemplate.delete("boardMapper.deleteEventBoard",bBoard_no);
 	}
 
+	public int deleteReplyAll(Integer bBoard_no) {
+		return sqlSessionTemplate.delete("boardMapper.deleteReplyAll",bBoard_no);
+	}
+
+	
 	// 비밀글 비밀번호 일치 여부
 	public String selectInquiryPwd(int bBoard_no) {
 		return sqlSessionTemplate.selectOne("boardMapper.selectInquiryPwd", bBoard_no);
@@ -373,6 +378,7 @@ public class BoardDao {
 		return sqlSessionTemplate.selectOne("boardMapper.getSearchListCountEventSearch", search);
 	}
 
+	
 	
 
 	

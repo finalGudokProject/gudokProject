@@ -236,6 +236,11 @@ public class BoardSerivceImpl implements BoardService {
 		return bDao.deleteEventBoard(bBoard_no);
 	}
 
+	@Override
+	public int deleteReplyAll(Integer bBoard_no) {
+		return bDao.deleteReplyAll(bBoard_no);
+	}
+	
 	
 	// 비밀글 비밀번호 밍치
 	@Override
@@ -372,6 +377,8 @@ public class BoardSerivceImpl implements BoardService {
 	public ArrayList<EventBoard> selectSearchListEvent2(bPageInfo pi,  Search search) {
 		return bDao.selectSearchListEvent2(pi, search);
 	}
+
+	
 
 	
 
