@@ -759,4 +759,8 @@ public class ItemDao {
 	public int selectSubPrice(int subNo) {
 		return sqlSessionTemplate.selectOne("itemMapper.selectSubPrice", subNo);
 	}
+	
+	public int genderCount(Map<String, Object> map) {
+		return sqlSessionTemplate.update("itemMapper.updateGenderCount", map);
+	}
 }

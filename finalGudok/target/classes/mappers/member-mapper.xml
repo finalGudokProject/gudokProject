@@ -205,7 +205,7 @@
       <result property="exchangeCategory" column="EXCHANGE_CATEGORY" />
       <result property="memberId" column="MEMBER_ID" />
       <result property="itemPrice" column="ITEM_PRICE" />
-      <result property="totalPayement" column="SUB_PRICE" />
+      <result property="totalPayment" column="SUB_PRICE" />
 
    </resultMap>
 
@@ -859,33 +859,34 @@
 
 	</select>
 
-	<select id="selectExchangeList" parameterType="object" resultMap="adminExchangeResultSet">
-		select *
-		from(
-		SELECT e.*,i.item_name,s.member_id
-		FROM EXCHANGE E
-		LEFT JOIN SUBSCRIBE S ON(E.SUBSCRIBE_NO=S.SUBSCRIBE_NO)
-		LEFT JOIN ITEM I ON (S.ITEM_NO=I.ITEM_NO)
-		LEFT JOIN MEMBER M ON (S.MEMBER_NO=M.MEMBER_NO)
-		<where>
-			<if test="category1!=null">
-				e.exchange_status=#{category1}
-			</if>
-		</where>
-		ORDER BY EXCHANGE_NO DESC
-		)
-		<where>
-			<if test="subscribeNo!=null">
-				subscribe_no like <![CDATA['%${subscribeNo}%']]>
-			</if>
-			<if test="word!=null">
-				or exchange_content LIKE <![CDATA['%${word}%']]>
-			</if>
-			<if test="memberId!=null">
-				or member_Id  LIKE <![CDATA['%${memberId}%']]>
-			</if>
-		</where>
-	</select>
+	
+   <select id="selectExchangeList" parameterType="object" resultMap="adminExchangeResultSet">
+      select *
+      from(
+      SELECT e.*,i.item_name,s.member_id,S.SUB_PRICE
+      FROM EXCHANGE E
+      LEFT JOIN SUBSCRIBE S ON(E.SUBSCRIBE_NO=S.SUBSCRIBE_NO)
+      LEFT JOIN ITEM I ON (S.ITEM_NO=I.ITEM_NO)
+      LEFT JOIN MEMBER M ON (S.MEMBER_NO=M.MEMBER_NO)
+      <where>
+         <if test="category1!=null">
+            e.exchange_status=#{category1}
+         </if>
+      </where>
+      ORDER BY EXCHANGE_NO DESC
+      )
+      <where>
+         <if test="subscribeNo!=null">
+            subscribe_no like <![CDATA['%${subscribeNo}%']]>
+         </if>
+         <if test="word!=null">
+            or exchange_content LIKE <![CDATA['%${word}%']]>
+         </if>
+         <if test="memberId!=null">
+            or member_Id  LIKE <![CDATA['%${memberId}%']]>
+         </if>
+      </where>
+   </select>
 
 	<update id="updateExchangeStatus" parameterType="java.util.List">
 		<foreach item="i" index="index" collection="list"
@@ -1421,6 +1422,10 @@
 		SELECT POINT
 		FROM PAYMENT
 		WHERE CUSTOMER_UID = #{customerUid}
+	</select>
+	
+	<select id="selectGender" parameterType="_int" resultType="String">
+		SELECT GENDER FROM MEMBER WHERE MEMBER_NO = #{memberNo}
 	</select>
 
 </mapper>

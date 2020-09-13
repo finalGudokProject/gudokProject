@@ -817,4 +817,9 @@ public class ItemServiceImpl implements ItemService {
 	public int selectSubPrice(int subNo) {
 		return iDao.selectSubPrice(subNo);
 	}
+	
+	@Override
+	public int genderCount(Map<String, Object> map) {
+		return iDao.genderCount(map);
+	}
 }

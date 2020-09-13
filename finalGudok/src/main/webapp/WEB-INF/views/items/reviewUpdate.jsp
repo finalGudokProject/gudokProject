@@ -240,32 +240,36 @@
 	</form>
 	
 	<!-- 수정 완료 버튼 -->
-	<script>
-		$(function(){
-			$("#completeBtn").on("click", function(e){
-				e.preventDefault();
-				/* var reviewNo = "${rv[0].reviewNo}";
-				var itemNo = "${rv[0].itemNo}";
-				var reviewContent = "${rv[0].reviewContent}";
-				var reviewRate = $("input[type=radio]:checked").val();
-				var memberNo = "${loginUser.memberNo}";
-				var memberId = "${loginUser.memberId}";
-				var email = "${loginUser.memberId}"; */
-				swal({
-					text : "상품평을 수정하시겠습니까?",
-					buttons : ["예", "아니오"],
-					closeOnEsc : false,
-					dangerMode : true,
-				}).then((result)=>{
-					if(result){
-						
-					}else{
-						$("#reviewUpForm").submit();
-					}
-				})
-			})
-		})
-	</script>
+   <script>
+      $(function(){
+         $("#completeBtn").on("click", function(e){
+            e.preventDefault();
+            if($("#reviewText").val().length >= 10){
+               /* var reviewNo = "${rv[0].reviewNo}";
+               var itemNo = "${rv[0].itemNo}";
+               var reviewContent = "${rv[0].reviewContent}";
+               var reviewRate = $("input[type=radio]:checked").val();
+               var memberNo = "${loginUser.memberNo}";
+               var memberId = "${loginUser.memberId}";
+               var email = "${loginUser.memberId}"; */
+               swal({
+                  text : "상품평을 수정하시겠습니까?",
+                  buttons : ["예", "아니오"],
+                  closeOnEsc : false,
+                  dangerMode : true,
+               }).then((result)=>{
+                  if(result){
+                     
+                  }else{
+                     $("#reviewUpForm").submit();
+                  }
+               })
+            }else{
+               swal("","10자 이상으로 입력해 주세요.","warning");
+            }
+         })
+      })
+   </script>
 
 	<!-- 상품평 별점 -->	
 	<script>

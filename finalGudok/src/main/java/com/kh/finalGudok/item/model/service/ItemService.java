@@ -316,5 +316,7 @@ public interface ItemService {
 	int selectCycle(int cycleNo);
 	
 	int selectSubPrice(int subNo);
+	
+	int genderCount(Map<String, Object> map);
 
 }

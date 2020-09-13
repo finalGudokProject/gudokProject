@@ -339,52 +339,67 @@ public class ItemController {
 	}
 
 	// 상품 상세 페이지
-	@RequestMapping("idetail.do")
-	public ModelAndView itemDetailPage(ModelAndView mv, Integer itemNo, @RequestParam("page") Integer page,
-			Integer memberNo) {
-//		System.out.println("itemNo : " + itemNo + ", page : " + page);
-		int currentPage = page;
-		
-		// 해당 상품의 조회수 증가
-		int result = iService.detailCount(itemNo);
-//		System.out.println("증가함? : " + result);
-		
-		// 조회수가 증가했다면
-		if (result > 0) {
+		@RequestMapping("idetail.do")
+		public ModelAndView itemDetailPage(ModelAndView mv, Integer itemNo, @RequestParam("page") Integer page,
+				Integer memberNo) {
+//			System.out.println("itemNo : " + itemNo + ", page : " + page);
+			int currentPage = page;
 			
-			// DB의 ItemListView를 조회해 온다.
-			ItemListView ilv = iService.selectItem(itemNo);
+			// 해당 상품의 조회수 증가
+			int result = iService.detailCount(itemNo);
 			
-			// 상품이 존재한다면
-			if (ilv != null) {
-				mv.addObject("ilv", ilv).addObject("currentPage", currentPage).setViewName("items/itemDetail");
-			// 상품이 존재하지 않는다면
-			} else {
-				throw new ItemException("조회 실패");
+			// 성별따라서 조회수 증가
+			String gender = "";
+			if(memberNo == null) {
+				gender = "N";
+			}else {
+				gender = mService.selectGender(memberNo);
 			}
-
-			// 해당 상품의 상품평 조회
-			ArrayList<Review> review = iService.selectReview(itemNo);
-//			System.out.println("review 확인 : " + review);
+			System.out.println(gender);
 			
-			// 상품평이 존재한다면
-			if (review != null) {
+			Map<String, Object> map = new HashMap();
+			map.put("itemNo", itemNo);
+			map.put("gender", gender);
+			int resutl2 = iService.genderCount(map);
+			System.out.println(map);
+			System.out.println("증가함? : " + result);
+			
+			// 조회수가 증가했다면
+			if (result > 0) {
 				
-				// 해당 상품평의 이미지를 조회해서 화면단으로 넘겨준다.
-				ArrayList<ReviewView> reviewImg = iService.selectAllReviewImg(itemNo);
-				mv.addObject("review", review).addObject("img", reviewImg).setViewName("items/itemDetail");
-			}
-			
-			// 찜 리스트를 조회(페이지 벗어났다가 다시 들어갈 시 itemDetail의 하트색 유지)해서 화면단으로 넘겨준다.
-			Heart hResult = iService.detailHeart(itemNo);
-			System.out.println("hResult : " + hResult);
-			mv.addObject("hResult", hResult).setViewName("items/itemDetail");
+				// DB의 ItemListView를 조회해 온다.
+				ItemListView ilv = iService.selectItem(itemNo);
+				
+				// 상품이 존재한다면
+				if (ilv != null) {
+					mv.addObject("ilv", ilv).addObject("currentPage", currentPage).setViewName("items/itemDetail");
+				// 상품이 존재하지 않는다면
+				} else {
+					throw new ItemException("조회 실패");
+				}
 
-		} else {
-			throw new ItemException("조회수 증가 실패");
+				// 해당 상품의 상품평 조회
+				ArrayList<Review> review = iService.selectReview(itemNo);
+//				System.out.println("review 확인 : " + review);
+				
+				// 상품평이 존재한다면
+				if (review != null) {
+					
+					// 해당 상품평의 이미지를 조회해서 화면단으로 넘겨준다.
+					ArrayList<ReviewView> reviewImg = iService.selectAllReviewImg(itemNo);
+					mv.addObject("review", review).addObject("img", reviewImg).setViewName("items/itemDetail");
+				}
+				
+				// 찜 리스트를 조회(페이지 벗어났다가 다시 들어갈 시 itemDetail의 하트색 유지)해서 화면단으로 넘겨준다.
+				Heart hResult = iService.detailHeart(itemNo);
+				System.out.println("hResult : " + hResult);
+				mv.addObject("hResult", hResult).setViewName("items/itemDetail");
+
+			} else {
+				throw new ItemException("조회수 증가 실패");
+			}
+			return mv;
 		}
-		return mv;
-	}
 	
 	// 전체 상품평 페이지
 	@RequestMapping("itemReview.do")

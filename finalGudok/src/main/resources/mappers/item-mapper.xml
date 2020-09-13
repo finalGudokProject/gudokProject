@@ -246,4 +246,36 @@
 	<select id="selectSubPrice" parameterType="_int" resultType="_int">
 		SELECT SUB_PRICE FROM SUBSCRIBE WHERE SUBSCRIBE_NO = #{subNo} 
 	</select>
+	
+	<update id="updateGenderCount" parameterType="hashMap">
+		UPDATE RECOMMEND
+		<choose>
+			<when test="gender == M">
+				SET MALE = MALE + 1	
+			</when>
+			<when test="gender == F">
+				SET FEMALE = FEMALE + 1
+			</when>
+			<otherwise>
+				SET COMMON = COMMON + 1
+			</otherwise>
+		</choose>
+		WHERE ITEM_NO = #{itemNo}
+	</update>
+	
+	<update id="updateGenderCount" parameterType="hashMap">
+		UPDATE RECOMMEND
+		<choose>
+			<when test="gender == M">
+				SET MALE = MALE + 1	
+			</when>
+			<when test="gender == F">
+				SET FEMALE = FEMALE + 1
+			</when>
+			<otherwise>
+				SET COMMON = COMMON + 1
+			</otherwise>
+		</choose>
+		WHERE ITEM_NO = #{itemNo}
+	</update>
 </mapper>

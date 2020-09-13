@@ -614,6 +614,11 @@ public class MemberServiceImpl implements MemberService {
 //	public ArrayList<Subscribe> selectSubscribeListTable(Integer memberNo) {
 //		return mDao.selectSubscribeListTable(memberNo);
 //	}
+	
+	@Override
+	public String selectGender(Integer memberNo) {
+		return mDao.selectGender(memberNo);
+	}
 
 
 }
