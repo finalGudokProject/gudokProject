@@ -802,5 +802,19 @@ public class ItemServiceImpl implements ItemService {
 	public int selectCancleCount(String customerUid) {
 		return iDao.selectCancleCount(customerUid);
 	}
-
+	
+	@Override
+	public int selectSubNo(Subscribe subInfo) {
+		return iDao.selectSubNo(subInfo);
+	}
+	
+	@Override
+	public int selectCycle(int cycleNo) {
+		return iDao.selectCycle(cycleNo);
+	}
+	
+	@Override
+	public int selectSubPrice(int subNo) {
+		return iDao.selectSubPrice(subNo);
+	}
 }

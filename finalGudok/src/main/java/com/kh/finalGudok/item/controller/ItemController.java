@@ -1988,7 +1988,7 @@ public class ItemController {
 				subInfo.setAddress3(address3); // 상세주소
 				subInfo.setCustomerUid(customerUid); // 카드번호(카드랑 1:1 대응되는 값)
 				subInfo.setMemberNo(memberNo); // 회원번호
-				subInfo.setPhone(콜); // 전화번호
+				subInfo.setPhone(phone); // 전화번호
 
 				// 반복되는 변수 세팅
 				for (int i = 0; i < noArr.length; i++) {

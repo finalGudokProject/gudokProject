@@ -310,4 +310,11 @@ public interface ItemService {
 	int selectDeliveryCount(String customerUid);
 
 	int selectCancleCount(String customerUid);
+	
+	int selectSubNo(Subscribe subInfo);
+	
+	int selectCycle(int cycleNo);
+	
+	int selectSubPrice(int subNo);
+
 }

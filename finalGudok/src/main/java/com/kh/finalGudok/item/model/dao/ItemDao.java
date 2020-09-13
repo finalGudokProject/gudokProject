@@ -747,4 +747,16 @@ public class ItemDao {
 	public int selectCancleCount(String customerUid) {
 		return sqlSessionTemplate.selectOne("itemMapper.selectCancleCount",customerUid);
 	}
+	
+	public int selectSubNo(Subscribe subInfo) {
+		return sqlSessionTemplate.selectOne("itemMapper.selectSubNo", subInfo);
+	}
+	
+	public int selectCycle(int cycleNo) {
+		return sqlSessionTemplate.selectOne("itemMapper.selectCycle", cycleNo);
+	}
+	
+	public int selectSubPrice(int subNo) {
+		return sqlSessionTemplate.selectOne("itemMapper.selectSubPrice", subNo);
+	}
 }

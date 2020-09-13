@@ -17,14 +17,14 @@ public class PaymentInfo implements Serializable{
 	private int memberNo;
 	private String memberId;
 	private String email;
+	private String customerUid;
 	
 	public PaymentInfo() {
 		super();
 	}
 
 	public PaymentInfo(int paymentNo, int itemNo, int point, Date paymentDate, int memberNo, String memberId,
-			String email) {
-		super();
+			String email, String customerUid) {
 		this.paymentNo = paymentNo;
 		this.itemNo = itemNo;
 		this.point = point;
@@ -32,6 +32,7 @@ public class PaymentInfo implements Serializable{
 		this.memberNo = memberNo;
 		this.memberId = memberId;
 		this.email = email;
+		this.customerUid = customerUid;
 	}
 
 	public int getPaymentNo() {
@@ -90,6 +91,14 @@ public class PaymentInfo implements Serializable{
 		this.email = email;
 	}
 
+	public String getCustomerUid() {
+		return customerUid;
+	}
+
+	public void setCustomerUid(String customerUid) {
+		this.customerUid = customerUid;
+	}
+
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
@@ -97,11 +106,8 @@ public class PaymentInfo implements Serializable{
 	@Override
 	public String toString() {
 		return "PaymentInfo [paymentNo=" + paymentNo + ", itemNo=" + itemNo + ", point=" + point + ", paymentDate="
-				+ paymentDate + ", memberNo=" + memberNo + ", memberId=" + memberId + ", email=" + email + "]";
+				+ paymentDate + ", memberNo=" + memberNo + ", memberId=" + memberId + ", email=" + email
+				+ ", customerUid=" + customerUid + "]";
 	}
-	
-	
-	
-	
 
 }
