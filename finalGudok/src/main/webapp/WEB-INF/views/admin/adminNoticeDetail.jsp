@@ -77,7 +77,7 @@
 			<c:url var="noticeDelete" value="noticeDelete.do">
 						<c:param name="bBoard_no" value="${board.bBoard_no }"/>
 			</c:url>
-            &nbsp;&nbsp;<a href="adminNoticeList.do" type="button" class="btn btn-primary" style="float:right;">목록으로</a>
+            &nbsp;&nbsp;<a href="javascript:history.go(-1)" type="button" class="btn btn-primary" style="float:right;">목록으로</a>
             <c:if test="${loginUser.memberId eq 'admin' }">
             <a href="${noticeUpdateView }" type="button" class="btn btn-primary" style="float:right;margin-right:10px">수정</a>
             <a href="${noticeDelete }" type="button" class="btn btn-primary" style="float:right;margin-right:10px" id="delete">삭제</a>

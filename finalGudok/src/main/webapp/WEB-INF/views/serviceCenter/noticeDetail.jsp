@@ -84,7 +84,7 @@
 
             <br><br><br>
             
-            &nbsp;&nbsp;<a href="noticeList.do" type="button" class="btn btn-primary" style="float:right;">목록으로</a>
+            &nbsp;&nbsp;<a href="javascript:history.go(-1)" type="button" class="btn btn-primary" style="float:right;">목록으로</a>
             
             </div>
             </div>
