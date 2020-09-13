@@ -601,8 +601,9 @@ public class MemberController {
 
 	// 리뷰 삭제
 	@RequestMapping("mreviewDelete.do")
-	public String reviewDelete(HttpServletRequest request, int reviewNo) {
-
+	public String reviewDelete(HttpSession session, HttpServletRequest request, int reviewNo) {
+		Member loginUser = (Member) session.getAttribute("loginUser");
+		
 		System.out.println(reviewNo);
 
 		int chkImg = mService.checkImage(reviewNo);
@@ -619,7 +620,7 @@ public class MemberController {
 		int result = mService.deleteReview(reviewNo);
 
 		if (result > 0) {
-			return "redirect:reviewList.do";
+			return "redirect:reviewList.do?memberNo="+loginUser.getMemberNo();
 		} else {
 			throw new MemberException("리뷰 삭제 실패");
 		}

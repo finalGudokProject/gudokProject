@@ -682,6 +682,7 @@
 	        <form action="cycleChange.do" method="post">
 	        	<input type="hidden" id="subscribeNo" name="subscribeNo">
 	        	<input type="hidden" id="memberNo" name="memberNo">
+	        	
 		        <div>
 		          <table>
 		            <tr>
