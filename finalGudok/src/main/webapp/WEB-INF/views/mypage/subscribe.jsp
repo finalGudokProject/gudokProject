@@ -594,12 +594,12 @@
 					            $itemName=$("<td>").text(data[i].itemName);
 					            $change=$("<a href='#cycle_form' id='cycle_pop' onclick='changeCycle(" + data[i].subscribeNo+","+ data[i].memberNo+"," +'"'+data[i].itemName+'"'+","+data[i].cycleNo+","+ data[i].amount+")'>").text("구독주기/수량변경");
 					            if(data[i].deliveryStatus == 'N'){
-					            	 $cancle=$("<a href='#cancle_form' id='cancle_pop' onclick='cancleClick(" + data[i].subscribeNo+","+ data[i].memberNo+")'>").text("구독취소");
+					            	 $cancle=$("<a href='#cancle_form' id='cancle_pop' onclick='cancleClick(" + data[i].subscribeNo+","+ data[i].memberNo+","+ '"'+ data[i].deliveryStatus+ '"'+")'>").text("구독취소");
+					            } else if(data[i].deliveryStatus == 'Y'){
+					            	$cancle=$("<a href='#cancle_form' id='cancle_pop' onclick='cancleClick(" + data[i].subscribeNo+","+ data[i].memberNo+","+'"'+ data[i].deliveryStatus+'"'+")'>").text("구독취소");
 					            } else{
 					            	$cancle=$("<a id='cancle_pop' onclick='cancleNo();'>").text("구독취소");
 					            }
-					            
-					           
 					            $detail=$("<a href='#detail_form' id='detail_pop' onclick='detailClick(" + data[i].subscribeNo+","+ data[i].memberNo+"," +'"'+data[i].itemName+'"'+","+data[i].cycleNo+","+'"'+data[i].address1+'"'+","+'"'+data[i].address2+'"'+","+'"'+data[i].address3+'"'+","+ data[i].amount+")'>").text("구독상세정보");
 					            
 					            
@@ -730,6 +730,7 @@
 	        <form action="subscribeCancle.do" method="post">
 	        	<input type="hidden" id="subscribeNo3" name="subscribeNo">
 	        	<input type="hidden" id="memberNo3" name="memberNo">
+	        	<input  id="deliveryStatus" name="deliveryStatus">
 		        <div>
 		          <table>
 		          	<tr class="top">
@@ -793,6 +794,7 @@
 			$("#subscribeNo2").text(subscribeNo);
 			$("#itemName").text(itemName);
 			
+			
 			if(cycleNo == 1){
 				$("#cycle").text("1주");
 				$("#cycleNo").val(1);
@@ -808,10 +810,11 @@
 			}
 		}
 	    
-	    function cancleClick(subscribeNo, memberNo){
+	    function cancleClick(subscribeNo, memberNo, deliveryStatus){
 	    	$("#subscribeNo3").val(subscribeNo);
 			$("#memberNo3").val(memberNo);
 			$("#subscribeNo4").text(subscribeNo);
+			$("#deliveryStatus").val(deliveryStatus);
 			$("#cancleContent").attr("disabled", "disabled");
 	    }
 	    

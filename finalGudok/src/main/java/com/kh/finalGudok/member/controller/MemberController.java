@@ -691,8 +691,10 @@ public class MemberController {
 
 	// 구독취소
 	@RequestMapping("subscribeCancle.do")
-	public String subscribeCancle(HttpSession session, HttpServletRequest request, Cancle c, Model model) {
+	public String subscribeCancle(HttpSession session, HttpServletRequest request, Cancle c, Model model, @RequestParam(value = "deliveryStatus") String deliveryStatus) {
 		Member loginUser = (Member) session.getAttribute("loginUser");
+		
+		System.out.println("배송상태 : " + deliveryStatus);
 
 		if (c.getCancleCategory() == 1) {
 			c.setCancleContent("상품이 불필요");
