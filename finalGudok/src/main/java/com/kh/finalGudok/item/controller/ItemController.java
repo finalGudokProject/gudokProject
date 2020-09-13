@@ -1505,76 +1505,81 @@ public class ItemController {
 	}
 
 	// 상품 정보 수정
-	@RequestMapping("itemUpdate.do")
-	public ModelAndView updateItem(ModelAndView mv, HttpServletRequest request, BannerItem i,
-			@RequestParam("page") Integer page, @RequestParam(value = "uploadFile1") MultipartFile uploadFile1,
-			@RequestParam(value = "uploadFile2") MultipartFile uploadFile2) {
+	   @RequestMapping("itemUpdate.do")
+	   public ModelAndView updateItem(ModelAndView mv, HttpServletRequest request, BannerItem i,
+	         @RequestParam("page") Integer page, @RequestParam(value = "uploadFile1") MultipartFile uploadFile1,
+	         @RequestParam(value = "uploadFile2") MultipartFile uploadFile2) {
 
-		int imgNo = iService.selectImageNo(i); // 이미지 번호 가져오기
+	      
+	      //메인 이미지 파일이 있으면 기존꺼 삭제하고 바꿔줌
+	      if (!uploadFile1.getOriginalFilename().equals("")) {
+	         if (i.getImageOriginalName() != null) {
+	            System.out.println("실행됨?");
+	            deleteFile(i.getImageRename(), request);
+	         
+	         }
+	         
+	         String renameFileName2 = saveFile(request, uploadFile1);
+	         String root2 = request.getSession().getServletContext().getRealPath("resources");
+	         String savePath2 = root2 + "\\uploadFiles";
 
-		System.out.println(imgNo);
-		String renameFileName = "";
-		int result1 = 0;
-		
-		
-		// 상세 이미지 파일 삭제
-		if (!uploadFile2.getOriginalFilename().equals("")) {
-			if (i.getImageOriginalName() != null) {
-				deleteFile(i.getImageRename(), request);
-			}
-			
-			//새로운 상세 이미지 파일 저장,db에도 저장
-			renameFileName = saveFile(request, uploadFile2);
+	         i.setImageOriginalName(uploadFile1.getOriginalFilename());
+	         i.setImageRename(renameFileName2);
+	         i.setImagePath(savePath2);
+	      
 
-			String root = request.getSession().getServletContext().getRealPath("resources");
-			String savePath = root + "\\uploadFiles";
+	         
+	         }
+	      
 
-			i.setImageOriginalName(uploadFile2.getOriginalFilename());
-			i.setImageRename(renameFileName);
-			i.setImagePath(savePath);
-			i.setItemNo(imgNo);
+	      System.out.println("111i"+i);
+	      int result2 = iService.updateItem(i); // item테이블 정보 수정
+//	         int result3=iService.deleteEventItem(i); //이벤트 등록 테이블에서 상품 삭제
 
-			result1 = iService.updateItemImg(i); // 이미지 파일명 DB정보 변경
-			
-		}
-			
-		
-		//메인이미지 파일저장,db변경
-		if (!uploadFile1.getOriginalFilename().equals("")) {
-			if (i.getImageOriginalName() != null) {
-				System.out.println("실행됨?");
-				deleteFile(i.getImageRename(), request);
-			
-			}
-			
-			String renameFileName2 = saveFile(request, uploadFile1);
-			String root2 = request.getSession().getServletContext().getRealPath("resources");
-			String savePath2 = root2 + "\\uploadFiles";
+	      
+	      
+	      
+	      
+	      int imgNo = iService.selectImageNo(i); // 이미지테이블에 지울 이미지번호를 가져옴 
 
-			i.setImageOriginalName(uploadFile1.getOriginalFilename());
-			i.setImageRename(renameFileName2);
-			i.setImagePath(savePath2);
-			i.setItemNo(imgNo);
+	      System.out.println(imgNo);
+	      String renameFileName = "";
+	      int result1 = 0;
+	      
+	      
+	      // 상세 이미지 파일이 있으면 기존꺼 삭제 
+	      if (!uploadFile2.getOriginalFilename().equals("")) {
+	         if (i.getImageOriginalName() != null) {
+	            deleteFile(i.getImageRename(), request);
+	         }
+	         
+	         //새로운 상세 이미지 파일 저장,db에도 저장
+	         renameFileName = saveFile(request, uploadFile2);
 
-			
-			}
-		
+	         String root = request.getSession().getServletContext().getRealPath("resources");
+	         String savePath = root + "\\uploadFiles";
 
-		System.out.println("111i"+i);
-		int result2 = iService.updateItem(i); // item테이블 정보 수정
-//			int result3=iService.deleteEventItem(i); //이벤트 등록 테이블에서 상품 삭제
+	         i.setImageOriginalName(uploadFile2.getOriginalFilename());
+	         i.setImageRename(renameFileName);
+	         i.setImagePath(savePath);
+	         i.setItemNo(imgNo);
 
-		if (result1 > 0 || result2 > 0) {
+	         result1 = iService.updateItemImg(i); // itemNo로 이미지 번호가 들어가서 이미지테이블의 이미지 파일명 DB정보 변경 
+	         
+	      }
+	         
+	   
+	      if (result1 > 0 || result2 > 0) {
 
-			mv.addObject("page", page).setViewName("redirect:itemListA.do");
+	         mv.addObject("page", page).setViewName("redirect:itemListA.do");
 
-		} else {
-			throw new ItemException("상품 정보 수정 실패!");
-		}
+	      } else {
+	         throw new ItemException("상품 정보 수정 실패!");
+	      }
 
-		return mv;
+	      return mv;
 
-	}
+	   }
 
 	// 상품 삭제-admin
 	@RequestMapping("iDelete.do")

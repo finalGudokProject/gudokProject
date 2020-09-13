@@ -86,7 +86,7 @@
 
         <c:forEach items="${newList }" var="newList">
         <div class="card" style="width: 18rem;">
-          <a class="moveToDetail"><img src="resources/images/salad1.jpg" class="card-img-top" alt="..."></a>
+          <a class="moveToDetail"><img src="${contextPath}/resources/uploadFiles/${newList.itemRename}" class="card-img-top" alt="..."></a>
           <input type="hidden" value="${newList.itemNo }">
           <div class="card-body">
             <p class="card-text">${newList.itemName }</p>
@@ -104,7 +104,7 @@
 		
 		<c:forEach items="${bestList }" var="best">
         <div class="card" style="width: 18rem;">
-          <a class="moveToDetail"><img src="resources/images/salad1.jpg" class="card-img-top" alt="..."></a>
+          <a class="moveToDetail"><img src="${contextPath}/resources/uploadFiles/${best.itemRename}" class="card-img-top" alt="..."></a>
           <input type="hidden" value="${best.itemNo }">
           <div class="card-body">
             <p class="card-text">${best.itemName }</p>
@@ -133,7 +133,7 @@
 		<c:if test="${loginUser.gender == 'M' }">
         <c:forEach items="${recommendMList }" var="recommend">
         <div class="card" style="width: 18rem;">
-          <a class="moveToDetail"><img src="resources/images/salad1.jpg" class="card-img-top" alt="..."></a>
+          <a class="moveToDetail"><img src="${contextPath}/resources/uploadFiles/${recommend.imageRename}" class="card-img-top" alt="..."></a>
           <input type="hidden" value="${recommend.itemNo }">
           <div class="card-body">
             <p class="card-text">${recommend.itemName }</p>
@@ -145,7 +145,7 @@
         <c:if test="${loginUser.gender == 'F' }">
         <c:forEach items="${recommendFList }" var="recommend">
         <div class="card" style="width: 18rem;">
-          <a class="moveToDetail"><img src="resources/images/salad1.jpg" class="card-img-top" alt="..."></a>
+          <a class="moveToDetail"><img src="${contextPath}/resources/uploadFiles/${recommend.imageRename}" class="card-img-top" alt="..."></a>
           <input type="hidden" value="${recommend.itemNo }">
           <div class="card-body">
             <p class="card-text">${recommend.itemName }</p>
@@ -157,7 +157,7 @@
         <c:if test="${loginUser.gender == 'N' || empty loginUser }">
         <c:forEach items="${recommendCList }" var="recommend">
         <div class="card" style="width: 18rem;">
-           <a class="moveToDetail"><img src="resources/images/salad1.jpg" class="card-img-top" alt="..."></a>
+           <a class="moveToDetail"><img src="${contextPath}/resources/uploadFiles/${recommend.imageRename}" class="card-img-top" alt="..."></a>
           <input type="hidden" value="${recommend.itemNo }">
           <div class="card-body">
             <p class="card-text">${recommend.itemName }</p>
@@ -169,7 +169,6 @@
       </div>
       <br><br><br>
 	</section>
-	
     <!-- Footer -->
     <footer>
   		<jsp:include page="common/footer.jsp"/>
@@ -189,7 +188,7 @@
 					for(var i in data){
 						var card = $("<div>").addClass("card").css("width","18rem");
 						var aTag = $("<a>").addClass("moveToDetail");
-						var imageTag = $("<img>").addClass("card-img-top").attr({"src":"resources/images/salad1.jpg", "alt":"..."});
+						var imageTag = $("<img>").addClass("card-img-top").attr({"src":"${contextPath}/resources/uploadFiles/"+data[i].imageRename, "alt":"..."});
 						var hidden = $("<input>").attr("type","hidden").attr("value",data[i].itemNo);
 						var cardBody = $("<div>").addClass("card-body");
 						var pTag1 = $("<p>").addClass("card-text").text(data[i].itemName);
@@ -217,9 +216,9 @@
 		$(function(){
 			hotList();
 			
-			setInterval(function(){
+			/* setInterval(function(){
 				hotList();
-			}, 10000);
+			}, 10000); */
 			
 		})
 

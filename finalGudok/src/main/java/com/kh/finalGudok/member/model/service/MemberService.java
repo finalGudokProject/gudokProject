@@ -261,6 +261,7 @@ public interface MemberService {
 //	ArrayList<Subscribe> selectSubscribeListTable(Integer memberNo);
 	
 	String selectGender(Integer memberNo);
-
+	
+	Member checkLoginUser(String id);
 
 }

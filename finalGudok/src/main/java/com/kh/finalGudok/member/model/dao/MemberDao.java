@@ -568,4 +568,8 @@ public class MemberDao {
 	public String selectGender(Integer memberNo) {
 		return sqlSessionTemplate.selectOne("memberMapper.selectGender", memberNo);
 	}
+	
+	public Member checkLoginUser(String id) {
+		return sqlSessionTemplate.selectOne("memberMapper.checkLoginUser", id);
+	}
 }

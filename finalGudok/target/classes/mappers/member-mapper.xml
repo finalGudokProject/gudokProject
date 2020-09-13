@@ -548,14 +548,14 @@
 		</foreach>
 	</update>
 	<update id="updateGradeMin" parameterType="java.util.List">
-		<foreach item="i" index="index" collection="list"
-			open="DECLARE BEGIN" separator=";" close="; END;">
-			UPDATE GRADE
-			SET
-			GRADE_MIN=${i.gradeMin}
-			WHERE GRADE_NO=${i.gradeNo}
-		</foreach>
-	</update>
+      <foreach item="i" index="index" collection="list"
+         open="DECLARE BEGIN" separator=";" close="; END;">
+         UPDATE GRADE
+         SET
+         GRADE_MIN=${i.gradeMin}
+         WHERE GRADE_NO=${i.gradeNo}
+      </foreach>
+   </update>
 	<select id="selectOneMember" parameterType="_int"
 		resultMap="adminMemberResultSet">
 		SELECT *
@@ -692,7 +692,7 @@
         FROM SUBSCRIBE S
         JOIN ITEM I ON (S.ITEM_NO = I.ITEM_NO)
         JOIN DELIVERY D ON (S.SUBSCRIBE_NO = D.SUBSCRIBE_NO)
-        WHERE SUBSCRIBE_STATUS='N'
+        WHERE SUBSCRIBE_STATUS='N' AND MEMBER_NO=#{memberNo}
 	</select>
 	
 	<!-- <select id="selectSubscribeListTable" resultMap="subscribeResultSet" parameterType="int">
@@ -1316,7 +1316,7 @@
 		from member
 	</select>
 	<select id="selectMemberPaymentList" resultMap="adminMemberResultSet">
-		select member_no,nvl(total,0) as total_payment
+      select member_no,nvl(total,0) as total_payment
         from(
         SELECT m.member_no,s.total
         FROM MEMBER M
@@ -1326,15 +1326,15 @@
                 (SELECT *
                 FROM SUBSCRIBE
                 WHERE TO_CHAR(PAYMENT_DATE,'YYYY-MM-DD') LIKE '%${value}%' )
-        		GROUP BY MEMBER_NO) S ON (M.MEMBER_NO=S.MEMBER_NO)
+              GROUP BY MEMBER_NO) S ON (M.MEMBER_NO=S.MEMBER_NO)
         )
-	
-	</select>
+   
+   </select>
 	<update id="updateMemberGrade">
-		update member
-		set grade_no = #{gradeNo}
-		where member_no=#{memberNo}
-	</update>
+      update member
+      set grade_no = #{gradeNo}
+      where member_no=#{memberNo}
+   </update>
 	<select id="selectGradeInfo" resultMap="gradeResultSet">
 		select *
 		from grade
@@ -1426,6 +1426,10 @@
 	
 	<select id="selectGender" parameterType="_int" resultType="String">
 		SELECT GENDER FROM MEMBER WHERE MEMBER_NO = #{memberNo}
+	</select>
+	
+	<select id="checkLoginUser" parameterType="String" resultMap="memberResultSet">
+		SELECT * FROM MEMBER WHERE MEMBER_ID = #{id}
 	</select>
 
 </mapper>

@@ -619,6 +619,10 @@ public class MemberServiceImpl implements MemberService {
 	public String selectGender(Integer memberNo) {
 		return mDao.selectGender(memberNo);
 	}
-
+	
+	@Override
+	public Member checkLoginUser(String id) {
+		return mDao.checkLoginUser(id);
+	}
 
 }

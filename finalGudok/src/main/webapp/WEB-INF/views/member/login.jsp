@@ -92,10 +92,10 @@ body {
 					<div class="card">
 						<div class="card-body">
 							<h2 style="color: black;">로그인</h2>
-							<form class="form-signin" action="login.do" method="post">
-								<input type="text" name="memberId" class="form-control mb-3" placeholder="ID" autofocus> 
-								<input type="password" name="memberPwd" class="form-control mb-3" placeholder="Password" required> <br>
-								<button class="btn" type="submit" id="loginBtn">로그인</button>
+							<form class="form-signin" action="login.do" method="post" id="loginForm">
+								<input type="text" id="memberId" name="memberId" class="form-control mb-3" placeholder="ID" autofocus> 
+								<input type="password" id="pwd" name="memberPwd" class="form-control mb-3" placeholder="Password" required> <br>
+								<button class="btn" type="button" id="loginBtn">로그인</button>
 								<!-- <label class="checkbox float-left">
 	             				 <input type="checkbox" value="remember-me">
 	                				아이디 저장하기
@@ -116,9 +116,37 @@ body {
 	<footer>
 		<jsp:include page="../common/footer.jsp" />
 	</footer>
+	
+	<script>
+		$("#loginBtn").on("click", function(){
+			var memberId = $("#memberId").val();
+			var memberPwd = $("#pwd").val();
+			
+			$.ajax({
+				type:"POST",
+				url:"loginCheck.do",
+				data:{id:memberId, pwd:memberPwd},
+				success:function(data){
+					if(data == "idFail"){
+						alert("아이디를 확인해주세요");
+					}
+					else if(data == "pwdFail"){
+						alert("비밀번호를 확인해주세요");
+					}else{
+						$("#loginForm").submit();
+					}
+				},
+				error : function(request, status, errorData) {
+					alert("error code: " + request.status + "\n"
+							+ "message: " + request.responseText
+							+ "error: " + errorData);
+				}
+			})
+		})
+	</script>
 	<!-- Optional JavaScript -->
 	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+	<script src="https://code.jquery.com/jquery-latest.min.js"
 		integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
 		crossorigin="anonymous"></script>
 	<script

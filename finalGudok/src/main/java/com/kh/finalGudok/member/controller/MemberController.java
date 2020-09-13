@@ -141,6 +141,33 @@ public class MemberController {
 		}
 		return mv;
 	}
+	
+	@RequestMapping(value="loginCheck.do", method=RequestMethod.POST)
+	public void loginCheck(@RequestParam("id") String id, @RequestParam("pwd") String pwd, HttpServletResponse response) throws IOException {
+		PrintWriter out = response.getWriter();
+		System.out.println(id);
+		System.out.println(pwd);
+		
+		Member userCheck = mService.checkLoginUser(id);
+		System.out.println(userCheck);
+//		int pwdCheck = mService.checkLoginPwd(pwd);
+		
+		if(userCheck == null) {
+			out.append("idFail");
+			out.flush();
+		}else {
+			String checkPwd = userCheck.getMemberPwd();
+			
+			if (bcryptPasswordEncoder.matches(pwd, checkPwd)) {
+				out.append("success");
+				out.flush();
+			}else {
+				out.append("pwdFail");
+				out.flush();
+			}
+			out.close();
+		}
+	}
 
 	@RequestMapping(value = "logout.do", method = RequestMethod.GET)
 	public ModelAndView logout(SessionStatus status, HttpSession session, HttpServletResponse response, ModelAndView mv) {
@@ -967,84 +994,83 @@ public class MemberController {
 	}
 
 	// 등급별 최소 금액 변경-admin
-	@RequestMapping("gradeMinInfoChang.do")
-	@ResponseBody
-	public ModelAndView updateGradeMin(ModelAndView mv, String sendGradeMinArr, String sendGradeArr, Integer page) {
+	   @RequestMapping("gradeMinInfoChang.do")
+	   @ResponseBody
+	   public ModelAndView updateGradeMin(ModelAndView mv, String sendGradeMinArr, String sendGradeArr, Integer page) {
 
-		String[] gArr = sendGradeArr.split(",");
-		String[] rArr = sendGradeMinArr.split(",");
+	      String[] gArr = sendGradeArr.split(",");
+	      String[] rArr = sendGradeMinArr.split(",");
 
-		ArrayList<Grade> g = new ArrayList<>();
-		int result1 = 0; //등급 변경 확인
-		int result2 = 0; //변경된 등급에 따라 회원 등급 변경
+	      ArrayList<Grade> g = new ArrayList<>();
+	      int result1 = 0; //등급 변경 확인
+	      int result2 = 0; //변경된 등급에 따라 회원 등급 변경
 
-		for (int k = 0; k < gArr.length; k++) {
+	      for (int k = 0; k < gArr.length; k++) {
 
-			Grade grade = new Grade();
+	         Grade grade = new Grade();
 
-			grade.setGradeNo(Integer.valueOf(gArr[k]));
-			grade.setGradeMin(Integer.valueOf(rArr[k]));
+	         grade.setGradeNo(Integer.valueOf(gArr[k]));
+	         grade.setGradeMin(Integer.valueOf(rArr[k]));
 
-			g.add(grade);
-		}
+	         g.add(grade);
+	      }
 
-		result1 = mService.updateGradeMin(g);
-		System.out.println("g는"+g);
-		
-		//최소금액 변경 시 회원 전체 등급 업데이트
-			//전월 날짜 데이터 설정 
-				Calendar last = Calendar.getInstance(); // 현재 시간
-				SimpleDateFormat sdfm = new SimpleDateFormat("yyyy-MM");
-				last.add(Calendar.MONTH, -1);
-				Date lastDate = new Date(last.getTimeInMillis());
-				String startDay = sdfm.format(lastDate); // 1달전
-		
-			//1달동안 결제한 회원번호와  총 결제 금액을 가져오기 
-				System.out.println("1달전은?"+startDay);
-				ArrayList<AdminMember> pList=mService.selectMemberPaymentList(startDay);
-				System.out.println("몇명이니"+pList.size());
-			
-		
-			//금액에 따라 등급 설정 
-				
-				ArrayList<Grade> gradeChg=new ArrayList<>();
-				for(int i=g.size()-1;i>-1;i--) {
-					Grade temp=g.get(i);
-					gradeChg.add(temp);
-				}
-				
-				for(int i=0;i<gradeChg.size();i++) {
-					
-			
-						int gradeMin=gradeChg.get(i).getGradeMin();
-						int gradeNo=gradeChg.get(i).getGradeNo();
-				
-						
-						
-						for(int k=0;k<pList.size();k++) {
-							if(pList.get(k).getTotalPay()>=gradeMin) { 
-								System.out.println("등급은"+gradeNo);
-								System.out.println("등급 최소금액은"+gradeMin);
-								System.out.println("고객 최소금액은"+pList.get(k).getTotalPay());
-								System.out.println("고객 이름은"+pList.get(k).getMemberId());
-								pList.get(k).setGradeNo(gradeNo);
-								result2=mService.updateMemberGrade(pList.get(k));
-							}
-						}
-					}
-					
-		if (result1 < 0) {
-			
-			mv.addObject("page",page).setViewName("redirect:gradeList.do");
-			return mv;
-			
+	      result1 = mService.updateGradeMin(g);
+	      System.out.println("g는"+g);
+	      
+	      //최소금액 변경 시 회원 전체 등급 업데이트
+	         //전월 날짜 데이터 설정 
+	            Calendar last = Calendar.getInstance(); // 현재 시간
+	            SimpleDateFormat sdfm = new SimpleDateFormat("yyyy-MM");
+	            last.add(Calendar.MONTH, -1);
+	            Date lastDate = new Date(last.getTimeInMillis());
+	            String startDay = sdfm.format(lastDate); // 1달전
+	      
+	         //1달동안 결제한 회원번호와  총 결제 금액을 가져오기 
+	            System.out.println("1달전은?"+startDay);
+	            ArrayList<AdminMember> pList=mService.selectMemberPaymentList(startDay);
+	            System.out.println("몇명이니"+pList.size());
+	         
+	      
+	         //금액에 따라 등급 설정 
+	            
+	            ArrayList<Grade> gradeChg=new ArrayList<>();
+	            for(int i=g.size()-1;i>-1;i--) {
+	               Grade temp=g.get(i);
+	               gradeChg.add(temp);
+	            }
+	            
+	            for(int i=0;i<gradeChg.size();i++) {
+	               
+	         
+	                  int gradeMin=gradeChg.get(i).getGradeMin();
+	                  int gradeNo=gradeChg.get(i).getGradeNo();
+	            
+	                  
+	                  
+	                  for(int k=0;k<pList.size();k++) {
+	                     if(pList.get(k).getTotalPay()>=gradeMin) { 
+	                        System.out.println("등급은"+gradeNo);
+	                        System.out.println("등급 최소금액은"+gradeMin);
+	                        System.out.println("고객 최소금액은"+pList.get(k).getTotalPay());
+	                        System.out.println("고객 이름은"+pList.get(k).getMemberId());
+	                        pList.get(k).setGradeNo(gradeNo);
+	                        result2=mService.updateMemberGrade(pList.get(k));
+	                     }
+	                  }
+	               }
+	               
+	      if (result1 < 0) {
+	         
+	         mv.addObject("page",page).setViewName("redirect:gradeList.do");
+	         return mv;
+	         
 
-		} else {
-			throw new MemberException("적립율 변경 실패!");
+	      } else {
+	         throw new MemberException("적립율 변경 실패!");
 
-		}
-	}
-
+	      }
+	   }
 	// ajax 후 리스트 갱신-admin
 	@RequestMapping("gListChange.do")
 	public void updateGradeList(HttpServletResponse response, ModelAndView mv, Integer page,

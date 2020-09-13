@@ -260,16 +260,16 @@
         WHERE I.item_no IN #{itemNo}
 	</select>
 	<update id="updateItem" parameterType="BannerItem">
-		UPDATE ITEM
+      UPDATE ITEM
         SET ITEM_NAME=#{itemName},ITEM_PRICE=${itemPrice},ITEM_DP_STATUS=#{itemDpStatus},ITEM_RECOMMEND=#{itemRecommend},ITEM_MEMO=#{itemMemo},IMAGE_ORIGINAL_NAME=#{imageOriginalName},IMAGE_RENAME=#{imageRename},IMAGE_PATH=#{imagePath}
         WHERE ITEM_NO=${itemNo}
-	</update>
+   </update>
 	
 	<update id="updateItemImg" parameterType="BannerItem">
-		UPDATE IMAGE 
-		SET IMAGE_ORIGINAL_NAME=#{imageOriginalName},IMAGE_RENAME=#{imageRename}
-		WHERE IMAGE_NO=#{itemNo}
-	</update>
+      UPDATE IMAGE 
+      SET IMAGE_ORIGINAL_NAME=#{imageOriginalName},IMAGE_RENAME=#{imageRename}
+      WHERE IMAGE_NO=#{itemNo}
+   </update>
 	<select id="selectImageNo" parameterType="BannerItem" resultType="int">
 		SELECT I_IMAGE_NO
 		FROM ITEM_IMAGE

@@ -136,7 +136,7 @@
 						<c:param name="bBoard_no" value="${board.bBoard_no }"/>
 			</c:url>
 			
-            <a href="javascript:history.go(-1)" type="button" class="btn btn-primary" style="float:right;">목록으로</a>
+            <a href="sinquiryList.do" type="button" class="btn btn-primary" style="float:right;">목록으로</a>
             <c:if test="${loginUser.memberId eq board.bMember_id }">
             <c:if test="${inquiry.iInquiry_content eq null }">
             <a href="${inquiryUpdateView }" type="button" class="btn btn-primary" style="float:right;margin-right:10px">수정</a>
