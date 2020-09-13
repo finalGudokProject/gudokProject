@@ -730,7 +730,7 @@
 	        <form action="subscribeCancle.do" method="post">
 	        	<input type="hidden" id="subscribeNo3" name="subscribeNo">
 	        	<input type="hidden" id="memberNo3" name="memberNo">
-	        	<input  id="deliveryStatus" name="deliveryStatus">
+	        	<input type="hidden" id="deliveryStatus" name="deliveryStatus">
 		        <div>
 		          <table>
 		          	<tr class="top">
@@ -833,7 +833,7 @@
     	})
     	
     	function cancleNo(){
-	    	alert("배송 중, 배송 완료 상태의 상품은 구독 취소가 불가능합니다.")
+	    	alert("배송 중인 상품은 구독 취소가 불가능합니다.")
 	    	
 	    	return false;
 	    }
