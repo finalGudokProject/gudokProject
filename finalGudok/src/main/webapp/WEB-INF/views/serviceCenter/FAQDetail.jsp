@@ -77,7 +77,7 @@
 
 
              <br><br><br>
-            <a href="FAQList.do" type="button" class="btn btn-primary" style="float:right;">목록으로</a>
+            <a href="javascript:history.go(-1)" type="button" class="btn btn-primary" style="float:right;">목록으로</a>
             </div>
             </div>
             </div>
