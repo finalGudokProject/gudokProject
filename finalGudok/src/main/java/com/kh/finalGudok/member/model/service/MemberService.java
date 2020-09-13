@@ -259,5 +259,7 @@ public interface MemberService {
 	Member selectMember(Member m);
 
 //	ArrayList<Subscribe> selectSubscribeListTable(Integer memberNo);
+	
+
 
 }

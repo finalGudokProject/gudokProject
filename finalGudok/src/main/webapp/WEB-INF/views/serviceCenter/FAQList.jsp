@@ -175,7 +175,7 @@
 				</c:choose>
       		</tbody>
     </table>
-    </form>
+    
     <br><br>
     <!------페이징 처리----->
                 <div class="page-center">
