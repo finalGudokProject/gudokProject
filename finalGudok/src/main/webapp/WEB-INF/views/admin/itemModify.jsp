@@ -195,7 +195,9 @@ float:left;
             <div class="container box">
                 <h3>상품 상세 정보</h3>
                 <br>
-
+					<input type="hidden" name="type" value="${type }">
+	            	<input type="hidden" name="page" value="${page }">
+	            	<input type="hidden" name="eventNo" value="${eventNo }">
                 <br>
                 <form action="itemUpdate.do" method="post" encType="multipart/form-data" onsubmit="return validate()">
               		<input type="hidden" name="page" value="${page }">
@@ -392,10 +394,10 @@ float:left;
 						<td id="td1">상품 이미지</td>
                         <td colspan="3">
                             <div class="filebox preview-image1"> 
-                            	<div class="upload-display1"><div class="upload-thumb-wrap1"><img id="beforeImage" src="${contextPath }/resources/uploadFiles/${i.imageRename}"></div></div>
-	                                <input class="upload-name1" value="파일선택" disabled="disabled" > 
-	                                <label for="input-file1">업로드</label> 
-	                                <input type="file" id="input-file1" class="upload-hidden1" name="uploadFile" accept="image/*" title="이미지 파일만 업로드 가능"> 
+                            <div class="upload-display1"><div class="upload-thumb-wrap1"><img id="beforeImage" src="${contextPath }/resources/uploadFiles/${i.imageRename}"></div></div>
+                                <input class="upload-name1" value="파일선택" disabled="disabled" > 
+                                <label for="input-file1">업로드</label> 
+                                <input type="file" id="input-file1" class="upload-hidden1" name="uploadFile1" accept="image/*" title="이미지 파일만 업로드 가능"> 
                          	</div>
                         </td>
                     	
@@ -406,10 +408,10 @@ float:left;
                         <td id="td1">상품 상세 설명</td>
                         <td colspan="3">
                             <div class="filebox preview-image2"> 
-                            	<div class="upload-display2"><div class="upload-thumb-wrap2"><img id="beforeImage" src="${contextPath }/resources/uploadFiles/${m[0].imageRename}"></div></div>
+                         		   <div class="upload-display2"><div class="upload-thumb-wrap2"><img id="beforeImage" src="${contextPath }/resources/uploadFiles/${m[0].imageRename}"></div></div>
                                 <input class="upload-name2" value="파일선택" disabled="disabled" > 
                                 <label for="input-file2">업로드</label> 
-                                <input type="file" id="input-file2" class="upload-hidden2" name="uploadFile" accept="image/*" title="이미지 파일만 업로드 가능"> 
+                                <input type="file" id="input-file2" class="upload-hidden2" name="uploadFile2" accept="image/*" title="이미지 파일만 업로드 가능"> 
                          	</div>
                         </td>
                     </tr>
@@ -417,9 +419,7 @@ float:left;
           
             <div style="text-align: center;">
             
-            	<input type="hidden" name="type" value="${type }">
-            	<input type="hidden" name="page" value="${page }">
-            	<input type="hidden" name="eventNo" value="${eventNo }">
+            
             
             
                 <input type="submit" class="btn" value="수정">
@@ -451,8 +451,7 @@ float:left;
 	                </c:if>
     
                 
-                <c:out value="${eventNo }"/>
-                
+              
                 <input type="reset" class="btn" value="취소">
             </div>
         </form>

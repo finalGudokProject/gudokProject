@@ -705,13 +705,13 @@
 	<select id="selectOrderList" resultMap="adminSubscribeResultSet">
 		select *
 		from(
-		SELECT S.*,I.ITEM_NAME,D.DELIVERY_STATUS
+		SELECT S.*,D.DELIVERY_STATUS
 		FROM SUBSCRIBE S
 		LEFT JOIN ITEM I ON(S.ITEM_NO=I.ITEM_NO)
 		LEFT JOIN DELIVERY D ON(S.SUBSCRIBE_NO=D.SUBSCRIBE_NO)
 		<where>
 			<if test="category1 !=null">
-				DELIVERY_STATUS=#{category1}
+				d.DELIVERY_STATUS=#{category1}
 			</if>
 
 		</where>
@@ -733,7 +733,7 @@
 	<select id="selectOrderCnt" resultType="_int">
 		select count(*)
 		from(
-		SELECT S.SUBSCRIBE_NO, I.ITEM_NAME, S.MEMBER_ID,D.DELIVERY_STATUS
+		SELECT S.SUBSCRIBE_NO, S.MEMBER_ID,D.DELIVERY_STATUS
 		FROM SUBSCRIBE S
 		LEFT JOIN DELIVERY D ON(S.SUBSCRIBE_NO=D.SUBSCRIBE_NO)
 		LEFT JOIN ITEM I ON(S.ITEM_NO=I.ITEM_NO)

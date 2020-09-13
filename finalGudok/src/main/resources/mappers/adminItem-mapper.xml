@@ -261,7 +261,7 @@
 	</select>
 	<update id="updateItem" parameterType="BannerItem">
 		UPDATE ITEM
-        SET ITEM_NAME=#{itemName},ITEM_PRICE=${itemPrice},ITEM_DP_STATUS=#{itemDpStatus},ITEM_RECOMMEND=#{itemRecommend},ITEM_MEMO=#{itemMemo}
+        SET ITEM_NAME=#{itemName},ITEM_PRICE=${itemPrice},ITEM_DP_STATUS=#{itemDpStatus},ITEM_RECOMMEND=#{itemRecommend},ITEM_MEMO=#{itemMemo},IMAGE_ORIGINAL_NAME=#{imageOriginalName},IMAGE_RENAME=#{imageRename},IMAGE_PATH=#{imagePath}
         WHERE ITEM_NO=${itemNo}
 	</update>
 	
