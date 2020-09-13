@@ -193,20 +193,46 @@
 	</select>
 	
 	<select id="selectRecommendCList" resultMap="itemResultSet">
-		SELECT * FROM ITEM WHERE ITEM_RECOMMEND = 'C' AND ROWNUM BETWEEN 1 AND 4 
+		SELECT * FROM (SELECT * FROM ITEM JOIN RECOMMEND USING(ITEM_NO) ORDER BY COMMON DESC)
+		WHERE ROWNUM BETWEEN 1 AND 4
 	</select>
 	
 	<select id="selectRecommendMList" resultMap="itemResultSet">
-		SELECT * FROM ITEM WHERE ITEM_RECOMMEND = 'M' AND ROWNUM BETWEEN 1 AND 4 
+		SELECT * FROM (SELECT * FROM ITEM JOIN RECOMMEND USING(ITEM_NO) ORDER BY MALE DESC)
+		WHERE ROWNUM BETWEEN 1 AND 4
 	</select>
 	
 	<select id="selectRecommendFList" resultMap="itemResultSet">
-		SELECT * FROM ITEM WHERE ITEM_RECOMMEND = 'F' AND ROWNUM BETWEEN 1 AND 4 
+		SELECT * FROM (SELECT * FROM ITEM JOIN RECOMMEND USING(ITEM_NO) ORDER BY FEMALE DESC)
+		WHERE ROWNUM BETWEEN 1 AND 4
 	</select>
 	
 	<select id="selectHotList" resultMap="itemResultSet">
 		SELECT * FROM (SELECT * FROM ITEM ORDER BY ITEM_COUNT DESC)
 		WHERE ROWNUM BETWEEN 1 AND 4
+	</select>
+	
+	<select id="selectCustomerUid" parameterType="_int" resultType="String">
+		SELECT CUSTOMER_UID FROM SUBSCRIBE WHERE SUBSCRIBE_NO = #{subNo}
+	</select>
+	
+	<select id="selectSubCount" parameterType="String" resultType="_int">
+		SELECT COUNT(*) 
+		FROM SUBSCRIBE 
+		WHERE CUSTOMER_UID = #{customerUid}
+	</select>
+	
+	<select id="selectDeliveryCount" parameterType="String" resultType="_int">
+		SELECT COUNT(*) 
+		FROM SUBSCRIBE 
+		JOIN DELIVERY USING(SUBSCRIBE_NO) 
+		WHERE CUSTOMER_UID=#{customerUid} AND DELIVERY_STATUS = 'N'
+	</select>
+	
+	<select id="selectCancleCount" parameterType="String" resultType="_int">
+		SELECT COUNT(*)
+		FROM SUBSCRIBE
+		WHERE CUSTOMER_UID = #{customerUid} AND SUBSCRIBE_STATUS = 'Y'
 	</select>
 	
 </mapper>

@@ -777,5 +777,30 @@ public class ItemServiceImpl implements ItemService {
 	public ArrayList<Item> selecthotList() {
 		return iDao.selectHotList();
 	}
+	
+	@Override
+	public ArrayList<Item> selectHotList() {
+		return iDao.selectHotList();
+	}
+	
+	@Override
+	public String selectCustomerUid(int subNo) {
+		return iDao.selectCustomerUid(subNo);
+	}
+
+	@Override
+	public int selectSubCount(String customerUid) {
+		return iDao.selectSubCount(customerUid);
+	}
+
+	@Override
+	public int selectDeliveryCount(String customerUid) {
+		return iDao.selectDeliveryCount(customerUid);
+	}
+
+	@Override
+	public int selectCancleCount(String customerUid) {
+		return iDao.selectCancleCount(customerUid);
+	}
 
 }

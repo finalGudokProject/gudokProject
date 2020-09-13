@@ -595,12 +595,6 @@ public class MemberServiceImpl implements MemberService {
 		return mDao.selectSubscribeCancel(s,pi);
 	}
 
-
-	public int selectUsedPoint(int memberNo) {
-		return mDao.selectUsedPoint(memberNo);
-	}
-
-
 	@Override
 	public int updateMyPoint(Member loginUser) {
 		return mDao.updateMyPoint(loginUser);
@@ -609,6 +603,11 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public Member selectMember(Member m) {
 		return mDao.selectMember(m);
+	}
+
+	@Override
+	public int selectUsedPoint(String customerUid) {
+		return mDao.selectUsedPoint(customerUid);
 	}
 
 //	@Override

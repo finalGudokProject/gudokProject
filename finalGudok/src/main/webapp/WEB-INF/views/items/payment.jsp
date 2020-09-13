@@ -108,10 +108,6 @@
 						$(function() {
 							$("#postcodify_search_button").postcodifyPopUp();
 							$("#postcodify_search_button").on("click", function(){
-								$("#address1").val("");
-								$("#address2").val("");
-								$("#address3").val("");
-								
 								$("#address1").attr("readonly", false);
 								$("#address2").attr("readonly", false);
 								$("#address3").attr("readonly", false);
@@ -164,7 +160,7 @@
                 	</c:forEach>
                 	<tr>
                 		<td>적립금</td>
-                		<td>${loginUser.point } 원</td>
+                		<td id="memberPoint">${loginUser.point } 원</td>
                 		<td>사용금액</td>
                 		<td colspan="2">
                 		<input type="text" id="usePoint">
@@ -319,17 +315,17 @@
 				if(point > memberPoint){
 					alert("보유하신 적립금 이상으로 사용하실 수 없습니다.");
 					$("#usePoint").val("");
-					$("#checkPrice").html("${totalPrice}"+"원");
+					$("#checkPrice").html("${totalPrice}"+" 원");
 				}else if(totalPrice < 1000){
 					alert("결제금액은 1000원 이상이어야 합니다.");
 					$("#usePoint").val("");
-					$("#checkPrice").html("${totalPrice}"+"원");
+					$("#checkPrice").html("${totalPrice}"+" 원");
 				}
 				if(memberPoint < 5000 && point > 0){
 					alert("포인트는 5000원 이상 보유 시 사용 가능합니다.");
 					$("#usePoint").val("");
 				}
-				
+
 			});
 		})
 

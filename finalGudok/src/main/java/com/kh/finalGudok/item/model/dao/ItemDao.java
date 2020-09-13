@@ -727,9 +727,24 @@ public class ItemDao {
 	public ArrayList<Item> selectHomeRecommendFList() {
 		return (ArrayList)sqlSessionTemplate.selectList("itemMapper.selectRecommendFList");
 	}
-
+	
 	public ArrayList<Item> selectHotList() {
 		return (ArrayList)sqlSessionTemplate.selectList("itemMapper.selectHotList");
 	}
+	
+	public String selectCustomerUid(int subNo) {
+		return sqlSessionTemplate.selectOne("itemMapper.selectCustomerUid", subNo);
+	}
 
+	public int selectSubCount(String customerUid) {
+		return sqlSessionTemplate.selectOne("itemMapper.selectSubCount",customerUid);
+	}
+
+	public int selectDeliveryCount(String customerUid) {
+		return sqlSessionTemplate.selectOne("itemMapper.selectDeliveryCount",customerUid);
+	}
+
+	public int selectCancleCount(String customerUid) {
+		return sqlSessionTemplate.selectOne("itemMapper.selectCancleCount",customerUid);
+	}
 }

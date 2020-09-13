@@ -25,10 +25,15 @@ body {
 
 .card {
 	/* box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23); */
+	margin-left:20px;
 	text-align: center;
-	border: none;
+	width:300px;
+	border-style: none !important;
 }
 
+.cart-body{
+	border-style:none !important;
+}
 #find {
 	margin-top: 30px;
 }
@@ -65,13 +70,12 @@ body {
 	margin-right: 10px;
 }
 
-.container {
-	margin-top: 20px;
-	margin-bottom: 50px;
-}
-
 .form-signin {
 	margin-top: 50px;
+}
+
+.col{
+	text-align:center;
 }
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap"
@@ -81,34 +85,33 @@ body {
 <body>
 
 	<jsp:include page="../common/menubar.jsp" />
-	
-	<div class="container pt-3">
-		<div class="row justify-content-sm-center">
-			<div class="col-sm-6 col-md-4">
 
-				<div class="card">
-					<div class="card-body">
-						<h2 style="color: black;">로그인</h2>
-						<form class="form-signin" action="login.do" method="post">
-							<input type="text" name="memberId" class="form-control mb-3" placeholder="ID" autofocus> 
-							<input type="password" name="memberPwd" class="form-control mb-3" placeholder="Password" required> <br>
-							<button class="btn" type="submit" id="loginBtn">로그인</button>
-							<!-- <label class="checkbox float-left">
-             				 <input type="checkbox" value="remember-me">
-                				아이디 저장하기
-             				 </label> -->
-						</form>
-						<div id="find">
-							<a href="moveToFind.do">계정찾기</a>
-							<div class="vl"></div>
-							<a href="moveToSignUp.do">회원가입</a>
+		<div class="container pt-3">
+			<div class="row justify-content-sm-center">
+				<div class="col-sm-6 col-md-4">
+					<div class="card">
+						<div class="card-body">
+							<h2 style="color: black;">로그인</h2>
+							<form class="form-signin" action="login.do" method="post">
+								<input type="text" name="memberId" class="form-control mb-3" placeholder="ID" autofocus> 
+								<input type="password" name="memberPwd" class="form-control mb-3" placeholder="Password" required> <br>
+								<button class="btn" type="submit" id="loginBtn">로그인</button>
+								<!-- <label class="checkbox float-left">
+	             				 <input type="checkbox" value="remember-me">
+	                				아이디 저장하기
+	             				 </label> -->
+							</form>
+							<div id="find">
+								<a href="moveToFind.do">계정찾기</a>
+								<div class="vl"></div>
+								<a href="moveToSignUp.do">회원가입</a>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-
+		
 	<!-- Footer -->
 	<footer>
 		<jsp:include page="../common/footer.jsp" />

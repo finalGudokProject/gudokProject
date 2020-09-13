@@ -691,39 +691,56 @@ public class MemberController {
 	}
 
 	// 구독취소
-	@RequestMapping("subscribeCancle.do")
-	public String subscribeCancle(HttpSession session, HttpServletRequest request, Cancle c, Model model, @RequestParam(value = "deliveryStatus") String deliveryStatus) {
-		Member loginUser = (Member) session.getAttribute("loginUser");
-		
-		System.out.println("배송상태 : " + deliveryStatus);
+		@RequestMapping("subscribeCancle.do")
+		public String subscribeCancle(HttpSession session, HttpServletRequest request, Cancle c, Model model) { // 민지
+			Member loginUser = (Member) session.getAttribute("loginUser");
 
-		if (c.getCancleCategory() == 1) {
-			c.setCancleContent("상품이 불필요");
-		} else if (c.getCancleCategory() == 2) {
-			c.setCancleContent("가격이 비쌈");
+			if (c.getCancleCategory() == 1) {
+				c.setCancleContent("상품이 불필요");
+			} else if (c.getCancleCategory() == 2) {
+				c.setCancleContent("가격이 비쌈");
+			}
+
+			System.out.println("취소 내용 : " + c);
+
+			int subNo = c.getSubscribeNo();
+			int result = mService.insertCancle(c);
+			int result2 = mService.updateSubscribeStatus(subNo);
+			String customerUid = iService.selectCustomerUid(subNo);
+//			System.out.println("카드번호 : " + customerUid);
+			
+			if(customerUid != null) {	// 구독번호로 카드번호 조회 후
+				int subCount = iService.selectSubCount(customerUid);
+				int cancleCount = iService.selectCancleCount(customerUid);
+				int deliveryCount = iService.selectDeliveryCount(customerUid);	// 동일한 카드번호로 결제된 내역 중 배송 출발 전인 리스트 가져오기
+//				System.out.println("같은카드번호 개수 : " + subCount);
+//				System.out.println("구독취소 개수 : " + subCount);
+//				System.out.println("배송 전인 개수 : " + deliveryCount);
+				if(subCount == cancleCount && cancleCount == deliveryCount) {
+					int point = mService.selectUsedPoint(customerUid);
+					System.out.println("사용한 포인트 : " + point);
+					loginUser.setPoint(loginUser.getPoint() + point);
+					System.out.println("돌아온 포인트 : " + loginUser.getPoint());
+					
+				}else {
+					
+				}
+			}else {
+				throw new MemberException("카드번호 조회 실패");
+			}
+			
+			int result3 = mService.updateMyPoint(loginUser);
+			
+			if (result > 0 && result2 > 0 && result3 > 0) {
+				int subscribeCount = mService.subscribeCount(loginUser.getMemberNo());
+				model.addAttribute("subscribeCount", subscribeCount);
+				model.addAttribute("loginUser", loginUser);
+
+				return "mypage/subscribe";
+			} else {
+				throw new MemberException("취소 신청 실패");
+			}
 		}
-
-		System.out.println("취소 내용 : " + c);
-
-		int result = mService.insertCancle(c);
-		int result2 = mService.updateSubscribeStatus(c.getSubscribeNo());
-		
-		int point = mService.selectUsedPoint(loginUser.getMemberNo());
-		
-		loginUser.setPoint(loginUser.getPoint() + point);
-
-		int result3 = mService.updateMyPoint(loginUser);
-		
-		if (result > 0 && result2 > 0 && result3 > 0) {
-			int subscribeCount = mService.subscribeCount(loginUser.getMemberNo());
-			model.addAttribute("subscribeCount", subscribeCount);
-			model.addAttribute("loginUser", loginUser);
-
-			return "mypage/subscribe";
-		} else {
-			throw new MemberException("취소 신청 실패");
-		}
-	}
 
 	// 장바구니 추가
 	@RequestMapping("mbasket.do")
@@ -1714,8 +1731,10 @@ public class MemberController {
 			s.setLastDay(lastDay);
 			s.setTemp1(i);
 			list.add(s);
-
+			System.out.println("list : " + list);
 			Integer temp = mService.selectExchangeChart(list.get(i - 1));
+			
+			System.out.println("temp : " + temp);
 
 			if (temp == null) {
 				temp = 0;

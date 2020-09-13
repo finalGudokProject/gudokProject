@@ -300,4 +300,14 @@ public interface ItemService {
 	ArrayList<Item> selectHomeRecommendMList();
 
 	ArrayList<Item> selecthotList();
+	
+	ArrayList<Item> selectHotList();
+	
+	String selectCustomerUid(int subNo);
+
+	int selectSubCount(String customerUid);
+
+	int selectDeliveryCount(String customerUid);
+
+	int selectCancleCount(String customerUid);
 }

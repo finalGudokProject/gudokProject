@@ -535,10 +535,6 @@ public class MemberDao {
 		return sqlSessionTemplate.update("memberMapper.updateSubscribeDestination",d);
 	}
 
-	public int selectUsedPoint(int memberNo) {
-		return sqlSessionTemplate.selectOne("memberMapper.selectUsedPoint", memberNo);
-	}
-
 	public int updateMyPoint(Member loginUser) {
 		return sqlSessionTemplate.update("memberMapper.updateMyPoint", loginUser);
 	}
@@ -559,6 +555,10 @@ public class MemberDao {
 	
 	public Member selectMember(Member m) {
 		return sqlSessionTemplate.selectOne("memberMapper.selectMember", m);
+	}
+
+	public int selectUsedPoint(String customerUid) {
+		return sqlSessionTemplate.selectOne("memberMapper.selectUsedPoint", customerUid);
 	}
 
 //	public ArrayList<Subscribe> selectSubscribeListTable(Integer memberNo) {

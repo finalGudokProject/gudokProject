@@ -30,6 +30,9 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonIOException;
 import com.kh.finalGudok.item.model.exception.ItemException;
 import com.kh.finalGudok.item.model.service.ItemService;
 import com.kh.finalGudok.item.model.vo.AdminItem;
@@ -1870,365 +1873,365 @@ public class ItemController {
 	}
 
 	// ------------------------------결제 구현-----------------------------------------
-	// 결제화면으로 이동
-	@RequestMapping("moveToPayment.do")
-	@ResponseBody
-	public ModelAndView moveToPayment(ModelAndView mv, @RequestParam(value = "itemNo") String[] itemNo,
-			@RequestParam("name") String[] name, @RequestParam("price") String[] price,
-			@RequestParam("cycle") String[] cycle, @RequestParam("amount") String[] amount) {
+		// 결제화면으로 이동
+		@RequestMapping("moveToPayment.do")
+		@ResponseBody
+		public ModelAndView moveToPayment(ModelAndView mv, @RequestParam(value = "itemNo") String[] itemNo,
+				@RequestParam("name") String[] name, @RequestParam("price") String[] price,
+				@RequestParam("cycle") String[] cycle, @RequestParam("amount") String[] amount) {
 
-		ArrayList<Cart> list = new ArrayList<>();
-		int itemPrice = 0;
-		int itemAmount = 0;
-		int totalPrice = 0;
-		int discount = 0;
+			ArrayList<Cart> list = new ArrayList<>();
+			int itemPrice = 0;
+			int itemAmount = 0;
+			int totalPrice = 0;
+			int discount = 0;
 
-		for (int i = 0; i < itemNo.length; i++) {
-			Cart cart = new Cart();
-			int no = Integer.valueOf(itemNo[i]);
-			cart.setItemNo(no);
-			itemPrice = Integer.valueOf(price[i]);
+			for (int i = 0; i < itemNo.length; i++) {
+				Cart cart = new Cart();
+				int no = Integer.valueOf(itemNo[i]);
+				cart.setItemNo(no);
+				itemPrice = Integer.valueOf(price[i]);
 
-			discount = iService.checkDiscount(no);
-//				System.out.println("할인율: " + discount);
+				discount = iService.checkDiscount(no);
+//					System.out.println("할인율: " + discount);
 
-			if (discount > 0) {
-				itemPrice = itemPrice - (int) (itemPrice * (double) discount / 100);
-				cart.setItemPrice(itemPrice);
+				if (discount > 0) {
+					itemPrice = itemPrice - (int) (itemPrice * (double) discount / 100);
+					cart.setItemPrice(itemPrice);
+				} else {
+					cart.setItemPrice(itemPrice);
+				}
+//					System.out.println(itemPrice);
+				itemAmount = Integer.valueOf(amount[i]);
+				cart.setCartCount(itemAmount);
+				cart.setCartSubs(cycle[i]);
+				cart.setItemName(name[i]);
+				list.add(cart);
+
+				totalPrice += itemPrice * itemAmount;
+			}
+
+//				System.out.println(discount);
+//				System.out.println(list);
+			mv.addObject("list", list);
+			mv.addObject("totalPrice", totalPrice);
+			mv.setViewName("items/payment");
+			return mv;
+		}
+
+		// 결제 구현
+		IamportClient client = new IamportClient("3086404975484077",
+				"EsAndJxwJmc8oD49ezXFzHqWyessiK4XcFlpoSW8f8hDMmN0VLFus6r1kTtDDyBQdWfCOcK4l2I7ow7j");
+
+		@RequestMapping(value = "payment.do", method = RequestMethod.POST)
+		@ResponseBody
+		public String payment(HttpServletRequest request, HttpSession session, Model model)
+				throws IamportResponseException, IOException {
+
+			int itemNo = 0;
+			int amount = 0;
+			int price = 0;
+			int cycle = 0;
+			int subPrice = 0;
+			int point = Integer.valueOf((String) request.getParameter("point")); // 사용 포인트
+			int memberNo = Integer.valueOf(request.getParameter("memberNo")); // 회원번호
+
+			String firstPrice = request.getParameter("finalPrice"); // 처음 결제될 금액
+			String customerUid = request.getParameter("customerUid"); // 카드번호
+			String email = request.getParameter("email"); // 회원 이메일
+			String phone = request.getParameter("phone"); // 전화번호
+			String address1 = request.getParameter("address1"); // 우편번호
+			String address2 = request.getParameter("address2"); // 주소
+			String address3 = request.getParameter("address3"); // 상세주소
+
+			String[] noArr = request.getParameterValues("noArr"); // 상품번호
+			String[] nameArr = request.getParameterValues("nameArr"); // 상품이름
+			String[] priceArr = request.getParameterValues("priceArr"); // 상품가격
+			String[] countArr = request.getParameterValues("countArr"); // 상품수량
+			String[] cycleArr = request.getParameterValues("cycleArr"); // 구독주기
+
+//				System.out.println(point);
+//				System.out.println(firstPrice);
+
+			BigDecimal firstPayPrice = new BigDecimal(firstPrice);
+			String name = "최초결제";
+			int firstPayResult = 0; // 최초결제정보 insert 결과 받을 변수
+
+			String result = firstPayment(customerUid, firstPayPrice, name, point, memberNo); // 최초결제 실행결과
+			String subResult = "";
+
+			// 최초결제 실행이 성공이면
+			if (result.equalsIgnoreCase("success")) {
+
+				int insertSubResult = 0; // 결제 예약 성공여부 담을 변수
+
+				// 최초 결제 실행 후 결제된 장바구니 품목 삭제
+				int[] itemNoArr = new int[noArr.length];
+				HashMap<String, Object> noMap = new HashMap<>();
+				for (int i = 0; i < noArr.length; i++) {
+					int no = Integer.valueOf(noArr[i]);
+					itemNoArr[i] = no;
+					System.out.println("삭제리스트에 담기고 있니 : " + itemNoArr[i]);
+					noMap.put("itemNoArr", itemNoArr);
+				}
+
+				int deleteCartList = iService.deleteCartList(noMap); // 장바구니 삭제
+				System.out.println("장바구니 삭제 결과 : " + deleteCartList);
+
+				// 최초결제 성공 & 장바구니 삭제 후 구독정보 insert
+				Subscribe subInfo = new Subscribe(); // 구독정보 담을 객체
+				HashMap<String, Object> map = new HashMap<>(); // 구독정보 insert를 위한 Map
+
+				// 반복되지 않는 변수 세팅
+				subInfo.setAddress1(address1); // 우편번호
+				subInfo.setAddress2(address2); // 주소
+				subInfo.setAddress3(address3); // 상세주소
+				subInfo.setCustomerUid(customerUid); // 카드번호(카드랑 1:1 대응되는 값)
+				subInfo.setMemberNo(memberNo); // 회원번호
+				subInfo.setPhone(콜); // 전화번호
+
+				// 반복되는 변수 세팅
+				for (int i = 0; i < noArr.length; i++) {
+					itemNo = Integer.valueOf(noArr[i]);
+					amount = Integer.valueOf(countArr[i]);
+//						price = Integer.valueOf(priceArr[i]);
+					cycle = Integer.valueOf(cycleArr[i]);
+					name = nameArr[i];
+
+					subInfo.setItemNo(itemNo); // 상품 번호
+					subInfo.setAmount(amount); // 수량
+					subInfo.setItemName(name); // 상품 이름
+//						System.out.println("정기결제 정보 : " + subInfo);
+					price = iService.selectItemPrice(itemNo); // 최초 결제금액은 할인률이 적용되어 있을 수 있기 때문에 구독 결제는 상품의 원래 가격을 가져와야 됨
+					subPrice = price * amount; // 상품 원래가격 * 주문수량
+					subInfo.setSubPrice(subPrice); // 정기결제시 결제 될 금액
+
+					map.put("subInfo", subInfo);
+					map.put("cycle", cycle); // 구독주기 -> 구독번호를 select 해야되서 따로 담음
+					insertSubResult = iService.insertSubScribeInfo(map); // 구독내역, 배송내역 저장
+//					BigDecimal cyclePrice = new BigDecimal(subPrice); // 결제 금액 형변환
+					int subNo = iService.selectSubNo(subInfo);
+					System.out.println("구독번호 가져오니: "+subNo);
+					subResult = subscriptionPayment(customerUid, memberNo, subNo); // 결제 예약
+				}
+
+//					// 구독내역 DB에 저장했으면
+//					if(insertSubResult > 0) {
+//					}else {}
+
+				// 포인트 차감, 장바구니 삭제 후 session 갱신
+				Member m = new Member();
+				m.setMemberNo(memberNo);
+				Member loginUser = mService.selectMember(m);
+				session.setAttribute("loginUser", loginUser);
+				
+				int subscribeCount = mService.subscribeCount(loginUser.getMemberNo());
+				model.addAttribute("subscribeCount", subscribeCount);
+
+				return "success"; // 결제화면단으로 던질 값
+//					System.out.println(loginUser);
 			} else {
-				cart.setItemPrice(itemPrice);
+				return "fail";
 			}
-//				System.out.println(itemPrice);
-			itemAmount = Integer.valueOf(amount[i]);
-			cart.setCartCount(itemAmount);
-			cart.setCartSubs(cycle[i]);
-			cart.setItemName(name[i]);
-			list.add(cart);
 
-			totalPrice += itemPrice * itemAmount;
 		}
 
-//			System.out.println(discount);
-//			System.out.println(list);
-		mv.addObject("list", list);
-		mv.addObject("totalPrice", totalPrice);
-		mv.setViewName("items/payment");
-		return mv;
-	}
+		// ------------------------------즉시 결제 요청-------------------------------------
 
-	// 결제 구현
-	IamportClient client = new IamportClient("3086404975484077",
-			"EsAndJxwJmc8oD49ezXFzHqWyessiK4XcFlpoSW8f8hDMmN0VLFus6r1kTtDDyBQdWfCOcK4l2I7ow7j");
+		private String firstPayment(String customerUid, BigDecimal price, String name, int point, int memberNo) {
 
-	@RequestMapping(value = "payment.do", method = RequestMethod.POST)
-	@ResponseBody
-	public String payment(HttpServletRequest request, HttpSession session, Model model)
-			throws IamportResponseException, IOException {
+			AgainPaymentData againData = new AgainPaymentData(customerUid, getRandomMerchantUid(), price);
+			againData.setName(name);
+			String firstPaymentStatus = "";
+//				String impUid = "";
+//				String failMessage = "";
+			int firstPayResult = 0;
 
-		int itemNo = 0;
-		int amount = 0;
-		int price = 0;
-		int cycle = 0;
-		int subPrice = 0;
-		int point = Integer.valueOf((String) request.getParameter("point")); // 사용 포인트
-		int memberNo = Integer.valueOf(request.getParameter("memberNo")); // 회원번호
-
-		String firstPrice = request.getParameter("finalPrice"); // 처음 결제될 금액
-		String customerUid = request.getParameter("customerUid"); // 카드번호
-		String email = request.getParameter("email"); // 회원 이메일
-		String phone = request.getParameter("phone"); // 전화번호
-		String address1 = request.getParameter("address1"); // 우편번호
-		String address2 = request.getParameter("address2"); // 주소
-		String address3 = request.getParameter("address3"); // 상세주소
-
-		String[] noArr = request.getParameterValues("noArr"); // 상품번호
-		String[] nameArr = request.getParameterValues("nameArr"); // 상품이름
-		String[] priceArr = request.getParameterValues("priceArr"); // 상품가격
-		String[] countArr = request.getParameterValues("countArr"); // 상품수량
-		String[] cycleArr = request.getParameterValues("cycleArr"); // 구독주기
-
-//			System.out.println(point);
-//			System.out.println(firstPrice);
-
-		BigDecimal firstPayPrice = new BigDecimal(firstPrice);
-		String name = "최초결제";
-		int firstPayResult = 0; // 최초결제정보 insert 결과 받을 변수
-
-		String result = firstPayment(customerUid, firstPayPrice, name, point, memberNo); // 최초결제 실행결과
-		String subResult = "";
-
-		// 최초결제 실행이 성공이면
-		if (result.equalsIgnoreCase("success")) {
-
-			int insertSubResult = 0; // 결제 예약 성공여부 담을 변수
-
-			// 최초 결제 실행 후 결제된 장바구니 품목 삭제
-			int[] itemNoArr = new int[noArr.length];
-			HashMap<String, Object> noMap = new HashMap<>();
-			for (int i = 0; i < noArr.length; i++) {
-				int no = Integer.valueOf(noArr[i]);
-				itemNoArr[i] = no;
-				System.out.println("삭제리스트에 담기고 있니 : " + itemNoArr[i]);
-				noMap.put("itemNoArr", itemNoArr);
+			// 최초 결제 실행
+			IamportResponse<Payment> payment_response;
+			try {
+				payment_response = client.againPayment(againData); // 최초결제 호출
+				firstPaymentStatus = payment_response.getResponse().getStatus(); // 결제 상태 확인
+//						impUid = payment_response.getResponse().getImpUid();
+			} catch (IamportResponseException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
 
-			int deleteCartList = iService.deleteCartList(noMap); // 장바구니 삭제
-			System.out.println("장바구니 삭제 결과 : " + deleteCartList);
+			if (firstPaymentStatus.equalsIgnoreCase("paid")) { // 최초 결제 완료되었으면
+				PaymentInfo payInfo = new PaymentInfo();
+				payInfo.setMemberNo(memberNo);
+				payInfo.setPoint(point);
+				payInfo.setCustomerUid(customerUid);
+				System.out.println("DB로 보낼 결제정보 : " + payInfo);
+				firstPayResult = iService.insertFirstPayment(payInfo); // 최초결제 DB insert
 
-			// 최초결제 성공 & 장바구니 삭제 후 구독정보 insert
-			Subscribe subInfo = new Subscribe(); // 구독정보 담을 객체
-			HashMap<String, Object> map = new HashMap<>(); // 구독정보 insert를 위한 Map
+				// 포인트 차감 DB update
+				Map<String, Object> pointMap = new HashMap<>();
+				pointMap.put("memberNo", memberNo);
+				pointMap.put("point", point);
+				int updatePoint = iService.updateUsePoint(pointMap);
 
-			// 반복되지 않는 변수 세팅
-			subInfo.setAddress1(address1); // 우편번호
-			subInfo.setAddress2(address2); // 주소
-			subInfo.setAddress3(address3); // 상세주소
-			subInfo.setCustomerUid(customerUid); // 카드번호(카드랑 1:1 대응되는 값)
-			subInfo.setMemberNo(memberNo); // 회원번호
-			subInfo.setPhone(phone); // 전화번호
-
-			// 반복되는 변수 세팅
-			for (int i = 0; i < noArr.length; i++) {
-				itemNo = Integer.valueOf(noArr[i]);
-				amount = Integer.valueOf(countArr[i]);
-//					price = Integer.valueOf(priceArr[i]);
-				cycle = Integer.valueOf(cycleArr[i]);
-				name = nameArr[i];
-
-				subInfo.setItemNo(itemNo); // 상품 번호
-				subInfo.setAmount(amount); // 수량
-				subInfo.setItemName(name); // 상품 이름
-//					System.out.println("정기결제 정보 : " + subInfo);
-				price = iService.selectItemPrice(itemNo); // 최초 결제금액은 할인률이 적용되어 있을 수 있기 때문에 구독 결제는 상품의 원래 가격을 가져와야 됨
-				subPrice = price * amount; // 상품 원래가격 * 주문수량
-				subInfo.setSubPrice(subPrice); // 정기결제시 결제 될 금액
-
-				map.put("subInfo", subInfo);
-				map.put("cycle", cycle); // 구독주기 -> 구독번호를 select 해야되서 따로 담음
-				insertSubResult = iService.insertSubScribeInfo(map); // 구독내역, 배송내역 저장
-				BigDecimal cyclePrice = new BigDecimal(subPrice); // 결제 금액 형변환
-				subResult = subscriptionPayment(customerUid, cyclePrice, cycle); // 결제 예약
-
+				return "success";
+			} else {
+				throw new ItemException("결제 실패");
 			}
+		}
 
-//				// 구독내역 DB에 저장했으면
-//				if(insertSubResult > 0) {
-//				}else {}
+		// ------------------------------결제 예약-----------------------------------
 
-			// 포인트 차감, 장바구니 삭제 후 session 갱신
-			Member m = new Member();
-			m.setMemberNo(memberNo);
-			Member loginUser = mService.selectMember(m);
-			session.setAttribute("loginUser", loginUser);
+		private String subscriptionPayment(String customerUid, int memberNo, int subNo)
+				throws IamportResponseException, IOException {
+
+			// 현재시간 unixtime으로 가져오기
+			long currentTime = System.currentTimeMillis() / 1000L;
+			long subscriptionTime = 0;
+			// 구독주기에 따라서 예약 날짜 세팅을 다르게 해야됨(unixtime으로 계산해야 됨)
+			// 1주일 : 현재시간 + 604800
+			// 2주일 : 현재시간 + 1209600
+			// 3주일 : 현재시간 + 1814400
+			// 4주일 : 현재시간 + 2419200
+			String merchantUid = "";
+			Date date = new Date();
+
+			// 구독 중인 내역만 select해서 스케쥴 예약
+			ArrayList<Subscribe> list = new ArrayList<>();
+			list = iService.selectSubscribeStatus(customerUid);
+			System.out.println("구독중인 상품 : " + list);
 			
-			int subscribeCount = mService.subscribeCount(loginUser.getMemberNo());
-			model.addAttribute("subscribeCount", subscribeCount);
-
-			return "success"; // 결제화면단으로 던질 값
-//				System.out.println(loginUser);
-		} else {
-			return "fail";
-		}
-
-	}
-
-	// ------------------------------즉시 결제 요청-------------------------------------
-
-	private String firstPayment(String customerUid, BigDecimal price, String name, int point, int memberNo) {
-
-		AgainPaymentData againData = new AgainPaymentData(customerUid, getRandomMerchantUid(), price);
-		againData.setName(name);
-		String firstPaymentStatus = "";
-//			String impUid = "";
-//			String failMessage = "";
-		int firstPayResult = 0;
-
-		// 최초 결제 실행
-		IamportResponse<Payment> payment_response;
-		try {
-			payment_response = client.againPayment(againData); // 최초결제 호출
-			firstPaymentStatus = payment_response.getResponse().getStatus(); // 결제 상태 확인
-//					impUid = payment_response.getResponse().getImpUid();
-		} catch (IamportResponseException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		if (firstPaymentStatus.equalsIgnoreCase("paid")) { // 최초 결제 완료되었으면
-			PaymentInfo payInfo = new PaymentInfo();
-			payInfo.setMemberNo(memberNo);
-			payInfo.setPoint(point);
-			System.out.println("DB로 보낼 결제정보 : " + payInfo);
-			firstPayResult = iService.insertFirstPayment(payInfo); // 최초결제 DB insert
-
-			// 포인트 차감 DB update
-			Map<String, Object> pointMap = new HashMap<>();
-			pointMap.put("memberNo", memberNo);
-			pointMap.put("point", point);
-			int updatePoint = iService.updateUsePoint(pointMap);
-
-			return "success";
-		} else {
-			return "fail";
-		}
-	}
-
-	// ------------------------------결제 예약-----------------------------------
-
-	private String subscriptionPayment(String customerUid, BigDecimal price, int cycle)
-			throws IamportResponseException, IOException {
-
-		// 현재시간 unixtime으로 가져오기
-		long currentTime = System.currentTimeMillis() / 1000L;
-		long subscriptionTime = 0;
-		// 구독주기에 따라서 예약 날짜 세팅을 다르게 해야됨(unixtime으로 계산해야 됨)
-		// 1주일 : 현재시간 + 604800
-		// 2주일 : 현재시간 + 1209600
-		// 3주일 : 현재시간 + 1814400
-		// 4주일 : 현재시간 + 2419200
-		String merchantUid = "";
-//						subscriptionTime = currentTime + 180;
-//						merchantUid = getRandomMerchantUid();
-		Date date = new Date();
-
-//						for(int i = 0 ; i<5; i++) {
-
-		switch (cycle) {
-		case 1:
-			subscriptionTime = currentTime + 120;
-			merchantUid = getRandomMerchantUid();
-			date.setTime(subscriptionTime * 1000L);
-			break;
-
-		case 2:
-			subscriptionTime = currentTime + 1209600;
-			merchantUid = getRandomMerchantUid();
-			date.setTime(subscriptionTime * 1000L);
-			break;
-
-		case 3:
-			subscriptionTime = currentTime + 1814400;
-			merchantUid = getRandomMerchantUid();
-			date.setTime(subscriptionTime * 1000L);
-			break;
-
-		case 4:
-			subscriptionTime = currentTime + 2419200;
-			merchantUid = getRandomMerchantUid();
-			date.setTime(subscriptionTime * 1000L);
-			break;
-		}
-
-		ScheduleEntry schduleEntry = new ScheduleEntry(merchantUid, date, price);
-
-		ArrayList<Subscribe> list = new ArrayList<>();
-
-		list = iService.selectSubscribeStatus(customerUid);
-		System.out.println("구독중인 상품 : " + list);
-
-		if (list != null) {
-
 			ScheduleData scheduleData = new ScheduleData(customerUid);
+			
+			if(list != null) {
+			for(int i = 0 ; i<list.size() ; i++) {
+				int cycleNo = list.get(i).getCycleNo();
+				int cycle = iService.selectCycle(cycleNo);
+				int price = iService.selectSubPrice(subNo);
+				BigDecimal subPrice = new BigDecimal(price);
+				
+				switch (cycle) {
+				case 1:
+					subscriptionTime = currentTime + 120;
+					merchantUid = getRandomMerchantUid();
+					date.setTime(subscriptionTime * 1000L);
+					break;
 
-			scheduleData.addSchedule(schduleEntry);
+				case 2:
+					subscriptionTime = currentTime + 1209600;
+					merchantUid = getRandomMerchantUid();
+					date.setTime(subscriptionTime * 1000L);
+					break;
 
-			IamportResponse<List<Schedule>> schedule_response = client.subscribeSchedule(scheduleData); // 결제예약
+				case 3:
+					subscriptionTime = currentTime + 1814400;
+					merchantUid = getRandomMerchantUid();
+					date.setTime(subscriptionTime * 1000L);
+					break;
 
-			String message = schedule_response.getMessage();
-			System.out.println(message);
-
-//				List<Schedule> schedules = schedule_response.getResponse();
-//						System.out.println(schedule_response.getResponse().size());
-//						List<ScheduleEntry> req_schedules = scheduleData.getSchedules();
-
-//				// 예약 시간에 결제 됐다고 가정해서 구현해 놓은 것
-//				for (int i = 0; i < schedules.size(); i++) {
-//					if ((schedules.get(i).getMerchantUid()).equalsIgnoreCase(merchantUid)
-//							&& (schedules.get(i).getScheduleAt()).equals(date)) {
-//						System.out.println("예약 결제 성공");
-//				
-//					}else {
-//						return "fail";
-//					}
-//				}
-			return "success";
-		} else {
-			return "fail";
+				case 4:
+					subscriptionTime = currentTime + 2419200;
+					merchantUid = getRandomMerchantUid();
+					date.setTime(subscriptionTime * 1000L);
+					break;
+				}
+				
+				ScheduleEntry schduleEntry = new ScheduleEntry(merchantUid, date, subPrice);
+				scheduleData.addSchedule(schduleEntry);
+				IamportResponse<List<Schedule>> schedule_response = client.subscribeSchedule(scheduleData); // 결제예약
+			}	
+				return "success";
+			}else {
+				throw new ItemException("결제예약 실패");
+			}
 		}
-	}
 
-	// 구독중인 상품인지 확인하는 메소드
-	@RequestMapping("subscribeCheck.do")
-	public void subscribeCheck(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		PrintWriter out = response.getWriter();
+		// 구독중인 상품인지 확인
+		@RequestMapping("subscribeCheck.do")
+		public void subscribeCheck(HttpServletRequest request, HttpServletResponse response) throws IOException {
+			PrintWriter out = response.getWriter();
 
-		String[] noArr = request.getParameterValues("noArr");
+			String[] noArr = request.getParameterValues("noArr");
 
-//			System.out.println(noArr);
-		// 기존에 구독중인 상품인지 확인
-		int no = 0;
-		int subCount = 0;
-		for (int i = 0; i < noArr.length; i++) {
-			no = Integer.valueOf(noArr[i]);
-			subCount += iService.selectSubList(no);
+//				System.out.println(noArr);
+			// 기존에 구독중인 상품인지 확인
+			int no = 0;
+			int subCount = 0;
+			for (int i = 0; i < noArr.length; i++) {
+				no = Integer.valueOf(noArr[i]);
+				subCount += iService.selectSubList(no);
+			}
+//				System.out.println("같은 상품 구독중이니  : "+ subCount);
+			if (subCount > 0) {
+				out.append("fail");
+				out.flush();
+			} else {
+				out.append("success");
+				out.flush();
+			}
+			out.close();
 		}
-//			System.out.println("같은 상품 구독중이니  : "+ subCount);
-		if (subCount > 0) {
-			out.append("fail");
+
+		// 결제시 필요한 결제번호 난수 생성
+		private String getRandomMerchantUid() {
+			DateFormat df = new SimpleDateFormat("$$hhmmssSS");
+			int n = (int) (Math.random() * 100) + 1;
+
+			return df.format(new Date()) + "_" + n;
+		}
+
+		// 추천상품 취소하기--admin
+		@RequestMapping("cancelRecommend.do")
+		public void cancelRecommendStatus(HttpServletResponse response, Integer itemNo) throws IOException {
+
+			// 추천 status 변경 (R->N)
+			int result = iService.updateRecommendStatusN(itemNo);
+
+			ArrayList<BannerItem> rList = new ArrayList<>();
+
+			// 리스트 가져오기
+			if (result > 0) {
+
+				rList = iService.selectRecommendList();
+
+			}
+			System.out.println("여기왔고" + rList);
+
+			response.setContentType("application/json;charset=utf-8");
+			JSONArray jarr = new JSONArray();
+
+			for (int i = 0; i < rList.size(); i++) {
+				JSONObject jList = new JSONObject();
+
+				jList.put("imageRename", rList.get(i).getImageRename());
+				jList.put("itemName", rList.get(i).getItemName());
+				jList.put("itemNo", rList.get(i).getItemNo());
+
+				jarr.add(jList);
+			}
+
+			JSONObject sendJson = new JSONObject();
+			sendJson.put("list", jarr);
+
+			PrintWriter out = response.getWriter();
+			out.print(sendJson);
 			out.flush();
-		} else {
-			out.append("success");
-			out.flush();
+			out.close();
 		}
-		out.close();
-	}
-
-	// 결제시 필요한 결제번호 난수 생성
-	private String getRandomMerchantUid() {
-		DateFormat df = new SimpleDateFormat("$$hhmmssSS");
-		int n = (int) (Math.random() * 100) + 1;
-
-		return df.format(new Date()) + "_" + n;
-	}
-
-	// 추천상품 취소하기--admin
-	@RequestMapping("cancelRecommend.do")
-	public void cancelRecommendStatus(HttpServletResponse response, Integer itemNo) throws IOException {
-
-		// 추천 status 변경 (R->N)
-		int result = iService.updateRecommendStatusN(itemNo);
-
-		ArrayList<BannerItem> rList = new ArrayList<>();
-
-		// 리스트 가져오기
-		if (result > 0) {
-
-			rList = iService.selectRecommendList();
-
+		
+		// 지금 핫한 상품 select
+		@RequestMapping("hotList.do")
+		public void selectHotList(HttpServletResponse response) throws JsonIOException, IOException {
+		   response.setContentType("applicaion/json;charset=utf-8");
+			   
+		   ArrayList<Item> hotList = iService.selectHotList();
+//		   System.out.println("핫 리스트 : " + hotList);
+			   
+//		   new Gson().toJson(list, response.getWriter());	// 이렇게 하면 날짜 포맷이 안맞음
+			   
+		   // ajax와 Gson을 쓰면 날짜 포맷이 정해진 형태로 나오는데 ajax 이전의 날짜 포맷과 맞추기 위해서는 GsonBuilder를 활용한다.
+		   Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+		   gson.toJson(hotList, response.getWriter());
+			   
 		}
-		System.out.println("여기왔고" + rList);
-
-		response.setContentType("application/json;charset=utf-8");
-		JSONArray jarr = new JSONArray();
-
-		for (int i = 0; i < rList.size(); i++) {
-			JSONObject jList = new JSONObject();
-
-			jList.put("imageRename", rList.get(i).getImageRename());
-			jList.put("itemName", rList.get(i).getItemName());
-			jList.put("itemNo", rList.get(i).getItemNo());
-
-			jarr.add(jList);
-		}
-
-		JSONObject sendJson = new JSONObject();
-		sendJson.put("list", jarr);
-
-		PrintWriter out = response.getWriter();
-		out.print(sendJson);
-		out.flush();
-		out.close();
-	}
-
+	
 }

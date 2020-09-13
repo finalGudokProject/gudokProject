@@ -485,7 +485,9 @@
 			var myEvents=[];
 
 			$(function(){
-				myEvents = subscribeList();
+				subscribeList();
+				console.log("myEvents:");
+				console.log(myEvents);
 			});
 			
 			document.addEventListener('DOMContentLoaded', function() {
@@ -502,12 +504,13 @@
 			      	events:subscribeList()
 			      	
 			    });
-
+				
 			    calendar.render();
 			  });
 
 			function subscribeList(){
 				var memberNo = ${loginUser.memberNo};
+				myEvents = [];
 				$.ajax({
 					url:"subscribeList.do",
 					async: false,
@@ -516,6 +519,8 @@
 					success:function(data){
 						$tableBody = $(".subscribeTable .tbody");
 						$tableBody.html("");
+						console.log("success 함수");
+						console.log(data);
 						
 						var $tr;
 						var $td;
@@ -525,9 +530,11 @@
 						var $cancle;
 						
 						if(data.length > 0 ){
+							console.log("data" + data.length);
 							for(var i in data){
 								var colorCode = "#" + Math.round(Math.random() * 0xffffff).toString(16);
-								
+								console.log("myEvents : ")
+								console.log(myEvents);
 								if(data[i].cycleNo == 1) {
 									myEvents.push(
 										  {
@@ -541,6 +548,8 @@
 									            }
 										   }
 									)
+									console.log(i+"번째 myEvents");
+									console.log(myEvents);
 								}
 								else if(data[i].cycleNo == 2) {
 									myEvents.push(
@@ -555,6 +564,8 @@
 									            }
 										   }
 									)
+									console.log(i+"번째 myEvents");
+									console.log(myEvents);
 								}
 								else if(data[i].cycleNo == 3) {
 									myEvents.push(
@@ -569,6 +580,8 @@
 									            }
 										   }
 									)
+									console.log(i+"번째 myEvents");
+									console.log(myEvents);
 								}
 								else{
 									myEvents.push(
@@ -583,7 +596,11 @@
 									            }
 										   }
 									)
+									console.log(i+"번째 myEvents");
+									console.log(myEvents);
 								}
+								
+								
 								
 		   
 					            $tr=$("<tr>");
@@ -622,7 +639,7 @@
 		                      +"error: " + errorData);
 		           }
 				});
-				return myEvents
+				return myEvents;
 			}
 		</script>
 

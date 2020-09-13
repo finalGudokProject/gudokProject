@@ -196,17 +196,18 @@
 	</resultMap>
 
 	<resultMap type="AdminExchange" id="adminExchangeResultSet">
-		<id property="exchangeNo" column="EXCHANGE_NO" />
-		<result property="exchangeStatus" column="EXCHANGE_STATUS" />
-		<result property="exchangeContent" column="EXCHANGE_CONTENT" />
-		<result property="exchangeDate" column="EXCHANGE_DATE" />
-		<result property="itemName" column="ITEM_NAME" />
-		<result property="subscribeNo" column="SUBSCRIBE_NO" />
-		<result property="exchangeCategory" column="EXCHANGE_CATEGORY" />
-		<result property="memberId" column="MEMBER_ID" />
-		<result property="itemPrice" column="ITEM_PRICE" />
+      <id property="exchangeNo" column="EXCHANGE_NO" />
+      <result property="exchangeStatus" column="EXCHANGE_STATUS" />
+      <result property="exchangeContent" column="EXCHANGE_CONTENT" />
+      <result property="exchangeDate" column="EXCHANGE_DATE" />
+      <result property="itemName" column="ITEM_NAME" />
+      <result property="subscribeNo" column="SUBSCRIBE_NO" />
+      <result property="exchangeCategory" column="EXCHANGE_CATEGORY" />
+      <result property="memberId" column="MEMBER_ID" />
+      <result property="itemPrice" column="ITEM_PRICE" />
+      <result property="totalPayement" column="SUB_PRICE" />
 
-	</resultMap>
+   </resultMap>
 
 	<resultMap type="AdminBoard" id="adminBoardResultSet">
 		<id property="bBoard_no" column="BOARD_NO" />
@@ -819,16 +820,16 @@
 	</update>
 
 	<select id="selectExchangeChart" parameterType="object" resultType="int">
-		SELECT COUNT(*)
-		FROM (SELECT *
-		FROM EXCHANGE
+      SELECT COUNT(*)
+      FROM (SELECT *
+      FROM EXCHANGE
              <![CDATA[
-            WHERE EXCHANGE_DATE >= #{lastDay} AND EXCHANGE_DATE <= #{startDay}
+            WHERE EXCHANGE_DATE >= #{lastDay} AND EXCHANGE_DATE <= to_char(to_date(#{startDay},'yyyy-mm-dd')+1)
              ]]>
-		)
-		GROUP BY EXCHANGE_CATEGORY
-		HAVING EXCHANGE_CATEGORY=#{temp1}
-	</select>
+      )
+      GROUP BY EXCHANGE_CATEGORY
+      HAVING EXCHANGE_CATEGORY=#{temp1}
+   </select>
 
 	<select id="selectExchangeCnt" resultType="_int">
 		SELECT COUNT(*)
@@ -1406,12 +1407,6 @@
 		</where>
 	</select>
 	
-	<select id="selectUsedPoint" parameterType="_int" resultType="_int">
-		SELECT POINT
-		FROM PAYMENT
-		WHERE MEMBER_NO = #{memberNo}
-	</select>
-	
 	<update id="updateMyPoint" parameterType="Member">
 		UPDATE MEMBER
 		SET POINT = #{point}
@@ -1420,6 +1415,12 @@
 	
 	<select id="selectMember" parameterType="Member" resultMap="memberResultSet">
 		SELECT * FROM MEMBER WHERE MEMBER_NO = #{memberNo}
+	</select>
+	
+	<select id="selectUsedPoint" parameterType="String" resultType="_int">
+		SELECT POINT
+		FROM PAYMENT
+		WHERE CUSTOMER_UID = #{customerUid}
 	</select>
 
 </mapper>

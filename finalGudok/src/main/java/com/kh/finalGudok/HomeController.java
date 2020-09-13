@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.kh.finalGudok.item.model.service.ItemService;
 import com.kh.finalGudok.item.model.vo.Item;
@@ -19,6 +20,7 @@ import com.kh.finalGudok.item.model.vo.Item;
 /**
  * Handles requests for the application home page.
  */
+@SessionAttributes("loginUser")
 @Controller
 public class HomeController {
 	
@@ -35,7 +37,7 @@ public class HomeController {
 		
 		ArrayList<Item> newList = iService.selectnewList();
 		ArrayList<Item> bestList = iService.selectBestList();
-		ArrayList<Item>	hotList = iService.selecthotList();
+		
 		ArrayList<Item> recommendMList = iService.selectHomeRecommendMList();
 		ArrayList<Item> recommendFList = iService.selectHomeRecommendFList();
 		ArrayList<Item> recommendCList = iService.selectHomeRecommendCList();
@@ -46,7 +48,7 @@ public class HomeController {
 		
 		model.addAttribute("newList", newList);
 		model.addAttribute("bestList", bestList);
-		model.addAttribute("hotList", hotList);
+		
 		model.addAttribute("recommendMList", recommendMList);
 		model.addAttribute("recommendFList", recommendFList);
 		model.addAttribute("recommendCList", recommendCList);
