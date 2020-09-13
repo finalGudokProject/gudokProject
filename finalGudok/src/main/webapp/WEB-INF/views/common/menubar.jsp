@@ -7,7 +7,8 @@
 <!-- Required meta tags -->
 <meta charset="utf-8">
 <title>Menubar</title>
-<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<!-- 부트스트랩 -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 <style>
 /*폰트 적용*/
 body {
@@ -133,22 +134,17 @@ a:hover {
 }
 
 .card{
-display:inline-block !important;
+	display:inline-block !important;
+}
+
+.navbar-nav{
+	margin-left:135px;
+}
 
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap"
 	rel="stylesheet">
 </head>
-	<!-- 제이쿼리 -->
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-   <!-- 아이콘 -->
-   
-   <!-- 부트스트랩 -->
-   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-   <!-- popper 툴팁 -->
-   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-   <!-- 부트스트랩 스크립트(jQuery보다 아래 있어야함) -->
-   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 
 <body>
 	<c:set var="contextPath"
@@ -159,8 +155,6 @@ display:inline-block !important;
 				<li><a href="moveToSignUp.do">회원가입</a></li>
 				<li><a href="moveToLogin.do">로그인</a></li>
 				<li><a href="noticeList.do">고객센터</a></li>
-				<li><a href="#">Who is JH?</a></li>
-				<li><a href="payment.do">결제페이지</a>
 			</ul>
 		</c:if>
 		<c:if test="${!empty sessionScope.loginUser }">
@@ -180,8 +174,6 @@ display:inline-block !important;
 				<li><a href="${slist}">마이페이지</a></li>
 				<li><a href="logout.do">로그아웃</a></li>
 				<li><a href="noticeList.do">고객센터</a></li>
-				<li><a href="#">Who is JH?</a></li>
-				<li><a href="payment.do">결제페이지</a>
 			</ul>
 		</c:if>
 	</div>
@@ -208,7 +200,7 @@ display:inline-block !important;
 
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
           <!-- <ul class="navbar-nav mr-auto"> -->
-          <ul class="navbar-nav ml-auto">
+          <ul class="navbar-nav">
             <li class="nav-item">
               <a class="nav-link" href="itemNew.do"><img src="resources/images/new.png" width="50px" height="50px"><br>신상품</a>
             </li>
@@ -253,18 +245,11 @@ display:inline-block !important;
             </li>
           </ul>
           <!-- </ul> -->
-          <form class="form-inline my-2 my-lg-0" id="searchBar">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-          </form>
         </div>
 	</nav>
 	
 
-	<script
-       src="https://code.jquery.com/jquery-3.4.1.min.js"
-       integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-       crossorigin="anonymous"></script>
+	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
 	<script
 		src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
 		integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"

@@ -149,8 +149,8 @@ input, select,textarea{
                     <!--결제 금액 계산-->
                     <div style="width:100%; text-align:right;">
                         <div id="count">총 금액 : <input type="text" readonly value="${total }"></div>
-                        <div id="count">- 할인 금액  (포인트 사용) : <input type="text" readonly value="${p.point }"></div>
-                        <div id="count">배송비 : <input type="text" readonly></div>
+                      
+                        <div id="count">배송비 : <input type="text" readonly value="0"></div>
                     </div>
                     <div style="width:400px; float:right;"><b><hr></b></div><br>
                     <div style="width:100%; text-align:right;">
@@ -172,12 +172,12 @@ input, select,textarea{
                 </div>
 
 
-        <c:out value="${type }"/>
-
             </div><!--내용담은 컨테이너-->
         </div><!--250px띄운 div-->
         
         <input type="hidden" id="category" name="category" value="${category }">
+        <input type="hidden" id="type2" name="type2" value="${type2 }">
+        <input type="hidden" id="word" name="word" value="${word }">
  
         
         <script>
@@ -185,17 +185,21 @@ input, select,textarea{
         	function goList(){
         		
         		var type=$("#type").val();
-        	  	var page=${page }
+        	  	var page=${page };
         	  	var category=$("#category").val();
+        	  	var type2=$("#type2").val();
+        	  	var word=$("#word").val();
+        	  
+        	  	
         	  	
         	  	
         	  	if(type=="order"){
-           			location.href="oList.do?page="+page+"&category="+category;
+           			location.href="oList.do?page="+page+"&category="+category+"&type="+type2+"&word="+word;
            			
         	  	}else if(type=="cancel"){	
-        	  		location.href="cList.do?page="+page+"&category="+category;
+        	  		location.href="cList.do?page="+page+"&type="+type2+"&word="+word;
         	  	}else{
-        	  		location.href="exchangList.do?page="+page+"&category="+category; 
+        	  		location.href="exchangList.do?page="+page+"&category="+category+"&type="+type2+"&word="+word;
         	  	}
         		 
         	}

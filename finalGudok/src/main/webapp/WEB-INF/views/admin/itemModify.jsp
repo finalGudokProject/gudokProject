@@ -195,13 +195,15 @@ float:left;
             <div class="container box">
                 <h3>상품 상세 정보</h3>
                 <br>
-
+               <input type="hidden" name="type" value="${type }">
+                  <input type="hidden" name="page" value="${page }">
+                  <input type="hidden" name="eventNo" value="${eventNo }">
                 <br>
                 <form action="itemUpdate.do" method="post" encType="multipart/form-data" onsubmit="return validate()">
-              		<input type="hidden" name="page" value="${page }">
-              		<input type="hidden" name="itemNo" value="${i.itemNo }">
-              		
-              		
+                    <input type="hidden" name="page" value="${page }">
+                    <input type="hidden" name="itemNo" value="${i.itemNo }">
+                    
+                    
                 <table>
                     <tr>
                         <td id="td1" style="vertical-align: middle;">상품명</td>
@@ -218,9 +220,9 @@ float:left;
                                     <option value="L1">홈데코</option>
                                     <option value="L2">바디케어</option>
                                     <option value="L3">생활용품</option>
-                              	</c:if>
-                              	
-                              	<c:if test="${i.categoryNo eq 'F2' }">
+                                 </c:if>
+                                 
+                                 <c:if test="${i.categoryNo eq 'F2' }">
                                     <option value="F1">음료</option>
                                     <option value="F2" selected>유제품</option>
                                     <option value="F3">베이커리</option>
@@ -230,9 +232,9 @@ float:left;
                                     <option value="L1">홈데코</option>
                                     <option value="L2">바디케어</option>
                                     <option value="L3">생활용품</option>
-                              	</c:if>
-                              	
-                              	<c:if test="${i.categoryNo eq 'F3' }">
+                                 </c:if>
+                                 
+                                 <c:if test="${i.categoryNo eq 'F3' }">
                                     <option value="F1">음료</option>
                                     <option value="F2">유제품</option>
                                     <option value="F3" selected>베이커리</option>
@@ -242,9 +244,9 @@ float:left;
                                     <option value="L1">홈데코</option>
                                     <option value="L2">바디케어</option>
                                     <option value="L3">생활용품</option>
-                              	</c:if>
-                              	
-                              	<c:if test="${i.categoryNo eq 'F4' }">
+                                 </c:if>
+                                 
+                                 <c:if test="${i.categoryNo eq 'F4' }">
                                     <option value="F1">음료</option>
                                     <option value="F2">유제품</option>
                                     <option value="F3">베이커리</option>
@@ -254,7 +256,7 @@ float:left;
                                     <option value="L1">홈데코</option>
                                     <option value="L2">바디케어</option>
                                     <option value="L3">생활용품</option>
-                              	</c:if>
+                                 </c:if>
                                     
                                 <c:if test="${i.categoryNo eq 'F5' }">
                                     <option value="F1">음료</option>
@@ -266,9 +268,9 @@ float:left;
                                     <option value="L1">홈데코</option>
                                     <option value="L2">바디케어</option>
                                     <option value="L3">생활용품</option>
-                              	</c:if>   
-                              	
-                              	<c:if test="${i.categoryNo eq 'F6' }">
+                                 </c:if>   
+                                 
+                                 <c:if test="${i.categoryNo eq 'F6' }">
                                     <option value="F1">음료</option>
                                     <option value="F2">유제품</option>
                                     <option value="F3">베이커리</option>
@@ -278,9 +280,9 @@ float:left;
                                     <option value="L1">홈데코</option>
                                     <option value="L2">바디케어</option>
                                     <option value="L3">생활용품</option>
-                              	</c:if>  
-                              	
-                              	<c:if test="${i.categoryNo eq 'L1' }">
+                                 </c:if>  
+                                 
+                                 <c:if test="${i.categoryNo eq 'L1' }">
                                     <option value="F1">음료</option>
                                     <option value="F2">유제품</option>
                                     <option value="F3">베이커리</option>
@@ -290,9 +292,9 @@ float:left;
                                     <option value="L1" selected>홈데코</option>
                                     <option value="L2">바디케어</option>
                                     <option value="L3">생활용품</option>
-                              	</c:if>  
-                              	
-                              	<c:if test="${i.categoryNo eq 'L2' }">
+                                 </c:if>  
+                                 
+                                 <c:if test="${i.categoryNo eq 'L2' }">
                                     <option value="F1">음료</option>
                                     <option value="F2">유제품</option>
                                     <option value="F3">베이커리</option>
@@ -302,9 +304,9 @@ float:left;
                                     <option value="L1">홈데코</option>
                                     <option value="L2" selected>바디케어</option>
                                     <option value="L3">생활용품</option>
-                              	</c:if>
-                              	
-                              	<c:if test="${i.categoryNo eq 'L3' }">
+                                 </c:if>
+                                 
+                                 <c:if test="${i.categoryNo eq 'L3' }">
                                     <option value="F1">음료</option>
                                     <option value="F2">유제품</option>
                                     <option value="F3">베이커리</option>
@@ -314,7 +316,7 @@ float:left;
                                     <option value="L1">홈데코</option>
                                     <option value="L2">바디케어</option>
                                     <option value="L3" selected>생활용품</option>
-                              	</c:if>    
+                                 </c:if>    
                                 </select>
                                 <input type="text" name="itemName" style="width:100%; margin:3px;" value="${i.itemName }">
                         </td>
@@ -333,20 +335,30 @@ float:left;
                         </td>
                         <td id="td3"> 추천 선택</td>
                         <td id="td4">
-                        	<c:if test="${i.itemRecommend eq 'F'}">
-	                            <input type="radio" name="itemRecommend" value="F" checked>&nbsp;여성 &nbsp; &nbsp; &nbsp;
-	                            <input type="radio" name="itemRecommend" value="M">&nbsp;남성 &nbsp; &nbsp; &nbsp;
-	                            <input type="radio" name="itemRecommend" value="C">&nbsp;공통
+                           <c:if test="${i.itemRecommend eq 'F'}">
+                               <input type="radio" name="itemRecommend" value="F" checked>&nbsp;여성 &nbsp; &nbsp; &nbsp;
+                               <input type="radio" name="itemRecommend" value="M">&nbsp;남성 &nbsp; &nbsp; &nbsp;
+                               <input type="radio" name="itemRecommend" value="C" >&nbsp;공통 &nbsp; &nbsp;
+                               <input type="radio" name="itemRecommend" value="R">&nbsp;추천상품
                             </c:if>
                             <c:if test="${i.itemRecommend eq 'M'}">
-	                            <input type="radio" name="itemRecommend" value="F">&nbsp;여성 &nbsp; &nbsp; &nbsp;
-	                            <input type="radio" name="itemRecommend" value="M" checked>&nbsp;남성 &nbsp; &nbsp; &nbsp;
-	                            <input type="radio" name="itemRecommend" value="C">&nbsp;공통
+                               <input type="radio" name="itemRecommend" value="F">&nbsp;여성 &nbsp; &nbsp; &nbsp;
+                               <input type="radio" name="itemRecommend" value="M" checked>&nbsp;남성 &nbsp; &nbsp; &nbsp;
+                               <input type="radio" name="itemRecommend" value="C" >&nbsp;공통 &nbsp; &nbsp;
+                               <input type="radio" name="itemRecommend" value="R">&nbsp;추천상품
+                               
                             </c:if>
                             <c:if test="${i.itemRecommend eq 'C'}">
-	                            <input type="radio" name="itemRecommend" value="F">&nbsp;여성 &nbsp; &nbsp; &nbsp;
-	                            <input type="radio" name="itemRecommend" value="M">&nbsp;남성 &nbsp; &nbsp; &nbsp;
-	                            <input type="radio" name="itemRecommend" value="C" checked>&nbsp;공통
+                               <input type="radio" name="itemRecommend" value="F">&nbsp;여성 &nbsp; &nbsp; &nbsp;
+                               <input type="radio" name="itemRecommend" value="M">&nbsp;남성 &nbsp; &nbsp; &nbsp;
+                               <input type="radio" name="itemRecommend" value="C" checked>&nbsp;공통 &nbsp; &nbsp;
+                               <input type="radio" name="itemRecommend" value="R">&nbsp;추천상품
+                            </c:if>
+                             <c:if test="${i.itemRecommend eq 'R'}">
+                               <input type="radio" name="itemRecommend" value="F">&nbsp;여성 &nbsp; &nbsp; &nbsp;
+                               <input type="radio" name="itemRecommend" value="M">&nbsp;남성 &nbsp; &nbsp; &nbsp;
+                               <input type="radio" name="itemRecommend" value="C">&nbsp;공통&nbsp; &nbsp; &nbsp;
+                               <input type="radio" name="itemRecommend" value="R" checked>&nbsp;추천상품
                             </c:if>
                         </td>
 
@@ -355,50 +367,50 @@ float:left;
                     <tr>
                         <td id="td1"> 게시 상태</td>
                         <td id="td2">
-	                    	<c:if test="${i.itemDpStatus eq 'Y' }">
-	                            <input type="radio" name="itemDpStatus" value="Y" checked>&nbsp;게시 &nbsp; &nbsp; &nbsp;
-	                            <input type="radio" name="itemDpStatus" value="N">&nbsp;중지
-	                        </c:if>
-	                        <c:if test="${i.itemDpStatus eq 'N' }">
-	                            <input type="radio" name="itemDpStatus" value="Y">&nbsp;게시 &nbsp; &nbsp; &nbsp;
-	                            <input type="radio" name="itemDpStatus" value="N" checked>&nbsp;중지
-	                        </c:if>
+                          <c:if test="${i.itemDpStatus eq 'Y' }">
+                               <input type="radio" name="itemDpStatus" value="Y" checked>&nbsp;게시 &nbsp; &nbsp; &nbsp;
+                               <input type="radio" name="itemDpStatus" value="N">&nbsp;중지
+                           </c:if>
+                           <c:if test="${i.itemDpStatus eq 'N' }">
+                               <input type="radio" name="itemDpStatus" value="Y">&nbsp;게시 &nbsp; &nbsp; &nbsp;
+                               <input type="radio" name="itemDpStatus" value="N" checked>&nbsp;중지
+                           </c:if>
                         </td>
                         <td id="td3">이벤트 상품 여부</td>
                         <td id="td4">
-                        	<c:if test="${i.itemEventStatus eq 'Y'}">
-                        	O
-                        		<!-- <input type="radio" name="itemEventStatus" value="Y" checked>&nbsp;O &nbsp; &nbsp; &nbsp;
-	                            <input type="radio" name="itemEventStatus" value="N">&nbsp;X   -->
+                           <c:if test="${i.itemEventStatus eq 'Y'}">
+                           O
+                              <!-- <input type="radio" name="itemEventStatus" value="Y" checked>&nbsp;O &nbsp; &nbsp; &nbsp;
+                               <input type="radio" name="itemEventStatus" value="N">&nbsp;X   -->
                             </c:if>
                             <c:if test="${i.itemEventStatus eq 'N'}">
                             X
                          
-	                           <!-- <input type="radio" name="itemEventStatus" value="Y">&nbsp;O&nbsp; &nbsp; &nbsp;
-	                            <input type="radio" name="itemEventStatus" value="N" checked>&nbsp;X -->
+                              <!-- <input type="radio" name="itemEventStatus" value="Y">&nbsp;O&nbsp; &nbsp; &nbsp;
+                               <input type="radio" name="itemEventStatus" value="N" checked>&nbsp;X -->
                             </c:if>
                         </td>
 
                     </tr>
                     
                     <c:if test="${i.itemEventStatus eq 'Y' }">
-                    	<tr>
-                    		<td>이벤트 명</td>
-                    		<td colspan="2">${i.eventName }<td>
-                    	</tr>
+                       <tr>
+                          <td>이벤트 명</td>
+                          <td colspan="2">${i.eventName }<td>
+                       </tr>
                     </c:if>
 
                      <tr>
-						<td id="td1">상품 이미지</td>
+                  <td id="td1">상품 이미지</td>
                         <td colspan="3">
                             <div class="filebox preview-image1"> 
-                            	<div class="upload-display1"><div class="upload-thumb-wrap1"><img id="beforeImage" src="${contextPath }/resources/uploadFiles/${i.imageRename}"></div></div>
-	                                <input class="upload-name1" value="파일선택" disabled="disabled" > 
-	                                <label for="input-file1">업로드</label> 
-	                                <input type="file" id="input-file1" class="upload-hidden1" name="uploadFile" accept="image/*" title="이미지 파일만 업로드 가능"> 
-                         	</div>
+                            <div class="upload-display1"><div class="upload-thumb-wrap1"><img id="beforeImage" src="${contextPath }/resources/uploadFiles/${i.imageRename}"></div></div>
+                                <input class="upload-name1" value="파일선택" disabled="disabled" > 
+                                <label for="input-file1">업로드</label> 
+                                <input type="file" id="input-file1" class="upload-hidden1" name="uploadFile1" accept="image/*" title="이미지 파일만 업로드 가능"> 
+                            </div>
                         </td>
-                    	
+                       
                     
                     </tr>
 
@@ -406,49 +418,50 @@ float:left;
                         <td id="td1">상품 상세 설명</td>
                         <td colspan="3">
                             <div class="filebox preview-image2"> 
-                            	<div class="upload-display2"><div class="upload-thumb-wrap2"><img id="beforeImage" src="${contextPath }/resources/uploadFiles/${m[0].imageRename}"></div></div>
+                                  <div class="upload-display2"><div class="upload-thumb-wrap2"><img id="beforeImage" src="${contextPath }/resources/uploadFiles/${m[0].imageRename}"></div></div>
                                 <input class="upload-name2" value="파일선택" disabled="disabled" > 
                                 <label for="input-file2">업로드</label> 
-                                <input type="file" id="input-file2" class="upload-hidden2" name="uploadFile" accept="image/*" title="이미지 파일만 업로드 가능"> 
-                         	</div>
+                                <input type="file" id="input-file2" class="upload-hidden2" name="uploadFile2" accept="image/*" title="이미지 파일만 업로드 가능"> 
+                            </div>
                         </td>
                     </tr>
                 </table>
           
             <div style="text-align: center;">
             
-            	<input type="hidden" name="type" value="${type }">
-            	<input type="hidden" name="page" value="${page }">
-            	<input type="hidden" name="eventNo" value="${eventNo }">
+            
             
             
                 <input type="submit" class="btn" value="수정">
                 
                
-	                <c:if test="${type eq 'itemEvent' }">
-	                	<c:url var="goItemEvent" value="iEventInsertView.do">
-	                		<c:param name="page" value="${page }"/>
-	                	</c:url>
-		                <input type="button" class="btn" value="목록" onclick="location.href='${goItemEvent}'">                
-	                </c:if>
-	                <c:if test="${type eq 'itemList' }">
-	                	<c:url var="goItemList" value="itemListA.do">
-	                		<c:param name="page" value="${page }"/>
-	                		<c:param name="itemCategory" value="${itemCategory }"/>
-	                	</c:url>
-		                <input type="button" class="btn" value="목록" onclick="location.href='${goItemList}'">                
-	                </c:if>
-	                <c:if test="${type eq 'event' }">
-	                	<c:url var="goItemList" value="bannerDetail.do">
-	                		<c:param name="page" value="${page }"/>
-	                		<c:param name="eventNo" value="${eventNo }"/>
-	                	</c:url>
-		                <input type="button" class="btn" value="목록" onclick="location.href='${goItemList}'">                
-	                </c:if>
+                   <c:if test="${type eq 'itemEvent' }">
+                      <c:url var="goItemEvent" value="iEventInsertView.do">
+                         <c:param name="page" value="${page }"/>
+                      </c:url>
+                      <input type="button" class="btn" value="목록" onclick="location.href='${goItemEvent}'">                
+                   </c:if>
+                   <c:if test="${type eq 'itemList' }">
+                      <c:url var="goItemList" value="itemListA.do">
+                         <c:param name="page" value="${page }"/>
+                         <c:param name="itemCategory" value="${itemCategory }"/>
+                         <c:param name="categoryNo" value="${categoryNo }"/>
+                         <c:param name="word" value="${word }"/>
+                         <c:param name="type" value="${type2 }"/>
+                         
+                      </c:url>
+                      <input type="button" class="btn" value="목록" onclick="location.href='${goItemList}'">                
+                   </c:if>
+                   <c:if test="${type eq 'event' }">
+                      <c:url var="goItemList" value="bannerDetail.do">
+                         <c:param name="page" value="${page }"/>
+                         <c:param name="eventNo" value="${eventNo }"/>
+                      </c:url>
+                      <input type="button" class="btn" value="목록" onclick="location.href='${goItemList}'">                
+                   </c:if>
     
                 
-                <c:out value="${eventNo }"/>
-                
+              
                 <input type="reset" class="btn" value="취소">
             </div>
         </form>
@@ -461,29 +474,29 @@ float:left;
       
         //상품 등록시 필요정보 공백 제한
         function validate(){
-        	
+           
         
-    	if($("#itemName").val().trim().length==0){
-    			alert('상품명을 입력하세요.')
-    		
-    		return false;
-    		
-    	}else if($("#itemPrice").val().trim().length==0){
-    			alert('가격을 입력하세요.')
-    		
-    		return false;
-    	}else if($("#itemMemo").val().trim().length==0){
-			alert('상품 메모를 입력하세요.')
-		
-		return false;
-    			
+       if($("#itemName").val().trim().length==0){
+             alert('상품명을 입력하세요.')
+          
+          return false;
+          
+       }else if($("#itemPrice").val().trim().length==0){
+             alert('가격을 입력하세요.')
+          
+          return false;
+       }else if($("#itemMemo").val().trim().length==0){
+         alert('상품 메모를 입력하세요.')
+      
+      return false;
+             
     
-    	}else{
-    		alert('상품이 등록되었습니다.');
-    		return true;
-    	}
-    	
-    	
+       }else{
+          alert('상품이 등록되었습니다.');
+          return true;
+       }
+       
+       
     };
     
     
@@ -503,7 +516,7 @@ float:left;
              $(this).siblings('.upload-name1').val(filename);
          });
 
-        		 //preview image 
+               //preview image 
          var imgTarget = $('.preview-image1 .upload-hidden1');
 
          imgTarget.on('change', function(){
@@ -554,7 +567,7 @@ float:left;
              $(this).siblings('.upload-name2').val(filename);
          });
 
-        		 //preview image 
+               //preview image 
          var imgTarget = $('.preview-image2 .upload-hidden2');
 
          imgTarget.on('change', function(){

@@ -124,7 +124,8 @@
 				, SYSDATE
 				, #{memberNo}
 				, (SELECT MEMBER_ID FROM MEMBER WHERE MEMBER_NO = #{memberNo})
-				, (SELECT EMAIL FROM MEMBER WHERE MEMBER_NO = #{memberNo}))
+				, (SELECT EMAIL FROM MEMBER WHERE MEMBER_NO = #{memberNo})
+				, #{customerUid})
 	</insert>
 	
 	<select id="selectItemPrice" parameterType="_int" resultType="_int">
@@ -132,7 +133,9 @@
 	</select>
 	
 	<insert id="insertSubscribeInfo" parameterType="hashMap">
-		INSERT INTO SUBSCRIBE 
+		INSERT ALL
+		INTO SUBSCRIBE (SUBSCRIBE_NO, ITEM_NO, CYCLE_NO, SUBSCRIBE_STATUS, SUBSCRIBE_DATE, AMOUNT, MEMBER_NO, MEMBER_ID, EMAIL, 
+						EXCHANGE_STATUS, ITEM_NAME, ADDRESS_1, ADDRESS_2, ADDRESS_3, PHONE, SUB_PRICE, CUSTOMER_UID, PAYMENT_DATE)
 		VALUES(SEQ_SUBSCRIBE_NO.NEXTVAL
 				, #{subInfo.itemNo}
 				, (SELECT CYCLE_NO FROM CYCLE WHERE CYCLE_PERIOD = #{cycle})
@@ -151,10 +154,113 @@
 				, #{subInfo.subPrice}
 				, #{subInfo.customerUid}
 				, SYSDATE)
+				
+		INTO DELIVERY(DELIVERY_NO, DELIVERY_STATUS, SUBSCRIBE_NO)
+		VALUES(SEQ_DELIVERY_NO.NEXTVAL
+				, DEFAULT
+				, SEQ_SUBSCRIBE_NO.NEXTVAL)
+		
+		SELECT * FROM dual
+		
 	</insert>
 	
 	<select id="selectSubscribeStatus" parameterType="String" resultMap="subscribeResultSet">
-		SELECT * FROM SUBSCRIBE WHERE CUSTOMER_UID = #{customerUid} AND SUBSCRIBE_STATUS = 'N'
+		SELECT * FROM SUBSCRIBE 
+		WHERE CUSTOMER_UID = #{customerUid} AND SUBSCRIBE_STATUS = 'N'
 	</select>
 	
+	<select id="selectPoint" parameterType="_int" resultType="double">
+		SELECT GRADE_RATE FROM GRADE WHERE GRADE_NO = (SELECT GRADE_NO FROM MEMBER WHERE MEMBER_NO = #{memberNo})
+	</select>
+	
+	<update id="updateUsePoint" parameterType="hashMap">
+		UPDATE MEMBER SET POINT = ((SELECT POINT FROM MEMBER WHERE MEMBER_NO = #{memberNo}) - #{point}) WHERE MEMBER_NO = #{memberNo}
+	</update>
+	
+	<delete id="deleteCartList" parameterType="hashMap">
+		DELETE FROM CART
+		WHERE ITEM_NO IN
+		<foreach collection="itemNoArr" item="item" index="index" open="(" close=")" separator=",">		
+			#{item}
+		</foreach>
+	</delete>
+	
+	<select id="selectSubList" parameterType="_int" resultType="_int">
+		SELECT COUNT(*) FROM SUBSCRIBE WHERE ITEM_NO = #{itemNo}
+	</select>
+
+	<select id="selectRecommendList" resultMap="itemResultSet">
+		SELECT * FROM ITEM WHERE ITEM_RECOMMEND = 'C' AND ROWNUM BETWEEN 1 AND 4 
+	</select>
+	
+	<select id="selectRecommendCList" resultMap="itemResultSet">
+		SELECT * FROM (SELECT * FROM ITEM JOIN RECOMMEND USING(ITEM_NO) ORDER BY COMMON DESC)
+		WHERE ROWNUM BETWEEN 1 AND 4
+	</select>
+	
+	<select id="selectRecommendMList" resultMap="itemResultSet">
+		SELECT * FROM (SELECT * FROM ITEM JOIN RECOMMEND USING(ITEM_NO) ORDER BY MALE DESC)
+		WHERE ROWNUM BETWEEN 1 AND 4
+	</select>
+	
+	<select id="selectRecommendFList" resultMap="itemResultSet">
+		SELECT * FROM (SELECT * FROM ITEM JOIN RECOMMEND USING(ITEM_NO) ORDER BY FEMALE DESC)
+		WHERE ROWNUM BETWEEN 1 AND 4
+	</select>
+	
+	<select id="selectHotList" resultMap="itemResultSet">
+		SELECT * FROM (SELECT * FROM ITEM ORDER BY ITEM_COUNT DESC)
+		WHERE ROWNUM BETWEEN 1 AND 4
+	</select>
+	
+	<select id="selectCustomerUid" parameterType="_int" resultType="String">
+		SELECT CUSTOMER_UID FROM SUBSCRIBE WHERE SUBSCRIBE_NO = #{subNo}
+	</select>
+	
+	<select id="selectSubCount" parameterType="String" resultType="_int">
+		SELECT COUNT(*) 
+		FROM SUBSCRIBE 
+		WHERE CUSTOMER_UID = #{customerUid}
+	</select>
+	
+	<select id="selectDeliveryCount" parameterType="String" resultType="_int">
+		SELECT COUNT(*) 
+		FROM SUBSCRIBE 
+		JOIN DELIVERY USING(SUBSCRIBE_NO) 
+		WHERE CUSTOMER_UID=#{customerUid} AND DELIVERY_STATUS = 'N'
+	</select>
+	
+	<select id="selectCancleCount" parameterType="String" resultType="_int">
+		SELECT COUNT(*)
+		FROM SUBSCRIBE
+		WHERE CUSTOMER_UID = #{customerUid} AND SUBSCRIBE_STATUS = 'Y'
+	</select>
+	
+	<select id="selectSubNo" parameterType="mSubscribe" resultType="_int">
+		SELECT SUBSCRIBE_NO FROM SUBSCRIBE WHERE CUSTOMER_UID = #{customerUid} AND MEMBER_NO = #{memberNo} AND ITEM_NO = #{itemNo}
+	</select>
+	
+	<select id="selectCycle" resultType="_int">
+		SELECT CYCLE_PERIOD FROM CYCLE WHERE CYCLE_NO = #{cycleNo}
+	</select>
+	
+	<select id="selectSubPrice" parameterType="_int" resultType="_int">
+		SELECT SUB_PRICE FROM SUBSCRIBE WHERE SUBSCRIBE_NO = #{subNo} 
+	</select>
+	
+	<update id="updateGenderCount" parameterType="hashMap">
+		UPDATE RECOMMEND
+		<choose>
+			<when test="gender == M">
+				SET MALE = MALE + 1	
+			</when>
+			<when test="gender == F">
+				SET FEMALE = FEMALE + 1
+			</when>
+			<otherwise>
+				SET COMMON = COMMON + 1
+			</otherwise>
+		</choose>
+		WHERE ITEM_NO = #{itemNo}
+	</update>
 </mapper>

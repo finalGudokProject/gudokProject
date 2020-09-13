@@ -4,13 +4,12 @@ import java.io.Serializable;
 import java.sql.Date;
 
 public class AdminExchange implements Serializable {
-	
+
 	/**
-	 * 
-	 */
+	* 
+	*/
 	private static final long serialVersionUID = 4268791731921456975L;
 
-	
 	private int exchangeNo;
 	private String exchangeStatus;
 	private String exchangeContent;
@@ -20,12 +19,13 @@ public class AdminExchange implements Serializable {
 	private int exchangeCategory;
 	private String memberId;
 	private int itemPrice;
-	
-	public AdminExchange() {}
+	private int totalPayment;
+
+	public AdminExchange() {
+	}
 
 	public AdminExchange(int exchangeNo, String exchangeStatus, String exchangeContent, Date exchangeDate,
-			String itemName, int subscribeNo, int exchangeCategory, String memberId, int itemPrice) {
-		super();
+			String itemName, int subscribeNo, int exchangeCategory, String memberId, int itemPrice, int totalPayment) {
 		this.exchangeNo = exchangeNo;
 		this.exchangeStatus = exchangeStatus;
 		this.exchangeContent = exchangeContent;
@@ -35,6 +35,7 @@ public class AdminExchange implements Serializable {
 		this.exchangeCategory = exchangeCategory;
 		this.memberId = memberId;
 		this.itemPrice = itemPrice;
+		this.totalPayment = totalPayment;
 	}
 
 	public int getExchangeNo() {
@@ -109,6 +110,14 @@ public class AdminExchange implements Serializable {
 		this.itemPrice = itemPrice;
 	}
 
+	public int getTotalPayment() {
+		return totalPayment;
+	}
+
+	public void setTotalPayment(int totalPayment) {
+		this.totalPayment = totalPayment;
+	}
+
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
@@ -118,9 +127,7 @@ public class AdminExchange implements Serializable {
 		return "AdminExchange [exchangeNo=" + exchangeNo + ", exchangeStatus=" + exchangeStatus + ", exchangeContent="
 				+ exchangeContent + ", exchangeDate=" + exchangeDate + ", itemName=" + itemName + ", subscribeNo="
 				+ subscribeNo + ", exchangeCategory=" + exchangeCategory + ", memberId=" + memberId + ", itemPrice="
-				+ itemPrice + "]";
+				+ itemPrice + ", totalPayment=" + totalPayment + "]";
 	}
-	
-	
 
 }

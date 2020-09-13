@@ -719,4 +719,107 @@ public class ItemServiceImpl implements ItemService {
 		return iDao.selectSubscribeStatus(customerUid);
 	}
 
+	@Override
+	public double selectPointRate(int memberNo) {
+		return iDao.selectPointRate(memberNo);
+	}
+
+	@Override
+	public int updateUsePoint(Map<String, Object> pointMap) {
+		return iDao.updateUsePoint(pointMap);
+	}
+
+	@Override
+	public int deleteCartList(HashMap<String, Object> map) {
+		return iDao.deleteCartList(map);
+	}
+
+	@Override
+	public int selectSubList(Integer no) {	
+		return iDao.selectSubList(no);
+	}
+
+	@Override
+	public ArrayList<Item> selectHomeRecommendList() {
+		return iDao.selectHomeRecommendList();
+	}
+	
+	public int updateItemBannerStatus(int i) {
+		return iDao.updateItemBannerStatus(i);
+	}
+	
+	@Override
+	public ArrayList<Item> selectBestList() {
+		return iDao.selectBestList();
+	}
+
+	@Override
+	public ArrayList<Item> selectnewList() {
+		return iDao.selectNewList();
+	}
+
+	@Override
+	public ArrayList<Item> selectHomeRecommendCList() {
+		return iDao.selectHomeRecommendCList();
+	}
+
+	@Override
+	public ArrayList<Item> selectHomeRecommendMList() {
+		return iDao.selectHomeRecommendMList();
+	}
+
+	@Override
+	public ArrayList<Item> selectHomeRecommendFList() {
+		return iDao.selectHomeRecommendFList();
+	}
+
+	@Override
+	public ArrayList<Item> selecthotList() {
+		return iDao.selectHotList();
+	}
+	
+	@Override
+	public ArrayList<Item> selectHotList() {
+		return iDao.selectHotList();
+	}
+	
+	@Override
+	public String selectCustomerUid(int subNo) {
+		return iDao.selectCustomerUid(subNo);
+	}
+
+	@Override
+	public int selectSubCount(String customerUid) {
+		return iDao.selectSubCount(customerUid);
+	}
+
+	@Override
+	public int selectDeliveryCount(String customerUid) {
+		return iDao.selectDeliveryCount(customerUid);
+	}
+
+	@Override
+	public int selectCancleCount(String customerUid) {
+		return iDao.selectCancleCount(customerUid);
+	}
+	
+	@Override
+	public int selectSubNo(Subscribe subInfo) {
+		return iDao.selectSubNo(subInfo);
+	}
+	
+	@Override
+	public int selectCycle(int cycleNo) {
+		return iDao.selectCycle(cycleNo);
+	}
+	
+	@Override
+	public int selectSubPrice(int subNo) {
+		return iDao.selectSubPrice(subNo);
+	}
+	
+	@Override
+	public int genderCount(Map<String, Object> map) {
+		return iDao.genderCount(map);
+	}
 }

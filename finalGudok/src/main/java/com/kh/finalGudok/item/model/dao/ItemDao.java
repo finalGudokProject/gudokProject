@@ -684,5 +684,83 @@ public class ItemDao {
 		return (ArrayList)sqlSessionTemplate.selectList("itemMapper.selectSubscribeStatus", customerUid);
 	}
 
+	public double selectPointRate(int memberNo) {
+		return sqlSessionTemplate.selectOne("itemMapper.selectPoint", memberNo);
+	}
+
+	public int updateUsePoint(Map<String, Object> pointMap) {
+		return sqlSessionTemplate.update("itemMapper.updateUsePoint", pointMap);
+	}
+
+	public int deleteCartList(HashMap<String, Object> map) {
+		return sqlSessionTemplate.delete("itemMapper.deleteCartList", map);
+	}
+
+	public int selectSubList(Integer no) {
+		return sqlSessionTemplate.selectOne("itemMapper.selectSubList", no);
+	}
+
+	public ArrayList<Item> selectHomeRecommendList() {
+		return (ArrayList)sqlSessionTemplate.selectList("itemMapper.selectRecommendList");
+	}
+
+	public int updateItemBannerStatus(int i) {
+		return sqlSessionTemplate.update("adminItemMapper.updateItemBannerStatus", i);
+	}
 	
+	public ArrayList<Item> selectBestList() {
+		return (ArrayList)sqlSessionTemplate.selectList("itemListMapper.selectBestList");
+	}
+
+	public ArrayList<Item> selectNewList() {
+		return (ArrayList)sqlSessionTemplate.selectList("itemListMapper.selectHomeNewList");
+	}
+
+	public ArrayList<Item> selectHomeRecommendCList() {
+		return (ArrayList)sqlSessionTemplate.selectList("itemMapper.selectRecommendCList");
+	}
+
+	public ArrayList<Item> selectHomeRecommendMList() {
+		return (ArrayList)sqlSessionTemplate.selectList("itemMapper.selectRecommendMList");
+	}
+
+	public ArrayList<Item> selectHomeRecommendFList() {
+		return (ArrayList)sqlSessionTemplate.selectList("itemMapper.selectRecommendFList");
+	}
+	
+	public ArrayList<Item> selectHotList() {
+		return (ArrayList)sqlSessionTemplate.selectList("itemMapper.selectHotList");
+	}
+	
+	public String selectCustomerUid(int subNo) {
+		return sqlSessionTemplate.selectOne("itemMapper.selectCustomerUid", subNo);
+	}
+
+	public int selectSubCount(String customerUid) {
+		return sqlSessionTemplate.selectOne("itemMapper.selectSubCount",customerUid);
+	}
+
+	public int selectDeliveryCount(String customerUid) {
+		return sqlSessionTemplate.selectOne("itemMapper.selectDeliveryCount",customerUid);
+	}
+
+	public int selectCancleCount(String customerUid) {
+		return sqlSessionTemplate.selectOne("itemMapper.selectCancleCount",customerUid);
+	}
+	
+	public int selectSubNo(Subscribe subInfo) {
+		return sqlSessionTemplate.selectOne("itemMapper.selectSubNo", subInfo);
+	}
+	
+	public int selectCycle(int cycleNo) {
+		return sqlSessionTemplate.selectOne("itemMapper.selectCycle", cycleNo);
+	}
+	
+	public int selectSubPrice(int subNo) {
+		return sqlSessionTemplate.selectOne("itemMapper.selectSubPrice", subNo);
+	}
+	
+	public int genderCount(Map<String, Object> map) {
+		return sqlSessionTemplate.update("itemMapper.updateGenderCount", map);
+	}
 }

@@ -535,10 +535,6 @@ public class MemberDao {
 		return sqlSessionTemplate.update("memberMapper.updateSubscribeDestination",d);
 	}
 
-	public int selectUsedPoint(int memberNo) {
-		return sqlSessionTemplate.selectOne("memberMapper.selectUsedPoint", memberNo);
-	}
-
 	public int updateMyPoint(Member loginUser) {
 		return sqlSessionTemplate.update("memberMapper.updateMyPoint", loginUser);
 	}
@@ -555,5 +551,25 @@ public class MemberDao {
 		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
 		return (ArrayList) sqlSessionTemplate.selectList("memberMapper.selectSubscribeCancel", s, rowBounds);
+	}
+	
+	public Member selectMember(Member m) {
+		return sqlSessionTemplate.selectOne("memberMapper.selectMember", m);
+	}
+
+	public int selectUsedPoint(String customerUid) {
+		return sqlSessionTemplate.selectOne("memberMapper.selectUsedPoint", customerUid);
+	}
+
+//	public ArrayList<Subscribe> selectSubscribeListTable(Integer memberNo) {
+//		return (ArrayList)sqlSessionTemplate.selectList("memberMapper.selectSubscribeListTable", memberNo);
+//	}
+	
+	public String selectGender(Integer memberNo) {
+		return sqlSessionTemplate.selectOne("memberMapper.selectGender", memberNo);
+	}
+	
+	public Member checkLoginUser(String id) {
+		return sqlSessionTemplate.selectOne("memberMapper.checkLoginUser", id);
 	}
 }

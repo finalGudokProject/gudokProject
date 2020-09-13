@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>교환내역</title>
 <!-- Bootstrap CSS -->
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 
@@ -251,10 +251,10 @@
                     <c:url var="withdrawal" value="myWithdrawal.do">
 						<c:param name="memberNo" value="${loginUser.memberNo}"/>
 					</c:url>
-                    <c:url var="withdrawal" value="myWithdrawal.do">
+                    <c:url var="myInfo2" value="myInfo2.do">
 						<c:param name="memberNo" value="${loginUser.memberNo}"/>
 					</c:url>
-                    <li><a href="${withdrawal}">회원탈퇴</a></li>
+                    <li><a href="${myInfo2}">회원탈퇴</a></li>
                 </ul>
             </li>
         </ul>

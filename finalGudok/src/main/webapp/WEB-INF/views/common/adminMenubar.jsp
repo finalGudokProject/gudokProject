@@ -94,7 +94,7 @@ div {
     width:250px;
     margin-left:0px;
     margin-top:0px;
-    background-color: #CFD8DC; 
+    background-color: #E0E0E0; 
     float:left; 
     overflow-y:hidden; 
     overflow-x:hidden;

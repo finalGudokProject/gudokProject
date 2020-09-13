@@ -25,10 +25,15 @@ body {
 
 .card {
 	/* box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23); */
+	margin-left:20px;
 	text-align: center;
-	border: none;
+	width:300px;
+	border-style: none !important;
 }
 
+.cart-body{
+	border-style:none !important;
+}
 #find {
 	margin-top: 30px;
 }
@@ -65,13 +70,12 @@ body {
 	margin-right: 10px;
 }
 
-.container {
-	margin-top: 20px;
-	margin-bottom: 50px;
-}
-
 .form-signin {
 	margin-top: 50px;
+}
+
+.col{
+	text-align:center;
 }
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap"
@@ -81,41 +85,68 @@ body {
 <body>
 
 	<jsp:include page="../common/menubar.jsp" />
-	
-	<div class="container pt-3">
-		<div class="row justify-content-sm-center">
-			<div class="col-sm-6 col-md-4">
 
-				<div class="card">
-					<div class="card-body">
-						<h2 style="color: black;">로그인</h2>
-						<form class="form-signin" action="login.do" method="post">
-							<input type="text" name="memberId" class="form-control mb-3" placeholder="ID" autofocus> 
-							<input type="password" name="memberPwd" class="form-control mb-3" placeholder="Password" required> <br>
-							<button class="btn" type="submit" id="loginBtn">로그인</button>
-							<!-- <label class="checkbox float-left">
-             				 <input type="checkbox" value="remember-me">
-                				아이디 저장하기
-             				 </label> -->
-						</form>
-						<div id="find">
-							<a href="moveToFind.do">계정찾기</a>
-							<div class="vl"></div>
-							<a href="moveToSignUp.do">회원가입</a>
+		<div class="container pt-3">
+			<div class="row justify-content-sm-center">
+				<div class="col-sm-6 col-md-4">
+					<div class="card">
+						<div class="card-body">
+							<h2 style="color: black;">로그인</h2>
+							<form class="form-signin" action="login.do" method="post" id="loginForm">
+								<input type="text" id="memberId" name="memberId" class="form-control mb-3" placeholder="ID" autofocus> 
+								<input type="password" id="pwd" name="memberPwd" class="form-control mb-3" placeholder="Password" required> <br>
+								<button class="btn" type="button" id="loginBtn">로그인</button>
+								<!-- <label class="checkbox float-left">
+	             				 <input type="checkbox" value="remember-me">
+	                				아이디 저장하기
+	             				 </label> -->
+							</form>
+							<div id="find">
+								<a href="moveToFind.do">계정찾기</a>
+								<div class="vl"></div>
+								<a href="moveToSignUp.do">회원가입</a>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-
+		
 	<!-- Footer -->
 	<footer>
 		<jsp:include page="../common/footer.jsp" />
 	</footer>
+	
+	<script>
+		$("#loginBtn").on("click", function(){
+			var memberId = $("#memberId").val();
+			var memberPwd = $("#pwd").val();
+			
+			$.ajax({
+				type:"POST",
+				url:"loginCheck.do",
+				data:{id:memberId, pwd:memberPwd},
+				success:function(data){
+					if(data == "idFail"){
+						alert("아이디를 확인해주세요");
+					}
+					else if(data == "pwdFail"){
+						alert("비밀번호를 확인해주세요");
+					}else{
+						$("#loginForm").submit();
+					}
+				},
+				error : function(request, status, errorData) {
+					alert("error code: " + request.status + "\n"
+							+ "message: " + request.responseText
+							+ "error: " + errorData);
+				}
+			})
+		})
+	</script>
 	<!-- Optional JavaScript -->
 	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+	<script src="https://code.jquery.com/jquery-latest.min.js"
 		integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
 		crossorigin="anonymous"></script>
 	<script

@@ -60,6 +60,8 @@ input, select,textarea{
           			<input type="hidden" name="beforePage" value="${beforPage }">
           			<input type="hidden" name="memberNo" value="${m.memberNo }">
           			<input type="hidden" name="type" value="${type }">
+          			<input type="hidden" name="categoryNo" value="${categoryNo }">
+          			<input type="hidden" name="word" value="${word }">
                     <table>
                         <tr>
                             <td>아이디</td>
@@ -132,12 +134,17 @@ input, select,textarea{
                     	<c:if test="${type eq 'user' }">
                     		<c:url var="goList" value="gradeList.do">
                     			<c:param name="page" value="${beforePage }"/>
+                    			<c:param name="categoryNo" value="${categoryNo }"/>
+                    			<c:param name="word" value="${word }"/>
                     		</c:url>
 	                   		<input type="button" class="btn" value="목록 " onclick="location.href='${goList}'">
 	                    </c:if>
 	                    <c:if test="${type eq 'secession' }">
-	                  		  <c:url var="goSecessionList" value="sList.do">
+	                  		 <c:url var="goSecessionList" value="sList.do">
 	                    	<c:param name="page" value="${beforePage}"/>
+	                    	<c:param name="categoryNo" value="${categoryNo}"/>
+	                    	<c:param name="word" value="${word}"/>
+	                    	<c:param name="type" value="${type2}"/>
 	                    	</c:url>
 	                   		<input type="button" class="btn" value="목록 " onclick="location.href='${goSecessionList}'">
 	                    </c:if>
@@ -190,7 +197,7 @@ input, select,textarea{
                     <br>
 
 
-				<c:if test="${pi.listCount ne 0 }">
+				<c:if test="${!empty pList }">
 
                    <!------페이징 처리----->
                 <div class="page-center">
@@ -317,7 +324,7 @@ input, select,textarea{
 			 			 function goList(){
 			 			 var type=${type};
 	   	        		 var page=${beforePage };   
-	   	        		 alert(type);
+	   	        		
 	   	        		 
 	   	        		 if(type=="user"){
 	   	           		location.href="gradeList.do?page="+page;
@@ -331,7 +338,7 @@ input, select,textarea{
 			 			confirm("회원을 삭제하시겠습니까?");
 			 			 var memberNo=${m.memberNo };   
 			 			 var page=${beforePage };  
-	   	        		 alert(memberNo);
+	   	        		
 	   	           		location.href="deleteM.do?memberNo="+memberNo+"&page="+page;
 			 			
 			 		}

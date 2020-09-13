@@ -152,7 +152,59 @@ input, select,textarea{
                     
                     <div style="margin-top:50px; margin-bottom:15px; float:right; width:100%; text-align:right">
                         <div style="float:left;">
+                        <c:choose>
+                        	<c:when test="${categoryNo eq '1' }">
 	                            <select id="categoryNo" name="categoryNo" style="width:110px;">
+	                                <option value="">전체</option>
+	                                <option value="1" selected>서비스 문제</option>
+	                                <option value="2">가격 문제</option>
+	                                <option value="3">상품 문제</option>
+	                                <option value="4">개인정보 문제</option>
+	                                <option value="5">기타</option>
+	                            </select>
+	                     	</c:when>
+	                     	<c:when test="${categoryNo eq '2' }">
+	                            <select id="categoryNo" name="categoryNo" style="width:110px;">
+	                                <option value="">전체</option>
+	                                <option value="1">서비스 문제</option>
+	                                <option value="2" selected>가격 문제</option>
+	                                <option value="3">상품 문제</option>
+	                                <option value="4">개인정보 문제</option>
+	                                <option value="5">기타</option>
+	                            </select>
+	                     	</c:when>
+	                     	<c:when test="${categoryNo eq '3' }">
+	                            <select id="categoryNo" name="categoryNo" style="width:110px;">
+	                                <option value="">전체</option>
+	                                <option value="1">서비스 문제</option>
+	                                <option value="2" >가격 문제</option>
+	                                <option value="3"selected>상품 문제</option>
+	                                <option value="4">개인정보 문제</option>
+	                                <option value="5">기타</option>
+	                            </select>
+	                     	</c:when>
+	                     	<c:when test="${categoryNo eq '4' }">
+	                            <select id="categoryNo" name="categoryNo" style="width:110px;">
+	                                <option value="">전체</option>
+	                                <option value="1">서비스 문제</option>
+	                                <option value="2" >가격 문제</option>
+	                                <option value="3">상품 문제</option>
+	                                <option value="4"selected>개인정보 문제</option>
+	                                <option value="5">기타</option>
+	                            </select>
+	                     	</c:when>
+	                     	<c:when test="${categoryNo eq '5' }">
+	                            <select id="categoryNo" name="categoryNo" style="width:110px;">
+	                                <option value="">전체</option>
+	                                <option value="1">서비스 문제</option>
+	                                <option value="2" >가격 문제</option>
+	                                <option value="3">상품 문제</option>
+	                                <option value="4">개인정보 문제</option>
+	                                <option value="5"selected>기타</option>
+	                            </select>
+	                     	</c:when>
+	                     	<c:otherwise>
+	                     		<select id="categoryNo" name="categoryNo" style="width:110px;">
 	                                <option value="" selected>전체</option>
 	                                <option value="1">서비스 문제</option>
 	                                <option value="2">가격 문제</option>
@@ -160,21 +212,70 @@ input, select,textarea{
 	                                <option value="4">개인정보 문제</option>
 	                                <option value="5">기타</option>
 	                            </select>
+	                     	</c:otherwise>
+	                     </c:choose>       
+	                            
+	                     <c:choose>
+	                          <c:when test="${type eq 'memberNo' }">
 	                            <select id="type" name="type" style="width:100px;">
-	                                <option value="" selected>전체</option>
-	                                <option value="memberNo">회원번호</option>
+	                                <option value="" >전체</option>
+	                                <option value="memberNo"selected>회원번호</option>
 	                                <option value="memberId">아이디</option>
 	                                <option value="memberName">회원명</option>
 	                                <option value="content">탈퇴 사유</option>
 	                            </select>
-	                            <input type="text" id="word" name="word" value="" style="width:150px;">
+	                           </c:when>
+	                           <c:when test="${type eq 'memberId' }">
+	                            <select id="type" name="type" style="width:100px;">
+	                                <option value="" >전체</option>
+	                                <option value="memberNo">회원번호</option>
+	                                <option value="memberId"selected>아이디</option>
+	                                <option value="memberName">회원명</option>
+	                                <option value="content">탈퇴 사유</option>
+	                            </select>
+	                           </c:when>
+	                           <c:when test="${type eq 'memberName' }">
+	                            <select id="type" name="type" style="width:100px;">
+	                                <option value="" >전체</option>
+	                                <option value="memberNo">회원번호</option>
+	                                <option value="memberId">아이디</option>
+	                                <option value="memberName"selected>회원명</option>
+	                                <option value="content">탈퇴 사유</option>
+	                            </select>
+	                           </c:when>
+	                           <c:when test="${type eq 'content' }">
+	                            <select id="type" name="type" style="width:100px;">
+	                                <option value="" >전체</option>
+	                                <option value="memberNo">회원번호</option>
+	                                <option value="memberId">아이디</option>
+	                                <option value="memberName">회원명</option>
+	                                <option value="content"selected>탈퇴 사유</option>
+	                            </select>
+	                           </c:when>
+	                           <c:otherwise>
+		                           	<select id="type" name="type" style="width:100px;">
+		                                <option value="" selected>전체</option>
+		                                <option value="memberNo">회원번호</option>
+		                                <option value="memberId">아이디</option>
+		                                <option value="memberName">회원명</option>
+		                                <option value="content">탈퇴 사유</option>
+		                            </select>
+	                          </c:otherwise>
+                        </c:choose>
+	                           
+	                           
+	                           
+	                           
+	                           
+	                           
+	                            <input type="text" id="word" name="word" value="${word }" style="width:150px;">
                             <input type="button" class="btn" value="검색" onclick="search()">
                         </div> 
                     </div>
                 <br>
                 <br>
                 
-                    <table class="table">
+                    <table class="table" id="table1">
                         <thead>
                             <tr>
                                 <th onclick="event.cancelBubble=true">회원번호</th>
@@ -189,15 +290,15 @@ input, select,textarea{
                          	<c:forEach var="i" items="${msList }">
 	                             <tr>
 	                                <td onclick="event.cancelBubble=true">${i.memberNo }</td>
-	                                <td id="cursor" class="cursor">${i.memberId } (${i.memberName })</td>
-	                                <td class="secession" data-toggle="modal" data-target="#myModal">${i.secessionContent }</td>
+	                                <td class="cursor"id="cursor">${i.memberId } (${i.memberName })</td>
+	                                <td id="cursor" class="secession" data-toggle="modal" data-target="#myModal">${i.secessionContent }</td>
 	                                 <c:choose>
 		                            	<c:when test="${i.gradeNo eq '4'}"><td>1등급</td></c:when>
 		                            	<c:when test="${i.gradeNo eq '3'}"><td>2등급</td></c:when>
 		                            	<c:when test="${i.gradeNo eq '2'}"><td>3등급</td></c:when>
 		                            	<c:when test="${i.gradeNo eq '1'}"><td>4등급</td></c:when>
 			                        </c:choose>
-	                                <td onclick="event.cancelBubble=true">${i.secessionDate }</td>
+	                                <td class="cursor" onclick="event.cancelBubble=true">${i.secessionDate }</td>
 	                            </tr>
                             </c:forEach>
                             </c:if>
@@ -211,7 +312,7 @@ input, select,textarea{
 
                     <br>
 
-				<c:if test="${!empty msList }">
+		<c:if test="${!empty msList }">
                    <!------페이징 처리----->
                 <div class="page-center">
                     <ul class="pagination-t">
@@ -270,7 +371,13 @@ input, select,textarea{
                     </ul>
 
                 </div>
-                </c:if>
+        
+        </c:if>
+        
+        
+        
+        
+        
 
             </div><!--내용담은 컨테이너-->
         </div><!--250px띄운 div-->
@@ -305,10 +412,7 @@ input, select,textarea{
     	 var categoryNo=$("#categoryNo").val();
     	 var type=$("#type").val();
     	 var word=$("#word").val();
-    	
-    	 alert(categoryNo)
-    	 alert(type)
-    	 alert(word)
+    
     	 
     	 if(type=="memberNo"){
     		 if(word.replace(/[0-9]/g, "").length > 0) {
@@ -320,12 +424,6 @@ input, select,textarea{
     	 
 			
 			 location.href="sList.do?categoryNo="+categoryNo+"&type="+type+"&word="+word;
-    	
-    	
-    	 
-    	 
-    	 
-    	 
     	 
      }
      
@@ -352,11 +450,15 @@ input, select,textarea{
    	$(function(){
        		
        		$("td[class=cursor]").on("click",function(){
+       		
        			var type='secession';
        			var memberNo=$(this).parent().children().eq(0).text();
-        		 var page=${pi.currentPage };   
-        		
-        		 location.href="mDetail.do?memberNo="+memberNo+"&page="+page+"&type="+type;
+        		var page=${pi.currentPage };  
+        		var categoryNo=$("#categoryNo").val();
+        		var type2=$("#type").val();
+        		var word=$("#word").val();
+        	
+        		 location.href="mDetail.do?memberNo="+memberNo+"&page="+page+"&type="+type+"&type2="+type2+"&categoryNo="+categoryNo+"&word="+word;
        		})
        	})
 

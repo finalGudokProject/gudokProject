@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>구독조회</title>
 <!-- Bootstrap CSS -->
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
@@ -211,7 +211,7 @@
       display: block;
       margin-right: 3%;
       text-decoration: none;
-      width: 40%;
+      width: 52%;
       margin: 0 auto;
       height: 35px;
       line-height:35px;
@@ -243,7 +243,7 @@
       display: block;
       margin-right: 3%;
       text-decoration: none;
-      width: 60%;
+      width: 40%;
       margin: 0 auto;
       height: 35px;
       line-height:35px;
@@ -422,10 +422,10 @@
 						<c:param name="memberNo" value="${loginUser.memberNo}"/>
 					</c:url>
                     <li><a href="${myInfo}">회원정보 확인</a></li>
-                    <c:url var="withdrawal" value="myWithdrawal.do">
+                    <c:url var="myInfo2" value="myInfo2.do">
 						<c:param name="memberNo" value="${loginUser.memberNo}"/>
 					</c:url>
-                    <li><a href="${withdrawal}">회원탈퇴</a></li>
+                    <li><a href="${myInfo2}">회원탈퇴</a></li>
                 </ul>
             </li>
         </ul>
@@ -485,7 +485,9 @@
 			var myEvents=[];
 
 			$(function(){
-				myEvents = subscribeList();
+				subscribeList();
+				console.log("myEvents:");
+				console.log(myEvents);
 			});
 			
 			document.addEventListener('DOMContentLoaded', function() {
@@ -502,12 +504,13 @@
 			      	events:subscribeList()
 			      	
 			    });
-
+				
 			    calendar.render();
 			  });
 
 			function subscribeList(){
 				var memberNo = ${loginUser.memberNo};
+				myEvents = [];
 				$.ajax({
 					url:"subscribeList.do",
 					async: false,
@@ -516,6 +519,8 @@
 					success:function(data){
 						$tableBody = $(".subscribeTable .tbody");
 						$tableBody.html("");
+						console.log("success 함수");
+						console.log(data);
 						
 						var $tr;
 						var $td;
@@ -525,9 +530,11 @@
 						var $cancle;
 						
 						if(data.length > 0 ){
+							console.log("data" + data.length);
 							for(var i in data){
 								var colorCode = "#" + Math.round(Math.random() * 0xffffff).toString(16);
-								
+								console.log("myEvents : ")
+								console.log(myEvents);
 								if(data[i].cycleNo == 1) {
 									myEvents.push(
 										  {
@@ -541,6 +548,8 @@
 									            }
 										   }
 									)
+									console.log(i+"번째 myEvents");
+									console.log(myEvents);
 								}
 								else if(data[i].cycleNo == 2) {
 									myEvents.push(
@@ -555,6 +564,8 @@
 									            }
 										   }
 									)
+									console.log(i+"번째 myEvents");
+									console.log(myEvents);
 								}
 								else if(data[i].cycleNo == 3) {
 									myEvents.push(
@@ -569,6 +580,8 @@
 									            }
 										   }
 									)
+									console.log(i+"번째 myEvents");
+									console.log(myEvents);
 								}
 								else{
 									myEvents.push(
@@ -583,7 +596,11 @@
 									            }
 										   }
 									)
+									console.log(i+"번째 myEvents");
+									console.log(myEvents);
 								}
+								
+								
 								
 		   
 					            $tr=$("<tr>");
@@ -592,15 +609,15 @@
 					            $detailTd=$("<td>");
 					            $data=$("<td>").text(data[i].subscribeDate);
 					            $itemName=$("<td>").text(data[i].itemName);
-					            $change=$("<a href='#cycle_form' id='cycle_pop' onclick='changeCycle(" + data[i].subscribeNo+","+ data[i].memberNo+"," +'"'+data[i].itemName+'"'+","+data[i].cycleNo+")'>").text("구독주기변경");
+					            $change=$("<a href='#cycle_form' id='cycle_pop' onclick='changeCycle(" + data[i].subscribeNo+","+ data[i].memberNo+"," +'"'+data[i].itemName+'"'+","+data[i].cycleNo+","+ data[i].amount+")'>").text("구독주기/수량변경");
 					            if(data[i].deliveryStatus == 'N'){
-					            	 $cancle=$("<a href='#cancle_form' id='cancle_pop' onclick='cancleClick(" + data[i].subscribeNo+","+ data[i].memberNo+")'>").text("구독취소");
+					            	 $cancle=$("<a href='#cancle_form' id='cancle_pop' onclick='cancleClick(" + data[i].subscribeNo+","+ data[i].memberNo+","+ '"'+ data[i].deliveryStatus+ '"'+")'>").text("구독취소");
+					            } else if(data[i].deliveryStatus == 'Y'){
+					            	$cancle=$("<a href='#cancle_form' id='cancle_pop' onclick='cancleClick(" + data[i].subscribeNo+","+ data[i].memberNo+","+'"'+ data[i].deliveryStatus+'"'+")'>").text("구독취소");
 					            } else{
-					            	$cancle=$("<a href='#cancle_form' id='cancle_pop' onclick='return false;'>").text("구독취소");
+					            	$cancle=$("<a id='cancle_pop' onclick='cancleNo();'>").text("구독취소");
 					            }
-					            
-					           
-					            $detail=$("<a href='#detail_form' id='detail_pop' onclick='detailClick(" + data[i].subscribeNo+","+ data[i].memberNo+"," +'"'+data[i].itemName+'"'+","+data[i].cycleNo+","+'"'+data[i].address1+'"'+","+'"'+data[i].address2+'"'+","+'"'+data[i].address3+'"'+")'>").text("구독상세정보");
+					            $detail=$("<a href='#detail_form' id='detail_pop' onclick='detailClick(" + data[i].subscribeNo+","+ data[i].memberNo+"," +'"'+data[i].itemName+'"'+","+data[i].cycleNo+","+'"'+data[i].address1+'"'+","+'"'+data[i].address2+'"'+","+'"'+data[i].address3+'"'+","+ data[i].amount+")'>").text("구독상세정보");
 					            
 					            
 					            $tr.append($data);
@@ -622,7 +639,7 @@
 		                      +"error: " + errorData);
 		           }
 				});
-				return myEvents
+				return myEvents;
 			}
 		</script>
 
@@ -633,7 +650,7 @@
 		            <td style="width: 10%;" class="top bottom">날짜</td>
 		            <td style="width: 30%;" class="top bottom">상품정보</td>
 		            <td style="width: 20%;" class="top bottom">구독상세정보</td>
-		            <td style="width: 20%;" class="top bottom">구독주기변경</td>
+		            <td style="width: 20%;" class="top bottom">구독주기/수량변경</td>
 		            <td style="width: 10%;" class="top bottom">구독취소</td>
 		          </tr>
 	          	</thead>
@@ -659,6 +676,10 @@
 	                <td><span id="itemName2"></span></td>
                 </tr>
                 <tr>
+	                <td style="width: 100px;"><b>수량</b></td>
+	                <td><span id="count3"></span></td>
+                </tr>
+                <tr>
 	                <td style="width: 100px;"><b>구독주기</b></td>
 	                <td><span id="cycle3"></span></td>
 	            </tr>
@@ -674,10 +695,11 @@
 	      <!-- popup form #1 -->
 	      <a href="#x" class="overlay" id="cycle_form"></a>
 	      <div class="popup">
-	        <h4>구독주기 변경</h4>
+	        <h4>구독주기/수량 변경</h4>
 	        <form action="cycleChange.do" method="post">
 	        	<input type="hidden" id="subscribeNo" name="subscribeNo">
 	        	<input type="hidden" id="memberNo" name="memberNo">
+	        	
 		        <div>
 		          <table>
 		            <tr>
@@ -687,6 +709,14 @@
 		            <tr>
 		                <td style="width: 100px;"><b>제품명</b></td>
 		                <td><span id="itemName"></span></td>
+	                </tr>
+	                <tr>
+		                <td style="width: 100px;"><b>수량</b></td>
+		                <td><span id="count2"></span></td>
+	                </tr>
+	                <tr>
+		                <td style="width: 100px;"><b>변경 할 수량</b></td>
+		                <td><input type="number" name="amount" id="amount"></td>
 	                </tr>
 	                <tr>
 		                <td style="width: 100px;"><b>구독주기</b></td>
@@ -718,6 +748,7 @@
 	        <form action="subscribeCancle.do" method="post">
 	        	<input type="hidden" id="subscribeNo3" name="subscribeNo">
 	        	<input type="hidden" id="memberNo3" name="memberNo">
+	        	<input type="hidden" id="deliveryStatus" name="deliveryStatus">
 		        <div>
 		          <table>
 		          	<tr class="top">
@@ -754,11 +785,12 @@
     <jsp:include page="../common/footer.jsp"/>
     <script>
     
-	    function detailClick(subscribeNo, memberNo, itemName, cycleNo, address1, address2, address3){
+	    function detailClick(subscribeNo, memberNo, itemName, cycleNo, address1, address2, address3,amount){
 			
 			$("#subscribeNo5").text(subscribeNo);
 			$("#itemName2").text(itemName);
 			$("#address").text("["+address1+"]" + address2 + address3);
+			$("#count3").text(amount);
 			
 			if(cycleNo == 1){
 				$("#cycle3").text("1주");
@@ -771,28 +803,36 @@
 			}
 		}
 	    
-	    function changeCycle(subscribeNo, memberNo, itemName, cycleNo){
+	    function changeCycle(subscribeNo, memberNo, itemName, cycleNo, amount){
 			$("#subscribeNo").val(subscribeNo);
 			$("#memberNo").val(memberNo);
 			
+			$("#count2").text(amount);
+			$("#amount").val(amount);
 			$("#subscribeNo2").text(subscribeNo);
 			$("#itemName").text(itemName);
 			
+			
 			if(cycleNo == 1){
 				$("#cycle").text("1주");
+				$("#cycleNo").val(1);
 			} else if(cycleNo == 2){
 				$("#cycle").text("2주");
+				$("#cycleNo").val(2);
 			} else if(cycleNo == 3){
 				$("#cycle").text("3주");
+				$("#cycleNo").val(3);
 			} else{
 				$("#cycle").text("4주");
+				$("#cycleNo").val(4);
 			}
 		}
 	    
-	    function cancleClick(subscribeNo, memberNo){
+	    function cancleClick(subscribeNo, memberNo, deliveryStatus){
 	    	$("#subscribeNo3").val(subscribeNo);
 			$("#memberNo3").val(memberNo);
 			$("#subscribeNo4").text(subscribeNo);
+			$("#deliveryStatus").val(deliveryStatus);
 			$("#cancleContent").attr("disabled", "disabled");
 	    }
 	    
@@ -809,6 +849,12 @@
         		}
     		})
     	})
+    	
+    	function cancleNo(){
+	    	alert("배송 중인 상품은 구독 취소가 불가능합니다.")
+	    	
+	    	return false;
+	    }
     </script>
 </body>
 </html>

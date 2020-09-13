@@ -146,8 +146,8 @@
 									<c:param name="category" value="N"/>
 								</c:url>
 	                            <tr id="cursor"onclick='location.href="${exchangeDetail }"'>
-	                                <td style="width:68%; text-align:left;">${i.exchangeContent }</td>
-	                                <td style="width:32%">${i.exchangeDate }</td>
+	                                <td style="width:60%; text-align:left;">${i.exchangeContent }</td>
+	                                <td style="width:40%">${i.exchangeDate }</td>
 	                            </tr>
                             </c:forEach>
                             </c:if>
@@ -191,7 +191,7 @@
 	                        <tr id="cursor"onclick='location.href="${orderDetail }"'>
 	                            <td style="width:40%">${i.itemName }</td>
 	                            <td style="width:20%">${i.memberId }</td>
-	                            <td style="width:30%">${i.subscribeDate }</td>
+	                            <td style="width:40%">${i.subscribeDate }</td>
 	                        </tr>
                         </c:forEach>
                         </c:if>
@@ -210,18 +210,27 @@
                     <td id="maintd1">
                         <div id=subBox1>
                             <div style="float:left; width:35%;text-align:left;"><h5><b>방문·가입 현황</b></h5></div>
-                            <div class="mr-0" style="float:right; width:65%;">
+       
 	                           
-	                                <div style="float:left;width:45%;margin:5px">총 방문자 : ${sessionScope.totalCount }명</div>
-	                                <div style="float:left;width:45%;margin:5px">총 가입자 : ${sessionScope.totalMember }명</div>
+	                                <div style="float:right;width:60%;margin-left:10px">
+	                                
+	                                
+	                               <div style="float:left;">총 방문자  </div>&nbsp;
+	                               <div class="test3" style="float:left;"> ${sessionScope.totalCount }</div>
+	                               	<div style="float:left;">명/총 가입자</div>&nbsp;
+	                               	  <div class="test4" style="float:left;"> ${sessionScope.totalMember }</div>
+	                               	  <div style="float:left;">명</div>
+	                               	  
+	                               	  
+	                               	  </div>
 	                                
 	                        
-                            </div> 
+                         
                           <br>
                         
                     
                         <div id="visitor_chart" style="height:180px;">
-                            구글차트 삽입예정
+              
                         </div>
                         </div>
                     </td>
@@ -229,7 +238,8 @@
                 <tr>
                     <td style="border:none;"colspan="2" rowspan="3">
                         <div id="subBox2"> 
-                            <div style="float:left;margin-bottom:5px;"><h5><b>주간 매출 현황</b></h5></div>
+                            <div style="float:left;margin-bottom:5px;"><h5 style="float:left"><b>주간 매출 현황</b></h5>
+                            <div style="float:left; margin-left:20px"> 주간 총 거래건   </div><div class="test1" style="float:left; margin-left:10px">${sumTotalC }</div><div style="float:left;">건 / 매출액</div> <div class="test2" style="display:inline;margin-left:10px">${sumTotalP }</div>원</div>
                             <div class="mr-0" style="float:right;">
                             	 <c:url var="goSalesList" value="sDateList.do">
                                     	<c:param name="type" value="N"/>
@@ -255,7 +265,7 @@
                    	<c:forEach var="i" items="${pList }" varStatus="cnt">
                         <tr>
                             <td>${i.categoryNo }</td>
-                            <td>${i.totalPayment } 원</td>
+                            <td><div class="pay" style="display:inline">${i.totalPayment }</div> 원</td>
                             <td>${i.totalCount } 건</td>
                         </tr>
                      </c:forEach>
@@ -362,8 +372,8 @@
 									<c:param name="page" value="1"/>
 								</c:url>
                             <tr id="cursor" onclick="${eventDetail}">
-                                <td style="width:70%; text-align:left">${i.eventName }</td>
-                                <td style="width:30%;">이벤트 상품 ${i.itemCount }개</td>
+                                <td style="width:60%; text-align:left">${i.eventName }</td>
+                                <td style="width:40%;">이벤트 상품 ${i.itemCount }개</td>
                             </tr>
                            </c:forEach>
                            
@@ -394,6 +404,38 @@
 
 
  <script>
+ 
+ //금액 변환
+ 
+ $(function(){
+	
+	 var test1=$(".test1").text();
+	 var chg1=addComma(test1);
+	 $(".test1").text(chg1);
+	 
+	 
+	 var test2=$(".test2").text();
+	 var chg2=addComma(test2);
+	 $(".test2").text(chg2);
+	 
+	 var test3=$(".test3").text();
+	 var chg3=addComma(test3);
+	 $(".test3").text(chg3);
+	 
+	 
+	 var test4=$(".test4").text();
+	 var chg4=addComma(test4);
+	 $(".test4").text(chg4);
+	
+	 
+ })
+ 
+ 	function addComma(num) {
+             var regexp = /\B(?=(\d{3})+(?!\d))/g;
+            return num.toString().replace(regexp, ',');
+         }
+ 
+ 
  	//일일 방문자 가입현황 차트
  	
       google.charts.load('current', {'packages':['corechart']});

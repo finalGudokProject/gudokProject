@@ -198,6 +198,8 @@
 				</tr>
 				<tr>
 					<td>
+					
+						<!-- 상품평 이미지 조회 -->
 						<c:forEach var="r" items="${rv }">
 							<c:if test="${!empty r.imageOriginalName }">
 								<div style="display:inline; cursor:pointer;" class="reviewImg">
@@ -208,6 +210,8 @@
 								등록한 사진이 없습니다.
 							</c:if>
 						</c:forEach>
+						
+						<!-- 수정하기 폼 이미지 클릭 시 -->
 						<script>
 							$(function(){
 								$(".reviewImg").on("click", function(){
@@ -234,42 +238,45 @@
 		</div>
 	</div>
 	</form>
-	<script>
-		$(function(){
-			$("#completeBtn").on("click", function(e){
-				e.preventDefault();
-				/* var reviewNo = "${rv[0].reviewNo}";
-				var itemNo = "${rv[0].itemNo}";
-				var reviewContent = "${rv[0].reviewContent}";
-				var reviewRate = $("input[type=radio]:checked").val();
-				var memberNo = "${loginUser.memberNo}";
-				var memberId = "${loginUser.memberId}";
-				var email = "${loginUser.memberId}"; */
-				swal({
-					text : "상품평을 수정하시겠습니까?",
-					buttons : ["예", "아니오"],
-					closeOnEsc : false,
-					dangerMode : true,
-				}).then((result)=>{
-					if(result){
-						
-					}else{
-						$("#reviewUpForm").submit();
-					}
-				})
-			})
-		})
-	</script>
 	
-	<script type="text/javascript">
-	    $(document).ready(function(){
-	        $(".retouchImgC").tooltip();
-	    });
-	</script>
-	
+	<!-- 수정 완료 버튼 -->
+   <script>
+      $(function(){
+         $("#completeBtn").on("click", function(e){
+            e.preventDefault();
+            if($("#reviewText").val().length >= 10){
+               /* var reviewNo = "${rv[0].reviewNo}";
+               var itemNo = "${rv[0].itemNo}";
+               var reviewContent = "${rv[0].reviewContent}";
+               var reviewRate = $("input[type=radio]:checked").val();
+               var memberNo = "${loginUser.memberNo}";
+               var memberId = "${loginUser.memberId}";
+               var email = "${loginUser.memberId}"; */
+               swal({
+                  text : "상품평을 수정하시겠습니까?",
+                  buttons : ["예", "아니오"],
+                  closeOnEsc : false,
+                  dangerMode : true,
+               }).then((result)=>{
+                  if(result){
+                     
+                  }else{
+                     $("#reviewUpForm").submit();
+                  }
+               })
+            }else{
+               swal("","10자 이상으로 입력해 주세요.","warning");
+            }
+         })
+      })
+   </script>
+
+	<!-- 상품평 별점 -->	
 	<script>
 		$(function(){
 			$('.starRev .starRv').on("click", function(){
+				
+				/* 원래 줬던 평점보다 낮은 평점을 선택한다면 */
 				if(${rv[0].reviewRate} > $(this).text()){
 					swal({
 						text : "상품에 대한 불만 사항은 상품 문의를 통해 해주시길 바랍니다.\n 평점을 낮추시겠습니까?",
@@ -301,6 +308,8 @@
 							}
 						}
 					})
+					
+				/* 원래 줬던 평점보다 높은 평점을 선택한다면 */
 				}else{
 					$(this).parent().children('span').removeClass('on');
 					$(this).addClass('on').prevAll('span').addClass('on');
