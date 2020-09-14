@@ -352,8 +352,7 @@ input, select,textarea{
        var one=${list[0].temp2};
        var two=${list[1].temp2};
        var three=${list[2].temp2};
-       var fourth=${list[3].temp2};
-       var five=${list[4].temp2};
+    
        
        
          var data = google.visualization.arrayToDataTable([
@@ -362,9 +361,8 @@ input, select,textarea{
               ['Task', 'Percentage'],
               ['상품 불필요', one],
               ['가격 문제', two],
-              ['개인적 사유', three],
-              ['상품에 대한 착오', fourth],
-              ['기타', five]
+              ['기타', three]
+           
             ]);
         
        
@@ -375,7 +373,7 @@ input, select,textarea{
           
           pieHole: 0.4,
           chartArea:{left:30,top:50,width:'100%',height:'100%'},
-            colors:['#7986CB','#42A5F5','#5C6BC0','#81D4FA','#4A148C'],
+            colors:['#7986CB','#42A5F5','#5C6BC0'],
             fontSize:14
         };
 

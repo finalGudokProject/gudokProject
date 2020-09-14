@@ -1,4 +1,5 @@
 package com.kh.finalGudok.member.controller;
+
 import static com.kh.finalGudok.common.pagination2.getPageInfo2;
 
 import java.io.IOException;
@@ -141,27 +142,28 @@ public class MemberController {
 		}
 		return mv;
 	}
-	
-	@RequestMapping(value="loginCheck.do", method=RequestMethod.POST)
-	public void loginCheck(@RequestParam("id") String id, @RequestParam("pwd") String pwd, HttpServletResponse response) throws IOException {
+
+	@RequestMapping(value = "loginCheck.do", method = RequestMethod.POST)
+	public void loginCheck(@RequestParam("id") String id, @RequestParam("pwd") String pwd, HttpServletResponse response)
+			throws IOException {
 		PrintWriter out = response.getWriter();
 		System.out.println(id);
 		System.out.println(pwd);
-		
+
 		Member userCheck = mService.checkLoginUser(id);
 		System.out.println(userCheck);
 //		int pwdCheck = mService.checkLoginPwd(pwd);
-		
-		if(userCheck == null) {
+
+		if (userCheck == null) {
 			out.append("idFail");
 			out.flush();
-		}else {
+		} else {
 			String checkPwd = userCheck.getMemberPwd();
-			
+
 			if (bcryptPasswordEncoder.matches(pwd, checkPwd)) {
 				out.append("success");
 				out.flush();
-			}else {
+			} else {
 				out.append("pwdFail");
 				out.flush();
 			}
@@ -170,7 +172,8 @@ public class MemberController {
 	}
 
 	@RequestMapping(value = "logout.do", method = RequestMethod.GET)
-	public ModelAndView logout(SessionStatus status, HttpSession session, HttpServletResponse response, ModelAndView mv) {
+	public ModelAndView logout(SessionStatus status, HttpSession session, HttpServletResponse response,
+			ModelAndView mv) {
 		status.setComplete();
 		session.invalidate();
 		mv.setViewName("redirect:home.do");
@@ -235,7 +238,7 @@ public class MemberController {
 		response.setContentType("application/json;charset=utf-8");
 		PrintWriter out = response.getWriter();
 		JSONObject sendJson = new JSONObject();
-		
+
 		boolean emailCheckResult = mService.emailDupCheck(email) == 0 ? true : false;
 //		System.out.println(emailCheckResult);
 		String user = "p.jaemyung91@gmai.com";
@@ -249,7 +252,7 @@ public class MemberController {
 			out.print(sendJson);
 			out.flush();
 			out.close();
-			
+
 			MimeMessage msg = mailSender.createMimeMessage();
 			try {
 
@@ -306,7 +309,7 @@ public class MemberController {
 			out.append("success");
 			out.flush();
 			out.close();
-			
+
 			String user = "p.jaemyung91@gmai.com";
 			MimeMessage msg = mailSender.createMimeMessage();
 
@@ -332,7 +335,8 @@ public class MemberController {
 			int result2 = mService.changePwd(m);
 		}
 	}
-	// ------------------------------ 마이페이지  ----------------------------------------------
+	// ------------------------------ 마이페이지
+	// ----------------------------------------------
 
 	// 마이페이지 이동
 	@RequestMapping("mypage.do")
@@ -345,15 +349,15 @@ public class MemberController {
 	public String myInfoView() {
 		return "mypage/memberConfirm";
 	}
-	
+
 	// 회원탈퇴 전 본인 확인
 	@RequestMapping("myInfo2.do")
 	public ModelAndView myInfo2View(ModelAndView mv, String status) {
 		status = "t";
-		
+
 		mv.addObject("status", status);
 		mv.setViewName("mypage/memberConfirm");
-		
+
 		return mv;
 	}
 
@@ -399,14 +403,15 @@ public class MemberController {
 	// 구독 조회
 	@RequestMapping("subscribeList.do")
 	@ResponseBody
-	public void subscribeList(HttpServletResponse response, HttpSession session, Model model, Integer memberNo) throws JsonIOException, IOException {
+	public void subscribeList(HttpServletResponse response, HttpSession session, Model model, Integer memberNo)
+			throws JsonIOException, IOException {
 
 		ArrayList<Subscribe> list = mService.selectSubscribeList(memberNo);
 
 		System.out.println("구독 내역  : " + list);
-		
+
 		Member loginUser = (Member) session.getAttribute("loginUser");
-		
+
 		int subscribeCount = mService.subscribeCount(loginUser.getMemberNo());
 		model.addAttribute("subscribeCount", subscribeCount);
 
@@ -415,7 +420,7 @@ public class MemberController {
 		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
 		gson.toJson(list, response.getWriter());
 	}
-	
+
 //	@RequestMapping("subscribeListTable.do")
 //	@ResponseBody
 //	public void subscribeListTable(HttpServletResponse response, HttpSession session, Model model, Integer memberNo) throws JsonIOException, IOException {
@@ -450,7 +455,8 @@ public class MemberController {
 
 	// 본인 확인
 	@RequestMapping(value = "memberConfirm.do", method = RequestMethod.POST)
-	public String memberConfirm(Member m, HttpSession session, Model model, @RequestParam(value = "status") String status) {
+	public String memberConfirm(Member m, HttpSession session, Model model,
+			@RequestParam(value = "status") String status) {
 		Member loginUser = mService.loginMember(m);
 
 		System.out.println(m);
@@ -459,12 +465,12 @@ public class MemberController {
 		if (bcryptPasswordEncoder.matches(m.getMemberPwd(), loginUser.getMemberPwd())) {
 			model.addAttribute("loginUser", loginUser);
 
-			if(status.equals("t")) {
+			if (status.equals("t")) {
 				return "mypage/memberWithdrawal";
 			} else {
 				return "mypage/memberInfoView";
 			}
-			
+
 		} else { // 로그인 실패시
 			throw new MemberException("본인확인 실패");
 		}
@@ -492,11 +498,13 @@ public class MemberController {
 	@RequestMapping(value = "pointList.do")
 	public ModelAndView pointList(ModelAndView mv, Integer memberNo) {
 		ArrayList<Point> list = mService.selectPointList(memberNo);
+		int memberPoint = mService.selectMemberPoint(memberNo);
 
 		System.out.println("적립금 내역  : " + list);
 
 		if (list != null) {
 			mv.addObject("list", list);
+			mv.addObject("memberPoint", memberPoint);
 			mv.setViewName("mypage/pointList");
 		} else {
 			throw new MemberException("적립금내역 리스트 불러오기 실패");
@@ -630,7 +638,7 @@ public class MemberController {
 	@RequestMapping("mreviewDelete.do")
 	public String reviewDelete(HttpSession session, HttpServletRequest request, int reviewNo) {
 		Member loginUser = (Member) session.getAttribute("loginUser");
-		
+
 		System.out.println(reviewNo);
 
 		int chkImg = mService.checkImage(reviewNo);
@@ -647,7 +655,7 @@ public class MemberController {
 		int result = mService.deleteReview(reviewNo);
 
 		if (result > 0) {
-			return "redirect:reviewList.do?memberNo="+loginUser.getMemberNo();
+			return "redirect:reviewList.do?memberNo=" + loginUser.getMemberNo();
 		} else {
 			throw new MemberException("리뷰 삭제 실패");
 		}
@@ -718,56 +726,60 @@ public class MemberController {
 	}
 
 	// 구독취소
-		@RequestMapping("subscribeCancle.do")
-		public String subscribeCancle(HttpSession session, HttpServletRequest request, Cancle c, Model model) { // 민지
-			Member loginUser = (Member) session.getAttribute("loginUser");
+	@RequestMapping("subscribeCancle.do")
+	public String subscribeCancle(HttpSession session, HttpServletRequest request, Cancle c, Model model) { // 민지
+		Member loginUser = (Member) session.getAttribute("loginUser");
 
-			if (c.getCancleCategory() == 1) {
-				c.setCancleContent("상품이 불필요");
-			} else if (c.getCancleCategory() == 2) {
-				c.setCancleContent("가격이 비쌈");
-			}
+		if (c.getCancleCategory() == 1) {
+			c.setCancleContent("상품이 불필요");
+		} else if (c.getCancleCategory() == 2) {
+			c.setCancleContent("가격이 비쌈");
+		}
 
-			System.out.println("취소 내용 : " + c);
+		System.out.println("취소 내용 : " + c);
 
-			int subNo = c.getSubscribeNo();
-			int result = mService.insertCancle(c);
-			int result2 = mService.updateSubscribeStatus(subNo);
-			String customerUid = iService.selectCustomerUid(subNo);
+		int subNo = c.getSubscribeNo();
+		int result = mService.insertCancle(c);
+		int result2 = mService.updateSubscribeStatus(subNo);
+		String customerUid = iService.selectCustomerUid(subNo);
 //			System.out.println("카드번호 : " + customerUid);
-			
-			if(customerUid != null) {	// 구독번호로 카드번호 조회 후
-				int subCount = iService.selectSubCount(customerUid);
-				int cancleCount = iService.selectCancleCount(customerUid);
-				int deliveryCount = iService.selectDeliveryCount(customerUid);	// 동일한 카드번호로 결제된 내역 중 배송 출발 전인 리스트 가져오기
+
+		if (customerUid != null) { // 구독번호로 카드번호 조회 후
+			int subCount = iService.selectSubCount(customerUid);
+			int cancleCount = iService.selectCancleCount(customerUid);
+			int deliveryCount = iService.selectDeliveryCount(customerUid); // 동일한 카드번호로 결제된 내역 중 배송 출발 전인 리스트 가져오기
 //				System.out.println("같은카드번호 개수 : " + subCount);
 //				System.out.println("구독취소 개수 : " + subCount);
 //				System.out.println("배송 전인 개수 : " + deliveryCount);
-				if(subCount == cancleCount && cancleCount == deliveryCount) {
-					int point = mService.selectUsedPoint(customerUid);
-					System.out.println("사용한 포인트 : " + point);
-					loginUser.setPoint(loginUser.getPoint() + point);
-					System.out.println("돌아온 포인트 : " + loginUser.getPoint());
-					
-				}else {
-					
-				}
-			}else {
-				throw new MemberException("카드번호 조회 실패");
-			}
-			
-			int result3 = mService.updateMyPoint(loginUser);
-			
-			if (result > 0 && result2 > 0 && result3 > 0) {
-				int subscribeCount = mService.subscribeCount(loginUser.getMemberNo());
-				model.addAttribute("subscribeCount", subscribeCount);
-				model.addAttribute("loginUser", loginUser);
+			if (subCount == cancleCount && cancleCount == deliveryCount) {
+				int point = mService.selectUsedPoint(customerUid);
+				System.out.println("사용한 포인트 : " + point);
+				loginUser.setPoint(loginUser.getPoint() + point);
+				System.out.println("돌아온 포인트 : " + loginUser.getPoint());
 
-				return "mypage/subscribe";
 			} else {
-				throw new MemberException("취소 신청 실패");
+
 			}
+		} else {
+			throw new MemberException("카드번호 조회 실패");
 		}
+
+		int result3 = mService.updateMyPoint(loginUser);
+
+		System.out.println(result);
+		System.out.println(result2);
+		System.out.println(result3);
+
+		if (result > 0 && result2 > 0 && result3 > 0) {
+			int subscribeCount = mService.subscribeCount(loginUser.getMemberNo());
+			model.addAttribute("subscribeCount", subscribeCount);
+			model.addAttribute("loginUser", loginUser);
+
+			return "mypage/subscribe";
+		} else {
+			throw new MemberException("취소 신청 실패");
+		}
+	}
 
 	// 장바구니 추가
 	@RequestMapping("mbasket.do")
@@ -775,7 +787,7 @@ public class MemberController {
 	public String maddCart(HttpSession session, HttpServletRequest request, Model model,
 			@RequestParam(value = "checkArr[]") List<String> cartList) {
 		Member loginUser = (Member) session.getAttribute("loginUser");
-		
+
 		int itemNo;
 		int result = 0;
 
@@ -828,27 +840,38 @@ public class MemberController {
 			@RequestParam(value = "changeMemberPwd") String changeMemberPwd) {
 		Member loginUser = mService.loginMember(m);
 
-		if (bcryptPasswordEncoder.matches(m.getMemberPwd(), loginUser.getMemberPwd())) {
+		String encPwd = bcryptPasswordEncoder.encode(changeMemberPwd);
 
-			String encPwd = bcryptPasswordEncoder.encode(changeMemberPwd);
+		m.setMemberPwd(encPwd);
 
-			m.setMemberPwd(encPwd);
+		int result = mService.updatePassword(m);
 
-			int result = mService.updatePassword(m);
+		System.out.println("비밀번호 변경 후 : " + m);
 
-			System.out.println("비밀번호 변경 후 : " + m);
-
-			if (result > 0) {
-				model.addAttribute("loginUser", m);
-			} else {
-				throw new MemberException("수정 실패!");
-			}
-
-			model.addAttribute("loginUser", loginUser);
-
-			return "mypage/memberInfoView";
+		if (result > 0) {
+			model.addAttribute("loginUser", m);
 		} else {
-			throw new MemberException("비밀번호 변경 실패");
+			throw new MemberException("수정 실패!");
+		}
+
+		model.addAttribute("loginUser", loginUser);
+
+		return "mypage/memberInfoView";
+	}
+
+	@RequestMapping("passwordCheck.do")
+	public void passwordCheck(Member m, HttpSession session, Model model,
+			@RequestParam(value = "memberPwd") String password, HttpServletResponse response) throws IOException {
+		Member loginUser = (Member) session.getAttribute("loginUser");
+
+		PrintWriter out = response.getWriter();
+		if (bcryptPasswordEncoder.matches(password, loginUser.getMemberPwd())) {
+			out.append("success");
+			out.flush();
+
+		} else {
+			out.append("pwdFail");
+			out.flush();
 		}
 	}
 
@@ -867,9 +890,11 @@ public class MemberController {
 
 	}
 
-	// ------------------------------ 마이페이지  ----------------------------------------------
+	// ------------------------------ 마이페이지
+	// ----------------------------------------------
 
-	// ------------------------------ 관리자 ----------------------------------------------
+	// ------------------------------ 관리자
+	// ----------------------------------------------
 	// 관리자 등급 & 회원 리스트 보기-admin
 	@RequestMapping("gradeList.do")
 	public ModelAndView selectGradeList(ModelAndView mv, Integer page,
@@ -994,83 +1019,79 @@ public class MemberController {
 	}
 
 	// 등급별 최소 금액 변경-admin
-	   @RequestMapping("gradeMinInfoChang.do")
-	   @ResponseBody
-	   public ModelAndView updateGradeMin(ModelAndView mv, String sendGradeMinArr, String sendGradeArr, Integer page) {
+	@RequestMapping("gradeMinInfoChang.do")
+	@ResponseBody
+	public ModelAndView updateGradeMin(ModelAndView mv, String sendGradeMinArr, String sendGradeArr, Integer page) {
 
-	      String[] gArr = sendGradeArr.split(",");
-	      String[] rArr = sendGradeMinArr.split(",");
+		String[] gArr = sendGradeArr.split(",");
+		String[] rArr = sendGradeMinArr.split(",");
 
-	      ArrayList<Grade> g = new ArrayList<>();
-	      int result1 = 0; //등급 변경 확인
-	      int result2 = 0; //변경된 등급에 따라 회원 등급 변경
+		ArrayList<Grade> g = new ArrayList<>();
+		int result1 = 0; // 등급 변경 확인
+		int result2 = 0; // 변경된 등급에 따라 회원 등급 변경
 
-	      for (int k = 0; k < gArr.length; k++) {
+		for (int k = 0; k < gArr.length; k++) {
 
-	         Grade grade = new Grade();
+			Grade grade = new Grade();
 
-	         grade.setGradeNo(Integer.valueOf(gArr[k]));
-	         grade.setGradeMin(Integer.valueOf(rArr[k]));
+			grade.setGradeNo(Integer.valueOf(gArr[k]));
+			grade.setGradeMin(Integer.valueOf(rArr[k]));
 
-	         g.add(grade);
-	      }
+			g.add(grade);
+		}
 
-	      result1 = mService.updateGradeMin(g);
-	      System.out.println("g는"+g);
-	      
-	      //최소금액 변경 시 회원 전체 등급 업데이트
-	         //전월 날짜 데이터 설정 
-	            Calendar last = Calendar.getInstance(); // 현재 시간
-	            SimpleDateFormat sdfm = new SimpleDateFormat("yyyy-MM");
-	            last.add(Calendar.MONTH, -1);
-	            Date lastDate = new Date(last.getTimeInMillis());
-	            String startDay = sdfm.format(lastDate); // 1달전
-	      
-	         //1달동안 결제한 회원번호와  총 결제 금액을 가져오기 
-	            System.out.println("1달전은?"+startDay);
-	            ArrayList<AdminMember> pList=mService.selectMemberPaymentList(startDay);
-	            System.out.println("몇명이니"+pList.size());
-	         
-	      
-	         //금액에 따라 등급 설정 
-	            
-	            ArrayList<Grade> gradeChg=new ArrayList<>();
-	            for(int i=g.size()-1;i>-1;i--) {
-	               Grade temp=g.get(i);
-	               gradeChg.add(temp);
-	            }
-	            
-	            for(int i=0;i<gradeChg.size();i++) {
-	               
-	         
-	                  int gradeMin=gradeChg.get(i).getGradeMin();
-	                  int gradeNo=gradeChg.get(i).getGradeNo();
-	            
-	                  
-	                  
-	                  for(int k=0;k<pList.size();k++) {
-	                     if(pList.get(k).getTotalPay()>=gradeMin) { 
-	                        System.out.println("등급은"+gradeNo);
-	                        System.out.println("등급 최소금액은"+gradeMin);
-	                        System.out.println("고객 최소금액은"+pList.get(k).getTotalPay());
-	                        System.out.println("고객 이름은"+pList.get(k).getMemberId());
-	                        pList.get(k).setGradeNo(gradeNo);
-	                        result2=mService.updateMemberGrade(pList.get(k));
-	                     }
-	                  }
-	               }
-	               
-	      if (result1 < 0) {
-	         
-	         mv.addObject("page",page).setViewName("redirect:gradeList.do");
-	         return mv;
-	         
+		result1 = mService.updateGradeMin(g);
+		System.out.println("g는" + g);
 
-	      } else {
-	         throw new MemberException("적립율 변경 실패!");
+		// 최소금액 변경 시 회원 전체 등급 업데이트
+		// 전월 날짜 데이터 설정
+		Calendar last = Calendar.getInstance(); // 현재 시간
+		SimpleDateFormat sdfm = new SimpleDateFormat("yyyy-MM");
+		last.add(Calendar.MONTH, -1);
+		Date lastDate = new Date(last.getTimeInMillis());
+		String startDay = sdfm.format(lastDate); // 1달전
 
-	      }
-	   }
+		// 1달동안 결제한 회원번호와 총 결제 금액을 가져오기
+		System.out.println("1달전은?" + startDay);
+		ArrayList<AdminMember> pList = mService.selectMemberPaymentList(startDay);
+		System.out.println("몇명이니" + pList.size());
+
+		// 금액에 따라 등급 설정
+
+		ArrayList<Grade> gradeChg = new ArrayList<>();
+		for (int i = g.size() - 1; i > -1; i--) {
+			Grade temp = g.get(i);
+			gradeChg.add(temp);
+		}
+
+		for (int i = 0; i < gradeChg.size(); i++) {
+
+			int gradeMin = gradeChg.get(i).getGradeMin();
+			int gradeNo = gradeChg.get(i).getGradeNo();
+
+			for (int k = 0; k < pList.size(); k++) {
+				if (pList.get(k).getTotalPay() >= gradeMin) {
+					System.out.println("등급은" + gradeNo);
+					System.out.println("등급 최소금액은" + gradeMin);
+					System.out.println("고객 최소금액은" + pList.get(k).getTotalPay());
+					System.out.println("고객 이름은" + pList.get(k).getMemberId());
+					pList.get(k).setGradeNo(gradeNo);
+					result2 = mService.updateMemberGrade(pList.get(k));
+				}
+			}
+		}
+
+		if (result1 < 0) {
+
+			mv.addObject("page", page).setViewName("redirect:gradeList.do");
+			return mv;
+
+		} else {
+			throw new MemberException("적립율 변경 실패!");
+
+		}
+	}
+
 	// ajax 후 리스트 갱신-admin
 	@RequestMapping("gListChange.do")
 	public void updateGradeList(HttpServletResponse response, ModelAndView mv, Integer page,
@@ -1259,7 +1280,9 @@ public class MemberController {
 
 	// ★ 회원 정보 상세보기-admin
 	@RequestMapping("mDetail.do")
-	public ModelAndView selectOneMember(ModelAndView mv, Integer page, int memberNo, Integer detailPage, String type,@RequestParam(value="categoryNo",required=false)String categoryNo,@RequestParam(value="word",required=false)String word) {
+	public ModelAndView selectOneMember(ModelAndView mv, Integer page, int memberNo, Integer detailPage, String type,
+			@RequestParam(value = "categoryNo", required = false) String categoryNo,
+			@RequestParam(value = "word", required = false) String word) {
 
 		// 상세 페이지로 이동하기전, 회원 리스트의 페이지 번호
 		int beforePage = page;
@@ -1296,8 +1319,7 @@ public class MemberController {
 		if (m != null) {
 			mv.addObject("pList", pList).addObject("totalPayment", totalPayment).addObject("memberNo", memberNo)
 					.addObject("m", m).addObject("pi", pi).addObject("beforePage", beforePage).addObject("type", type)
-					.addObject("categoryNo", categoryNo).addObject("word", word)
-					.setViewName("admin/userDetail");
+					.addObject("categoryNo", categoryNo).addObject("word", word).setViewName("admin/userDetail");
 			return mv;
 		} else {
 			throw new MemberException("회원 상세 확인 실패!");
@@ -1530,55 +1552,58 @@ public class MemberController {
 	}
 
 	// 관리자 배송 상태 변경-admin
-	@RequestMapping("updateDelivery.do")
-	@ResponseBody
-	public String updateDelivery(String sendArr, String deliveryStatus, Model model) {
-		String[] strArr = sendArr.split(",");
+	   @RequestMapping("updateDelivery.do")
+	   @ResponseBody
+	   public String updateDelivery(String sendArr, String deliveryStatus, Model model) {
+	      String[] strArr = sendArr.split(",");
 
-		ArrayList<AdminSubscribe> dArr = new ArrayList<>();
+	      ArrayList<AdminSubscribe> dArr = new ArrayList<>();
 
-		for (int i = 0; i < strArr.length; i++) {
-			AdminSubscribe e = new AdminSubscribe();
-			e.setSubscribeNo(Integer.valueOf(strArr[i]));
-			e.setDeliveryStatus(deliveryStatus);
-			dArr.add(e);
-		}
+	      for (int i = 0; i < strArr.length; i++) {
+	         AdminSubscribe e = new AdminSubscribe();
+	         e.setSubscribeNo(Integer.valueOf(strArr[i]));
+	         e.setDeliveryStatus(deliveryStatus);
+	         dArr.add(e);
+	      }
 
-		System.out.println(dArr);
+	      System.out.println(dArr);
 
-		// 배송상태 변경
-		int result = mService.updateDelivery(dArr);
+	      // 배송상태 변경
+	      int result = mService.updateDelivery(dArr);
 
-		// 배송 완료일 경우
-		if (deliveryStatus.equalsIgnoreCase("Y")) {
+	      // 배송 완료일 경우
+	      if (deliveryStatus.equalsIgnoreCase("Y")) {
 
-			// 판매량 +1
-			int result2 = mService.updateItemCmStatus(dArr);
+	         // 판매량 +1
+	         int result2 = mService.updateItemCmStatus(dArr);
 
-			for (int i = 0; i < dArr.size(); i++) {
-				// 포인트 뽑아오기
-				int point = mService.selectPoint(dArr.get(i).getSubscribeNo());
-				dArr.get(i).setPoint(point);
-				System.out.println(dArr);
-				// 회원에게 적립금 부여
-				int result3 = mService.updateMemberPoint(dArr.get(i));
+	         for (int i = 0; i < dArr.size(); i++) {
+	            // 포인트 뽑아오기
+	            int point = mService.selectPoint(dArr.get(i).getSubscribeNo());
+	            dArr.get(i).setPoint(point);
+	            System.out.println(dArr);
+	            // 회원에게 적립금 부여
+	            int result3 = mService.updateMemberPoint(dArr.get(i));
 
-				int memberNo = mService.selectPointMember(dArr.get(i));
-				int pointCount = mService.pointCount(memberNo);
-				model.addAttribute("pointCount", pointCount);
-			}
+	            int memberNo = mService.selectPointMember(dArr.get(i).getSubscribeNo());
+	            System.out.println("회원번호 : "+memberNo);
+	            int pointCount = mService.pointCount(memberNo);
+	            System.out.println("회원번호 : "+pointCount);
+	            
+	            model.addAttribute("pointCount", pointCount);
+	         }
 
-		}
+	      }
 
-		System.out.println("결과는" + result);
-		if (result < 0) {
+	      System.out.println("결과는" + result);
+	      if (result < 0) {
 
-			return "success";
+	         return "success";
 
-		} else {
-			throw new MemberException("상태 변경 실패!");
-		}
-	}
+	      } else {
+	         throw new MemberException("상태 변경 실패!");
+	      }
+	   }
 
 	// 주문상태변경 -admin
 	@RequestMapping("oListChange.do")
@@ -1632,7 +1657,7 @@ public class MemberController {
 		pi = getPageInfo2(currentPage, listCount, pageLimit, boardLimit);
 
 		ArrayList<AdminSubscribe> oList = mService.selectOrderList(s, pi);
-		System.out.println("혹인하자"+oList);
+		System.out.println("혹인하자" + oList);
 
 		for (int i = 0; i < oList.size(); i++) {
 			if (oList.get(i).getDeliveryStatus().equalsIgnoreCase("N")) {
@@ -1681,7 +1706,10 @@ public class MemberController {
 
 	// 구독내역 상세보기 -admin
 	@RequestMapping("oDetail.do")
-	public ModelAndView selectOrderDetail(ModelAndView mv, Integer page, Integer subscribeNo, String type,@RequestParam(value = "category", required = false) String category,@RequestParam(value = "type2", required = false) String type2,@RequestParam(value = "word", required = false) String word) {
+	public ModelAndView selectOrderDetail(ModelAndView mv, Integer page, Integer subscribeNo, String type,
+			@RequestParam(value = "category", required = false) String category,
+			@RequestParam(value = "type2", required = false) String type2,
+			@RequestParam(value = "word", required = false) String word) {
 
 		System.out.println("타입은???" + type);
 		// 구독 상세 내역 조회
@@ -1703,9 +1731,9 @@ public class MemberController {
 
 		if (sc != null && p != null) {
 
-			mv.addObject("sc", sc).addObject("p", p).addObject("page", page).addObject("type", type).addObject("category", category)
-					.addObject("total", total).addObject("word", word).addObject("type2", type2)
-					.setViewName("admin/orderDetail");
+			mv.addObject("sc", sc).addObject("p", p).addObject("page", page).addObject("type", type)
+					.addObject("category", category).addObject("total", total).addObject("word", word)
+					.addObject("type2", type2).setViewName("admin/orderDetail");
 
 			return mv;
 		} else {
@@ -1759,7 +1787,7 @@ public class MemberController {
 			list.add(s);
 			System.out.println("list : " + list);
 			Integer temp = mService.selectExchangeChart(list.get(i - 1));
-			
+
 			System.out.println("temp : " + temp);
 
 			if (temp == null) {
@@ -1881,10 +1909,9 @@ public class MemberController {
 			@RequestParam(value = "word", required = false) String word,
 			@RequestParam(value = "type", required = false) String type) throws IOException {
 
-		
-		System.out.println("ca"+category);
-		System.out.println("ca"+word);
-		System.out.println("ca"+type);
+		System.out.println("ca" + category);
+		System.out.println("ca" + word);
+		System.out.println("ca" + type);
 		// 교환리스트
 		if (category == "") {
 			category = null;
@@ -1938,43 +1965,37 @@ public class MemberController {
 			}
 
 		}
-		
-
 
 		response.setContentType("application/json;charset=utf-8");
 
+		JSONArray jarr = new JSONArray();
 
+		for (int i = 0; i < eList.size(); i++) {
+			JSONObject jList = new JSONObject();
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-			JSONArray jarr = new JSONArray();
+			jList.put("exchangeNo", eList.get(i).getExchangeNo());
+			jList.put("exchangeDate", sdf.format(eList.get(i).getExchangeDate()));
+			jList.put("exchangeContent", eList.get(i).getExchangeContent());
+			jList.put("subscribeNo", eList.get(i).getSubscribeNo());
+			jList.put("itemName", eList.get(i).getItemName());
+			jList.put("memberId", eList.get(i).getMemberId());
+			jList.put("itemPrice", eList.get(i).getItemPrice());
+			jList.put("exchangeStatus", eList.get(i).getExchangeStatus());
+			jList.put("category", category);
+			jList.put("word", word);
+			jList.put("type", type);
 
-			for (int i = 0; i < eList.size(); i++) {
-				JSONObject jList = new JSONObject();
-				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			jarr.add(jList);
+		}
 
-				jList.put("exchangeNo", eList.get(i).getExchangeNo());
-				jList.put("exchangeDate", sdf.format(eList.get(i).getExchangeDate()));
-				jList.put("exchangeContent", eList.get(i).getExchangeContent());
-				jList.put("subscribeNo", eList.get(i).getSubscribeNo());
-				jList.put("itemName", eList.get(i).getItemName());
-				jList.put("memberId", eList.get(i).getMemberId());
-				jList.put("itemPrice", eList.get(i).getItemPrice());
-				jList.put("exchangeStatus", eList.get(i).getExchangeStatus());
-				jList.put("category", category);
-				jList.put("word", word);
-				jList.put("type", type);
+		JSONObject sendJson = new JSONObject();
+		sendJson.put("list", jarr);
 
-				jarr.add(jList);
-			}
-
-			JSONObject sendJson = new JSONObject();
-			sendJson.put("list", jarr);
-
-			PrintWriter out = response.getWriter();
-			out.print(sendJson);
-			out.flush();
-			out.close();
-
-	
+		PrintWriter out = response.getWriter();
+		out.print(sendJson);
+		out.flush();
+		out.close();
 
 	}
 
@@ -2677,7 +2698,7 @@ public class MemberController {
 			// 카테고리에서 왔으면
 		} else {
 
-				System.out.println("카테고리에서 와썽요");
+			System.out.println("카테고리에서 와썽요");
 			if (word == "") {
 				word = null;
 			}
@@ -2731,9 +2752,10 @@ public class MemberController {
 
 		}
 
-		mv.addObject("pList", pList).addObject("beforePage", beforePage).addObject("startDay", startDay).addObject("word", word)
-				.addObject("lastDay", lastDay).addObject("startD", startD).addObject("categoryNo", categoryNo)
-				.addObject("pi", pi).addObject("type", type).addObject("type2", type2).setViewName("admin/salesDetail");
+		mv.addObject("pList", pList).addObject("beforePage", beforePage).addObject("startDay", startDay)
+				.addObject("word", word).addObject("lastDay", lastDay).addObject("startD", startD)
+				.addObject("categoryNo", categoryNo).addObject("pi", pi).addObject("type", type)
+				.addObject("type2", type2).setViewName("admin/salesDetail");
 		return mv;
 	}
 
@@ -2773,7 +2795,7 @@ public class MemberController {
 			c.setvDay(vDay);
 			c.setMemberNum(mCnt);
 			cArr.add(c);
-			System.out.println("확인이 필요함"+cArr);
+			System.out.println("확인이 필요함" + cArr);
 		}
 
 		// 주간 매출현황 차트
@@ -2828,67 +2850,63 @@ public class MemberController {
 		System.out.println(eList);
 
 		mv.addObject("cArr", cArr).addObject("pList", pList).addObject("exList", exList).addObject("dList", dList)
-				.addObject("bList", bList).addObject("eList", eList).addObject("nList", nList).addObject("sumTotalC", sumTotalC).addObject("sumTotalP", sumTotalP)
-				.setViewName("admin/main");
+				.addObject("bList", bList).addObject("eList", eList).addObject("nList", nList)
+				.addObject("sumTotalC", sumTotalC).addObject("sumTotalP", sumTotalP).setViewName("admin/main");
 		return mv;
 	}
 
-	// ------------------------------ 관리자 ----------------------------------------------
+	// ------------------------------ 관리자
+	// ----------------------------------------------
 
-	
 	@RequestMapping("updateGradeAuto")
-	public ModelAndView updateGradeAuto(ModelAndView mv){
-	
-		//전월 날짜 데이터 설정 
-			Calendar last = Calendar.getInstance(); // 현재 시간
-			SimpleDateFormat sdfm = new SimpleDateFormat("yyyy-MM");
-			last.add(Calendar.MONTH, -1);
-			Date lastDate = new Date(last.getTimeInMillis());
-			String startDay = sdfm.format(lastDate); // 1달전
-		
-		//1달동안 결제한 회원번호와  총 결제 금액을 가져오기 
-			ArrayList<AdminMember> pList=mService.selectMemberPaymentList(startDay);
-			System.out.println("몇명 가져왔니"+pList.size());
-		
-		//등급별 최소금액 가져오기 
-			ArrayList<Grade> gradeChg=mService.selectGradeInfo();
-		
-			int result=0;
-		
-			System.out.println("등급이 잘 가져와졌나"+gradeChg);
-		
-			for(int i=0;i<gradeChg.size();i++) {
-				
-		
-					int gradeMin=gradeChg.get(i).getGradeMin();
-					int gradeNo=gradeChg.get(i).getGradeNo();
-			
-					
-					
-					for(int k=0;k<pList.size();k++) {
-						if(pList.get(k).getTotalPay()>=gradeMin) { 
-							System.out.println("등급은"+gradeNo);
-							System.out.println("등급 최소금액은"+gradeMin);
-							System.out.println("고객 최소금액은"+pList.get(k).getTotalPay());
-							System.out.println("고객 이름은"+pList.get(k).getMemberId());
-							pList.get(k).setGradeNo(gradeNo);
-							result=mService.updateMemberGrade(pList.get(k));
-						}
-					}
+	public ModelAndView updateGradeAuto(ModelAndView mv) {
+
+		// 전월 날짜 데이터 설정
+		Calendar last = Calendar.getInstance(); // 현재 시간
+		SimpleDateFormat sdfm = new SimpleDateFormat("yyyy-MM");
+		last.add(Calendar.MONTH, -1);
+		Date lastDate = new Date(last.getTimeInMillis());
+		String startDay = sdfm.format(lastDate); // 1달전
+
+		// 1달동안 결제한 회원번호와 총 결제 금액을 가져오기
+		ArrayList<AdminMember> pList = mService.selectMemberPaymentList(startDay);
+		System.out.println("몇명 가져왔니" + pList.size());
+
+		// 등급별 최소금액 가져오기
+		ArrayList<Grade> gradeChg = mService.selectGradeInfo();
+
+		int result = 0;
+
+		System.out.println("등급이 잘 가져와졌나" + gradeChg);
+
+		for (int i = 0; i < gradeChg.size(); i++) {
+
+			int gradeMin = gradeChg.get(i).getGradeMin();
+			int gradeNo = gradeChg.get(i).getGradeNo();
+
+			for (int k = 0; k < pList.size(); k++) {
+				if (pList.get(k).getTotalPay() >= gradeMin) {
+					System.out.println("등급은" + gradeNo);
+					System.out.println("등급 최소금액은" + gradeMin);
+					System.out.println("고객 최소금액은" + pList.get(k).getTotalPay());
+					System.out.println("고객 이름은" + pList.get(k).getMemberId());
+					pList.get(k).setGradeNo(gradeNo);
+					result = mService.updateMemberGrade(pList.get(k));
 				}
-				
+			}
+		}
+
 		if (result > 0) {
-		
+
 			mv.setViewName("home");
 			return mv;
-		
+
 		} else {
-		throw new MemberException("자동 등업 실패!");
-		
+			throw new MemberException("자동 등업 실패!");
+
 		}
 	}
-	
-	
+
 	@RequestMapping("cList.do")
 	public ModelAndView cancelListView(ModelAndView mv, Integer page,
 			@RequestParam(value = "word", required = false) String word,
@@ -2927,11 +2945,8 @@ public class MemberController {
 
 		// 교환리스트
 
-	
 		System.out.println("타입은 " + type);
 		System.out.println("검색어는 " + word);
-
-	
 
 		if (word == "") {
 			word = null;
@@ -2942,7 +2957,7 @@ public class MemberController {
 		}
 
 		Search s = new Search();
-	
+
 		if (type == null) {
 			s.setSubscribeNo(word);
 			s.setWord(word);
@@ -2975,13 +2990,10 @@ public class MemberController {
 
 		ArrayList<AdminCancle> eList = mService.selectSubscribeCancel(s, pi);
 
-	
-
 		if (list != null && eList != null) {
 
-			mv.addObject("list", list).addObject("pi", pi).addObject("eList", eList)
-					.addObject("word", word).addObject("type", type).addObject("pi", pi)
-					.setViewName("admin/cancelList");
+			mv.addObject("list", list).addObject("pi", pi).addObject("eList", eList).addObject("word", word)
+					.addObject("type", type).addObject("pi", pi).setViewName("admin/cancelList");
 
 			return mv;
 		} else {

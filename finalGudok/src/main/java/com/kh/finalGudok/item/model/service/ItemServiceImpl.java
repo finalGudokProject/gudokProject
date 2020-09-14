@@ -822,4 +822,18 @@ public class ItemServiceImpl implements ItemService {
 	public int genderCount(Map<String, Object> map) {
 		return iDao.genderCount(map);
 	}
+
+	@Override
+	public int selectBannerItemCount(String eventNo) {
+		return iDao.selectBannerItemCount(eventNo);
+	}
+
+	@Override
+	public ArrayList<Item> selectBannerItemList(PageInfo pi, String eventNo) {
+		return (ArrayList<Item>)iDao.selectBannerItemList(pi, eventNo);
+	}
+	
+	
+	
+	
 }

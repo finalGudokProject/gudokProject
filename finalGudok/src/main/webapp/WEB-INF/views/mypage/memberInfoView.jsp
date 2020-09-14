@@ -328,7 +328,7 @@
 	                </tr>
 	                <tr>
 	                    <td>이메일</td>
-	                    <td><input type="text" name="email" value="${loginUser.email}"></td>
+	                    <td><input type="text" name="email" value="${loginUser.email}" readonly></td>
 	                </tr>
 	                <tr>
 	                    <td>비밀번호</td>
@@ -358,13 +358,13 @@
             <a href="#x" class="overlay" id="password_form"></a>
             <div class="popup">
                 <h4>비밀번호 변경</h4>
-                <form action="modifyPassword.do" method="post">
+                <form action="modifyPassword.do" method="post" id="passwordForm">
 	                <div>
 		                <table>
 		                	<input type="hidden" name="memberId" value="${loginUser.memberId}">
 		                    <tr>
 			                    <td><b>현재 비밀번호</b></td>
-			                    <td style="width: 100px"><input type="password" name="memberPwd"></td>
+			                    <td style="width: 100px"><input type="password" id="memberPwd" name="memberPwd"></td>
 		                    </tr>
 		                    <tr>
 		                        <td><b>변경 비밀번호</b></td>
@@ -379,7 +379,7 @@
 		                </table>
 	                </div>
 	                <div style="text-align: center;">
-	                <button>변경</button>
+	                <button id="pwdBtn">변경</button>
 	                </div>
                 </form>
                 <a class="close" href="#close"></a>
@@ -390,6 +390,32 @@
     <jsp:include page="../common/footer.jsp"/>
     <!-- Postcodify를 로딩하자 -->
     <script src="//d1p7wdleee1q2z.cloudfront.net/post/search.min.js"></script>
+    
+    <script>
+	    $("#pwdBtn").on("click", function(){
+			var memberPwd = $("#memberPwd").val();
+			console.log(memberPwd);
+			$.ajax({
+				type:"POST",
+				url:"passwordCheck.do",
+				data:{memberPwd:memberPwd},
+				success:function(data){
+					if(data == "pwdFail"){
+						alert("현재 비밀번호를 다시 입력해주세요.");
+					}
+					else{
+						$("#passwordForm").submit();
+					}
+				},
+				error : function(request, status, errorData) {
+					alert("error code: " + request.status + "\n"
+							+ "message: " + request.responseText
+							+ "error: " + errorData);
+				}
+			})
+		})
+    </script>
+    
     <script>
         $(function () {
             $("#postcodify_search_button").postcodifyPopUp();

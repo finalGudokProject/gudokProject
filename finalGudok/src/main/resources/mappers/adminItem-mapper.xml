@@ -135,13 +135,13 @@
 	</delete>
 	
 	<delete id="deleteEventImg" parameterType="_int">
-		DELETE 
-		FROM IMAGE
-		WHERE IMAGE_NO IN
-        (SELECT BANNERIMAGE_NO
+      DELETE 
+      FROM IMAGE
+      WHERE IMAGE_NO IN
+        (SELECT IMAGE_NO2
         FROM BANNER_IMG
         WHERE EVENT_NO IN(#{i}))
-	</delete>
+   </delete>
 	<delete id="deleteEventBannerImg" parameterType="_int">
 		DELETE 
 		FROM BANNER_IMG

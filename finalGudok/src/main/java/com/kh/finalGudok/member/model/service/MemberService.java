@@ -242,7 +242,7 @@ public interface MemberService {
 
 	ArrayList<Grade> selectGradeInfo();
 
-	int selectPointMember(AdminSubscribe adminSubscribe);
+	int selectPointMember(int i);
 
 	int updateSubscribeDestination(Delivery d);
 
@@ -263,5 +263,7 @@ public interface MemberService {
 	String selectGender(Integer memberNo);
 	
 	Member checkLoginUser(String id);
+
+	int selectMemberPoint(Integer memberNo);
 
 }

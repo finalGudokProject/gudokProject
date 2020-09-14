@@ -660,53 +660,53 @@
 		
 		</c:if>
 		<c:if test="${!empty list}">
-			<div class="col-12">
-			
-			<nav aria-label="Page navigation example">
-				<ul class="pagination justify-content-center">
-				<c:if test = "${pi.currentPage  == 1}">
-					<li class="page-item disabled">
-				      <a class="page-link" href="#" tabindex="-1">이전</a>
-				    </li>
-				</c:if>
-				<c:if test = "${pi.currentPage > 1 }">
-					<c:url var = "ilistBack" value = "itemFood.do">
-						<c:param name="page" value="${pi.currentPage - 1 }"/>
-					</c:url>
-					<li class="page-item">
-				      <a class="page-link" href="${ilistBack}">이전</a>
-				    </li>
-				</c:if>
-				
-				<c:forEach var="p" begin="${pi.startPage }" end="${pi.endPage }">
-					<c:if test="${p == pi.currentPage }">
-						<li class="page-item disabled"><a class="page-link" href="#" tabindex="-1">${p }</a></li>
-					</c:if>
-					<c:if test="${p != pi.currentPage }">
-						<c:url var="ilistCheck" value="itemFood.do">
-							<c:param name="page" value="${p}"/>
-						</c:url>
-						<li class="page-item"><a class="page-link" href="${ilistCheck }">${p }</a></li>
-					</c:if>
-				</c:forEach>
-				
-				<c:if test = "${pi.currentPage eq pi.maxPage}">
-					<li class="page-item disabled">
-				      <a class="page-link" href="#" tabindex="-1">다음</a>
-				    </li>
-				</c:if>
-				<c:if test = "${pi.currentPage lt pi.maxPage}">
-					<c:url var = "ilistAfter" value = "itemFood.do">
-						<c:param name="page" value="${pi.currentPage + 1 }"/>
-					</c:url>
-					<li class="page-item">
-				      <a class="page-link" href="${ilistAfter }">다음</a>
-				    </li>
-				</c:if>
-				</ul>
-			</nav>
-		</div>
-		</c:if>
+         <div class="col-12">
+         
+         <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+            <c:if test = "${pi.currentPage  == 1}">
+               <li class="page-item disabled">
+                  <a class="page-link" href="#" tabindex="-1">이전</a>
+                </li>
+            </c:if>
+            <c:if test = "${pi.currentPage > 1 }">
+               <c:url var = "ilistBack" value = "itemLiving.do">
+                  <c:param name="page" value="${pi.currentPage - 1 }"/>
+               </c:url>
+               <li class="page-item">
+                  <a class="page-link" href="${ilistBack}">이전</a>
+                </li>
+            </c:if>
+            
+            <c:forEach var="p" begin="${pi.startPage }" end="${pi.endPage }">
+               <c:if test="${p == pi.currentPage }">
+                  <li class="page-item disabled"><a class="page-link" href="#" tabindex="-1">${p }</a></li>
+               </c:if>
+               <c:if test="${p != pi.currentPage }">
+                  <c:url var="ilistCheck" value="itemLiving.do">
+                     <c:param name="page" value="${p}"/>
+                  </c:url>
+                  <li class="page-item"><a class="page-link" href="${ilistCheck }">${p }</a></li>
+               </c:if>
+            </c:forEach>
+            
+            <c:if test = "${pi.currentPage eq pi.maxPage}">
+               <li class="page-item disabled">
+                  <a class="page-link" href="#" tabindex="-1">다음</a>
+                </li>
+            </c:if>
+            <c:if test = "${pi.currentPage lt pi.maxPage}">
+               <c:url var = "ilistAfter" value = "itemLiving.do">
+                  <c:param name="page" value="${pi.currentPage + 1 }"/>
+               </c:url>
+               <li class="page-item">
+                  <a class="page-link" href="${ilistAfter }">다음</a>
+                </li>
+            </c:if>
+            </ul>
+         </nav>
+      </div>
+      </c:if>
 	</div>
 </div>
 

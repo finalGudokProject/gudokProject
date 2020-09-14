@@ -57,6 +57,10 @@
             color: black;
             margin-top: 50px;
         }
+        
+        #titleDiv{
+        	margin-top:30px;
+        }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
 </head>
@@ -149,7 +153,7 @@
                     <c:forEach items="${list }" var="iList" >
             		<c:if test="${!empty list}">
                     <tr>
-                    	<td><img src="${contextPath }/resources/images/logo.png" width=100 height=100></td>
+                    	<td><img src="<%-- ${contextPath}/resources/uploadFiles/${iList.imageRename} --%>" width=100 height=100></td>
                     	<td id="name">${iList.itemName }</td>
                     	<td id="itemAmount">${iList.cartCount } 개</td>
                     	<td>${iList.cartSubs } 주</td>
@@ -312,16 +316,17 @@
 				if(memberPoint >= 5000 && point <= memberPoint){
 					$("#checkPrice").html(totalPrice+" 원");
 				}
-				if(point > memberPoint){
+				if(memberPoint > 0 && point > memberPoint){
 					alert("보유하신 적립금 이상으로 사용하실 수 없습니다.");
 					$("#usePoint").val("");
 					$("#checkPrice").html("${totalPrice}"+" 원");
-				}else if(totalPrice < 1000){
+				}
+				if(totalPrice < 1000 && memberPoint >= 5000){
 					alert("결제금액은 1000원 이상이어야 합니다.");
 					$("#usePoint").val("");
 					$("#checkPrice").html("${totalPrice}"+" 원");
 				}
-				if(memberPoint < 5000 && point > 0){
+				if(memberPoint < 5000){
 					alert("포인트는 5000원 이상 보유 시 사용 가능합니다.");
 					$("#usePoint").val("");
 				}

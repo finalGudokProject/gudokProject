@@ -177,23 +177,24 @@
 
 	<!-- admin -->
 	<resultMap type="AdminSubscribe" id="adminSubscribeResultSet">
-		<id property="subscribeNo" column="SUBSCRIBE_NO" />
-		<result property="itemNo" column="ITEM_NO" />
-		<result property="cycleNo" column="CYCLE_NO" />
-		<result property="subscribeStatus" column="SUBSCRIBE_STATUS" />
-		<result property="subscribeDate" column="SUBSCRIBE_DATE" />
-		<result property="amount" column="AMOUNT" />
-		<result property="memberNo" column="MEMBER_NO" />
-		<result property="memberId" column="MEMBER_ID" />
-		<result property="email" column="EMAIL" />
-		<result property="exchangeStatus" column="EXCHANGE_STATUS" />
-		<result property="itemName" column="ITEM_NAME" />
-		<result property="deliveryStatus" column="DELIVERY_STATUS" />
-		<result property="address1" column="ADDRESS_1" />
-		<result property="address2" column="ADDRESS_2" />
-		<result property="address3" column="ADDRESS_3" />
-		<result property="point" column="POINT" />
-	</resultMap>
+      <id property="subscribeNo" column="SUBSCRIBE_NO" />
+      <result property="itemNo" column="ITEM_NO" />
+      <result property="cycleNo" column="CYCLE_NO" />
+      <result property="subscribeStatus" column="SUBSCRIBE_STATUS" />
+      <result property="subscribeDate" column="SUBSCRIBE_DATE" />
+      <result property="amount" column="AMOUNT" />
+      <result property="memberNo" column="MEMBER_NO" />
+      <result property="memberId" column="MEMBER_ID" />
+      <result property="email" column="EMAIL" />
+      <result property="exchangeStatus" column="EXCHANGE_STATUS" />
+      <result property="itemName" column="ITEM_NAME" />
+      <result property="deliveryStatus" column="DELIVERY_STATUS" />
+      <result property="address1" column="ADDRESS_1" />
+      <result property="address2" column="ADDRESS_2" />
+      <result property="address3" column="ADDRESS_3" />
+      <result property="point" column="POINT" />
+      <result property="itemPrice" column="ITEM_PRICE" />
+   </resultMap>
 
 	<resultMap type="AdminExchange" id="adminExchangeResultSet">
       <id property="exchangeNo" column="EXCHANGE_NO" />
@@ -294,25 +295,23 @@
 		JOIN SUBSCRIBE S ON (E.SUBSCRIBE_NO = S.SUBSCRIBE_NO)
 		JOIN MEMBER M ON (S.MEMBER_NO = M.MEMBER_NO)
 		JOIN ITEM I ON (S.ITEM_NO = I.ITEM_NO)
-		WHERE S.MEMBER_NO = #{memberNo}
+		WHERE S.MEMBER_NO = #{memberNo} AND I.ITEM_DP_STATUS='Y'
 		ORDER BY E.EXCHANGE_DATE DESC
 	</select>
 
-	<select id="deliveryList" parameterType="int"
-		resultMap="deliveryResultSet">
+	<select id="deliveryList" parameterType="int" resultMap="deliveryResultSet">
 		SELECT D.*, I.ITEM_NAME, S.SUBSCRIBE_DATE, S.EXCHANGE_STATUS, S.ADDRESS_1, S.ADDRESS_2, S.ADDRESS_3
 		FROM DELIVERY D
 		JOIN SUBSCRIBE S ON (D.SUBSCRIBE_NO = S.SUBSCRIBE_NO)
 		JOIN ITEM I ON (S.ITEM_NO = I.ITEM_NO)
-		WHERE MEMBER_NO = #{memberNo} AND S.SUBSCRIBE_STATUS='N'
+		WHERE MEMBER_NO = #{memberNo} AND S.SUBSCRIBE_STATUS='N' AND I.ITEM_DP_STATUS='Y'
 	</select>
 
-	<select id="cartList" parameterType="int"
-		resultMap="cartResultSet">
+	<select id="cartList" parameterType="int" resultMap="cartResultSet">
 		SELECT C.*, I.IMAGE_PATH, I.IMAGE_RENAME
 		FROM CART C
 		LEFT JOIN ITEM I ON (C.ITEM_NO = I.ITEM_NO)
-		WHERE MEMBER_NO = #{memberNo}
+		WHERE MEMBER_NO = #{memberNo} AND I.ITEM_DP_STATUS = 'Y';
 	</select>
 
 	<insert id="insertExchange" parameterType="mExchange">
@@ -385,7 +384,7 @@
 		T.IMAGE_RENAME,T.ITEM_NAME
 		FROM HEART H
 		LEFT JOIN ITEM T ON (H.ITEM_NO = T.ITEM_NO)
-		WHERE H.MEMBER_NO=#{memberNo}
+		WHERE H.MEMBER_NO=#{memberNo} AND  T.ITEM_DP_STATUS='Y'
 	</select>
 
 	<delete id="deleteHeart" parameterType="mDeleteHeart">
@@ -423,7 +422,7 @@
 
 	<!-- 아이디 중복확인 -->
 	<select id="idCheck" parameterType="String" resultType="_int">
-		SELECT COUNT(*) FROM MEMBER WHERE MEMBER_ID = #{memberId}
+		SELECT COUNT(*) FROM MEMBER WHERE MEMBER_ID = #{memberId} AND MEMBER_STATUS='N'
 	</select>
 
 	<!-- 회원가입 -->
@@ -438,7 +437,7 @@
 	<!-- 이메일 중복확인 -->
 	<select id="emailDupCheck" parameterType="String"
 		resultType="_int">
-		SELECT COUNT(*) FROM MEMBER WHERE EMAIL=#{email}
+		SELECT COUNT(*) FROM MEMBER WHERE EMAIL=#{email} AND MEMBER_STATUS='N'
 	</select>
 
 	<select id="deleteCart" parameterType="hashMap">
@@ -453,16 +452,16 @@
 
 	<!-- 아이디 찾기 -->
 	<select id="findId" parameterType="Member" resultType="String">
-		SELECT
-		MEMBER_ID FROM MEMBER WHERE MEMBER_NAME=#{memberName} AND
-		EMAIL=#{email}
+		SELECT MEMBER_ID 
+		FROM MEMBER 
+		WHERE MEMBER_NAME=#{memberName} AND EMAIL=#{email} AND MEMBER_STATUS='N'
 	</select>
 
 	<!-- 비밀번호 찾기 전 회원 존재여부 확인 -->
 	<select id="checkMember" parameterType="Member"
 		resultType="_int">
 		SELECT COUNT(*) FROM MEMBER WHERE MEMBER_ID=#{memberId} AND
-		MEMBER_NAME=#{memberName} AND EMAIL=#{email}
+		MEMBER_NAME=#{memberName} AND EMAIL=#{email} AND MEMBER_STATUS='N'
 	</select>
 
 	<!-- 비밀번호 찾기 -->
@@ -692,7 +691,7 @@
         FROM SUBSCRIBE S
         JOIN ITEM I ON (S.ITEM_NO = I.ITEM_NO)
         JOIN DELIVERY D ON (S.SUBSCRIBE_NO = D.SUBSCRIBE_NO)
-        WHERE SUBSCRIBE_STATUS='N' AND MEMBER_NO=#{memberNo}
+        WHERE SUBSCRIBE_STATUS='N' AND MEMBER_NO=#{memberNo} AND I.ITEM_DP_STATUS = 'Y'
 	</select>
 	
 	<!-- <select id="selectSubscribeListTable" resultMap="subscribeResultSet" parameterType="int">
@@ -704,58 +703,58 @@
 	</select> -->
 
 	<select id="selectOrderList" resultMap="adminSubscribeResultSet">
-		select *
-		from(
-		SELECT S.*,D.DELIVERY_STATUS
-		FROM SUBSCRIBE S
-		LEFT JOIN ITEM I ON(S.ITEM_NO=I.ITEM_NO)
-		LEFT JOIN DELIVERY D ON(S.SUBSCRIBE_NO=D.SUBSCRIBE_NO)
-		<where>
-			<if test="category1 !=null">
-				d.DELIVERY_STATUS=#{category1}
-			</if>
+      select *
+      from(
+      SELECT S.*,D.DELIVERY_STATUS
+      FROM SUBSCRIBE S
+      LEFT JOIN ITEM I ON(S.ITEM_NO=I.ITEM_NO)
+      LEFT JOIN DELIVERY D ON(S.SUBSCRIBE_NO=D.SUBSCRIBE_NO)
+      <where>
+         <if test="category1 !=null">
+            d.DELIVERY_STATUS like <![CDATA['%${category1}%']]>
+         </if>
 
-		</where>
-		ORDER BY s.SUBSCRIBE_NO DESC
-		)
-		<where>
-			<if test="subscribeNo!=null">
-				subscribe_no=#{subscribeNo}
-			</if>
-			<if test="itemName!=null">
-				or item_name=#{itemName}
-			</if>
-			<if test="memberId!=null">
-				or member_id=#{memberId}
-			</if>
-		</where>
-	</select>
+      </where>
+      ORDER BY s.SUBSCRIBE_NO DESC
+      )
+      <where>
+         <if test="subscribeNo!=null">
+            subscribe_no like <![CDATA['%${subscribeNo}%']]>
+         </if>
+         <if test="itemName!=null">
+            or item_name like <![CDATA['%${itemName}%']]>
+         </if>
+         <if test="memberId!=null">
+            or member_id like <![CDATA['%${memberId}%']]>
+         </if>
+      </where>
+   </select>
 
-	<select id="selectOrderCnt" resultType="_int">
-		select count(*)
-		from(
-		SELECT S.SUBSCRIBE_NO, S.MEMBER_ID,D.DELIVERY_STATUS
-		FROM SUBSCRIBE S
-		LEFT JOIN DELIVERY D ON(S.SUBSCRIBE_NO=D.SUBSCRIBE_NO)
-		LEFT JOIN ITEM I ON(S.ITEM_NO=I.ITEM_NO)
-		<where>
-			<if test="category1 !=null">
-				d.DELIVERY_STATUS=#{category1}
-			</if>
-		</where>
-		)
-		<where>
-			<if test="subscribeNo!=null">
-				subscribe_no=#{subscribeNo}
-			</if>
-			<if test="itemName!=null">
-				or item_name=#{itemName}
-			</if>
-			<if test="memberId!=null">
-				or member_id=#{memberId}
-			</if>
-		</where>
-	</select>
+	   <select id="selectOrderCnt" resultType="_int">
+      select count(*)
+      from(
+      SELECT S.SUBSCRIBE_NO, S.MEMBER_ID,D.DELIVERY_STATUS,i.item_name
+      FROM SUBSCRIBE S
+      LEFT JOIN DELIVERY D ON(S.SUBSCRIBE_NO=D.SUBSCRIBE_NO)
+      LEFT JOIN ITEM I ON(S.ITEM_NO=I.ITEM_NO)
+      <where>
+         <if test="category1 !=null">
+            d.DELIVERY_STATUS like <![CDATA['%${category1}%']]>
+         </if>
+      </where>
+      )
+      <where>
+         <if test="subscribeNo!=null">
+            subscribe_no like <![CDATA['%${subscribeNo}%']]>
+         </if>
+         <if test="itemName!=null">
+            or item_name like <![CDATA['%${itemName}%']]>
+         </if>
+         <if test="memberId!=null">
+            or member_id like <![CDATA['%${memberId}%']]>
+         </if>
+      </where>
+   </select>
 
 	<update id="updateDelivery" parameterType="java.util.ArrayList">
 		<foreach item="i" collection="list" open="DECLARE BEGIN"
@@ -1062,43 +1061,43 @@
 	</select>
 
 	<select id="selectSalesDetailCnt" parameterType="object" resultType="_int">
-		select count(*)
-		from (
-		SELECT p.*,i.item_name
-		FROM subscribe p
-		left join item i on(i.item_no=p.item_no)
-		where
+      select count(*)
+      from (
+      SELECT p.*
+      FROM subscribe p
+      left join item i on(i.item_no=p.item_no)
+      where
 
-		p.PAYMENT_DATE <![CDATA[>= ]]>
-		#{startDay}
+      p.PAYMENT_DATE <![CDATA[>= ]]>
+      #{startDay}
 
-		and p.PAYMENT_DATE <![CDATA[<=]]>
-		#{lastDay}
-		
-		<if test="categoryNo!=null">
-			<trim prefix="AND">
-				CATEGORY_NO=#{categoryNo}
-			</trim>
-		</if>
-		)
+      and p.PAYMENT_DATE <![CDATA[<=]]>
+      #{lastDay}
+      
+      <if test="categoryNo!=null">
+         <trim prefix="AND">
+            CATEGORY_NO=#{categoryNo}
+         </trim>
+      </if>
+      )
 
-		<where>
-			<if test="subscribeNo!=null">
-				or subscribe_no like '%${subscribeNo}%'
-			</if>
-			<if test="itemNo!=null">
-				or item_no like '%${itemNo}%'
-			</if>
-			<if test="itemName!=null">
-				or item_name like '%${itemName}%'
-			</if>
-			<if test="memberId!=null">
-				or member_id  like '%${memberId}%'
-			</if>
-		</where>
-		order by payment_date desc
+      <where>
+         <if test="subscribeNo!=null">
+            or subscribe_no like '%${subscribeNo}%'
+         </if>
+         <if test="itemNo!=null">
+            or item_no like '%${itemNo}%'
+         </if>
+         <if test="itemName!=null">
+            or item_name like '%${itemName}%'
+         </if>
+         <if test="memberId!=null">
+            or member_id  like '%${memberId}%'
+         </if>
+      </where>
+      order by payment_date desc
 
-	</select>
+   </select>
 
 	<select id="selectPaymentDetail" parameterType="object" resultMap="adminPaymentResultSet">
 		select *
@@ -1260,16 +1259,16 @@
 	<select id="subscribeCount" resultType="_int"
 		parameterType="_int">
 		SELECT COUNT(*)
-		FROM SUBSCRIBE
-		WHERE MEMBER_NO=#{memberNo}
-		AND SUBSCRIBE_STATUS='N'
+		FROM SUBSCRIBE S
+		LEFT JOIN ITEM I ON (S.ITEM_NO = I.ITEM_NO)
+		WHERE MEMBER_NO=#{memberNo} AND ITEM_DP_STATUS='Y' AND S.SUBSCRIBE_STATUS='N'
 	</select>
 
 	<select id="cartCount" resultType="_int" parameterType="_int">
-		SELECT
-		COUNT(*)
-		FROM CART
-		WHERE MEMBER_NO=#{memberNo}
+		SELECT COUNT(*)
+		FROM CART C
+		JOIN ITEM I ON (C.ITEM_NO = I.ITEM_NO)
+		WHERE MEMBER_NO=#{memberNo} AND I.ITEM_DP_STATUS='Y'
 	</select>
 
 	<select id="pointCount" resultType="_int" parameterType="_int">
@@ -1283,27 +1282,29 @@
 	</select>
 	
 	<update id="updateItemCmStatus" parameterType="java.util.ArrayList">
-		UPDATE ITEM
+      UPDATE ITEM
             SET ITEM_CM_SALES=(ITEM_CM_SALES+1)
             WHERE ITEM_NO in (SELECT I.ITEM_NO
                             FROM SUBSCRIBE S
                             LEFT JOIN ITEM I ON(S.ITEM_NO=I.ITEM_NO)
                             WHERE S.SUBSCRIBE_NO=
              <foreach item="i" index="index" collection="list"
-			open="(" separator="," close=")">               
+         open="any(" separator="," close=")">               
                             #{i.subscribeNo}
              </foreach>       
                             
                             )
-	
-	</update>
+   
+   </update>
+   
 	<update id="updateMemberPoint" parameterType="object">
-		UPDATE MEMBER
-        SET POINT=#{point}
+      UPDATE MEMBER
+        SET POINT=POINT+#{point}
         WHERE MEMBER_NO=(SELECT MEMBER_NO
                         FROM SUBSCRIBE
                         WHERE SUBSCRIBE_NO=#{subscribeNo})
-	</update>
+   </update>
+   
 	<select id="selectPoint" parameterType="_int" resultType="int">
 		SELECT P.POINT
         FROM SUBSCRIBE S
@@ -1341,10 +1342,10 @@
 		order by grade_no
 	</select>
 
-	<select id="selectPointMember" parameterType="object" resultType="_int">
+	<select id="selectPointMember" parameterType="_int" resultType="_int">
 		SELECT MEMBER_NO
         FROM SUBSCRIBE
-        WHERE SUBSCRIBE_NO=#{subscribeNo}
+        WHERE SUBSCRIBE_NO=#{value}
 	</select>
 	
 	<update id="updateSubscribeDestination" parameterType="mDelivery">
@@ -1429,7 +1430,13 @@
 	</select>
 	
 	<select id="checkLoginUser" parameterType="String" resultMap="memberResultSet">
-		SELECT * FROM MEMBER WHERE MEMBER_ID = #{id}
+		SELECT * FROM MEMBER WHERE MEMBER_ID = #{id} AND MEMBER_STATUS='N'
 	</select>
+	
+	<select id="selectMemberPoint" parameterType="int" resultType="_int">
+      SELECT POINT
+      FROM MEMBER
+      WHERE MEMBER_NO=#{value}
+   </select>
 
 </mapper>

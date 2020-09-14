@@ -318,5 +318,8 @@ public interface ItemService {
 	int selectSubPrice(int subNo);
 	
 	int genderCount(Map<String, Object> map);
-
+	
+	int selectBannerItemCount(String eventNo);
+	
+	ArrayList<Item> selectBannerItemList(PageInfo pi, String eventNo);
 }

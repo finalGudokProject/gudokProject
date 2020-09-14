@@ -456,11 +456,10 @@
 	<select id="selectBestList" resultMap="itemListResultSet">
 		<![CDATA[
 		SELECT *
-		FROM (SELECT * FROM ITEM_LIST_VIEW ILV
+		FROM ITEM_LIST_VIEW ILV
 		LEFT JOIN ITEM I ON(ILV.ITEM_NO = I.ITEM_NO)
-		WHERE ITEM_DP_STATUS='Y' AND ITEM_CM_SALES >= 30
-        ORDER BY ITEM_CM_SALES DESC)
-		WHERE ROWNUM BETWEEN 1 AND 4
+		WHERE ITEM_DP_STATUS='Y' AND ITEM_CM_SALES>=30 AND I.ITEM_RATE>=4 AND ROWNUM <=4
+        ORDER BY I.ITEM_RATE DESC
 		]]> 
 	</select>
 	
@@ -472,5 +471,18 @@
         ORDER BY ILV.ITEM_DATE DESC)
 		WHERE ROWNUM BETWEEN 1 AND 4
 	</select>
+	
+	<select id="selectBannerItemCount" resultType="_int">
+      SELECT COUNT(*)
+      FROM EVENT_ITEM
+      WHERE EVENT_NO=#{value}
+   </select>   
+   
+   <select id="selectBannerItemList" resultMap="itemListResultSet">
+      SELECT I.*,E.EVENT_NO,E.ITEM_DISCOUNT,I.IMAGE_RENAME AS ITEM_RENAME
+      FROM EVENT_ITEM E
+      LEFT JOIN ITEM I ON (E.ITEM_NO=I.ITEM_NO)
+      WHERE E.EVENT_NO=#{value}
+   </select>
 	
 </mapper>

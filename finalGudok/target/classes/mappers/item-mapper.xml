@@ -186,7 +186,7 @@
 	</delete>
 	
 	<select id="selectSubList" parameterType="_int" resultType="_int">
-		SELECT COUNT(*) FROM SUBSCRIBE WHERE ITEM_NO = #{itemNo}
+		SELECT COUNT(*) FROM SUBSCRIBE WHERE ITEM_NO = #{itemNo} AND SUBSCRIBE_STATUS = 'N'
 	</select>
 
 	<select id="selectRecommendList" resultMap="itemResultSet">

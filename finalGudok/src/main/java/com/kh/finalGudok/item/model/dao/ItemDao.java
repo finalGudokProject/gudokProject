@@ -551,45 +551,45 @@ public class ItemDao {
 	}
 
 	public int getEventCount(String word) {
-		return sqlSessionTemplate.selectOne("adminItemMapper.selectEventCount",word);
+		return sqlSessionTemplate.selectOne("adminItemMapper.selectEventCount", word);
 	}
 
 	public ArrayList<BannerItem> selectEventListA(String word, PageInfo pi) {
-		int offset=(pi.getCurrentPage()-1)*pi.getBoardLimit();
-		RowBounds rowBounds=new RowBounds(offset,pi.getBoardLimit());
-		return (ArrayList)sqlSessionTemplate.selectList("adminItemMapper.selectEventList",word,rowBounds);
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		return (ArrayList) sqlSessionTemplate.selectList("adminItemMapper.selectEventList", word, rowBounds);
 	}
 
 	public ArrayList<BannerItem> selectRecommendList() {
-		return  (ArrayList)sqlSessionTemplate.selectList("adminItemMapper.selectRecommendList");
+		return (ArrayList) sqlSessionTemplate.selectList("adminItemMapper.selectRecommendList");
 	}
 
 	public ArrayList<BannerItem> selectItemListA(SearchItem s, PageInfo pi) {
 		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
-		return (ArrayList)sqlSessionTemplate.selectList("adminItemMapper.selectItemListA",s,rowBounds);
+		return (ArrayList) sqlSessionTemplate.selectList("adminItemMapper.selectItemListA", s, rowBounds);
 	}
 
 	public int selectItemCountA(SearchItem s) {
-		return sqlSessionTemplate.selectOne("adminItemMapper.selectItemCountA",s);
+		return sqlSessionTemplate.selectOne("adminItemMapper.selectItemCountA", s);
 	}
 
 	public ArrayList<BannerItem> selectItemImg(int itemNo) {
-		return (ArrayList)sqlSessionTemplate.selectList("adminItemMapper.selectItemImg",itemNo);
+		return (ArrayList) sqlSessionTemplate.selectList("adminItemMapper.selectItemImg", itemNo);
 	}
 
 	public ArrayList<BannerItem> selectItems(String itemCategory, PageInfo pi) {
 		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
-		return (ArrayList)sqlSessionTemplate.selectList("adminItemMapper.selectItems",itemCategory,rowBounds);
+		return (ArrayList) sqlSessionTemplate.selectList("adminItemMapper.selectItems", itemCategory, rowBounds);
 	}
 
 	public int selectNonEventItemCnt(String itemCategory) {
-		return sqlSessionTemplate.selectOne("adminItemMapper.selectNonEventItemCnt",itemCategory);
+		return sqlSessionTemplate.selectOne("adminItemMapper.selectNonEventItemCnt", itemCategory);
 	}
 
 	public Integer selectItemDiscount(int eventNo) {
-		return sqlSessionTemplate.selectOne("adminItemMapper.selectItemDiscount",eventNo);
+		return sqlSessionTemplate.selectOne("adminItemMapper.selectItemDiscount", eventNo);
 	}
 
 	public int selectRecommendCnt() {
@@ -597,11 +597,11 @@ public class ItemDao {
 	}
 
 	public int updateItemRecommend(String[] strArr) {
-		return sqlSessionTemplate.update("adminItemMapper.updateItemRecommend",strArr);
+		return sqlSessionTemplate.update("adminItemMapper.updateItemRecommend", strArr);
 	}
 
 	public Integer selectEventListCount(int i) {
-		return sqlSessionTemplate.selectOne("adminItemMapper.selectEventListCount",i);
+		return sqlSessionTemplate.selectOne("adminItemMapper.selectEventListCount", i);
 	}
 
 	public int getBestCount() {
@@ -611,7 +611,7 @@ public class ItemDao {
 	public ArrayList<Item> selectBestList(PageInfo pi) {
 		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
-		return (ArrayList)sqlSessionTemplate.selectList("itemListMapper.getItemBestList", null, rowBounds);
+		return (ArrayList) sqlSessionTemplate.selectList("itemListMapper.getItemBestList", null, rowBounds);
 	}
 
 	public ArrayList<Item> selectBestList(PageInfo pi, String sortNo) {
@@ -619,7 +619,7 @@ public class ItemDao {
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
 		HashMap<String, String> map = new HashMap<>();
 		map.put("sortNo", sortNo);
-		return (ArrayList)sqlSessionTemplate.selectList("itemListMapper.selectSortBestList", map, rowBounds);
+		return (ArrayList) sqlSessionTemplate.selectList("itemListMapper.selectSortBestList", map, rowBounds);
 	}
 
 	public int insertOneInquiry() {
@@ -629,9 +629,9 @@ public class ItemDao {
 	public int insertInquiry() {
 		return sqlSessionTemplate.insert("itemMapper.insertInquiry");
 	}
-	
+
 	public ArrayList<ItemListView> selectPN(Integer memberNo) {
-		return (ArrayList)sqlSessionTemplate.selectList("itemListMapper.selectPN", memberNo);
+		return (ArrayList) sqlSessionTemplate.selectList("itemListMapper.selectPN", memberNo);
 	}
 
 	public int selectCart(Cart c) {
@@ -639,36 +639,36 @@ public class ItemDao {
 	}
 
 	public int selectDelChk(Subscribe scb) {
-		return sqlSessionTemplate.selectOne("reviewMapper.selectDelChk",scb);
+		return sqlSessionTemplate.selectOne("reviewMapper.selectDelChk", scb);
 	}
 
 	public int selectReviewChk(Subscribe scb) {
-		return sqlSessionTemplate.selectOne("reviewMapper.selectReviewChk",scb);
+		return sqlSessionTemplate.selectOne("reviewMapper.selectReviewChk", scb);
 	}
 
 	public int selectDelStatus(Subscribe scb) {
-		return sqlSessionTemplate.selectOne("reviewMapper.selectDelStatus",scb);
+		return sqlSessionTemplate.selectOne("reviewMapper.selectDelStatus", scb);
 	}
 
 	public int updateItemEventStatusN(int[] dEventArr) {
-		return sqlSessionTemplate.update("adminItemMapper.updateItemEventStatusN",dEventArr);
+		return sqlSessionTemplate.update("adminItemMapper.updateItemEventStatusN", dEventArr);
 	}
 
 	public int updateRecommendStatusN(Integer itemNo) {
-		return sqlSessionTemplate.update("adminItemMapper.updateRecommendStatusN",itemNo);
+		return sqlSessionTemplate.update("adminItemMapper.updateRecommendStatusN", itemNo);
 	}
-
 
 	public int selectRecommendChk(String s) {
-		return sqlSessionTemplate.selectOne("adminItemMapper.selectRecommendChk",s);
+		return sqlSessionTemplate.selectOne("adminItemMapper.selectRecommendChk", s);
 	}
+
 	public int checkDiscount(int no) {
 		return sqlSessionTemplate.selectOne("itemMapper.checkDiscount", no);
 
 	}
 
 	public int insertFirstPayment(PaymentInfo payInfo) {
-		
+
 		return sqlSessionTemplate.insert("itemMapper.insertFirstPayment", payInfo);
 	}
 
@@ -681,7 +681,7 @@ public class ItemDao {
 	}
 
 	public ArrayList<Subscribe> selectSubscribeStatus(String customerUid) {
-		return (ArrayList)sqlSessionTemplate.selectList("itemMapper.selectSubscribeStatus", customerUid);
+		return (ArrayList) sqlSessionTemplate.selectList("itemMapper.selectSubscribeStatus", customerUid);
 	}
 
 	public double selectPointRate(int memberNo) {
@@ -701,66 +701,77 @@ public class ItemDao {
 	}
 
 	public ArrayList<Item> selectHomeRecommendList() {
-		return (ArrayList)sqlSessionTemplate.selectList("itemMapper.selectRecommendList");
+		return (ArrayList) sqlSessionTemplate.selectList("itemMapper.selectRecommendList");
 	}
 
 	public int updateItemBannerStatus(int i) {
 		return sqlSessionTemplate.update("adminItemMapper.updateItemBannerStatus", i);
 	}
-	
+
 	public ArrayList<Item> selectBestList() {
-		return (ArrayList)sqlSessionTemplate.selectList("itemListMapper.selectBestList");
+		return (ArrayList) sqlSessionTemplate.selectList("itemListMapper.selectBestList");
 	}
 
 	public ArrayList<Item> selectNewList() {
-		return (ArrayList)sqlSessionTemplate.selectList("itemListMapper.selectHomeNewList");
+		return (ArrayList) sqlSessionTemplate.selectList("itemListMapper.selectHomeNewList");
 	}
 
 	public ArrayList<Item> selectHomeRecommendCList() {
-		return (ArrayList)sqlSessionTemplate.selectList("itemMapper.selectRecommendCList");
+		return (ArrayList) sqlSessionTemplate.selectList("itemMapper.selectRecommendCList");
 	}
 
 	public ArrayList<Item> selectHomeRecommendMList() {
-		return (ArrayList)sqlSessionTemplate.selectList("itemMapper.selectRecommendMList");
+		return (ArrayList) sqlSessionTemplate.selectList("itemMapper.selectRecommendMList");
 	}
 
 	public ArrayList<Item> selectHomeRecommendFList() {
-		return (ArrayList)sqlSessionTemplate.selectList("itemMapper.selectRecommendFList");
+		return (ArrayList) sqlSessionTemplate.selectList("itemMapper.selectRecommendFList");
 	}
-	
+
 	public ArrayList<Item> selectHotList() {
-		return (ArrayList)sqlSessionTemplate.selectList("itemMapper.selectHotList");
+		return (ArrayList) sqlSessionTemplate.selectList("itemMapper.selectHotList");
 	}
-	
+
 	public String selectCustomerUid(int subNo) {
 		return sqlSessionTemplate.selectOne("itemMapper.selectCustomerUid", subNo);
 	}
 
 	public int selectSubCount(String customerUid) {
-		return sqlSessionTemplate.selectOne("itemMapper.selectSubCount",customerUid);
+		return sqlSessionTemplate.selectOne("itemMapper.selectSubCount", customerUid);
 	}
 
 	public int selectDeliveryCount(String customerUid) {
-		return sqlSessionTemplate.selectOne("itemMapper.selectDeliveryCount",customerUid);
+		return sqlSessionTemplate.selectOne("itemMapper.selectDeliveryCount", customerUid);
 	}
 
 	public int selectCancleCount(String customerUid) {
-		return sqlSessionTemplate.selectOne("itemMapper.selectCancleCount",customerUid);
+		return sqlSessionTemplate.selectOne("itemMapper.selectCancleCount", customerUid);
 	}
-	
+
 	public int selectSubNo(Subscribe subInfo) {
 		return sqlSessionTemplate.selectOne("itemMapper.selectSubNo", subInfo);
 	}
-	
+
 	public int selectCycle(int cycleNo) {
 		return sqlSessionTemplate.selectOne("itemMapper.selectCycle", cycleNo);
 	}
-	
+
 	public int selectSubPrice(int subNo) {
 		return sqlSessionTemplate.selectOne("itemMapper.selectSubPrice", subNo);
 	}
-	
+
 	public int genderCount(Map<String, Object> map) {
 		return sqlSessionTemplate.update("itemMapper.updateGenderCount", map);
 	}
+
+	public int selectBannerItemCount(String eventNo) {
+		return sqlSessionTemplate.selectOne("itemListMapper.selectBannerItemCount", eventNo);
+	}
+
+	public ArrayList<Item> selectBannerItemList(PageInfo pi, String eventNo) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		return (ArrayList) sqlSessionTemplate.selectList("itemListMapper.selectBannerItemList", eventNo, rowBounds);
+	}
+
 }
