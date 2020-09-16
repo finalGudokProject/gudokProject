@@ -778,4 +778,33 @@ public class ItemServiceImpl implements ItemService {
 		return iDao.selectHotList();
 	}
 
+	@Override
+	public int insertRecommend() {
+		return iDao.insertRecommend();
+	}
+
+	@Override
+	public int deleteRecommend(int i) {
+		return iDao.deleteRecommend(i);
+	}
+
+	
+	//--------------------------------------
+	@Override
+	public int selectBannerItemCount(String eventNo) {
+		return iDao.selectBannerItemCount(eventNo);
+	}
+
+	@Override
+	public ArrayList<Item> selectBannerItemList(PageInfo pi, String eventNo) {
+		return iDao.selectBannerItemList(pi,eventNo);
+	}
+
+	@Override
+	public BannerItem selectItemDetailImage(int i) {
+		return iDao.selectItemDetailImage(i);
+	}
+	
+	
+
 }

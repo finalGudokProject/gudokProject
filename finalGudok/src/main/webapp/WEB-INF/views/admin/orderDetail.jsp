@@ -208,7 +208,7 @@ input, select,textarea{
         	function updateS(){
         		var page=${page }
         	 	var subscribeNo=${sc.subscribeNo}
-        	 	alert(subscribeNo);
+      
         	 	location.href="updateSubscribe.do?page="+page+"&subscribeNo="+subscribeNo; 
         		
         	}

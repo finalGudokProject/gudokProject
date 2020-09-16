@@ -138,7 +138,7 @@
 		DELETE 
 		FROM IMAGE
 		WHERE IMAGE_NO IN
-        (SELECT BANNERIMAGE_NO
+        (SELECT IMAGE_NO2
         FROM BANNER_IMG
         WHERE EVENT_NO IN(#{i}))
 	</delete>
@@ -451,5 +451,23 @@
                 WHERE EVENT_NO=#{value})
 	
 	</update>
+	<insert id="insertRecommend">
+		INSERT INTO RECOMMEND
+		VALUES(SEQ_ITEM_NO.CURRVAL,0,0,0)
+	</insert>
+	<delete id="deleteRecommend">
+		DELETE 
+		FROM RECOMMEND
+		WHERE ITEM_NO=#{value}
+	</delete>
+	<select id="selectItemDetailImage" parameterType="_int" resultMap="bannerItemResultSet">
+		SELECT I.*,T.ITEM_NO
+		FROM IMAGE I
+		LEFT JOIN ITEM_IMAGE M ON(I.IMAGE_NO=M.I_IMAGE_NO)
+		LEFT JOIN ITEM T ON (M.ITEM_NO=T.ITEM_NO)
+		WHERE T.ITEM_NO=#{value}
+	</select>
+
+	
 	
 </mapper>

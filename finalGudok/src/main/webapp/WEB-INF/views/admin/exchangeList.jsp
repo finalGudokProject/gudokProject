@@ -188,7 +188,7 @@ input, select,textarea{
                                 <th onclick='event.cancelBubble=true' style="width:100px;">구독 번호</th>
                                 <th onclick='event.cancelBubble=true' style="width:250px;">상품명</th>
                                 <th onclick='event.cancelBubble=true' style="width:100px;">구매자</th>
-                                <th onclick='event.cancelBubble=true' style="width:120px;">가격</th>
+                                <th onclick='event.cancelBubble=true' style="width:120px;">결제금액</th>
                                 <th onclick='event.cancelBubble=true' style="width:100px;">상태</th>
                              </tr>   
                          </thead>
@@ -212,7 +212,7 @@ input, select,textarea{
 	                                <td class="cursor">${i.subscribeNo }</td>
 	                                <td class="cursor">${i.itemName }</td>
 	                                <td class="cursor">${i.memberId }</td>
-	                                <td>${i.itemPrice }</td>
+	                                <td>${i.totalPayment }</td>
 	                                <td>${i.exchangeStatus }</td>
 	                            </tr>
                             </c:forEach>

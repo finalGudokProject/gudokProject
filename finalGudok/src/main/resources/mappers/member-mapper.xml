@@ -193,6 +193,7 @@
 		<result property="address2" column="ADDRESS_2" />
 		<result property="address3" column="ADDRESS_3" />
 		<result property="point" column="POINT" />
+		<result property="itemPrice" column="ITEM_PRICE" />
 	</resultMap>
 
 	<resultMap type="AdminExchange" id="adminExchangeResultSet">
@@ -205,6 +206,7 @@
 		<result property="exchangeCategory" column="EXCHANGE_CATEGORY" />
 		<result property="memberId" column="MEMBER_ID" />
 		<result property="itemPrice" column="ITEM_PRICE" />
+		<result property="totalPayment" column="SUB_PRICE" />
 
 	</resultMap>
 
@@ -711,7 +713,7 @@
 		LEFT JOIN DELIVERY D ON(S.SUBSCRIBE_NO=D.SUBSCRIBE_NO)
 		<where>
 			<if test="category1 !=null">
-				d.DELIVERY_STATUS=#{category1}
+				d.DELIVERY_STATUS like <![CDATA['%${category1}%']]>
 			</if>
 
 		</where>
@@ -719,13 +721,13 @@
 		)
 		<where>
 			<if test="subscribeNo!=null">
-				subscribe_no=#{subscribeNo}
+				subscribe_no like <![CDATA['%${subscribeNo}%']]>
 			</if>
 			<if test="itemName!=null">
-				or item_name=#{itemName}
+				or item_name like <![CDATA['%${itemName}%']]>
 			</if>
 			<if test="memberId!=null">
-				or member_id=#{memberId}
+				or member_id like <![CDATA['%${memberId}%']]>
 			</if>
 		</where>
 	</select>
@@ -733,25 +735,25 @@
 	<select id="selectOrderCnt" resultType="_int">
 		select count(*)
 		from(
-		SELECT S.SUBSCRIBE_NO, S.MEMBER_ID,D.DELIVERY_STATUS
+		SELECT S.SUBSCRIBE_NO, S.MEMBER_ID,D.DELIVERY_STATUS,i.item_name
 		FROM SUBSCRIBE S
 		LEFT JOIN DELIVERY D ON(S.SUBSCRIBE_NO=D.SUBSCRIBE_NO)
 		LEFT JOIN ITEM I ON(S.ITEM_NO=I.ITEM_NO)
 		<where>
 			<if test="category1 !=null">
-				d.DELIVERY_STATUS=#{category1}
+				d.DELIVERY_STATUS like <![CDATA['%${category1}%']]>
 			</if>
 		</where>
 		)
 		<where>
 			<if test="subscribeNo!=null">
-				subscribe_no=#{subscribeNo}
+				subscribe_no like <![CDATA['%${subscribeNo}%']]>
 			</if>
 			<if test="itemName!=null">
-				or item_name=#{itemName}
+				or item_name like <![CDATA['%${itemName}%']]>
 			</if>
 			<if test="memberId!=null">
-				or member_id=#{memberId}
+				or member_id like <![CDATA['%${memberId}%']]>
 			</if>
 		</where>
 	</select>
@@ -823,7 +825,7 @@
 		FROM (SELECT *
 		FROM EXCHANGE
              <![CDATA[
-            WHERE EXCHANGE_DATE >= #{lastDay} AND EXCHANGE_DATE <= #{startDay}
+            WHERE EXCHANGE_DATE >= #{lastDay} AND EXCHANGE_DATE <= to_char(to_date(#{startDay},'yyyy-mm-dd')+1)
              ]]>
 		)
 		GROUP BY EXCHANGE_CATEGORY
@@ -861,7 +863,7 @@
 	<select id="selectExchangeList" parameterType="object" resultMap="adminExchangeResultSet">
 		select *
 		from(
-		SELECT e.*,i.item_name,s.member_id
+		SELECT e.*,i.item_name,s.member_id,S.SUB_PRICE
 		FROM EXCHANGE E
 		LEFT JOIN SUBSCRIBE S ON(E.SUBSCRIBE_NO=S.SUBSCRIBE_NO)
 		LEFT JOIN ITEM I ON (S.ITEM_NO=I.ITEM_NO)
@@ -1062,7 +1064,7 @@
 	<select id="selectSalesDetailCnt" parameterType="object" resultType="_int">
 		select count(*)
 		from (
-		SELECT p.*,i.item_name
+		SELECT p.*
 		FROM subscribe p
 		left join item i on(i.item_no=p.item_no)
 		where
@@ -1288,7 +1290,7 @@
                             LEFT JOIN ITEM I ON(S.ITEM_NO=I.ITEM_NO)
                             WHERE S.SUBSCRIBE_NO=
              <foreach item="i" index="index" collection="list"
-			open="(" separator="," close=")">               
+			open="any(" separator="," close=")">               
                             #{i.subscribeNo}
              </foreach>       
                             
@@ -1297,7 +1299,7 @@
 	</update>
 	<update id="updateMemberPoint" parameterType="object">
 		UPDATE MEMBER
-        SET POINT=#{point}
+        SET POINT=POINT+#{point}
         WHERE MEMBER_NO=(SELECT MEMBER_NO
                         FROM SUBSCRIBE
                         WHERE SUBSCRIBE_NO=#{subscribeNo})
@@ -1339,10 +1341,10 @@
 		order by grade_no
 	</select>
 
-	<select id="selectPointMember" parameterType="object" resultType="_int">
+	<select id="selectPointMember" parameterType="_int" resultType="_int">
 		SELECT MEMBER_NO
         FROM SUBSCRIBE
-        WHERE SUBSCRIBE_NO=#{subscribeNo}
+        WHERE SUBSCRIBE_NO=#{value}
 	</select>
 	
 	<update id="updateSubscribeDestination" parameterType="mDelivery">
@@ -1420,6 +1422,12 @@
 	
 	<select id="selectMember" parameterType="Member" resultMap="memberResultSet">
 		SELECT * FROM MEMBER WHERE MEMBER_NO = #{memberNo}
+	</select>
+	
+	<select id="selectMemberPoint" parameterType="int" resultType="_int">
+		SELECT POINT
+		FROM MEMBER
+		WHERE MEMBER_NO=#{value}
 	</select>
 
 </mapper>

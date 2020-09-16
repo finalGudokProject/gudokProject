@@ -303,7 +303,7 @@
 	      <br><br><br>
 	
 	      <div class="pointList" style="width:80%;">
-	      	<h5 style="text-align:right;">사용 가능 적립금 : ${loginUser.point }</h5>
+	      	<h5 style="text-align:right;">사용 가능 적립금 : ${memberPoint}</h5>
 	      	<br>
 	        <table>
 	          <tr>

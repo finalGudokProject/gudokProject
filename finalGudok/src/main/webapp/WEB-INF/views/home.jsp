@@ -46,7 +46,7 @@
       <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
         <div class="carousel-inner">
           <div class="carousel-item active">
-            <img src="resources/images/carousel2.jpg" class="d-block w-100" alt="...">
+            <a href="bannerItem.do?eventNo='467'"><img src="resources/images/carousel2.jpg" class="d-block w-100" alt="..."></a>
           </div>
           <div class="carousel-item">
             <img src="resources/images/flower.jpg" class="d-block w-100" alt="...">

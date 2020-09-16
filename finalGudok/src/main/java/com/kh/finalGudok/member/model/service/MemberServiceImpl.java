@@ -571,9 +571,7 @@ public class MemberServiceImpl implements MemberService {
 
 	
 
-	public int selectPointMember(AdminSubscribe adminSubscribe) {
-		return mDao.selectPointMember(adminSubscribe);
-	}
+	
 
 	@Override
 	public int updateSubscribeDestination(Delivery d) {
@@ -609,6 +607,16 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public Member selectMember(Member m) {
 		return mDao.selectMember(m);
+	}
+
+	@Override
+	public int selectMemberPoint(Integer memberNo) {
+		return mDao.selectMemberPoint(memberNo);
+	}
+
+	@Override
+	public int selectPointMember(int i) {
+		return mDao.selectPointMember(i);
 	}
 
 //	@Override

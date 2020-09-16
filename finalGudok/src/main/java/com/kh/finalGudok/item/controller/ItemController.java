@@ -603,6 +603,11 @@ public class ItemController {
 
 		System.out.println(result1);
 		System.out.println(result2);
+		
+		
+		//추천테이블에 추가 
+		
+		int result3=iService.insertRecommend();
 
 		if (result1 > 0 && result2 > 0) {
 
@@ -709,8 +714,8 @@ public class ItemController {
 
 		int result1 = 0; // 이벤트 삭제
 		int result2 = 0; // 연결된 상품 삭제
-		int result3 = 0; // 배너 이미지 삭제
-		int result4 = 0; // 이미지 삭제
+		int result3 = 0; // 이미지 삭제
+		int result4 = 0; // 배너이미지 삭제
 		int result5 = 0; // 이벤트에 속했던 아이템의 status 변경
 
 		for (int k = 0; k < dEventArr.length; k++) {
@@ -1492,18 +1497,47 @@ public class ItemController {
 			@RequestParam("page") Integer page, @RequestParam(value = "uploadFile1") MultipartFile uploadFile1,
 			@RequestParam(value = "uploadFile2") MultipartFile uploadFile2) {
 
-		int imgNo = iService.selectImageNo(i); // 이미지 번호 가져오기
+		int result2=0;
+		//메인 이미지 파일이 있으면 기존꺼 삭제하고 바꿔줌
+		if (!uploadFile1.getOriginalFilename().equals("")) {
+			if (i.getImageOriginalName() != null) {
+//				System.out.println("실행됨?");
+				deleteFile(i.getImageRename(), request);
+			
+			}
+			String renameFileName2 = saveFile(request, uploadFile1);
+			String root2 = request.getSession().getServletContext().getRealPath("resources");
+			String savePath2 = root2 + "\\uploadFiles";
+			
+			i.setImageOriginalName(uploadFile1.getOriginalFilename());
+			i.setImageRename(renameFileName2);
+			i.setImagePath(savePath2);
+			
+			System.out.println("111i"+i);
+		 result2 = iService.updateItem(i); // item테이블 정보 수정
+//			int result3=iService.deleteEventItem(i); //이벤트 등록 테이블에서 상품 삭제
+			
+		
+			
+			}
+
+		
+		
+		
+		
+		int imgNo = iService.selectImageNo(i); // 이미지테이블에 지울 이미지번호를 가져옴 
 
 		System.out.println(imgNo);
 		String renameFileName = "";
 		int result1 = 0;
 		
 		
-		// 상세 이미지 파일 삭제
+		// 상세 이미지 파일이 있으면 기존꺼 삭제 
 		if (!uploadFile2.getOriginalFilename().equals("")) {
-			if (i.getImageOriginalName() != null) {
-				deleteFile(i.getImageRename(), request);
-			}
+			
+			BannerItem b=iService.selectItemDetailImage(i.getItemNo());
+				deleteFile(b.getImageRename(), request);
+			
 			
 			//새로운 상세 이미지 파일 저장,db에도 저장
 			renameFileName = saveFile(request, uploadFile2);
@@ -1516,36 +1550,11 @@ public class ItemController {
 			i.setImagePath(savePath);
 			i.setItemNo(imgNo);
 
-			result1 = iService.updateItemImg(i); // 이미지 파일명 DB정보 변경
+			result1 = iService.updateItemImg(i); // itemNo로 이미지 번호가 들어가서 이미지테이블의 이미지 파일명 DB정보 변경 
 			
 		}
 			
-		
-		//메인이미지 파일저장,db변경
-		if (!uploadFile1.getOriginalFilename().equals("")) {
-			if (i.getImageOriginalName() != null) {
-				System.out.println("실행됨?");
-				deleteFile(i.getImageRename(), request);
-			
-			}
-			
-			String renameFileName2 = saveFile(request, uploadFile1);
-			String root2 = request.getSession().getServletContext().getRealPath("resources");
-			String savePath2 = root2 + "\\uploadFiles";
-
-			i.setImageOriginalName(uploadFile1.getOriginalFilename());
-			i.setImageRename(renameFileName2);
-			i.setImagePath(savePath2);
-			i.setItemNo(imgNo);
-
-			
-			}
-		
-
-		System.out.println("111i"+i);
-		int result2 = iService.updateItem(i); // item테이블 정보 수정
-//			int result3=iService.deleteEventItem(i); //이벤트 등록 테이블에서 상품 삭제
-
+	
 		if (result1 > 0 || result2 > 0) {
 
 			mv.addObject("page", page).setViewName("redirect:itemListA.do");
@@ -1578,12 +1587,14 @@ public class ItemController {
 		int result1 = 0; // 상품 삭제
 		int result2 = 0; // 상품 이미지 삭제
 		int result3 = 0; // 상품 이미지 삭제
-		int result4 = 0; // 상품 이미지 삭제
+		int result4 = 0; // 아이템 삭제
+		int result5=0; //추천테이블에서 삭제
 
 		// 선택한 상품의 정보를 객체에 담아 각각의 테이블에 있는 값을 삭제
 		for (int k = 0; k < dEventArr.length; k++) {
 
 			BannerItem b = iService.selectDeleteItem(dEventArr[k]);
+			
 			System.out.println(b.toString());
 
 			if (b.getImageOriginalName() != null) {
@@ -1591,10 +1602,11 @@ public class ItemController {
 			}
 			System.out.println("나와랏" + dEventArr[k]);
 
+			result5 = iService.deleteRecommend(dEventArr[k]);
 			result1 = iService.deleteImgA(dEventArr[k]);
 			result2 = iService.deleteItemImgA(dEventArr[k]);
 			result3 = iService.deleteItemEvent(dEventArr[k]);
-			result4 = iService.deleteItemA(dEventArr[k]);
+			result4 = iService.deleteItemA(dEventArr[k]); 
 
 		}
 
@@ -2230,5 +2242,53 @@ public class ItemController {
 		out.flush();
 		out.close();
 	}
+	
+	//---------------------------------------------------------------------------------------------------
+	
+	
+	
+	// 캐로셀 상품 페이지
+		@RequestMapping("bannerItem.do")
+		public ModelAndView bannerItemList(ModelAndView mv, @RequestParam(value = "page", required = false) Integer page,
+				String eventNo) {
+			int currentPage = 1;
+			if (page != null) {
+				currentPage = page;
+			}
+			
+
+			int listCount = iService.selectBannerItemCount(eventNo);
+
+
+			PageInfo pi = getPageInfo(currentPage, listCount);
+			
+			System.out.println("eventNo="+eventNo);
+		
+			ArrayList<Item> list = iService.selectBannerItemList(pi,eventNo);
+				
+				
+				
+		    mv.addObject("list", list).addObject("pi", pi).setViewName("items/itemEvent");
+	
+			return mv;
+		}
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 }

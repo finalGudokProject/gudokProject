@@ -732,4 +732,29 @@ public class ItemDao {
 		return (ArrayList)sqlSessionTemplate.selectList("itemMapper.selectHotList");
 	}
 
+	public int insertRecommend() {
+		return sqlSessionTemplate.insert("adminItemMapper.insertRecommend");
+	}
+
+	public int deleteRecommend(int i) {
+		return sqlSessionTemplate.delete("adminItemMapper.deleteRecommend",i);
+	}
+	
+	
+	//----------------------------------------------------------------
+
+	public int selectBannerItemCount(String eventNo) {
+		return sqlSessionTemplate.selectOne("itemListMapper.selectBannerItemCount",eventNo);
+	}
+
+	public ArrayList<Item> selectBannerItemList(PageInfo pi, String eventNo) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		return (ArrayList)sqlSessionTemplate.selectList("itemListMapper.selectBannerItemList", eventNo, rowBounds);
+	}
+
+	public BannerItem selectItemDetailImage(int i) {
+		return sqlSessionTemplate.selectOne("adminItemMapper.selectItemDetailImage",i);
+	}
+
 }

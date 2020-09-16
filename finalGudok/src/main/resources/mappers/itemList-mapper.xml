@@ -473,4 +473,23 @@
 		WHERE ROWNUM BETWEEN 1 AND 4
 	</select>
 	
+	
+	
+	
+	
+	<!--   -->
+	
+	<select id="selectBannerItemCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM EVENT_ITEM
+		WHERE EVENT_NO=#{value}
+	</select>	
+	
+	<select id="selectBannerItemList" resultMap="itemListResultSet">
+		SELECT I.*,E.EVENT_NO,E.ITEM_DISCOUNT,I.IMAGE_RENAME AS ITEM_RENAME
+		FROM EVENT_ITEM E
+		LEFT JOIN ITEM I ON (E.ITEM_NO=I.ITEM_NO)
+		WHERE E.EVENT_NO=#{value}
+	</select>
+	
 </mapper>

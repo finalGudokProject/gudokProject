@@ -377,7 +377,7 @@ input, select,textarea{
         		 var page=${pi.currentPage };   
         		 var type="itemEvent";
         		 
-        		 alert(itemNo);
+        		
            		location.href="itemDetail.do?itemNo="+itemNo+"&page="+page+"&type="+type;
        		})
         	
@@ -493,7 +493,7 @@ input, select,textarea{
     			}
     		}
     		
-    		alert(sendArr);
+    	
     		
     		
     		$.ajax({

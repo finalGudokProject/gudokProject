@@ -300,4 +300,18 @@ public interface ItemService {
 	ArrayList<Item> selectHomeRecommendMList();
 
 	ArrayList<Item> selecthotList();
+
+	int insertRecommend();
+
+	int deleteRecommend(int i);
+	
+	
+	
+	//------------------------------
+
+	int selectBannerItemCount(String eventNo);
+
+	ArrayList<Item> selectBannerItemList(PageInfo pi, String eventNo);
+
+	BannerItem selectItemDetailImage(int i);
 }

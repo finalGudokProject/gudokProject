@@ -88,20 +88,13 @@ input, select,textarea{
                                 <td  onclick='event.cancelBubble=true' id="td3">${list[0].temp2 }명</td>
                             </tr>
                             <tr>
-                                <td  onclick='event.cancelBubble=true'>가격</td>
+                                <td  onclick='event.cancelBubble=true'>가격이 비쌈</td>
                                 <td  onclick='event.cancelBubble=true' id="td3">${list[1].temp2 }명</td>
                             </tr>
-                            <tr>
-                                <td  onclick='event.cancelBubble=true'>개인적 사유</td>
-                                <td  onclick='event.cancelBubble=true' id="td3">${list[2].temp2 }명</td>
-                            </tr>
-                             <tr>
-                                <td  onclick='event.cancelBubble=true'>상품에 대한 착오</td>
-                                <td  onclick='event.cancelBubble=true' id="td3">${list[3].temp2 }명</td>
-                            </tr>
+    
                              <tr>
                                 <td  onclick='event.cancelBubble=true'>기타</td>
-                                <td  onclick='event.cancelBubble=true' id="td3">${list[4].temp2 }명</td>
+                                <td  onclick='event.cancelBubble=true' id="td3">${list[2].temp2 }명</td>
                             </tr>
 
                         </table>
@@ -203,7 +196,7 @@ input, select,textarea{
 </svg></a></li>
 						</c:if>
 						 <c:if test="${pi.currentPage gt 1 }">
-							<c:url var="blistBack" value="exchangList.do">
+							<c:url var="blistBack" value="cList.do">
 								<c:param name="page" value="${pi.currentPage-1 }"/>
 							</c:url>
 		                        <li class="page-item-t">
@@ -221,7 +214,7 @@ input, select,textarea{
 							</c:if>
 							
 	                        <c:if test="${p ne pi.currentPage }">
-	                        	<c:url var="blistCheck" value="exchangList.do">
+	                        	<c:url var="blistCheck" value="cList.do">
 	                        		<c:param name="page" value="${p }"/>
                         		</c:url>
 		                        <li class="page-item-t"><a class="page-link-t" href="${blistCheck }">${p } <span class="sr-only"></span></a>
@@ -238,7 +231,7 @@ input, select,textarea{
 </svg></a></li>
 						</c:if>
 						 <c:if test="${pi.currentPage lt pi.maxPage }">
-							<c:url var="blistAfter" value="exchangList.do">
+							<c:url var="blistAfter" value="cList.do">
 								<c:param name="page" value="${pi.currentPage+1 }"/>
 							</c:url>
 	                        <li class="page-item-t">
@@ -359,8 +352,7 @@ input, select,textarea{
     	var one=${list[0].temp2};
     	var two=${list[1].temp2};
     	var three=${list[2].temp2};
-    	var fourth=${list[3].temp2};
-    	var five=${list[4].temp2};
+    
     	
     	
     	  var data = google.visualization.arrayToDataTable([
@@ -369,9 +361,8 @@ input, select,textarea{
               ['Task', 'Percentage'],
               ['상품 불필요', one],
               ['가격 문제', two],
-              ['개인적 사유', three],
-              ['상품에 대한 착오', fourth],
-              ['기타', five]
+              ['기타', three]
+           
             ]);
         
        
@@ -382,7 +373,7 @@ input, select,textarea{
           
           pieHole: 0.4,
           chartArea:{left:30,top:50,width:'100%',height:'100%'},
-       	  colors:['#7986CB','#42A5F5','#5C6BC0','#81D4FA','#4A148C'],
+       	  colors:['#7986CB','#42A5F5','#5C6BC0'],
        	  fontSize:14
         };
 

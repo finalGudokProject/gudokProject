@@ -189,7 +189,7 @@
 								</c:url>
                         
 	                        <tr id="cursor"onclick='location.href="${orderDetail }"'>
-	                            <td style="width:40%">${i.itemName }</td>
+	                            <td style="width:40%; text-align:left;">${i.itemName }</td>
 	                            <td style="width:20%">${i.memberId }</td>
 	                            <td style="width:40%">${i.subscribeDate }</td>
 	                        </tr>
@@ -304,8 +304,8 @@
 								<c:param name="bBoard_no" value="${i.bBoard_no }"/>
 								<c:param name="page" value="1"/>
 							</c:url>	
-	                            <tr>
-	                                <td style="width:70%; text-align:left"><a href="${adminInquiryDetail }">${i.bTitle }</a></td>
+	                            <tr id="cursor">
+	                                <td style="width:70%; text-align:left"><a href="${adminInquiryDetail }" style="text-decoration:none; color:black;">${i.bTitle }</a></td>
 	                                <td style="width:30%;">${i.bWrite_date }</td>
 	                            </tr>
                             </c:forEach>
@@ -338,8 +338,8 @@
 								<c:param name="bBoard_no" value="${i.bBoard_no }"/>
 								<c:param name="page" value="1"/>
 							</c:url>								
-	                           	 <tr>
-	                                <td style="width:70%; text-align:left;"><a href="${adminNoticeDetail }">${i.bTitle }</a></td>
+	                           	 <tr id="cursor">
+	                                <td style="width:70%; text-align:left;"><a href="${adminNoticeDetail }" style="text-decoration:none; color:black;">${i.bTitle }</a></td>
 	                                <td style="width:30%;">${i.bWrite_date }</td>
 	                            </tr>
                            	</c:forEach>

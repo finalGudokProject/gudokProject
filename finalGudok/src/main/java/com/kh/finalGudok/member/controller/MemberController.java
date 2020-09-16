@@ -465,11 +465,13 @@ public class MemberController {
 	@RequestMapping(value = "pointList.do")
 	public ModelAndView pointList(ModelAndView mv, Integer memberNo) {
 		ArrayList<Point> list = mService.selectPointList(memberNo);
+		int memberPoint = mService.selectMemberPoint(memberNo);
 
 		System.out.println("적립금 내역  : " + list);
 
 		if (list != null) {
 			mv.addObject("list", list);
+			mv.addObject("memberPoint",memberPoint);
 			mv.setViewName("mypage/pointList");
 		} else {
 			throw new MemberException("적립금내역 리스트 불러오기 실패");
@@ -1517,8 +1519,11 @@ public class MemberController {
 				// 회원에게 적립금 부여
 				int result3 = mService.updateMemberPoint(dArr.get(i));
 
-				int memberNo = mService.selectPointMember(dArr.get(i));
+				int memberNo = mService.selectPointMember(dArr.get(i).getSubscribeNo());
+				System.out.println("회원번호 : "+memberNo);
 				int pointCount = mService.pointCount(memberNo);
+				System.out.println("회원번호 : "+pointCount);
+				
 				model.addAttribute("pointCount", pointCount);
 			}
 
@@ -1654,6 +1659,7 @@ public class MemberController {
 		System.out.println("p" + p);
 
 		System.out.println("페이지는여" + page);
+		System.out.println("sc"+sc);
 
 		if (sc != null && p != null) {
 
@@ -1714,6 +1720,8 @@ public class MemberController {
 
 			Integer temp = mService.selectExchangeChart(list.get(i - 1));
 
+			System.out.println("테ㅐㅁ프는"+temp);
+			
 			if (temp == null) {
 				temp = 0;
 			}
@@ -2860,7 +2868,7 @@ public class MemberController {
 		// 차트용 리스트
 		ArrayList<Search> list = new ArrayList<>();
 
-		for (int i = 1; i < 6; i++) {
+		for (int i = 1; i < 4; i++) {
 			Search s = new Search();
 			s.setStartDay(startDay);
 			s.setLastDay(lastDay);

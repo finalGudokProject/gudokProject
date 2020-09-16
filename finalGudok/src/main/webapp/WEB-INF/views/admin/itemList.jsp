@@ -861,7 +861,7 @@ height:80%;
     			}
     		}
     		
-    		
+    		if(confirm('선택한 상품을 삭제하시겠습니까?')){
     		
     		$.ajax({
 				url:"recommendChk.do",
@@ -909,7 +909,11 @@ height:80%;
 
 
     		
-    		
+    		}else{
+    			
+    			return false;
+    			
+    		}
     		
     		
     		

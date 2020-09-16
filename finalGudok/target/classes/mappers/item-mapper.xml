@@ -20,6 +20,8 @@
 		<result property="imageOriginalName" column="IMAGE_ORIGINAL_NAME"/>
 		<result property="imageRename" column="IMAGE_RENAME"/>
 		<result property="imagePath" column="IMAGE_PATH"/>
+
+		
 		
 	</resultMap>
 	
@@ -208,5 +210,11 @@
 		SELECT * FROM (SELECT * FROM ITEM ORDER BY ITEM_COUNT DESC)
 		WHERE ROWNUM BETWEEN 1 AND 4
 	</select>
+	
+	
+	
+	
+	
+	
 	
 </mapper>
