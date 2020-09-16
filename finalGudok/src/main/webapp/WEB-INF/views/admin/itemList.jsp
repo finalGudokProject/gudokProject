@@ -849,7 +849,7 @@ height:80%;
      //선택 삭제
        function itemDelete(){
     
-<<<<<<< HEAD
+
     		var sendArr=Array();
     		var sendCnt=0;
     		var chkbox=$(".common");
@@ -879,38 +879,7 @@ height:80%;
 					    	 
 					     }else{			
 			
-=======
-          var sendArr=Array();
-          var sendCnt=0;
-          var chkbox=$(".common");
-          var page=${pi.currentPage};
-          
-          for(i=0; i<chkbox.length;i++){
-             if(chkbox[i].checked==true){
-                sendArr[sendCnt]=chkbox[i].value;
-                sendCnt++;
-             }
-          }
-          
-          if(confirm('선택한 상품을 삭제하시겠습니까?')){
-          
-          $.ajax({
-            url:"recommendChk.do",
-            traditional:true,
-            data:{"sendArr":sendArr,"sendCnt":sendCnt,"page":page},
-            success:function(data){
-               
-               
-            
-                    if(data.result>0){
-                       
-                       alert("추천 상품이 포함되어있습니다. 추천 상품 해제 후 삭제해주세요.")
-                       return false;
-                       
-                    }else{         
-         
->>>>>>> refs/remotes/origin/master
-    
+
                                $.ajax({
                                  url:"iDelete.do",
                                  traditional:true,
@@ -940,7 +909,7 @@ height:80%;
          });
 
 
-<<<<<<< HEAD
+
     		
     		}else{
     			
@@ -951,32 +920,11 @@ height:80%;
     		
     		
     		
-    		
-    		
-    		
-    		
     	} 
     	
-    	//모두 체크
-=======
-          
-          }else{
-             
-             return false;
-             
-          }
-          
-          
-          
-          
-          
-          
-          
-          
-       } 
-       
+    
        //모두 체크
->>>>>>> refs/remotes/origin/master
+
 
        $(function(){
    

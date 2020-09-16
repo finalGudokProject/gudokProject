@@ -335,37 +335,25 @@ float:left;
                         </td>
                         <td id="td3"> 추천 선택</td>
                         <td id="td4">
-<<<<<<< HEAD
+
                         	<c:if test="${i.itemRecommend eq 'F'}">
 	                            <input type="radio" name="itemRecommend" value="F" checked>&nbsp;여성 &nbsp; &nbsp; &nbsp;
 	                            <input type="radio" name="itemRecommend" value="M">&nbsp;남성 &nbsp; &nbsp; &nbsp;
 	                            <input type="radio" name="itemRecommend" value="C" >&nbsp;공통 &nbsp; &nbsp;
 	                            <input type="radio" name="itemRecommend" value="R">&nbsp;추천상품
-=======
-                           <c:if test="${i.itemRecommend eq 'F'}">
-                               <input type="radio" name="itemRecommend" value="F" checked>&nbsp;여성 &nbsp; &nbsp; &nbsp;
-                               <input type="radio" name="itemRecommend" value="M">&nbsp;남성 &nbsp; &nbsp; &nbsp;
-                               <input type="radio" name="itemRecommend" value="C" >&nbsp;공통 &nbsp; &nbsp;
-                               <input type="radio" name="itemRecommend" value="R">&nbsp;추천상품
->>>>>>> refs/remotes/origin/master
+
                             </c:if>
                             <c:if test="${i.itemRecommend eq 'M'}">
-<<<<<<< HEAD
-	                            <input type="radio" name="itemRecommend" value="F">&nbsp;여성 &nbsp; &nbsp; &nbsp;
-	                            <input type="radio" name="itemRecommend" value="M" checked>&nbsp;남성 &nbsp; &nbsp; &nbsp;
-	                            <input type="radio" name="itemRecommend" value="C" >&nbsp;공통 &nbsp; &nbsp;
-	                            <input type="radio" name="itemRecommend" value="R">&nbsp;추천상품
-	                            
-=======
+
                                <input type="radio" name="itemRecommend" value="F">&nbsp;여성 &nbsp; &nbsp; &nbsp;
                                <input type="radio" name="itemRecommend" value="M" checked>&nbsp;남성 &nbsp; &nbsp; &nbsp;
                                <input type="radio" name="itemRecommend" value="C" >&nbsp;공통 &nbsp; &nbsp;
                                <input type="radio" name="itemRecommend" value="R">&nbsp;추천상품
                                
->>>>>>> refs/remotes/origin/master
+
                             </c:if>
                             <c:if test="${i.itemRecommend eq 'C'}">
-<<<<<<< HEAD
+
 	                            <input type="radio" name="itemRecommend" value="F">&nbsp;여성 &nbsp; &nbsp; &nbsp;
 	                            <input type="radio" name="itemRecommend" value="M">&nbsp;남성 &nbsp; &nbsp; &nbsp;
 	                            <input type="radio" name="itemRecommend" value="C" checked>&nbsp;공통 &nbsp; &nbsp;
@@ -376,18 +364,7 @@ float:left;
 	                            <input type="radio" name="itemRecommend" value="M">&nbsp;남성 &nbsp; &nbsp; &nbsp;
 	                            <input type="radio" name="itemRecommend" value="C">&nbsp;공통&nbsp; &nbsp; &nbsp;
 	                            <input type="radio" name="itemRecommend" value="R" checked>&nbsp;추천상품
-=======
-                               <input type="radio" name="itemRecommend" value="F">&nbsp;여성 &nbsp; &nbsp; &nbsp;
-                               <input type="radio" name="itemRecommend" value="M">&nbsp;남성 &nbsp; &nbsp; &nbsp;
-                               <input type="radio" name="itemRecommend" value="C" checked>&nbsp;공통 &nbsp; &nbsp;
-                               <input type="radio" name="itemRecommend" value="R">&nbsp;추천상품
-                            </c:if>
-                             <c:if test="${i.itemRecommend eq 'R'}">
-                               <input type="radio" name="itemRecommend" value="F">&nbsp;여성 &nbsp; &nbsp; &nbsp;
-                               <input type="radio" name="itemRecommend" value="M">&nbsp;남성 &nbsp; &nbsp; &nbsp;
-                               <input type="radio" name="itemRecommend" value="C">&nbsp;공통&nbsp; &nbsp; &nbsp;
-                               <input type="radio" name="itemRecommend" value="R" checked>&nbsp;추천상품
->>>>>>> refs/remotes/origin/master
+
                             </c:if>
                         </td>
 
@@ -436,13 +413,10 @@ float:left;
                             <div class="upload-display1"><div class="upload-thumb-wrap1"><img id="beforeImage" src="${contextPath }/resources/uploadFiles/${i.imageRename}"></div></div>
                                 <input class="upload-name1" value="파일선택" disabled="disabled" > 
                                 <label for="input-file1">업로드</label> 
-<<<<<<< HEAD
+
                                 <input type="file" id="input-file1" class="upload-hidden1" name="uploadFile1" accept="image/*" title="이미지 파일만 업로드 가능" value="${i.imageRename}"> 
                          	</div>
-=======
-                                <input type="file" id="input-file1" class="upload-hidden1" name="uploadFile1" accept="image/*" title="이미지 파일만 업로드 가능"> 
-                            </div>
->>>>>>> refs/remotes/origin/master
+
                         </td>
                        
                     
@@ -455,13 +429,11 @@ float:left;
                                   <div class="upload-display2"><div class="upload-thumb-wrap2"><img id="beforeImage" src="${contextPath }/resources/uploadFiles/${m[0].imageRename}"></div></div>
                                 <input class="upload-name2" value="파일선택" disabled="disabled" > 
                                 <label for="input-file2">업로드</label> 
-<<<<<<< HEAD
+
                                 <input type="file" id="input-file2" class="upload-hidden2" name="uploadFile2" accept="image/*" title="이미지 파일만 업로드 가능" value="${m[0].imageRename}"> 
                          	</div>
-=======
-                                <input type="file" id="input-file2" class="upload-hidden2" name="uploadFile2" accept="image/*" title="이미지 파일만 업로드 가능"> 
-                            </div>
->>>>>>> refs/remotes/origin/master
+
+
                         </td>
                     </tr>
                 </table>

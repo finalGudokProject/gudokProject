@@ -20,23 +20,16 @@ public class AdminExchange implements Serializable {
 	private String memberId;
 	private int itemPrice;
 	private int totalPayment;
-<<<<<<< HEAD
+
 	
 	
 	public AdminExchange() {}
-=======
 
-	public AdminExchange() {
-	}
->>>>>>> refs/remotes/origin/master
 
 
 	public AdminExchange(int exchangeNo, String exchangeStatus, String exchangeContent, Date exchangeDate,
 			String itemName, int subscribeNo, int exchangeCategory, String memberId, int itemPrice, int totalPayment) {
-<<<<<<< HEAD
 		super();
-=======
->>>>>>> refs/remotes/origin/master
 		this.exchangeNo = exchangeNo;
 		this.exchangeStatus = exchangeStatus;
 		this.exchangeContent = exchangeContent;
@@ -48,6 +41,7 @@ public class AdminExchange implements Serializable {
 		this.itemPrice = itemPrice;
 		this.totalPayment = totalPayment;
 	}
+
 
 
 	public int getExchangeNo() {
@@ -55,9 +49,11 @@ public class AdminExchange implements Serializable {
 	}
 
 
+
 	public void setExchangeNo(int exchangeNo) {
 		this.exchangeNo = exchangeNo;
 	}
+
 
 
 	public String getExchangeStatus() {
@@ -65,9 +61,11 @@ public class AdminExchange implements Serializable {
 	}
 
 
+
 	public void setExchangeStatus(String exchangeStatus) {
 		this.exchangeStatus = exchangeStatus;
 	}
+
 
 
 	public String getExchangeContent() {
@@ -75,9 +73,11 @@ public class AdminExchange implements Serializable {
 	}
 
 
+
 	public void setExchangeContent(String exchangeContent) {
 		this.exchangeContent = exchangeContent;
 	}
+
 
 
 	public Date getExchangeDate() {
@@ -85,9 +85,11 @@ public class AdminExchange implements Serializable {
 	}
 
 
+
 	public void setExchangeDate(Date exchangeDate) {
 		this.exchangeDate = exchangeDate;
 	}
+
 
 
 	public String getItemName() {
@@ -95,9 +97,11 @@ public class AdminExchange implements Serializable {
 	}
 
 
+
 	public void setItemName(String itemName) {
 		this.itemName = itemName;
 	}
+
 
 
 	public int getSubscribeNo() {
@@ -105,9 +109,11 @@ public class AdminExchange implements Serializable {
 	}
 
 
+
 	public void setSubscribeNo(int subscribeNo) {
 		this.subscribeNo = subscribeNo;
 	}
+
 
 
 	public int getExchangeCategory() {
@@ -115,9 +121,11 @@ public class AdminExchange implements Serializable {
 	}
 
 
+
 	public void setExchangeCategory(int exchangeCategory) {
 		this.exchangeCategory = exchangeCategory;
 	}
+
 
 
 	public String getMemberId() {
@@ -125,9 +133,11 @@ public class AdminExchange implements Serializable {
 	}
 
 
+
 	public void setMemberId(String memberId) {
 		this.memberId = memberId;
 	}
+
 
 
 	public int getItemPrice() {
@@ -135,34 +145,29 @@ public class AdminExchange implements Serializable {
 	}
 
 
+
 	public void setItemPrice(int itemPrice) {
 		this.itemPrice = itemPrice;
 	}
 
-<<<<<<< HEAD
+
 
 	public int getTotalPayment() {
 		return totalPayment;
 	}
 
 
-	public void setTotalPayment(int totalPayment) {
-		this.totalPayment = totalPayment;
-	}
-
-=======
-	public int getTotalPayment() {
-		return totalPayment;
-	}
 
 	public void setTotalPayment(int totalPayment) {
 		this.totalPayment = totalPayment;
 	}
->>>>>>> refs/remotes/origin/master
+
+
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
+
 
 
 	@Override
@@ -172,11 +177,7 @@ public class AdminExchange implements Serializable {
 				+ subscribeNo + ", exchangeCategory=" + exchangeCategory + ", memberId=" + memberId + ", itemPrice="
 				+ itemPrice + ", totalPayment=" + totalPayment + "]";
 	}
-<<<<<<< HEAD
+
 
 	
-	
-=======
->>>>>>> refs/remotes/origin/master
-
 }
