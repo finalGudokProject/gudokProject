@@ -4,33 +4,35 @@ import java.io.Serializable;
 import java.sql.Date;
 
 public class Item implements Serializable{
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 6935207850394583077L;
-	
-	private int itemNo;
-	private String itemName;
-	private int itemPrice;
-	private int itemCount;
-	private Double itemRate;
-	private String itemDpStatus;
-	private int itemCmSales;
-	private int itemChoice;
-	private Date itemDate;
-	private String itemRecommend;
-	private String categoryNo;
-	private String itemMemo;
-	private String itemEventStatus;
-	private String sortNo;
-	private String imageOriginalName;
-	private String imageRename;
-	private String imagePath;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = 6935207850394583077L;
+   
+   private int itemNo;
+   private String itemName;
+   private int itemPrice;
+   private int itemCount;
+   private Double itemRate;
+   private String itemDpStatus;
+   private int itemCmSales;
+   private int itemChoice;
+   private Date itemDate;
+   private String itemRecommend;
+   private String categoryNo;
+   private String itemMemo;
+   private String itemEventStatus;
+   private String sortNo;
+   private String imageOriginalName;
+   private String imageRename;
+   private String imagePath;
+
 
 
 	public Item() {
 		// TODO Auto-generated constructor stub
 	}
+
 
 
 	public Item(int itemNo, String itemName, int itemPrice, int itemCount, Double itemRate, String itemDpStatus,
@@ -57,9 +59,11 @@ public class Item implements Serializable{
 	}
 
 
+
 	public int getItemNo() {
 		return itemNo;
 	}
+
 
 
 	public void setItemNo(int itemNo) {
@@ -67,9 +71,11 @@ public class Item implements Serializable{
 	}
 
 
+
 	public String getItemName() {
 		return itemName;
 	}
+
 
 
 	public void setItemName(String itemName) {
@@ -77,9 +83,11 @@ public class Item implements Serializable{
 	}
 
 
+
 	public int getItemPrice() {
 		return itemPrice;
 	}
+
 
 
 	public void setItemPrice(int itemPrice) {
@@ -87,9 +95,11 @@ public class Item implements Serializable{
 	}
 
 
+
 	public int getItemCount() {
 		return itemCount;
 	}
+
 
 
 	public void setItemCount(int itemCount) {
@@ -97,9 +107,11 @@ public class Item implements Serializable{
 	}
 
 
+
 	public Double getItemRate() {
 		return itemRate;
 	}
+
 
 
 	public void setItemRate(Double itemRate) {
@@ -107,9 +119,11 @@ public class Item implements Serializable{
 	}
 
 
+
 	public String getItemDpStatus() {
 		return itemDpStatus;
 	}
+
 
 
 	public void setItemDpStatus(String itemDpStatus) {
@@ -117,9 +131,11 @@ public class Item implements Serializable{
 	}
 
 
+
 	public int getItemCmSales() {
 		return itemCmSales;
 	}
+
 
 
 	public void setItemCmSales(int itemCmSales) {
@@ -127,9 +143,11 @@ public class Item implements Serializable{
 	}
 
 
+
 	public int getItemChoice() {
 		return itemChoice;
 	}
+
 
 
 	public void setItemChoice(int itemChoice) {
@@ -137,9 +155,11 @@ public class Item implements Serializable{
 	}
 
 
+
 	public Date getItemDate() {
 		return itemDate;
 	}
+
 
 
 	public void setItemDate(Date itemDate) {
@@ -147,9 +167,11 @@ public class Item implements Serializable{
 	}
 
 
+
 	public String getItemRecommend() {
 		return itemRecommend;
 	}
+
 
 
 	public void setItemRecommend(String itemRecommend) {
@@ -157,9 +179,11 @@ public class Item implements Serializable{
 	}
 
 
+
 	public String getCategoryNo() {
 		return categoryNo;
 	}
+
 
 
 	public void setCategoryNo(String categoryNo) {
@@ -167,9 +191,11 @@ public class Item implements Serializable{
 	}
 
 
+
 	public String getItemMemo() {
 		return itemMemo;
 	}
+
 
 
 	public void setItemMemo(String itemMemo) {
@@ -177,9 +203,11 @@ public class Item implements Serializable{
 	}
 
 
+
 	public String getItemEventStatus() {
 		return itemEventStatus;
 	}
+
 
 
 	public void setItemEventStatus(String itemEventStatus) {
@@ -187,9 +215,11 @@ public class Item implements Serializable{
 	}
 
 
+
 	public String getSortNo() {
 		return sortNo;
 	}
+
 
 
 	public void setSortNo(String sortNo) {
@@ -197,9 +227,11 @@ public class Item implements Serializable{
 	}
 
 
+
 	public String getImageOriginalName() {
 		return imageOriginalName;
 	}
+
 
 
 	public void setImageOriginalName(String imageOriginalName) {
@@ -207,9 +239,11 @@ public class Item implements Serializable{
 	}
 
 
+
 	public String getImageRename() {
 		return imageRename;
 	}
+
 
 
 	public void setImageRename(String imageRename) {
@@ -217,9 +251,11 @@ public class Item implements Serializable{
 	}
 
 
+
 	public String getImagePath() {
 		return imagePath;
 	}
+
 
 
 	public void setImagePath(String imagePath) {
@@ -227,9 +263,11 @@ public class Item implements Serializable{
 	}
 
 
+
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
+
 
 
 	@Override
@@ -241,7 +279,5 @@ public class Item implements Serializable{
 				+ itemEventStatus + ", sortNo=" + sortNo + ", imageOriginalName=" + imageOriginalName + ", imageRename="
 				+ imageRename + ", imagePath=" + imagePath + "]";
 	}
-
-
 
 }

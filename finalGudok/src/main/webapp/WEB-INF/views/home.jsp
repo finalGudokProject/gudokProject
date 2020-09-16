@@ -34,13 +34,26 @@
         body{
           font-family: 'Jua', sans-serif;
         }
+        
+        .moveToDetail:hover{
+        	cursor:pointer;
+        }
+        
+        .moveToList{
+        	color:#495057 !important;
+        }
+        
+        .moveToList:hover{
+        	color:black !important;
+        }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
   </head>
   <body>
-  
+  	
+  	<header>
     <jsp:include page="common/menubar.jsp"/>
- 
+ 	</header>
 
 	<section>
       <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
@@ -68,12 +81,12 @@
       <br><br><br><br><br>
 
       <div class=cardWrap>
-        <p style="font-size:2em;"><a href="itemNew.do">오늘의 신상품 ></a></p>
+        <p style="font-size:2em;"><a href="itemNew.do" class="moveToList">오늘의 신상품 ></a></p>
         <br>
 
         <c:forEach items="${newList }" var="newList">
         <div class="card" style="width: 18rem;">
-          <a href="idetail.do?itemNo=${newList.itemNo }&page=1" class="moveToDetail"><img src="resources/images/salad1.jpg" class="card-img-top" alt="..."></a>
+          <a class="moveToDetail"><img src="${contextPath}/resources/uploadFiles/${newList.itemRename}" class="card-img-top" alt="..."></a>
           <input type="hidden" value="${newList.itemNo }">
           <div class="card-body">
             <p class="card-text">${newList.itemName }</p>
@@ -86,12 +99,12 @@
       <br><br><br><br><br>
 
       <div class=cardWrap>
-        <p style="font-size:2em;"><a href="itemBest.do">베스트 상품 ></a></p>
+        <p style="font-size:2em;"><a href="itemBest.do" class="moveToList">베스트 상품 ></a></p>
         <br>
 		
 		<c:forEach items="${bestList }" var="best">
         <div class="card" style="width: 18rem;">
-          <a href="idetail.do?itemNo=${best.itemNo }&page=1" class="moveToDetail"><img src="resources/images/salad1.jpg" class="card-img-top" alt="..."></a>
+          <a class="moveToDetail"><img src="${contextPath}/resources/uploadFiles/${best.itemRename}" class="card-img-top" alt="..."></a>
           <input type="hidden" value="${best.itemNo }">
           <div class="card-body">
             <p class="card-text">${best.itemName }</p>
@@ -107,15 +120,8 @@
         <p style="font-size:2em;">지금 가장 핫한 상품</p>
         <br>
 
-		<c:forEach items="${hotList }" var="hot">
-        <div class="card" style="width: 18rem;">
-          <a href="idetail.do?itemNo=${hot.itemNo }&page=1" class="moveToDetail"><img src="resources/images/salad1.jpg" class="card-img-top" alt="..."></a>
-          <div class="card-body">
-            <p class="card-text">${hot.itemName }</p>
-            <p class="card-text">${hot.itemMemo }</p>
-          </div>
+      	<div id="wholeWrap">
         </div>
-        </c:forEach>
       </div>
 
       <br><br><br><br><br>
@@ -127,7 +133,7 @@
 		<c:if test="${loginUser.gender == 'M' }">
         <c:forEach items="${recommendMList }" var="recommend">
         <div class="card" style="width: 18rem;">
-          <a href="idetail.do?itemNo=${recommend.itemNo }&page=1" class="moveToDetail"><img src="resources/images/salad1.jpg" class="card-img-top" alt="..."></a>
+          <a class="moveToDetail"><img src="${contextPath}/resources/uploadFiles/${recommend.imageRename}" class="card-img-top" alt="..."></a>
           <input type="hidden" value="${recommend.itemNo }">
           <div class="card-body">
             <p class="card-text">${recommend.itemName }</p>
@@ -139,7 +145,7 @@
         <c:if test="${loginUser.gender == 'F' }">
         <c:forEach items="${recommendFList }" var="recommend">
         <div class="card" style="width: 18rem;">
-          <a href="idetail.do?itemNo=${recommend.itemNo }&page=1" class="moveToDetail"><img src="resources/images/salad1.jpg" class="card-img-top" alt="..."></a>
+          <a class="moveToDetail"><img src="${contextPath}/resources/uploadFiles/${recommend.imageRename}" class="card-img-top" alt="..."></a>
           <input type="hidden" value="${recommend.itemNo }">
           <div class="card-body">
             <p class="card-text">${recommend.itemName }</p>
@@ -151,7 +157,7 @@
         <c:if test="${loginUser.gender == 'N' || empty loginUser }">
         <c:forEach items="${recommendCList }" var="recommend">
         <div class="card" style="width: 18rem;">
-          <a href="idetail.do?itemNo=${recommend.itemNo }&page=1" class="moveToDetail"><img src="resources/images/salad1.jpg" class="card-img-top" alt="…"></a>
+           <a class="moveToDetail"><img src="${contextPath}/resources/uploadFiles/${recommend.imageRename}" class="card-img-top" alt="..."></a>
           <input type="hidden" value="${recommend.itemNo }">
           <div class="card-body">
             <p class="card-text">${recommend.itemName }</p>
@@ -163,110 +169,76 @@
       </div>
       <br><br><br>
 	</section>
-	
-      <!-- Footer -->
-    <footer class="page-footer font-small indigo">
-
-      <!-- Footer Links -->
-      <div class="container">
-  
-      <!-- Grid row-->
-      <div class="row text-center d-flex justify-content-center pt-5 mb-3">
-  
-          <!-- Grid column -->
-          <div class="col-md-2 mb-3">
-          <h6 class="text-uppercase font-weight-bold">
-              <a href="#!">About Goose</a>
-          </h6>
-          </div>
-          <!-- Grid column -->
-  
-          <!-- Grid column -->
-          <div class="col-md-2 mb-3">
-          <h6 class="text-uppercase font-weight-bold">
-              <a href="termsOfService.do">이용약관</a>
-          </h6>
-          </div>
-          <!-- Grid column -->
-  
-          <!-- Grid column -->
-          <div class="col-md-2 mb-3">
-          <h6 class="text-uppercase font-weight-bold">
-              <a href="privacyPolicy.do">개인정보처리방침</a>
-          </h6>
-          </div>
-          <!-- Grid column -->
-  
-          <!-- Grid column -->
-          <div class="col-md-2 mb-3">
-          <h6 class="text-uppercase font-weight-bold">
-              <a href="noticeList.do">고객센터</a>
-          </h6>
-          </div>
-          <!-- Grid column -->
-  
-          <!-- Grid column -->
-          <!-- <div class="col-md-2 mb-3">
-          <h6 class="text-uppercase font-weight-bold">
-              <a href="#!">Contact</a>
-          </h6>
-          </div> -->
-          <!-- Grid column -->
-  
-      </div>
-      <!-- Grid row-->
-      <hr class="rgba-white-light" style="margin: 0 15%;">
-  
-      <!-- Grid row-->
-      <div class="row d-flex text-center justify-content-center mb-md-0 mb-4">
-  
-          <!-- Grid column -->
-          <div class="col-md-8 col-12 mt-5">
-          <p style="line-height: 1.7rem">
-            회사명 : 주식회사 Goose <br>
-            사업자등록번호 : 123-45-7890 <br>
-            주소 : 경기도 동두천시 동두천로 139 부영아파트 902동 1104호 <br>
-            연락처 : 010-1234-5678 <br>
-            개인정보관리 책임자 : 박재명 <br>
-            대표자 : 박재명(JM)
-          </p>
-          </div>
-          <!-- Grid column -->
-
-     </div>
-      <!-- Grid row-->
-      <hr class="clearfix d-md-none rgba-white-light" style="margin: 10% 15% 5%;">
-  
-      <!-- Copyright -->
-      <div class="footer-copyright text-center py-3">© 2020 Copyright : Goose, All rights reserved
-      </div>
-      <!-- Copyright -->
-  
-  </footer>
+    <!-- Footer -->
+    <footer>
+  		<jsp:include page="common/footer.jsp"/>
+  	</footer>
+  	
   <script>
-	//하루에 한번 자동 등업 
-	$(function(){
-		setInterval(function(){
+	  function hotList(){
+			/* alert("핫리스트 실행"); */
 			
-		location.href="updateGradeAuto.do"
+			$.ajax({
+				url:"hotList.do",		
+				dataType:"json",
+				success:function(data){
+					var wholeWrap = $("#wholeWrap");
+					wholeWrap.empty();
+
+					for(var i in data){
+						var card = $("<div>").addClass("card").css("width","18rem");
+						var aTag = $("<a>").addClass("moveToDetail");
+						var imageTag = $("<img>").addClass("card-img-top").attr({"src":"${contextPath}/resources/uploadFiles/"+data[i].imageRename, "alt":"..."});
+						var hidden = $("<input>").attr("type","hidden").attr("value",data[i].itemNo);
+						var cardBody = $("<div>").addClass("card-body");
+						var pTag1 = $("<p>").addClass("card-text").text(data[i].itemName);
+						var pTag2 = $("<p>").addClass("card-text").text(data[i].itemMemo);
+
+						cardBody.append(pTag1);
+						cardBody.append(pTag2);
+						aTag.append(imageTag);
+						card.append(aTag);
+						card.append(hidden);
+						card.append(cardBody);
+						
+						wholeWrap.append(card);
+					}
+				},
+				error:function(request, status, errorData){
+	              alert("error code: " + request.status + "\n"
+	                         +"message: " + request.responseText
+	                         +"error: " + errorData);
+				}
+			})
+		}
+	  
 		
-		},1000*60*60*24);
-	})
-	
-	
-	
+		$(function(){
+			hotList();
+			
+			/* setInterval(function(){
+				hotList();
+			}, 10000); */
+			
+		})
 
 
-</script>
+  </script>
+  
+  <script>  	
+  	$(document).on('click','.moveToDetail',function(){
+  		var itemNo = $(this).parent().find("input").val();
+		/* alert(itemNo); */
+		location.href="idetail.do?itemNo="+itemNo+"&page=1";
+	});
+  	
+  </script>
  
-  
-  
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script> -->
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
   </body>
 </html>
-
-

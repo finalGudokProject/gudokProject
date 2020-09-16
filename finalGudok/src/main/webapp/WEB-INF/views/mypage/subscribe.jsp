@@ -485,7 +485,9 @@
 			var myEvents=[];
 
 			$(function(){
-				myEvents = subscribeList();
+				subscribeList();
+				console.log("myEvents:");
+				console.log(myEvents);
 			});
 			
 			document.addEventListener('DOMContentLoaded', function() {
@@ -502,12 +504,13 @@
 			      	events:subscribeList()
 			      	
 			    });
-
+				
 			    calendar.render();
 			  });
 
 			function subscribeList(){
 				var memberNo = ${loginUser.memberNo};
+				myEvents = [];
 				$.ajax({
 					url:"subscribeList.do",
 					async: false,
@@ -516,6 +519,8 @@
 					success:function(data){
 						$tableBody = $(".subscribeTable .tbody");
 						$tableBody.html("");
+						console.log("success 함수");
+						console.log(data);
 						
 						var $tr;
 						var $td;
@@ -525,9 +530,11 @@
 						var $cancle;
 						
 						if(data.length > 0 ){
+							console.log("data" + data.length);
 							for(var i in data){
 								var colorCode = "#" + Math.round(Math.random() * 0xffffff).toString(16);
-								
+								console.log("myEvents : ")
+								console.log(myEvents);
 								if(data[i].cycleNo == 1) {
 									myEvents.push(
 										  {
@@ -541,6 +548,8 @@
 									            }
 										   }
 									)
+									console.log(i+"번째 myEvents");
+									console.log(myEvents);
 								}
 								else if(data[i].cycleNo == 2) {
 									myEvents.push(
@@ -555,6 +564,8 @@
 									            }
 										   }
 									)
+									console.log(i+"번째 myEvents");
+									console.log(myEvents);
 								}
 								else if(data[i].cycleNo == 3) {
 									myEvents.push(
@@ -569,6 +580,8 @@
 									            }
 										   }
 									)
+									console.log(i+"번째 myEvents");
+									console.log(myEvents);
 								}
 								else{
 									myEvents.push(
@@ -583,7 +596,11 @@
 									            }
 										   }
 									)
+									console.log(i+"번째 myEvents");
+									console.log(myEvents);
 								}
+								
+								
 								
 		   
 					            $tr=$("<tr>");
@@ -594,12 +611,12 @@
 					            $itemName=$("<td>").text(data[i].itemName);
 					            $change=$("<a href='#cycle_form' id='cycle_pop' onclick='changeCycle(" + data[i].subscribeNo+","+ data[i].memberNo+"," +'"'+data[i].itemName+'"'+","+data[i].cycleNo+","+ data[i].amount+")'>").text("구독주기/수량변경");
 					            if(data[i].deliveryStatus == 'N'){
-					            	 $cancle=$("<a href='#cancle_form' id='cancle_pop' onclick='cancleClick(" + data[i].subscribeNo+","+ data[i].memberNo+")'>").text("구독취소");
+					            	 $cancle=$("<a href='#cancle_form' id='cancle_pop' onclick='cancleClick(" + data[i].subscribeNo+","+ data[i].memberNo+","+ '"'+ data[i].deliveryStatus+ '"'+")'>").text("구독취소");
+					            } else if(data[i].deliveryStatus == 'Y'){
+					            	$cancle=$("<a href='#cancle_form' id='cancle_pop' onclick='cancleClick(" + data[i].subscribeNo+","+ data[i].memberNo+","+'"'+ data[i].deliveryStatus+'"'+")'>").text("구독취소");
 					            } else{
 					            	$cancle=$("<a id='cancle_pop' onclick='cancleNo();'>").text("구독취소");
 					            }
-					            
-					           
 					            $detail=$("<a href='#detail_form' id='detail_pop' onclick='detailClick(" + data[i].subscribeNo+","+ data[i].memberNo+"," +'"'+data[i].itemName+'"'+","+data[i].cycleNo+","+'"'+data[i].address1+'"'+","+'"'+data[i].address2+'"'+","+'"'+data[i].address3+'"'+","+ data[i].amount+")'>").text("구독상세정보");
 					            
 					            
@@ -622,7 +639,7 @@
 		                      +"error: " + errorData);
 		           }
 				});
-				return myEvents
+				return myEvents;
 			}
 		</script>
 
@@ -682,6 +699,7 @@
 	        <form action="cycleChange.do" method="post">
 	        	<input type="hidden" id="subscribeNo" name="subscribeNo">
 	        	<input type="hidden" id="memberNo" name="memberNo">
+	        	
 		        <div>
 		          <table>
 		            <tr>
@@ -730,6 +748,7 @@
 	        <form action="subscribeCancle.do" method="post">
 	        	<input type="hidden" id="subscribeNo3" name="subscribeNo">
 	        	<input type="hidden" id="memberNo3" name="memberNo">
+	        	<input type="hidden" id="deliveryStatus" name="deliveryStatus">
 		        <div>
 		          <table>
 		          	<tr class="top">
@@ -793,6 +812,7 @@
 			$("#subscribeNo2").text(subscribeNo);
 			$("#itemName").text(itemName);
 			
+			
 			if(cycleNo == 1){
 				$("#cycle").text("1주");
 				$("#cycleNo").val(1);
@@ -808,10 +828,11 @@
 			}
 		}
 	    
-	    function cancleClick(subscribeNo, memberNo){
+	    function cancleClick(subscribeNo, memberNo, deliveryStatus){
 	    	$("#subscribeNo3").val(subscribeNo);
 			$("#memberNo3").val(memberNo);
 			$("#subscribeNo4").text(subscribeNo);
+			$("#deliveryStatus").val(deliveryStatus);
 			$("#cancleContent").attr("disabled", "disabled");
 	    }
 	    
@@ -830,7 +851,7 @@
     	})
     	
     	function cancleNo(){
-	    	alert("배송 중, 배송 완료 상태의 상품은 구독 취소가 불가능합니다.")
+	    	alert("배송 중인 상품은 구독 취소가 불가능합니다.")
 	    	
 	    	return false;
 	    }

@@ -777,6 +777,16 @@ public class ItemServiceImpl implements ItemService {
 	public ArrayList<Item> selecthotList() {
 		return iDao.selectHotList();
 	}
+	
+	@Override
+	public ArrayList<Item> selectHotList() {
+		return iDao.selectHotList();
+	}
+	
+	@Override
+	public String selectCustomerUid(int subNo) {
+		return iDao.selectCustomerUid(subNo);
+	}
 
 	@Override
 	public int insertRecommend() {
@@ -806,5 +816,43 @@ public class ItemServiceImpl implements ItemService {
 	}
 	
 	
+
+
+	public int selectSubCount(String customerUid) {
+		return iDao.selectSubCount(customerUid);
+	}
+
+	@Override
+	public int selectDeliveryCount(String customerUid) {
+		return iDao.selectDeliveryCount(customerUid);
+	}
+
+	@Override
+	public int selectCancleCount(String customerUid) {
+		return iDao.selectCancleCount(customerUid);
+	}
+	
+	@Override
+	public int selectSubNo(Subscribe subInfo) {
+		return iDao.selectSubNo(subInfo);
+	}
+	
+	@Override
+	public int selectCycle(int cycleNo) {
+		return iDao.selectCycle(cycleNo);
+	}
+	
+	@Override
+	public int selectSubPrice(int subNo) {
+		return iDao.selectSubPrice(subNo);
+	}
+	
+	@Override
+	public int genderCount(Map<String, Object> map) {
+		return iDao.genderCount(map);
+	}
+
+	
+
 
 }

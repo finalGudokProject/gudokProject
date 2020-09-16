@@ -1,8 +1,5 @@
 package com.kh.finalGudok.item.controller;
 
-import static com.kh.finalGudok.common.pagination.getPageInfo;
-import static com.kh.finalGudok.common.pagination2.getPageInfo2;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -14,6 +11,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import static com.kh.finalGudok.common.pagination.getPageInfo;
+import static com.kh.finalGudok.common.pagination2.getPageInfo2;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -30,6 +29,9 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonIOException;
 import com.kh.finalGudok.item.model.exception.ItemException;
 import com.kh.finalGudok.item.model.service.ItemService;
 import com.kh.finalGudok.item.model.vo.AdminItem;
@@ -82,13 +84,13 @@ public class ItemController {
 		int listCount = iService.getNewCount();
 		System.out.println("newListCount : " + listCount);
 		PageInfo pi = getPageInfo(currentPage, listCount);
-		
+
 		// 정렬을 적용하지 않았을 경우
 		if (sortNo == null) {
 			ArrayList<Item> list = iService.selectNewList(pi);
 			mv.addObject("list", list).addObject("pi", pi).setViewName("items/itemNew");
 			System.out.println("itemNew list : " + list);
-		// 정렬을 적용한 경우
+			// 정렬을 적용한 경우
 		} else if (sortNo != null) {
 			ArrayList<Item> list = iService.selectNewList(pi, sortNo);
 			mv.addObject("list", list).addObject("pi", pi).addObject("sortNo", sortNo).setViewName("items/itemNew");
@@ -108,13 +110,13 @@ public class ItemController {
 		int listCount = iService.getBestCount();
 		System.out.println("bestListCount : " + listCount);
 		PageInfo pi = getPageInfo(currentPage, listCount);
-		
+
 		// 정렬을 적용하지 않았을 경우
 		if (sortNo == null) {
 			ArrayList<Item> list = iService.selectBestList(pi);
 			mv.addObject("list", list).addObject("pi", pi).setViewName("items/itemBest");
 			System.out.println("itemBest list : " + list);
-		// 정렬을 적용한 경우
+			// 정렬을 적용한 경우
 		} else if (sortNo != null) {
 			ArrayList<Item> list = iService.selectBestList(pi, sortNo);
 			mv.addObject("list", list).addObject("pi", pi).addObject("sortNo", sortNo).setViewName("items/itemBest");
@@ -135,13 +137,13 @@ public class ItemController {
 //		System.out.println("listCount : " + listCount);
 
 		PageInfo pi = getPageInfo(currentPage, listCount);
-		
+
 		// 푸드(대분류) 정렬을 적용하지 않았을 경우
 		if (sortNo == null) {
 			ArrayList<Item> list = iService.selectList(pi);
 //			System.out.println("ArrayList : " + list);
 			mv.addObject("list", list).addObject("pi", pi).setViewName("items/itemFood");
-		// 푸드(대분류) 정렬을 적용한 경우
+			// 푸드(대분류) 정렬을 적용한 경우
 		} else if (sortNo != null) {
 			ArrayList<Item> list = iService.selectList(pi, sortNo);
 			mv.addObject("list", list).addObject("pi", pi).addObject("sortNo", sortNo).setViewName("items/itemFood");
@@ -158,14 +160,14 @@ public class ItemController {
 		if (page != null) {
 			currentPage = page;
 		}
-		
+
 		// 중분류 카테고리 리스트 정렬을 적용한 경우(mybatis 활용이 제대로 안된 코드)
 		if (categoryNo.equals("F1")) {
 			int dListCount = iService.dListCount();
 //			System.out.println("음료 Count : " + dListCount);
 			PageInfo pi = getPageInfo(currentPage, dListCount);
 			ArrayList<ItemListView> dList = iService.selectDList(pi);
-			
+
 			// addObject에 임의의 변수를 담아서 보낼 수 있다.
 			mv.addObject("list", dList).addObject("pi", pi).addObject("foodChk", "F0")
 					.addObject("categoryNo", categoryNo).setViewName("items/itemFood");
@@ -208,7 +210,7 @@ public class ItemController {
 
 		return mv;
 	}
-	
+
 	// 리빙(대분류) 페이지 중분류를 정렬하거나 소분류로 정렬하는 기능
 	@RequestMapping("livingSort.do")
 	public ModelAndView livingSort(ModelAndView mv, @RequestParam(value = "page", required = false) Integer page,
@@ -217,13 +219,13 @@ public class ItemController {
 		if (page != null) {
 			currentPage = page;
 		}
-		
+
 		// 중분류 카테고리 리스트 정렬을 적용한 경우(mybatis 활용이 제대로 된 코드)
 		if (categoryNo != null) {
 			int livingCateCount = iService.livingCateCount(categoryNo);
 			System.out.println("리빙 Count : " + livingCateCount);
 			PageInfo pi = getPageInfo(currentPage, livingCateCount);
-			
+
 			// 2개 이상의 값을 보내는 경우 Dao에서 HashMap에 값들을 담아서 활용할 수 있다.
 			ArrayList<ItemListView> livingCateList = iService.livingCateList(pi, categoryNo, sortNo);
 			mv.addObject("list", livingCateList).addObject("pi", pi).addObject("livingChk", "L0")
@@ -241,7 +243,7 @@ public class ItemController {
 			currentPage = page;
 		}
 		System.out.println("sortNo : " + sortNo);
-		
+
 		// 중분류 카테고리 리스트 정렬을 적용한 상태로 소분류 정렬을 적용한 경우(mybatis 활용이 제대로 안된 코드)
 		if (categoryNo.equals("F1") && sortNo != null) {
 			int dListCounts = iService.dListCount();
@@ -321,13 +323,13 @@ public class ItemController {
 //		System.out.println("listCount : " + listCount);
 
 		PageInfo pi = getPageInfo(currentPage, listCount);
-		
+
 		// 정렬을 적용하지 않았을 경우
 		if (sortNo == null) {
 			ArrayList<Item> list = iService.selectEventList(pi);
 //			System.out.println("ArrayList : " + list);
 			mv.addObject("list", list).addObject("pi", pi).setViewName("items/itemEvent");
-		// 정렬을 적용한 경우
+			// 정렬을 적용한 경우
 		} else if (sortNo != null) {
 			ArrayList<Item> list = iService.selectEventList(pi, sortNo);
 			mv.addObject("list", list).addObject("pi", pi).addObject("sortNo", sortNo).setViewName("items/itemEvent");
@@ -339,39 +341,54 @@ public class ItemController {
 	@RequestMapping("idetail.do")
 	public ModelAndView itemDetailPage(ModelAndView mv, Integer itemNo, @RequestParam("page") Integer page,
 			Integer memberNo) {
-//		System.out.println("itemNo : " + itemNo + ", page : " + page);
+//			System.out.println("itemNo : " + itemNo + ", page : " + page);
 		int currentPage = page;
-		
+
 		// 해당 상품의 조회수 증가
 		int result = iService.detailCount(itemNo);
-//		System.out.println("증가함? : " + result);
-		
+
+		// 성별따라서 조회수 증가
+		String gender = "";
+		if (memberNo == null) {
+			gender = "N";
+		} else {
+			gender = mService.selectGender(memberNo);
+		}
+		System.out.println(gender);
+
+		Map<String, Object> map = new HashMap();
+		map.put("itemNo", itemNo);
+		map.put("gender", gender);
+		int resutl2 = iService.genderCount(map);
+		System.out.println(map);
+		System.out.println("증가함? : " + result);
+
 		// 조회수가 증가했다면
 		if (result > 0) {
-			
+
 			// DB의 ItemListView를 조회해 온다.
 			ItemListView ilv = iService.selectItem(itemNo);
-			
+
 			// 상품이 존재한다면
 			if (ilv != null) {
 				mv.addObject("ilv", ilv).addObject("currentPage", currentPage).setViewName("items/itemDetail");
-			// 상품이 존재하지 않는다면
+				// 상품이 존재하지 않는다면
 			} else {
 				throw new ItemException("조회 실패");
 			}
 
 			// 해당 상품의 상품평 조회
 			ArrayList<Review> review = iService.selectReview(itemNo);
-//			System.out.println("review 확인 : " + review);
-			
+//				System.out.println("review 확인 : " + review);
+
 			// 상품평이 존재한다면
 			if (review != null) {
-				
+
 				// 해당 상품평의 이미지를 조회해서 화면단으로 넘겨준다.
 				ArrayList<ReviewView> reviewImg = iService.selectAllReviewImg(itemNo);
 				mv.addObject("review", review).addObject("img", reviewImg).setViewName("items/itemDetail");
 			}
-			
+
 			// 찜 리스트를 조회(페이지 벗어났다가 다시 들어갈 시 itemDetail의 하트색 유지)해서 화면단으로 넘겨준다.
 			Heart hResult = iService.detailHeart(itemNo);
 			System.out.println("hResult : " + hResult);
@@ -382,20 +399,20 @@ public class ItemController {
 		}
 		return mv;
 	}
-	
+
 	// 전체 상품평 페이지
 	@RequestMapping("itemReview.do")
 	public ModelAndView reviewPage(ModelAndView mv, int itemNo) {
-		
+
 		// 전체 상품평을 조회
 		ArrayList<Review> review = iService.selectAllReview(itemNo);
-		
+
 		// 상품평이 존재한다면
 		if (review != null) {
-			
+
 			// 상품평의 이미지를 조회하고
 			ArrayList<ReviewView> reviewImg = iService.selectAllReviewImg(itemNo);
-			
+
 			// 상품평의 itemNo로 Item을 조회해서 화면단으로 넘긴다.
 			Item i = iService.reviewItemName(itemNo);
 			mv.addObject("review", review).addObject("img", reviewImg).addObject("item", i)
@@ -418,11 +435,11 @@ public class ItemController {
 	@RequestMapping("choice.do")
 	@ResponseBody
 	public String choiceInsert(HttpServletRequest request, Heart h, Integer itemNo) {
-		
+
 		// 찜 리스트에 추가하고
 		int result = iService.insertChoice(h);
 //		System.out.println("찜 확인 : " + result);
-		
+
 		// Item 테이블의 ITEM_CHOICE를 1증가시킨 후 화면단으로 돌아간다.
 		int result2 = iService.updatePChoice(itemNo);
 		if (result > 0 && result2 > 0) {
@@ -436,11 +453,11 @@ public class ItemController {
 	@RequestMapping("choiceDel.do")
 	@ResponseBody
 	public String choiceDelete(HttpServletRequest request, Heart h, Integer itemNo) {
-		
+
 		// 찜 리스트에서 삭제하고
 		int result = iService.deleteChoice(h);
 //		System.out.println("찜 삭제 확인 : " + result);
-		
+
 		// Item 테이블의 ITEM_CHOICE를 1감소시킨 후 화면단으로 돌아간다.
 		int result2 = iService.updateMChoice(itemNo);
 		if (result > 0 && result2 > 0) {
@@ -460,7 +477,6 @@ public class ItemController {
 
 		int cartNo = 0;
 
-		
 		if (member != null) {
 			c.setMemberId(memberId);
 			// forEach문을 돌려 memberId와 일치하는 선택한 리스트들을 지운다.
@@ -486,9 +502,9 @@ public class ItemController {
 		// 장바구니에 이미 존재하는 상품인지 확인하고
 		int search = iService.selectCart(c);
 		System.out.println("search : " + search);
-		
+
 		// 상품이 존재하지 않다면
-		if(search == 0) {
+		if (search == 0) {
 			// 장바구니에 추가한다.
 			iService.insertCart(c);
 			int cartCount = mService.cartCount(member.getMemberNo());
@@ -503,7 +519,7 @@ public class ItemController {
 	// 장바구니 페이지 리스트 불러오기
 	@RequestMapping("basketPage.do")
 	public ModelAndView basketPage(ModelAndView mv, Integer memberNo) {
-		
+
 		// 장바구니를 조회해서 화면단으로 넘겨준다.
 		ArrayList<Cart> list = iService.selectBasket(memberNo);
 		mv.addObject("list", list).setViewName("order/basket");
@@ -515,13 +531,13 @@ public class ItemController {
 	@RequestMapping("inquire.do")
 	@ResponseBody
 	public String itemInquire(HttpServletRequest request, Board b) {
-		
+
 		// BOARD 테이블에 문의 사항을 insert하고
 		int result = iService.insertInquired(b);
-		
+
 		// insert가 성공했다면
 		if (result > 0) {
-			
+
 			// ONE_INQUIRY테이블과 INQUIRY 테이블에 필요한 값을 추가한다.
 			iService.insertOneInquiry();
 			iService.insertInquiry();
@@ -534,7 +550,7 @@ public class ItemController {
 	// 리뷰 상세보기
 	@RequestMapping("reviewDetail.do")
 	public ModelAndView reviewDetail(ModelAndView mv, @RequestParam("reviewNo") int reviewNo) {
-		
+
 		// 해당 리뷰를 조회해서 화면단으로 넘겨준다.
 		ArrayList<ReviewView> rv = iService.selectReviewDetail(reviewNo);
 //		System.out.println("detail : " + rv);
@@ -544,23 +560,21 @@ public class ItemController {
 	}
 
 	private String saveFile(HttpServletRequest request, MultipartFile file) {
-		
+
 		String root = request.getSession().getServletContext().getRealPath("resources");
 		String savePath = root + "\\uploadFiles";
 		File folder = new File(savePath);
-		
+
 		if (!folder.exists()) {
 			folder.mkdir();
 		}
-		
+
 		int random = (int) (Math.random() * 100000 + 1);
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
 		String originFileName = file.getOriginalFilename();
 		String renameFileName = sdf.format(new java.sql.Date(System.currentTimeMillis())) + random + "."
 				+ originFileName.substring(originFileName.lastIndexOf(".") + 1);
 		String filePath = folder + "\\" + renameFileName;
-		
-		
 
 		try {
 			file.transferTo(new File(filePath));
@@ -721,7 +735,7 @@ public class ItemController {
 		for (int k = 0; k < dEventArr.length; k++) {
 
 			Event e = iService.selectDeleteEvent(dEventArr[k]);
-			System.out.println("이게 뭐길래"+e);
+			System.out.println("이게 뭐길래" + e);
 
 			if (e.getImageOriginalName() != null) {
 				deleteFile(e.getImageRename(), request);
@@ -828,12 +842,12 @@ public class ItemController {
 	@RequestMapping("reviewUpdate.do")
 	public ModelAndView reviewUpdate(Review r, ModelAndView mv, @RequestParam("itemNo") int itemNo) {
 //			System.out.println("Review : " + r);
-		
+
 		// 상품평을 수정하고
 		int result = iService.reviewUpdate(r);
 //			System.out.println("itemNo 확인 : " + itemNo);
 //			System.out.println("review update 결과 : " + result);
-		
+
 		// 상품평이 수정되었다면
 		if (result > 0) {
 			// ITEM 테이블의 ITEM_RATE 값을 갱신한다.
@@ -848,7 +862,7 @@ public class ItemController {
 	@RequestMapping("reviewDelete.do")
 	public ModelAndView reviewDelete(HttpServletRequest request, ModelAndView mv, int reviewNo, int itemNo) {
 //			System.out.println("reviewNo 넘어 옴? : " + reviewNo);
-		
+
 		// 상품평의 이미지를 조회해 오고
 		ArrayList<ReviewView> rv = iService.selectDeleteReview(reviewNo);
 		// uploadFiles에 있는 파일 이름과 조회해온 rename이 일치하는 이미지를 삭제한다.
@@ -857,11 +871,11 @@ public class ItemController {
 				deleteFile(r.getImageRename(), request);
 			}
 		}
-		
+
 		// 이미지가 있는지 조회하고
 		int chkImg = iService.checkImage(reviewNo);
 		System.out.println("ReviewImage 조회 되나? : " + chkImg);
-		
+
 		// 이미지가 있다면
 		if (chkImg > 0) {
 			// IMAGE 테이블과 REVIEW_IMAGE 테이블에 있는 일치하는 값을 삭제한다.
@@ -870,22 +884,22 @@ public class ItemController {
 				iService.reviewImageDelete(reviewNo);
 			}
 		}
-		
+
 		// 마지막으로 REVIEW 테이블에 있는 값을 삭제한다.
 		int result = iService.reviewDelete(reviewNo);
 
 		// 마지막 값까지 삭제가 완료되었다면
 		if (result > 0) {
-			
+
 			// 해당 ITEM의 REVIEW 테이블을 조회해 오고
 			ArrayList<Review> review = iService.selectAllReview(itemNo);
-			
+
 			// 해당 ITEM의 상품평이 존재하지 않는다면
 			if (review.size() == 0) {
 				// ITEM 테이블의 ITEM_RATE를 0으로 바꿔준다.
 				int count0 = iService.updateReviewRate0(itemNo);
 				mv.setViewName("redirect:itemReview.do?itemNo=" + itemNo);
-			// 해당 ITEM의 상품평이 존재한다면
+				// 해당 ITEM의 상품평이 존재한다면
 			} else {
 				// ITEM 테이블의 ITEM_RATE 값을 갱신한다.
 				iService.updateReviewRate(itemNo);
@@ -919,75 +933,75 @@ public class ItemController {
 		scb.setItemNo(itemNo);
 		int currentPage = page;
 		System.out.println("memberNo : " + memberNo + ", itemNo : " + itemNo);
-		
+
 		// 배송 상태를 확인하고
 		int deliveryChk = iService.selectDelChk(scb);
 		// 상품평이 이미 존재하는지 확인한 후
 		int reviewChk = iService.selectReviewChk(scb);
 		System.out.println("del값 확인 : " + deliveryChk);
-		
+
 		// 배송 상태가 Y이면서 상품평을 쓰지 않았다면
-		if(deliveryChk > 0 && reviewChk == 0) {
-			
+		if (deliveryChk > 0 && reviewChk == 0) {
+
 			// 상품평을 등록하고
 			int result = iService.insertReview(r);
 			// ITEM 테이블의 ITEM_RATE 값을 갱신한다
 			int updateResult = iService.updateReviewRate(itemNo);
-			
+
 			// 상품평 등록 시 이미지1이 있다면
 			if (!file1.getOriginalFilename().equals("")) {
 				String renameFileName1 = saveFile(file1, request);
 				i.setImageOriginalName(file1.getOriginalFilename());
 				i.setImageRename(renameFileName1);
-				
+
 				// REVIEW_IMAGE 테이블에 REVIEW의 마지막 REVIEW_NO와 일치하는 값을 insert하고
 				int imgResult1 = iService.insertReviewImage1(i);
 				if (imgResult1 > 0) {
 					// IMAGE 테이블에 마지막 REVIEW_IMAGE_NO와 일치하는 값을 insert한다.
 					iService.insertRI(ri);
 				}
-			}else {
-				
+			} else {
+
 			}
-			
+
 			// 상품평 등록 시 이미지2가 있다면
 			if (!file2.getOriginalFilename().equals("")) {
 				String renameFileName2 = saveFile(file2, request);
 				i.setImageOriginalName(file2.getOriginalFilename());
 				i.setImageRename(renameFileName2);
-				
+
 				// REVIEW_IMAGE 테이블에 REVIEW의 마지막 REVIEW_NO와 일치하는 값을 insert하고
 				int imgResult2 = iService.insertReviewImage2(i);
 				if (imgResult2 > 0) {
 					// IMAGE 테이블에 마지막 REVIEW_IMAGE_NO와 일치하는 값을 insert한다.
 					iService.insertRI(ri);
 				}
-			}else {
-				
+			} else {
+
 			}
-	
+
 			System.out.println("review result : " + result);
 			if (result > 0 && updateResult > 0) {
 				return "success";
 			} else {
 				throw new ItemException("리뷰 등록 실패");
 			}
-		}else {
+		} else {
 			// 배송 상태가 Y가 아니라면
-			if(deliveryChk == 0) {
+			if (deliveryChk == 0) {
 				// 배송 상태를 조회해 오고
 				int delStatus = iService.selectDelStatus(scb);
 				// 배송 상태가 없다면
-				if(delStatus == 0) {
+				if (delStatus == 0) {
 					// "상품평 쓰기 권한이 없습니다."를 출력
 					return "noDelFail";
-				// 배송 상태가 있다면
-				}else {
+					// 배송 상태가 있다면
+				} else {
 					// "배송 완료된 상품이 아닙니다."를 출력
 					return "delFail";
 				}
-			// 배송 상태는 Y지만 REVIEW 테이블에 이미 해당 상품의 상품평이 존재한다면
-			}else {
+				// 배송 상태는 Y지만 REVIEW 테이블에 이미 해당 상품의 상품평이 존재한다면
+			} else {
 				// "이미 등록된 상품평이 존재합니다."를 출력
 				return "reviewFail";
 			}
@@ -1463,8 +1477,12 @@ public class ItemController {
 	// 상품 상세보기 -admin
 	@RequestMapping("itemDetail.do")
 
-	public ModelAndView selectItemDetail(ModelAndView mv, int itemNo, @RequestParam(value="itemCategory",required=false) String itemCategory, @RequestParam(value="eventNo",required=false) Integer eventNo,Integer page, String type
-			, @RequestParam(value="type2",required=false)String type2, @RequestParam(value="categoryNo",required=false)String categoryNo, @RequestParam(value="word",required=false)String word) {
+	public ModelAndView selectItemDetail(ModelAndView mv, int itemNo,
+			@RequestParam(value = "itemCategory", required = false) String itemCategory,
+			@RequestParam(value = "eventNo", required = false) Integer eventNo, Integer page, String type,
+			@RequestParam(value = "type2", required = false) String type2,
+			@RequestParam(value = "categoryNo", required = false) String categoryNo,
+			@RequestParam(value = "word", required = false) String word) {
 
 		System.out.println("아이템 디테일" + type);
 
@@ -1485,7 +1503,7 @@ public class ItemController {
 		mv.addObject("categoryNo", categoryNo);
 		mv.addObject("type2", type);
 		mv.addObject("word", word);
-		mv.addObject("page", currentPage).addObject("itemCategory",itemCategory);
+		mv.addObject("page", currentPage).addObject("itemCategory", itemCategory);
 		mv.setViewName("admin/itemModify");
 
 		return mv;
@@ -1496,6 +1514,7 @@ public class ItemController {
 	public ModelAndView updateItem(ModelAndView mv, HttpServletRequest request, BannerItem i,
 			@RequestParam("page") Integer page, @RequestParam(value = "uploadFile1") MultipartFile uploadFile1,
 			@RequestParam(value = "uploadFile2") MultipartFile uploadFile2) {
+
 
 		int result2=0;
 		//메인 이미지 파일이 있으면 기존꺼 삭제하고 바꿔줌
@@ -1521,25 +1540,30 @@ public class ItemController {
 			
 			}
 
-		
-		
-		
-		
 		int imgNo = iService.selectImageNo(i); // 이미지테이블에 지울 이미지번호를 가져옴 
+
 
 		System.out.println(imgNo);
 		String renameFileName = "";
 		int result1 = 0;
+
 		
 		
 		// 상세 이미지 파일이 있으면 기존꺼 삭제 
 		if (!uploadFile2.getOriginalFilename().equals("")) {
+
 			
 			BannerItem b=iService.selectItemDetailImage(i.getItemNo());
 				deleteFile(b.getImageRename(), request);
 			
 			
 			//새로운 상세 이미지 파일 저장,db에도 저장
+
+			if (i.getImageOriginalName() != null) {
+				deleteFile(i.getImageRename(), request);
+			}
+
+
 			renameFileName = saveFile(request, uploadFile2);
 
 			String root = request.getSession().getServletContext().getRealPath("resources");
@@ -1550,11 +1574,18 @@ public class ItemController {
 			i.setImagePath(savePath);
 			i.setItemNo(imgNo);
 
+
 			result1 = iService.updateItemImg(i); // itemNo로 이미지 번호가 들어가서 이미지테이블의 이미지 파일명 DB정보 변경 
 			
+
+		
 		}
+
 			
 	
+
+
+
 		if (result1 > 0 || result2 > 0) {
 
 			mv.addObject("page", page).setViewName("redirect:itemListA.do");
@@ -1571,13 +1602,9 @@ public class ItemController {
 	@RequestMapping("iDelete.do")
 	public ModelAndView deleteItemA(ModelAndView mv, HttpServletRequest request, String sendArr, Integer page) {
 
-		
 		String[] strArr = sendArr.split(",");
 
 		int[] dEventArr = new int[strArr.length];
-		
-		
-		
 
 		for (int i = 0; i < strArr.length; i++) {
 			dEventArr[i] = Integer.valueOf(strArr[i]);
@@ -1641,7 +1668,6 @@ public class ItemController {
 		}
 
 		int listCount = iService.getNonEventItemCnt(itemCategory);
-		
 
 		PageInfo pi = new PageInfo();
 
@@ -1655,8 +1681,6 @@ public class ItemController {
 		// 이벤트 등록이 안된 상품 리스트
 		ArrayList<BannerItem> list = iService.selectItems(itemCategory, pi);
 
-		
-		
 		if (eArr != null && list != null) {
 
 			mv.addObject("eArr", eArr);
@@ -1820,11 +1844,10 @@ public class ItemController {
 			chk = iService.selectRecommendChk(strArr[i]);
 			result += chk;
 		}
-		
+
 		response.setContentType("application/json;charset=utf-8");
 		JSONObject iNum = new JSONObject();
 
-		
 		int cnt = iService.selectRecommendCnt();
 
 		int i = sendCnt + cnt;
@@ -1902,7 +1925,7 @@ public class ItemController {
 			itemPrice = Integer.valueOf(price[i]);
 
 			discount = iService.checkDiscount(no);
-//				System.out.println("할인율: " + discount);
+//					System.out.println("할인율: " + discount);
 
 			if (discount > 0) {
 				itemPrice = itemPrice - (int) (itemPrice * (double) discount / 100);
@@ -1910,7 +1933,7 @@ public class ItemController {
 			} else {
 				cart.setItemPrice(itemPrice);
 			}
-//				System.out.println(itemPrice);
+//					System.out.println(itemPrice);
 			itemAmount = Integer.valueOf(amount[i]);
 			cart.setCartCount(itemAmount);
 			cart.setCartSubs(cycle[i]);
@@ -1920,8 +1943,8 @@ public class ItemController {
 			totalPrice += itemPrice * itemAmount;
 		}
 
-//			System.out.println(discount);
-//			System.out.println(list);
+//				System.out.println(discount);
+//				System.out.println(list);
 		mv.addObject("list", list);
 		mv.addObject("totalPrice", totalPrice);
 		mv.setViewName("items/payment");
@@ -1959,8 +1982,8 @@ public class ItemController {
 		String[] countArr = request.getParameterValues("countArr"); // 상품수량
 		String[] cycleArr = request.getParameterValues("cycleArr"); // 구독주기
 
-//			System.out.println(point);
-//			System.out.println(firstPrice);
+//				System.out.println(point);
+//				System.out.println(firstPrice);
 
 		BigDecimal firstPayPrice = new BigDecimal(firstPrice);
 		String name = "최초결제";
@@ -2003,14 +2026,14 @@ public class ItemController {
 			for (int i = 0; i < noArr.length; i++) {
 				itemNo = Integer.valueOf(noArr[i]);
 				amount = Integer.valueOf(countArr[i]);
-//					price = Integer.valueOf(priceArr[i]);
+//						price = Integer.valueOf(priceArr[i]);
 				cycle = Integer.valueOf(cycleArr[i]);
 				name = nameArr[i];
 
 				subInfo.setItemNo(itemNo); // 상품 번호
 				subInfo.setAmount(amount); // 수량
 				subInfo.setItemName(name); // 상품 이름
-//					System.out.println("정기결제 정보 : " + subInfo);
+//						System.out.println("정기결제 정보 : " + subInfo);
 				price = iService.selectItemPrice(itemNo); // 최초 결제금액은 할인률이 적용되어 있을 수 있기 때문에 구독 결제는 상품의 원래 가격을 가져와야 됨
 				subPrice = price * amount; // 상품 원래가격 * 주문수량
 				subInfo.setSubPrice(subPrice); // 정기결제시 결제 될 금액
@@ -2018,26 +2041,29 @@ public class ItemController {
 				map.put("subInfo", subInfo);
 				map.put("cycle", cycle); // 구독주기 -> 구독번호를 select 해야되서 따로 담음
 				insertSubResult = iService.insertSubScribeInfo(map); // 구독내역, 배송내역 저장
-				BigDecimal cyclePrice = new BigDecimal(subPrice); // 결제 금액 형변환
-				subResult = subscriptionPayment(customerUid, cyclePrice, cycle); // 결제 예약
-
+//					BigDecimal cyclePrice = new BigDecimal(subPrice); // 결제 금액 형변환
+				int subNo = iService.selectSubNo(subInfo);
+				System.out.println("구독번호 가져오니: " + subNo);
+				subResult = subscriptionPayment(customerUid, memberNo, subNo); // 결제 예약
 			}
 
-//				// 구독내역 DB에 저장했으면
-//				if(insertSubResult > 0) {
-//				}else {}
+//					// 구독내역 DB에 저장했으면
+//					if(insertSubResult > 0) {
+//					}else {}
 
 			// 포인트 차감, 장바구니 삭제 후 session 갱신
 			Member m = new Member();
 			m.setMemberNo(memberNo);
 			Member loginUser = mService.selectMember(m);
 			session.setAttribute("loginUser", loginUser);
-			
+
 			int subscribeCount = mService.subscribeCount(loginUser.getMemberNo());
 			model.addAttribute("subscribeCount", subscribeCount);
+			int cartCount = mService.cartCount(loginUser.getMemberNo());
+			model.addAttribute("cartCount", cartCount);
 
 			return "success"; // 결제화면단으로 던질 값
-//				System.out.println(loginUser);
+//					System.out.println(loginUser);
 		} else {
 			return "fail";
 		}
@@ -2051,8 +2077,8 @@ public class ItemController {
 		AgainPaymentData againData = new AgainPaymentData(customerUid, getRandomMerchantUid(), price);
 		againData.setName(name);
 		String firstPaymentStatus = "";
-//			String impUid = "";
-//			String failMessage = "";
+//				String impUid = "";
+//				String failMessage = "";
 		int firstPayResult = 0;
 
 		// 최초 결제 실행
@@ -2060,7 +2086,7 @@ public class ItemController {
 		try {
 			payment_response = client.againPayment(againData); // 최초결제 호출
 			firstPaymentStatus = payment_response.getResponse().getStatus(); // 결제 상태 확인
-//					impUid = payment_response.getResponse().getImpUid();
+//						impUid = payment_response.getResponse().getImpUid();
 		} catch (IamportResponseException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -2071,6 +2097,7 @@ public class ItemController {
 			PaymentInfo payInfo = new PaymentInfo();
 			payInfo.setMemberNo(memberNo);
 			payInfo.setPoint(point);
+			payInfo.setCustomerUid(customerUid);
 			System.out.println("DB로 보낼 결제정보 : " + payInfo);
 			firstPayResult = iService.insertFirstPayment(payInfo); // 최초결제 DB insert
 
@@ -2082,13 +2109,13 @@ public class ItemController {
 
 			return "success";
 		} else {
-			return "fail";
+			throw new ItemException("결제 실패");
 		}
 	}
 
 	// ------------------------------결제 예약-----------------------------------
 
-	private String subscriptionPayment(String customerUid, BigDecimal price, int cycle)
+	private String subscriptionPayment(String customerUid, int memberNo, int subNo)
 			throws IamportResponseException, IOException {
 
 		// 현재시간 unixtime으로 가져오기
@@ -2100,84 +2127,66 @@ public class ItemController {
 		// 3주일 : 현재시간 + 1814400
 		// 4주일 : 현재시간 + 2419200
 		String merchantUid = "";
-//						subscriptionTime = currentTime + 180;
-//						merchantUid = getRandomMerchantUid();
 		Date date = new Date();
 
-//						for(int i = 0 ; i<5; i++) {
-
-		switch (cycle) {
-		case 1:
-			subscriptionTime = currentTime + 120;
-			merchantUid = getRandomMerchantUid();
-			date.setTime(subscriptionTime * 1000L);
-			break;
-
-		case 2:
-			subscriptionTime = currentTime + 1209600;
-			merchantUid = getRandomMerchantUid();
-			date.setTime(subscriptionTime * 1000L);
-			break;
-
-		case 3:
-			subscriptionTime = currentTime + 1814400;
-			merchantUid = getRandomMerchantUid();
-			date.setTime(subscriptionTime * 1000L);
-			break;
-
-		case 4:
-			subscriptionTime = currentTime + 2419200;
-			merchantUid = getRandomMerchantUid();
-			date.setTime(subscriptionTime * 1000L);
-			break;
-		}
-
-		ScheduleEntry schduleEntry = new ScheduleEntry(merchantUid, date, price);
-
+		// 구독 중인 내역만 select해서 스케쥴 예약
 		ArrayList<Subscribe> list = new ArrayList<>();
-
 		list = iService.selectSubscribeStatus(customerUid);
 		System.out.println("구독중인 상품 : " + list);
 
+		ScheduleData scheduleData = new ScheduleData(customerUid);
+
 		if (list != null) {
+			for (int i = 0; i < list.size(); i++) {
+				int cycleNo = list.get(i).getCycleNo();
+				int cycle = iService.selectCycle(cycleNo);
+				int price = iService.selectSubPrice(subNo);
+				BigDecimal subPrice = new BigDecimal(price);
 
-			ScheduleData scheduleData = new ScheduleData(customerUid);
+				switch (cycle) {
+				case 1:
+					subscriptionTime = currentTime + 120;
+					merchantUid = getRandomMerchantUid();
+					date.setTime(subscriptionTime * 1000L);
+					break;
 
-			scheduleData.addSchedule(schduleEntry);
+				case 2:
+					subscriptionTime = currentTime + 1209600;
+					merchantUid = getRandomMerchantUid();
+					date.setTime(subscriptionTime * 1000L);
+					break;
 
-			IamportResponse<List<Schedule>> schedule_response = client.subscribeSchedule(scheduleData); // 결제예약
+				case 3:
+					subscriptionTime = currentTime + 1814400;
+					merchantUid = getRandomMerchantUid();
+					date.setTime(subscriptionTime * 1000L);
+					break;
 
-			String message = schedule_response.getMessage();
-			System.out.println(message);
+				case 4:
+					subscriptionTime = currentTime + 2419200;
+					merchantUid = getRandomMerchantUid();
+					date.setTime(subscriptionTime * 1000L);
+					break;
+				}
 
-//				List<Schedule> schedules = schedule_response.getResponse();
-//						System.out.println(schedule_response.getResponse().size());
-//						List<ScheduleEntry> req_schedules = scheduleData.getSchedules();
-
-//				// 예약 시간에 결제 됐다고 가정해서 구현해 놓은 것
-//				for (int i = 0; i < schedules.size(); i++) {
-//					if ((schedules.get(i).getMerchantUid()).equalsIgnoreCase(merchantUid)
-//							&& (schedules.get(i).getScheduleAt()).equals(date)) {
-//						System.out.println("예약 결제 성공");
-//				
-//					}else {
-//						return "fail";
-//					}
-//				}
+				ScheduleEntry schduleEntry = new ScheduleEntry(merchantUid, date, subPrice);
+				scheduleData.addSchedule(schduleEntry);
+				IamportResponse<List<Schedule>> schedule_response = client.subscribeSchedule(scheduleData); // 결제예약
+			}
 			return "success";
 		} else {
-			return "fail";
+			throw new ItemException("결제예약 실패");
 		}
 	}
 
-	// 구독중인 상품인지 확인하는 메소드
+	// 구독중인 상품인지 확인
 	@RequestMapping("subscribeCheck.do")
 	public void subscribeCheck(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		PrintWriter out = response.getWriter();
 
 		String[] noArr = request.getParameterValues("noArr");
 
-//			System.out.println(noArr);
+//				System.out.println(noArr);
 		// 기존에 구독중인 상품인지 확인
 		int no = 0;
 		int subCount = 0;
@@ -2185,7 +2194,7 @@ public class ItemController {
 			no = Integer.valueOf(noArr[i]);
 			subCount += iService.selectSubList(no);
 		}
-//			System.out.println("같은 상품 구독중이니  : "+ subCount);
+//				System.out.println("같은 상품 구독중이니  : "+ subCount);
 		if (subCount > 0) {
 			out.append("fail");
 			out.flush();
@@ -2277,18 +2286,23 @@ public class ItemController {
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+	// 지금 핫한 상품 select
+	@RequestMapping("hotList.do")
+	public void selectHotList(HttpServletResponse response) throws JsonIOException, IOException {
+		response.setContentType("applicaion/json;charset=utf-8");
+
+		ArrayList<Item> hotList = iService.selectHotList();
+//		   System.out.println("핫 리스트 : " + hotList);
+
+//		   new Gson().toJson(list, response.getWriter());	// 이렇게 하면 날짜 포맷이 안맞음
+
+		// ajax와 Gson을 쓰면 날짜 포맷이 정해진 형태로 나오는데 ajax 이전의 날짜 포맷과 맞추기 위해서는 GsonBuilder를
+		// 활용한다.
+		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+		gson.toJson(hotList, response.getWriter());
+
+	}
+
 
 }

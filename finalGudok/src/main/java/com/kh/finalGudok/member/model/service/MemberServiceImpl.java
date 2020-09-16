@@ -571,8 +571,6 @@ public class MemberServiceImpl implements MemberService {
 
 	
 
-	
-
 	@Override
 	public int updateSubscribeDestination(Delivery d) {
 		return mDao.updateSubscribeDestination(d);
@@ -593,12 +591,6 @@ public class MemberServiceImpl implements MemberService {
 		return mDao.selectSubscribeCancel(s,pi);
 	}
 
-
-	public int selectUsedPoint(int memberNo) {
-		return mDao.selectUsedPoint(memberNo);
-	}
-
-
 	@Override
 	public int updateMyPoint(Member loginUser) {
 		return mDao.updateMyPoint(loginUser);
@@ -610,6 +602,7 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
+
 	public int selectMemberPoint(Integer memberNo) {
 		return mDao.selectMemberPoint(memberNo);
 	}
@@ -619,10 +612,26 @@ public class MemberServiceImpl implements MemberService {
 		return mDao.selectPointMember(i);
 	}
 
+	public int selectUsedPoint(String customerUid) {
+		return mDao.selectUsedPoint(customerUid);
+
+	}
+
 //	@Override
 //	public ArrayList<Subscribe> selectSubscribeListTable(Integer memberNo) {
 //		return mDao.selectSubscribeListTable(memberNo);
 //	}
+	
+	@Override
+	public String selectGender(Integer memberNo) {
+		return mDao.selectGender(memberNo);
+	}
+	
+	@Override
+	public Member checkLoginUser(String id) {
+		return mDao.checkLoginUser(id);
+	}
+
 
 
 }

@@ -15,16 +15,17 @@
 	</resultMap>
 	
 	<resultMap type="CartView" id="cartViewResultSet">
-		<id property="cartNo" column="CART_NO"/>
-		<result property="itemNo" column="ITEM_NO"/>
-		<result property="memberNo" column="MEMBER_NO"/>
-		<result property="cartSubs" column="CART_SUBS"/>
-		<result property="cartCount" column="CART_COUNT"/>
-		<result property="itemName" column="ITEM_NAME"/>
-		<result property="itemPrice" column="ITEM_PRICE"/>
-		<result property="itemDiscount" column="ITEM_DISCOUNT"/>
-		<result property="itemRename" column="ITEM_RENAME"/>
-	</resultMap>
+      <id property="cartNo" column="CART_NO"/>
+      <result property="itemNo" column="ITEM_NO"/>
+      <result property="memberNo" column="MEMBER_NO"/>
+      <result property="cartSubs" column="CART_SUBS"/>
+      <result property="cartCount" column="CART_COUNT"/>
+      <result property="itemName" column="ITEM_NAME"/>
+      <result property="itemPrice" column="ITEM_PRICE"/>
+      <result property="itemDiscount" column="ITEM_DISCOUNT"/>
+      <result property="itemRename" column="ITEM_RENAME"/>
+      <result property="itemDpStatus" column="ITEM_DP_STATUS"/>
+   </resultMap>
 	
 	<insert id="insertCart" parameterType="Cart">
 		INSERT INTO CART
@@ -40,11 +41,11 @@
 	</insert>
 	
 	<select id="selectCart" parameterType="int" resultMap="cartViewResultSet">
-		SELECT *
-		FROM CART_VIEW
-		WHERE MEMBER_NO=#{memberNo}
-		ORDER BY CART_NO DESC
-	</select>
+      SELECT *
+      FROM CART_VIEW
+      WHERE MEMBER_NO=#{memberNo} AND ITEM_DP_STATUS='Y'
+      ORDER BY CART_NO DESC
+   </select>
 	
 	<select id="selectDupeCart" resultType="_int">
 		SELECT COUNT(*)

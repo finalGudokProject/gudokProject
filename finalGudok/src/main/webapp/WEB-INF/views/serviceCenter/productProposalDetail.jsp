@@ -115,7 +115,7 @@
 						<c:param name="bBoard_no" value="${board.bBoard_no }"/>
 			</c:url>
 			
-            <a href="productProposalList.do" type="button" class="btn btn-primary" style="float:right;">목록으로</a>
+            <a href="javascript:history.go(-1)" type="button" class="btn btn-primary" style="float:right;">목록으로</a>
             <c:if test="${loginUser.memberId eq board.bMember_id }">
             <a href="${proposalUpdateView }" type="button" class="btn btn-primary" style="float:right;margin-right:10px">수정</a>
             <a href="${proposalDelete }" type="button" class="btn btn-primary" style="float:right;margin-right:10px" id="delete">삭제</a>

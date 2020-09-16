@@ -301,6 +301,7 @@ public interface ItemService {
 
 	ArrayList<Item> selecthotList();
 
+
 	int insertRecommend();
 
 	int deleteRecommend(int i);
@@ -314,4 +315,25 @@ public interface ItemService {
 	ArrayList<Item> selectBannerItemList(PageInfo pi, String eventNo);
 
 	BannerItem selectItemDetailImage(int i);
+
+	
+	ArrayList<Item> selectHotList();
+	
+	String selectCustomerUid(int subNo);
+
+	int selectSubCount(String customerUid);
+
+	int selectDeliveryCount(String customerUid);
+
+	int selectCancleCount(String customerUid);
+	
+	int selectSubNo(Subscribe subInfo);
+	
+	int selectCycle(int cycleNo);
+	
+	int selectSubPrice(int subNo);
+	
+	int genderCount(Map<String, Object> map);
+	
+
 }

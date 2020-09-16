@@ -252,16 +252,22 @@ public interface MemberService {
 
 	ArrayList<AdminCancle> selectSubscribeCancel(Search s, PageInfo pi);
 
-	int selectUsedPoint(int memberNo);
-
 	int updateMyPoint(Member loginUser);
 	
 	Member selectMember(Member m);
 
+
 	int selectMemberPoint(Integer memberNo);
+
+	int selectUsedPoint(String customerUid);
+
 
 //	ArrayList<Subscribe> selectSubscribeListTable(Integer memberNo);
 	
+	String selectGender(Integer memberNo);
+	
+	Member checkLoginUser(String id);
+
 
 
 }

@@ -4,13 +4,12 @@ import java.io.Serializable;
 import java.sql.Date;
 
 public class AdminExchange implements Serializable {
-	
+
 	/**
-	 * 
-	 */
+	* 
+	*/
 	private static final long serialVersionUID = 4268791731921456975L;
 
-	
 	private int exchangeNo;
 	private String exchangeStatus;
 	private String exchangeContent;
@@ -21,14 +20,23 @@ public class AdminExchange implements Serializable {
 	private String memberId;
 	private int itemPrice;
 	private int totalPayment;
+<<<<<<< HEAD
 	
 	
 	public AdminExchange() {}
+=======
+
+	public AdminExchange() {
+	}
+>>>>>>> refs/remotes/origin/master
 
 
 	public AdminExchange(int exchangeNo, String exchangeStatus, String exchangeContent, Date exchangeDate,
 			String itemName, int subscribeNo, int exchangeCategory, String memberId, int itemPrice, int totalPayment) {
+<<<<<<< HEAD
 		super();
+=======
+>>>>>>> refs/remotes/origin/master
 		this.exchangeNo = exchangeNo;
 		this.exchangeStatus = exchangeStatus;
 		this.exchangeContent = exchangeContent;
@@ -131,6 +139,7 @@ public class AdminExchange implements Serializable {
 		this.itemPrice = itemPrice;
 	}
 
+<<<<<<< HEAD
 
 	public int getTotalPayment() {
 		return totalPayment;
@@ -141,6 +150,15 @@ public class AdminExchange implements Serializable {
 		this.totalPayment = totalPayment;
 	}
 
+=======
+	public int getTotalPayment() {
+		return totalPayment;
+	}
+
+	public void setTotalPayment(int totalPayment) {
+		this.totalPayment = totalPayment;
+	}
+>>>>>>> refs/remotes/origin/master
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
@@ -154,8 +172,11 @@ public class AdminExchange implements Serializable {
 				+ subscribeNo + ", exchangeCategory=" + exchangeCategory + ", memberId=" + memberId + ", itemPrice="
 				+ itemPrice + ", totalPayment=" + totalPayment + "]";
 	}
+<<<<<<< HEAD
 
 	
 	
+=======
+>>>>>>> refs/remotes/origin/master
 
 }

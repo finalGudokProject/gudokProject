@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
      <!-- google charts -->
-	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
    
    
     <title>구독 취소 리스트</title>    
@@ -62,7 +62,7 @@ input, select,textarea{
   td{
       text-overflow: ellipsis;
         overflow:hidden;
-		white-space:nowrap;
+      white-space:nowrap;
     }
    
 </style>
@@ -106,36 +106,36 @@ input, select,textarea{
                     
                     <div style="width:100%;">
                     <div style="float:left;">
-                  	
-                  		<c:choose>
-                  			<c:when test="${type eq 'cancelContent' }">
-	                       		 <select id="type" name="type">
-	                            <option value="">전체</option>
-	                            <option value="cancelContent" selected>교환사유</option>
-	                            <option value="subscribeNo">구독번호</option>
-	                            <option value="memberId">구매자</option></select>
-                          	</c:when>  
-                          	<c:when test="${type eq 'subscribeNo' }">
-	                       		 <select id="type" name="type">
-	                            <option value="">전체</option>
-	                            <option value="cancelContent">교환사유</option>
-	                            <option value="subscribeNo" selected>구독번호</option>
-	                            <option value="memberId">구매자</option></select>
-                          	</c:when>  
-                          	<c:when test="${type eq 'memberId' }">
-	                       		 <select id="type" name="type">
-	                            <option value="">전체</option>
-	                            <option value="cancelContent">교환사유</option>
-	                            <option value="subscribeNo" >구독번호</option>
-	                            <option value="memberId"selected>구매자</option></select>
-                          	</c:when>  
-                          	<c:otherwise>
-                          		 <select id="type" name="type">
-	                            <option value=""selected>전체</option>
-	                            <option value="cancelContent">교환사유</option>
-	                            <option value="subscribeNo" >구독번호</option>
-	                            <option value="memberId">구매자</option></select>
-                          	</c:otherwise>
+                     
+                        <c:choose>
+                           <c:when test="${type eq 'cancelContent' }">
+                                 <select id="type" name="type">
+                               <option value="">전체</option>
+                               <option value="cancelContent" selected>교환사유</option>
+                               <option value="subscribeNo">구독번호</option>
+                               <option value="memberId">구매자</option></select>
+                             </c:when>  
+                             <c:when test="${type eq 'subscribeNo' }">
+                                 <select id="type" name="type">
+                               <option value="">전체</option>
+                               <option value="cancelContent">교환사유</option>
+                               <option value="subscribeNo" selected>구독번호</option>
+                               <option value="memberId">구매자</option></select>
+                             </c:when>  
+                             <c:when test="${type eq 'memberId' }">
+                                 <select id="type" name="type">
+                               <option value="">전체</option>
+                               <option value="cancelContent">교환사유</option>
+                               <option value="subscribeNo" >구독번호</option>
+                               <option value="memberId"selected>구매자</option></select>
+                             </c:when>  
+                             <c:otherwise>
+                                 <select id="type" name="type">
+                               <option value=""selected>전체</option>
+                               <option value="cancelContent">교환사유</option>
+                               <option value="subscribeNo" >구독번호</option>
+                               <option value="memberId">구매자</option></select>
+                             </c:otherwise>
                         </c:choose>
                         <input type="text" id="word" name="word" value="${word }">   
                         <input type="button" class="btn" value="검색" onclick="search()">
@@ -149,7 +149,7 @@ input, select,textarea{
                 <br>
                 <br>
                
-            	
+               
         
                     <table>
                         <thead>
@@ -165,17 +165,17 @@ input, select,textarea{
                              </tr>   
                          </thead>
                          <tbody id="e">
-                         	<c:forEach var="i" items="${eList }" varStatus="cnt">
-	                             <tr>
-	                               <%--  <td><input type="checkbox" class="common" id="exchangeNo${cnt.index}" name="exchangeNo" value="${i.exchangeNo }" onclick='event.cancelBubble=true'></td> --%>
-	                                <td  onclick='event.cancelBubble=true'>${i.cancleDate }</td>
-	                                <td id="cursor" class="secession" data-toggle="modal" data-target="#myModal">${i.cancleContent }</td>
-	                                <td class="cursor">${i.subscribeNo }</td>
-	                                <td class="cursor">${i.itemName }</td>
-	                                <td class="cursor">${i.memberId }</td>
-	                                <td class="cursor">${i.subPrice }</td>
-	                               
-	                            </tr>
+                            <c:forEach var="i" items="${eList }" varStatus="cnt">
+                                <tr>
+                                  <%--  <td><input type="checkbox" class="common" id="exchangeNo${cnt.index}" name="exchangeNo" value="${i.exchangeNo }" onclick='event.cancelBubble=true'></td> --%>
+                                   <td  onclick='event.cancelBubble=true'>${i.cancleDate }</td>
+                                   <td id="cursor" class="secession" data-toggle="modal" data-target="#myModal">${i.cancleContent }</td>
+                                   <td class="cursor">${i.subscribeNo }</td>
+                                   <td class="cursor">${i.itemName }</td>
+                                   <td class="cursor">${i.memberId }</td>
+                                   <td class="cursor">${i.subPrice }</td>
+                                  
+                               </tr>
                             </c:forEach>
                          </tbody>
                     </table>
@@ -189,11 +189,12 @@ input, select,textarea{
                 <div class="page-center">
                     <ul class="pagination-t">
                     
-                    	<!-- 이전 -->
+                       <!-- 이전 -->
                         <c:if test="${pi.currentPage eq 1 }">
-	                        <li class="page-item-t disabled-t"><a class="page-link-t"><svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-caret-left-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                           <li class="page-item-t disabled-t"><a class="page-link-t"><svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-caret-left-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
   <path d="M3.86 8.753l5.482 4.796c.646.566 1.658.106 1.658-.753V3.204a1 1 0 0 0-1.659-.753l-5.48 4.796a1 1 0 0 0 0 1.506z"/>
 </svg></a></li>
+<<<<<<< HEAD
 						</c:if>
 						 <c:if test="${pi.currentPage gt 1 }">
 							<c:url var="blistBack" value="cList.do">
@@ -220,15 +221,44 @@ input, select,textarea{
 		                        <li class="page-item-t"><a class="page-link-t" href="${blistCheck }">${p } <span class="sr-only"></span></a>
 		                        </li>
 		                    </c:if>
+=======
+                  </c:if>
+                   <c:if test="${pi.currentPage gt 1 }">
+                     <c:url var="blistBack" value="cList.do">
+                        <c:param name="page" value="${pi.currentPage-1 }"/>
+                     </c:url>
+                              <li class="page-item-t">
+                              <a class="page-link-t" href="${blistBack }">
+                              <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-caret-left-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+     <path d="M3.86 8.753l5.482 4.796c.646.566 1.658.106 1.658-.753V3.204a1 1 0 0 0-1.659-.753l-5.48 4.796a1 1 0 0 0 0 1.506z"/>
+   </svg></a></li>
+                  </c:if>
+                  
+                  <!-- 번호들 -->
+                  <c:forEach var="p" begin="${pi.startPage }" end="${pi.endPage }">
+                     
+                     <c:if test="${p eq pi.currentPage }">
+                                <li class="page-item-t  active-t"><a class="page-link-t">${p }<span class="sr-only"></span></a></li>
+                     </c:if>
+                     
+                           <c:if test="${p ne pi.currentPage }">
+                              <c:url var="blistCheck" value="cList.do">
+                                 <c:param name="page" value="${p }"/>
+                              </c:url>
+                              <li class="page-item-t"><a class="page-link-t" href="${blistCheck }">${p } <span class="sr-only"></span></a>
+                              </li>
+                          </c:if>
+>>>>>>> refs/remotes/origin/master
                         </c:forEach>
                         
                         
                         <!-- 이후 -->
                         <c:if test="${pi.currentPage eq pi.maxPage }">
-	                        <li class="page-item-t disabled-t"><a class="page-link-t">
-	                        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-caret-right-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                           <li class="page-item-t disabled-t"><a class="page-link-t">
+                           <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-caret-right-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
   <path d="M12.14 8.753l-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
 </svg></a></li>
+<<<<<<< HEAD
 						</c:if>
 						 <c:if test="${pi.currentPage lt pi.maxPage }">
 							<c:url var="blistAfter" value="cList.do">
@@ -237,9 +267,19 @@ input, select,textarea{
 	                        <li class="page-item-t">
 	                        <a class="page-link-t" href="${blistAfter }">
 	                       <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-caret-right-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+=======
+                  </c:if>
+                   <c:if test="${pi.currentPage lt pi.maxPage }">
+                     <c:url var="blistAfter" value="cList.do">
+                        <c:param name="page" value="${pi.currentPage+1 }"/>
+                     </c:url>
+                           <li class="page-item-t">
+                           <a class="page-link-t" href="${blistAfter }">
+                          <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-caret-right-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+>>>>>>> refs/remotes/origin/master
   <path d="M12.14 8.753l-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
 </svg></a></li>
-						</c:if>
+                  </c:if>
                     </ul>
 
                 </div>
@@ -252,25 +292,25 @@ input, select,textarea{
         
         
          <div id="myModal" class="modal" tabindex="-1">
-			  <div class="modal-dialog">
-			    <div class="modal-content">
-			      <div class="modal-header">
-			        <h5 class="modal-title">탈퇴 사유</h5>
-			        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-			          <span aria-hidden="true">&times;</span>
-			        </button>
-			      </div>
-			      <div class="modal-body">
-			      	<div>
-			        <p id="secessionContent" style="word-break:break-all;"></p>
-			        </div>
-			      </div>
-			      <div class="modal-footer">
-			        <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
-			      </div>
-			    </div>
-			  </div>
-			</div>
+           <div class="modal-dialog">
+             <div class="modal-content">
+               <div class="modal-header">
+                 <h5 class="modal-title">탈퇴 사유</h5>
+                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                   <span aria-hidden="true">&times;</span>
+                 </button>
+               </div>
+               <div class="modal-body">
+                  <div>
+                 <p id="secessionContent" style="word-break:break-all;"></p>
+                 </div>
+               </div>
+               <div class="modal-footer">
+                 <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+               </div>
+             </div>
+           </div>
+         </div>
         
        
         <input type="hidden" id="type" name="type" value="${type }">
@@ -278,21 +318,21 @@ input, select,textarea{
            <script>
            
            
-         	// 사유 상세보기(modal)
+            // 사유 상세보기(modal)
           $(function(){
-       	  
-       	  $("td[class=secession]").on("click",function(){
-       	  
-       	  	var content=$(this).text();
-       	   	$("#secessionContent").text(content);
-       	  	
-       	 
-       	  	
-       	  	$('#myModal').on('shown.bs.modal', function () {
-       	  	  $('#myInput').trigger('focus')
-       	  	})
-       		 
-       	  })
+            
+            $("td[class=secession]").on("click",function(){
+            
+               var content=$(this).text();
+                $("#secessionContent").text(content);
+               
+           
+               
+               $('#myModal').on('shown.bs.modal', function () {
+                 $('#myInput').trigger('focus')
+               })
+              
+            })
         }) 
            
            
@@ -300,45 +340,45 @@ input, select,textarea{
             function search(){
         
       
-        	 var type=$("#type").val();
-        	 var word=$("#word").val();
+            var type=$("#type").val();
+            var word=$("#word").val();
         
-        	
-        	 if(type=="subscribeNo"){
-        		 if(word.replace(/[0-9]/g, "").length > 0) {
-        		        alert("숫자만 입력해 주십시오.");
-        		      $("#word").val("");
-        		     $("#word").focus();
-        		     return;
-        	 	}
-        	 }
-        	 
-   			
-  			 location.href="cList.do?type="+type+"&word="+word;
-        	
-        	
+           
+            if(type=="subscribeNo"){
+               if(word.replace(/[0-9]/g, "").length > 0) {
+                      alert("숫자만 입력해 주십시오.");
+                    $("#word").val("");
+                   $("#word").focus();
+                   return;
+               }
+            }
+            
+            
+            location.href="cList.do?type="+type+"&word="+word;
+           
+           
         }
            
            
       
          //게시물 상세보기(ajax후)
            
-        	$(function(){
-        		
-        		  $("td[class=cursor]").on("click",function(){
-        			var subscribeNo=$(this).parent().children().eq(2).text();
-         			 var page=${pi.currentPage };   
-         			 var type="cancel";
-         			 var category=$("#type").val();
+           $(function(){
+              
+                $("td[class=cursor]").on("click",function(){
+                 var subscribeNo=$(this).parent().children().eq(2).text();
+                   var page=${pi.currentPage };   
+                   var type="cancel";
+                   var category=$("#type").val();
 
-                	 var type2=$("#type").val();
-                	 var word=$("#word").val();
-         			
-         				
-            		location.href="oDetail.do?subscribeNo="+subscribeNo+"&page="+page+"&type="+type+"&category="+category+"&type2="+type2+"&word="+word;
-        		})
-        	})
-        	
+                    var type2=$("#type").val();
+                    var word=$("#word").val();
+                  
+                     
+                  location.href="oDetail.do?subscribeNo="+subscribeNo+"&page="+page+"&type="+type+"&category="+category+"&type2="+type2+"&word="+word;
+              })
+           })
+           
          
          
          //구글 차트
@@ -348,6 +388,7 @@ input, select,textarea{
 
    
       function drawChart() {
+<<<<<<< HEAD
     	  
     	var one=${list[0].temp2};
     	var two=${list[1].temp2};
@@ -357,6 +398,17 @@ input, select,textarea{
     	
     	  var data = google.visualization.arrayToDataTable([
     		  
+=======
+         
+       var one=${list[0].temp2};
+       var two=${list[1].temp2};
+       var three=${list[2].temp2};
+    
+       
+       
+         var data = google.visualization.arrayToDataTable([
+            
+>>>>>>> refs/remotes/origin/master
     
               ['Task', 'Percentage'],
               ['상품 불필요', one],
@@ -373,8 +425,13 @@ input, select,textarea{
           
           pieHole: 0.4,
           chartArea:{left:30,top:50,width:'100%',height:'100%'},
+<<<<<<< HEAD
        	  colors:['#7986CB','#42A5F5','#5C6BC0'],
        	  fontSize:14
+=======
+            colors:['#7986CB','#42A5F5','#5C6BC0'],
+            fontSize:14
+>>>>>>> refs/remotes/origin/master
         };
 
         // 입력값을 화면에 뿌려줌
@@ -384,15 +441,15 @@ input, select,textarea{
       }
       
       
-   	//모두 체크
+      //모두 체크
 
-	 	$(function(){
-	
-			$("#checkAll").click(function(){
-				var bool = $(this).prop("checked");
-				$(".common").prop('checked', bool);
-			});
-		}); 
+       $(function(){
+   
+         $("#checkAll").click(function(){
+            var bool = $(this).prop("checked");
+            $(".common").prop('checked', bool);
+         });
+      }); 
     </script>        
         
        <!-- Optional JavaScript -->

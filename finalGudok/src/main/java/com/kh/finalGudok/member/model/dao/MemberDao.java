@@ -527,16 +527,10 @@ public class MemberDao {
 	public ArrayList<Grade> selectGradeInfo() {
 		return (ArrayList)sqlSessionTemplate.selectList("memberMapper.selectGradeInfo");
 	}
-	public int selectPointMember(int i) {
-		return sqlSessionTemplate.selectOne("memberMapper.selectPointMember",i);
-	}
+
 
 	public int updateSubscribeDestination(Delivery d) {
 		return sqlSessionTemplate.update("memberMapper.updateSubscribeDestination",d);
-	}
-
-	public int selectUsedPoint(int memberNo) {
-		return sqlSessionTemplate.selectOne("memberMapper.selectUsedPoint", memberNo);
 	}
 
 	public int updateMyPoint(Member loginUser) {
@@ -561,11 +555,29 @@ public class MemberDao {
 		return sqlSessionTemplate.selectOne("memberMapper.selectMember", m);
 	}
 
+
 	public int selectMemberPoint(Integer memberNo) {
 		return sqlSessionTemplate.selectOne("memberMapper.selectMemberPoint", memberNo);
+	}
+
+	public int selectUsedPoint(String customerUid) {
+		return sqlSessionTemplate.selectOne("memberMapper.selectUsedPoint", customerUid);
+
 	}
 
 //	public ArrayList<Subscribe> selectSubscribeListTable(Integer memberNo) {
 //		return (ArrayList)sqlSessionTemplate.selectList("memberMapper.selectSubscribeListTable", memberNo);
 //	}
+	
+	public String selectGender(Integer memberNo) {
+		return sqlSessionTemplate.selectOne("memberMapper.selectGender", memberNo);
+	}
+	
+	public Member checkLoginUser(String id) {
+		return sqlSessionTemplate.selectOne("memberMapper.checkLoginUser", id);
+	}
+
+	public int selectPointMember(int i) {
+		return sqlSessionTemplate.selectOne("memberMapper.selectPointMember", i);
+	}
 }

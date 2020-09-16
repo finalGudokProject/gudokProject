@@ -660,8 +660,9 @@ public class BoardController {
 		int result1 = bService.deleteImage(bBoard_no);
 		int result2 = bService.deleteBoardImage(bBoard_no);
 		int result3 = bService.deleteBoard(bBoard_no);
+		int result4 = bService.deleteReplyAll(bBoard_no);
 
-		if (result1 > 0 || result2 > 0 || result3 > 0) {
+		if (result1 > 0 || result2 > 0 || result3 > 0 || result4>0) {
 			return "redirect:adminProductProposalList.do";
 		} else {
 			throw new BoardException("게시물 삭제 실패!");
@@ -684,7 +685,8 @@ public class BoardController {
 		int result1 = 0;
 		int result2 = 0;
 		int result3 = 0;
-
+		int result4 = 0;
+		
 		for (int k = 0; k < ProposalArr.length; k++) {
 
 			Board b = bService.selectDeleteBoard(ProposalArr[k]);
@@ -695,10 +697,11 @@ public class BoardController {
 			result1 = bService.deleteImage(ProposalArr[k]);
 			result2 = bService.deleteBoardImage(ProposalArr[k]);
 			result3 = bService.deleteBoard(ProposalArr[k]);
+			result4 = bService.deleteReplyAll(ProposalArr[k]);
 
 		}
 
-		if (result1 > 0 || result2 > 0 || result3 > 0) {
+		if (result1 > 0 || result2 > 0 || result3 > 0 || result4 >0 ) {
 			return "redirect:adminProductProposalList.do";
 		
 		}else{
@@ -1962,8 +1965,9 @@ public class BoardController {
 		int result1 = bService.deleteImage(bBoard_no);
 		int result2 = bService.deleteBoardImage(bBoard_no);
 		int result3 = bService.deleteBoard(bBoard_no);
+		int result4 = bService.deleteReplyAll(bBoard_no);
 
-		if (result1 > 0 || result2 > 0 || result3 > 0) {
+		if (result1 > 0 || result2 > 0 || result3 > 0 || result4>0) {
 			return "redirect:productProposalList.do";
 		} else {
 			throw new BoardException("게시물 삭제 실패!");
