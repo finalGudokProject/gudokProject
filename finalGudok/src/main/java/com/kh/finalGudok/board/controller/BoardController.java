@@ -2160,9 +2160,9 @@ public class BoardController {
 		// 비공개, 공개, 답변상태를 표기하기 위한 ArrayList
 		ArrayList<secret> list2 = bService.selectListInquiry2(pi);
 		ArrayList<Inquiry> list3 = bService.selectListInquiry3(pi);
-		System.out.println("list1 : " + list1.size());
-		System.out.println("list2 : " + list2.size());
-		System.out.println("list3 : " + list3.size());
+		System.out.println("list1 : " + list1);
+		System.out.println("list2 : " + list2);
+		System.out.println("list3 : " + list3);
 
 		if (list1 != null && list2 != null && list3 != null) {
 			mv.addObject("list1", list1);

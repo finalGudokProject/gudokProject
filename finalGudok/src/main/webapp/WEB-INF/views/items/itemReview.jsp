@@ -266,6 +266,7 @@
 					text : "상품평을 수정하시겠습니까?",
 					buttons : ["예", "아니오"],
 					closeOnEsc : false,
+					closeOnClickOutside: false,
 					dangerMode : true,
 				}).then((result)=>{
 					if(result){
@@ -298,6 +299,7 @@
 					text : "상품평을 삭제하시겠습니까?",
 					buttons : ["예", "아니오"],
 					closeOnEsc : false,
+					closeOnClickOutside: false,
 					dangerMode : true,
 				}).then((result)=>{
 					if(result){

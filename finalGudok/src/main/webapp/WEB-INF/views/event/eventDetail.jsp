@@ -39,7 +39,7 @@
     <div class="container">
             <h1 align="center">이벤트</h1>
             <br>
-            <hr style="border-color:rgb(0, 125, 255);"><br>
+            <hr style="border-color:#ced4da;"><br>
             <table style="margin-top:15px">
                 <tbody >
                 <tr>

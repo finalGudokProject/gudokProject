@@ -153,7 +153,7 @@
                     <c:forEach items="${list }" var="iList" >
             		<c:if test="${!empty list}">
                     <tr>
-                    	<td><img src="<%-- ${contextPath}/resources/uploadFiles/${iList.imageRename} --%>" width=100 height=100></td>
+                    	<td><img src="${contextPath}/resources/uploadFiles/${iList.itemRename}" width=100 height=100></td>
                     	<td id="name">${iList.itemName }</td>
                     	<td id="itemAmount">${iList.cartCount } 개</td>
                     	<td>${iList.cartSubs } 주</td>
@@ -214,6 +214,7 @@
     	var address1 = $("#address1").val();
     	var address2 = $("#address2").val();
     	var address3 = $("#address3").val();
+    	var memberNo = ${loginUser.memberNo}
     	
     	<c:forEach items="${list}" var="i">
     		noArr.push("${i.itemNo}");
@@ -237,7 +238,7 @@
 			
 		$.ajax({
 			url:"subscribeCheck.do",
-			data:{noArr : noArr},
+			data:{noArr : noArr, memberNo:memberNo},
 			traditional:true,
 			success:function(data){
 				if(data == "fail"){

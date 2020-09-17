@@ -94,9 +94,9 @@
 	<br><br><br>
     <div class="container" align="center">
     
-        <h1 >이벤트</h1>
+        <h1><img src="resources/images/event.png" width="60px" height="60px">&nbsp;이벤트</h1>
             <br>
-            <hr style="border-color:rgb(0, 125, 255);"><br>
+            <hr style="border-color:#ced4da;"><br>
           
           <table>
           <c:choose>

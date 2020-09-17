@@ -1157,7 +1157,7 @@
 						, IMAGE_ORIGINAL_NAME = #{originalFileName}
 						, IMAGE_RENAME = #{renameFileName}
 		WHERE IMAGE_NO IN
-		(SELECT BOARDIMAGE_NO
+		(SELECT B_IMAGE_NO
 		FROM BOARD_IMAGE
 		WHERE BOARD_NO IN #{bBoard_no})
 	</update>

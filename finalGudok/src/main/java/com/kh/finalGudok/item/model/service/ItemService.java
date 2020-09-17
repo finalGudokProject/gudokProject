@@ -275,13 +275,13 @@ public interface ItemService {
 
 	int insertSubScribeInfo(HashMap<String, Object> map);
 
-	ArrayList<Subscribe> selectSubscribeStatus(String customerUid);
+	/* ArrayList<Subscribe> selectSubscribeStatus(String customerUid); */
 	
 	int updateUsePoint(Map<String, Object> pointMap);
 
 	int deleteCartList(HashMap<String, Object> map);
 
-	int selectSubList(Integer no);
+	int selectSubList(Map map);
 
 	ArrayList<Item> selectBestList();
 
@@ -318,8 +318,16 @@ public interface ItemService {
 	int selectSubPrice(int subNo);
 	
 	int genderCount(Map<String, Object> map);
-	
+
+	ArrayList<Event> selectCarouselList();
+
 	int selectBannerItemCount(String eventNo);
-	
+
 	ArrayList<Item> selectBannerItemList(PageInfo pi, String eventNo);
+
+	String selectImageName(int no);
+	
+	int inInsertImage(Board b);
+
+	ArrayList<Subscribe> selectSubscribeStatus(Map map);
 }

@@ -16,7 +16,7 @@
 		<result property="categoryNo" column="CATEGORY_NO"/>
 		<result property="itemMemo" column="ITEM_MEMO"/>
 		<result property="itemEventStatus" column="ITEM_EVENT_STATUS"/>
-		<result property="sortNo" column="SORT_NO"/>
+		<result property="sortNo" column="SORT_NinsertFirstPaymentO"/>
 		<result property="imageOriginalName" column="IMAGE_ORIGINAL_NAME"/>
 		<result property="imageRename" column="IMAGE_RENAME"/>
 		<result property="imagePath" column="IMAGE_PATH"/>
@@ -164,9 +164,9 @@
 		
 	</insert>
 	
-	<select id="selectSubscribeStatus" parameterType="String" resultMap="subscribeResultSet">
+	<select id="selectSubscribeStatus" parameterType="HashMap" resultMap="subscribeResultSet">
 		SELECT * FROM SUBSCRIBE 
-		WHERE CUSTOMER_UID = #{customerUid} AND SUBSCRIBE_STATUS = 'N'
+		WHERE CUSTOMER_UID = #{customerUid} AND SUBSCRIBE_STATUS = 'N' AND MEMBER_NO = #{memberNo}
 	</select>
 	
 	<select id="selectPoint" parameterType="_int" resultType="double">
@@ -185,8 +185,8 @@
 		</foreach>
 	</delete>
 	
-	<select id="selectSubList" parameterType="_int" resultType="_int">
-		SELECT COUNT(*) FROM SUBSCRIBE WHERE ITEM_NO = #{itemNo} AND SUBSCRIBE_STATUS = 'N'
+	<select id="selectSubList" parameterType="hashMap" resultType="_int">
+		SELECT COUNT(*) FROM SUBSCRIBE WHERE ITEM_NO = #{itemNo} AND MEMBER_NO = #{memberNo} AND SUBSCRIBE_STATUS = 'N'
 	</select>
 
 	<select id="selectRecommendList" resultMap="itemResultSet">
@@ -263,4 +263,17 @@
 		</choose>
 		WHERE ITEM_NO = #{itemNo}
 	</update>
+	
+	<select id="selectImageName" parameterType="_int" resultType="String">
+		SELECT IMAGE_RENAME FROM ITEM WHERE ITEM_NO = #{no}
+	</select>
+	
+	<insert id="inInsertImage" parameterType="Board">
+      INSERT ALL
+      INTO IMAGE VALUES(SEQ_IMAGE_NO.NEXTVAL, NULL, NULL, NULL)
+      INTO BOARD_IMAGE VALUES(SEQ_BOARD_IMAGE_NO.NEXTVAL, SEQ_BOARD_NO.CURRVAL, SEQ_IMAGE_NO.CURRVAL)
+      SELECT*
+      FROM DUAL
+   </insert>
+
 </mapper>

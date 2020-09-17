@@ -231,6 +231,9 @@
 		transition:transform.5s;
 	}
 
+.detailDiv{
+      border : none !important;
+   }
 </style>
 </head>
 <body>
@@ -297,7 +300,7 @@
 					$(".detailDiv").on("mouseenter", function(){
 						$(this).css({"box-shadow":"1px 1px 20px lightgray", "transition":"0.3s"});
 					}).on("mouseleave", function(){
-						$(this).css({"border":"1px solid lightgray","box-shadow":"none"});
+						$(this).css({"border":"none","box-shadow":"none"});
 					})
 				})
 			</script>
@@ -334,13 +337,13 @@
 							<div id="ratePercentId" style="position:absolute;"><span>${i.itemDiscount }%</span></div>
 							<img src="resources/images/sale.png" class="saleImg">
 						</div>
-						<img src="${contextPath}/resources/uploadFiles/${i.imageRename}" class="card-img-top mainImg" alt="..." style="position:relative;">
+						<img src="${contextPath}/resources/uploadFiles/${i.itemRename}" class="card-img-top mainImg" alt="..." style="position:relative;">
 					</div>
 					</c:if>
 					
 					<c:if test="${i.itemDiscount == 0}">
 					<div class="cardHeader">
-					<img src="${contextPath}/resources/uploadFiles/${i.imageRename}" class="card-img-top mainImg" alt="...">
+					<img src="${contextPath}/resources/uploadFiles/${i.itemRename}" class="card-img-top mainImg" alt="...">
 					</div>
 					</c:if>
 					<div class="cardBody">
@@ -454,13 +457,13 @@
 							<div id="ratePercentId" style="position:absolute;"><span>${i.itemDiscount }%</span></div>
 							<img src="resources/images/sale.png" class="saleImg">
 						</div>
-						<img src="${contextPath}/resources/uploadFiles/${i.imageRename}" class="card-img-top mainImg" alt="..." style="position:relative;">
+						<img src="${contextPath}/resources/uploadFiles/${i.itemRename}" class="card-img-top mainImg" alt="..." style="position:relative;">
 					</div>
 					</c:if>
 					
 					<c:if test="${i.itemDiscount == 0}">
 					<div class="cardHeader">
-					<img src="${contextPath}/resources/uploadFiles/${i.imageRename}" class="card-img-top mainImg" alt="...">
+					<img src="${contextPath}/resources/uploadFiles/${i.itemRename}" class="card-img-top mainImg" alt="...">
 					</div>
 					</c:if>
 					<div class="cardBody">

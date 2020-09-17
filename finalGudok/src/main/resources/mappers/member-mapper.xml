@@ -196,6 +196,7 @@
       <result property="itemPrice" column="ITEM_PRICE" />
    </resultMap>
 
+
 	<resultMap type="AdminExchange" id="adminExchangeResultSet">
       <id property="exchangeNo" column="EXCHANGE_NO" />
       <result property="exchangeStatus" column="EXCHANGE_STATUS" />
@@ -290,28 +291,29 @@
 	</select>
 
 	<select id="exchangeList" parameterType="int" resultMap="exchangeResultSet">
-		SELECT E.*, I.ITEM_NAME
-		FROM EXCHANGE E
-		JOIN SUBSCRIBE S ON (E.SUBSCRIBE_NO = S.SUBSCRIBE_NO)
-		JOIN MEMBER M ON (S.MEMBER_NO = M.MEMBER_NO)
-		JOIN ITEM I ON (S.ITEM_NO = I.ITEM_NO)
-		WHERE S.MEMBER_NO = #{memberNo} AND I.ITEM_DP_STATUS='Y'
-		ORDER BY E.EXCHANGE_DATE DESC
-	</select>
+      SELECT E.*, I.ITEM_NAME
+      FROM EXCHANGE E
+      JOIN SUBSCRIBE S ON (E.SUBSCRIBE_NO = S.SUBSCRIBE_NO)
+      JOIN MEMBER M ON (S.MEMBER_NO = M.MEMBER_NO)
+      JOIN ITEM I ON (S.ITEM_NO = I.ITEM_NO)
+      WHERE S.MEMBER_NO = #{memberNo} AND I.ITEM_DP_STATUS='Y'
+      ORDER BY E.EXCHANGE_DATE DESC
+   </select>
 
 	<select id="deliveryList" parameterType="int" resultMap="deliveryResultSet">
-		SELECT D.*, I.ITEM_NAME, S.SUBSCRIBE_DATE, S.EXCHANGE_STATUS, S.ADDRESS_1, S.ADDRESS_2, S.ADDRESS_3
-		FROM DELIVERY D
-		JOIN SUBSCRIBE S ON (D.SUBSCRIBE_NO = S.SUBSCRIBE_NO)
-		JOIN ITEM I ON (S.ITEM_NO = I.ITEM_NO)
-		WHERE MEMBER_NO = #{memberNo} AND S.SUBSCRIBE_STATUS='N' AND I.ITEM_DP_STATUS='Y'
-	</select>
+      SELECT D.*, I.ITEM_NAME, S.SUBSCRIBE_DATE, S.EXCHANGE_STATUS, S.ADDRESS_1, S.ADDRESS_2, S.ADDRESS_3
+      FROM DELIVERY D
+      JOIN SUBSCRIBE S ON (D.SUBSCRIBE_NO = S.SUBSCRIBE_NO)
+      JOIN ITEM I ON (S.ITEM_NO = I.ITEM_NO)
+      WHERE MEMBER_NO = #{memberNo} AND S.SUBSCRIBE_STATUS='N' AND I.ITEM_DP_STATUS='Y'
+   </select>
 
-	<select id="cartList" parameterType="int" resultMap="cartResultSet">
+	<select id="cartList" parameterType="int"
+		resultMap="cartResultSet">
 		SELECT C.*, I.IMAGE_PATH, I.IMAGE_RENAME
 		FROM CART C
 		LEFT JOIN ITEM I ON (C.ITEM_NO = I.ITEM_NO)
-		WHERE MEMBER_NO = #{memberNo} AND I.ITEM_DP_STATUS = 'Y';
+		WHERE MEMBER_NO = #{memberNo}
 	</select>
 
 	<insert id="insertExchange" parameterType="mExchange">
@@ -380,12 +382,12 @@
 	</select>
 
 	<select id="selectHeartList" parameterType="int" resultMap="heartResultSet">
-		SELECT H.*, T.ITEM_PRICE, T.IMAGE_PATH,
-		T.IMAGE_RENAME,T.ITEM_NAME
-		FROM HEART H
-		LEFT JOIN ITEM T ON (H.ITEM_NO = T.ITEM_NO)
-		WHERE H.MEMBER_NO=#{memberNo} AND  T.ITEM_DP_STATUS='Y'
-	</select>
+      SELECT H.*, T.ITEM_PRICE, T.IMAGE_PATH,
+      T.IMAGE_RENAME,T.ITEM_NAME
+      FROM HEART H
+      LEFT JOIN ITEM T ON (H.ITEM_NO = T.ITEM_NO)
+      WHERE H.MEMBER_NO=#{memberNo} AND  T.ITEM_DP_STATUS='Y'
+   </select>
 
 	<delete id="deleteHeart" parameterType="mDeleteHeart">
 		DELETE FROM HEART
@@ -452,16 +454,16 @@
 
 	<!-- 아이디 찾기 -->
 	<select id="findId" parameterType="Member" resultType="String">
-		SELECT MEMBER_ID 
-		FROM MEMBER 
-		WHERE MEMBER_NAME=#{memberName} AND EMAIL=#{email} AND MEMBER_STATUS='N'
+		SELECT
+		MEMBER_ID FROM MEMBER WHERE MEMBER_NAME=#{memberName} AND
+		EMAIL=#{email} AND MEMBER_STATUS = 'N'
 	</select>
 
 	<!-- 비밀번호 찾기 전 회원 존재여부 확인 -->
 	<select id="checkMember" parameterType="Member"
 		resultType="_int">
 		SELECT COUNT(*) FROM MEMBER WHERE MEMBER_ID=#{memberId} AND
-		MEMBER_NAME=#{memberName} AND EMAIL=#{email} AND MEMBER_STATUS='N'
+		MEMBER_NAME=#{memberName} AND EMAIL=#{email} AND MEMBER_STATUS = 'N'
 	</select>
 
 	<!-- 비밀번호 찾기 -->
@@ -691,7 +693,7 @@
         FROM SUBSCRIBE S
         JOIN ITEM I ON (S.ITEM_NO = I.ITEM_NO)
         JOIN DELIVERY D ON (S.SUBSCRIBE_NO = D.SUBSCRIBE_NO)
-        WHERE SUBSCRIBE_STATUS='N' AND MEMBER_NO=#{memberNo} AND I.ITEM_DP_STATUS = 'Y'
+        WHERE SUBSCRIBE_STATUS='N' AND MEMBER_NO=#{memberNo} AND I.ITEM_DP_STATUS='Y'
 	</select>
 	
 	<!-- <select id="selectSubscribeListTable" resultMap="subscribeResultSet" parameterType="int">
@@ -702,7 +704,7 @@
 		WHERE SUBSCRIBE_STATUS='N' AND DELIVERY_STATUS = 'N'
 	</select> -->
 
-	<select id="selectOrderList" resultMap="adminSubscribeResultSet">
+	   <select id="selectOrderList" resultMap="adminSubscribeResultSet">
       select *
       from(
       SELECT S.*,D.DELIVERY_STATUS
@@ -1257,19 +1259,19 @@
 	</update>
 
 	<select id="subscribeCount" resultType="_int"
-		parameterType="_int">
-		SELECT COUNT(*)
-		FROM SUBSCRIBE S
-		LEFT JOIN ITEM I ON (S.ITEM_NO = I.ITEM_NO)
-		WHERE MEMBER_NO=#{memberNo} AND ITEM_DP_STATUS='Y' AND S.SUBSCRIBE_STATUS='N'
-	</select>
+      parameterType="_int">
+      SELECT COUNT(*)
+      FROM SUBSCRIBE S
+      LEFT JOIN ITEM I ON (S.ITEM_NO = I.ITEM_NO)
+      WHERE MEMBER_NO=#{memberNo} AND ITEM_DP_STATUS='Y' AND S.SUBSCRIBE_STATUS='N'
+   </select>
 
 	<select id="cartCount" resultType="_int" parameterType="_int">
-		SELECT COUNT(*)
-		FROM CART C
-		JOIN ITEM I ON (C.ITEM_NO = I.ITEM_NO)
-		WHERE MEMBER_NO=#{memberNo} AND I.ITEM_DP_STATUS='Y'
-	</select>
+      SELECT COUNT(*)
+      FROM CART C
+      JOIN ITEM I ON (C.ITEM_NO = I.ITEM_NO)
+      WHERE MEMBER_NO=#{memberNo} AND I.ITEM_DP_STATUS='Y'
+   </select>
 
 	<select id="pointCount" resultType="_int" parameterType="_int">
 		SELECT COUNT(*)
@@ -1296,7 +1298,6 @@
                             )
    
    </update>
-   
 	<update id="updateMemberPoint" parameterType="object">
       UPDATE MEMBER
         SET POINT=POINT+#{point}
@@ -1304,13 +1305,12 @@
                         FROM SUBSCRIBE
                         WHERE SUBSCRIBE_NO=#{subscribeNo})
    </update>
-   
 	<select id="selectPoint" parameterType="_int" resultType="int">
-		SELECT P.POINT
+      SELECT P.POINT
         FROM SUBSCRIBE S
         LEFT JOIN POINT P ON(S.SUBSCRIBE_NO=P.SUBSCRIBE_NO)
         WHERE S.SUBSCRIBE_NO=#{value}
-	</select>
+   </select>
 
 	<select id="getMemberCount" resultType="_int">
 		select count(*)
@@ -1343,10 +1343,10 @@
 	</select>
 
 	<select id="selectPointMember" parameterType="_int" resultType="_int">
-		SELECT MEMBER_NO
+      SELECT MEMBER_NO
         FROM SUBSCRIBE
         WHERE SUBSCRIBE_NO=#{value}
-	</select>
+   </select>
 	
 	<update id="updateSubscribeDestination" parameterType="mDelivery">
 		UPDATE SUBSCRIBE

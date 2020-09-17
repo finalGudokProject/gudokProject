@@ -215,7 +215,7 @@
 						<script>
 							$(function(){
 								$(".reviewImg").on("click", function(){
-									swal("","이미지는 수정이 불가능합니다.","error");
+									swal({ text : "이미지는 수정이 불가능합니다.", icon : "error", closeOnClickOutside: false,});
 								})
 							})
 						</script>
@@ -256,6 +256,7 @@
                   text : "상품평을 수정하시겠습니까?",
                   buttons : ["예", "아니오"],
                   closeOnEsc : false,
+                  closeOnClickOutside: false,
                   dangerMode : true,
                }).then((result)=>{
                   if(result){
@@ -265,7 +266,7 @@
                   }
                })
             }else{
-               swal("","10자 이상으로 입력해 주세요.","warning");
+            	swal({ text : "10자 이상으로 입력해 주세요.", icon : "warning", closeOnClickOutside: false,});
             }
          })
       })
@@ -282,6 +283,7 @@
 						text : "상품에 대한 불만 사항은 상품 문의를 통해 해주시길 바랍니다.\n 평점을 낮추시겠습니까?",
 						buttons : ["예", "아니오"],
 						closeOnEsc : false,
+						closeOnClickOutside: false,
 						dangerMode : true,
 					}). then((result)=>{
 						if(result){

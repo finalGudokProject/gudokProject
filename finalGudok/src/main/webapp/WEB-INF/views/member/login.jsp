@@ -82,7 +82,7 @@ body {
 	rel="stylesheet">
 </head>
 
-<body>
+<body onload="noBack();" onpageshow="if(event.persisted) noBack();" onunload="">
 
 	<jsp:include page="../common/menubar.jsp" />
 
@@ -134,6 +134,7 @@ body {
 						alert("비밀번호를 확인해주세요");
 					}else{
 						$("#loginForm").submit();
+						
 					}
 				},
 				error : function(request, status, errorData) {
@@ -144,6 +145,18 @@ body {
 			})
 		})
 	</script>
+	
+	<!-- <script type="text/javascript">
+		window.history.forward();
+	 	function noBack(){window.history.forward();}
+	</script> -->
+	
+	<script type="text/javascript">
+		window.history.forward();
+		function noBack(){window.history.forward();}
+	</script>
+	
+	
 	<!-- Optional JavaScript -->
 	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
 	<script src="https://code.jquery.com/jquery-latest.min.js"

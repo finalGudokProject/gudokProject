@@ -23,7 +23,7 @@
     .content{
         margin-left:250px;
         background-color: #F5F5F5;
-		padding:10px !important;
+      padding:10px !important;
     
     }
     .mainBox{
@@ -80,7 +80,7 @@
     td{
       text-overflow: ellipsis;
       overflow:hidden;
-	  white-space:nowrap;
+     white-space:nowrap;
     }
    
    
@@ -118,7 +118,7 @@
 </head>
 <body>
 
-	<jsp:include page="../common/adminMenubar.jsp"/>
+   <jsp:include page="../common/adminMenubar.jsp"/>
     <div class="content">
         <div class="mainBox">
             
@@ -137,26 +137,26 @@
                             <br>
                             <br>
                         <table class="table">
-                        	<c:if test="${!empty exList }">
-                        	<c:forEach var="i" items="${exList }" varStatus="cnt">
-	                            <c:url var="exchangeDetail" value="oDetail.do">
-									<c:param name="subscribeNo" value="${i.subscribeNo }"/>
-									<c:param name="page" value="1"/>
-									<c:param name="type" value="exchange"/>
-									<c:param name="category" value="N"/>
-								</c:url>
-	                            <tr id="cursor"onclick='location.href="${exchangeDetail }"'>
-	                                <td style="width:60%; text-align:left;">${i.exchangeContent }</td>
-	                                <td style="width:40%">${i.exchangeDate }</td>
-	                            </tr>
+                           <c:if test="${!empty exList }">
+                           <c:forEach var="i" items="${exList }" varStatus="cnt">
+                               <c:url var="exchangeDetail" value="oDetail.do">
+                           <c:param name="subscribeNo" value="${i.subscribeNo }"/>
+                           <c:param name="page" value="1"/>
+                           <c:param name="type" value="exchange"/>
+                           <c:param name="category" value="N"/>
+                        </c:url>
+                               <tr id="cursor"onclick='location.href="${exchangeDetail }"'>
+                                   <td style="width:60%; text-align:left;">${i.exchangeContent }</td>
+                                   <td style="width:40%">${i.exchangeDate }</td>
+                               </tr>
                             </c:forEach>
                             </c:if>
                             <c:if test="${empty exList }">
                             
-                        	
-	                            <tr>
-	                                <td colspan="2">교환 내역이 없습니다.</td>
-	                            </tr>
+                           
+                               <tr>
+                                   <td colspan="2">교환 내역이 없습니다.</td>
+                               </tr>
                           
                             </c:if>
                             
@@ -179,26 +179,26 @@
                         <br>
                         <br>
                     <table class="table">
-                    	<c:if test="${!empty dList }">
+                       <c:if test="${!empty dList }">
                         <c:forEach var="i" items="${dList }" varStatus="cnt">
-                       		 <c:url var="orderDetail" value="oDetail.do">
-									<c:param name="subscribeNo" value="${i.subscribeNo }"/>
-									<c:param name="page" value="1"/>
-									<c:param name="type" value="order"/>
-									<c:param name="category" value="N"/>
-								</c:url>
+                              <c:url var="orderDetail" value="oDetail.do">
+                           <c:param name="subscribeNo" value="${i.subscribeNo }"/>
+                           <c:param name="page" value="1"/>
+                           <c:param name="type" value="order"/>
+                           <c:param name="category" value="N"/>
+                        </c:url>
                         
-	                        <tr id="cursor"onclick='location.href="${orderDetail }"'>
-	                            <td style="width:40%">${i.itemName }</td>
-	                            <td style="width:20%">${i.memberId }</td>
-	                            <td style="width:40%">${i.subscribeDate }</td>
-	                        </tr>
+                           <tr id="cursor"onclick='location.href="${orderDetail }"'>
+                               <td style="width:40%">${i.itemName }</td>
+                               <td style="width:20%">${i.memberId }</td>
+                               <td style="width:40%">${i.subscribeDate }</td>
+                           </tr>
                         </c:forEach>
                         </c:if>
                         <c:if test="${empty dList }">
-	                        <tr>
-	                            <td colspan="4">주문 내역이 없습니다.</td>
-	                        </tr>
+                           <tr>
+                               <td colspan="4">주문 내역이 없습니다.</td>
+                           </tr>
                         </c:if>
                         
                     </table>
@@ -211,20 +211,20 @@
                         <div id=subBox1>
                             <div style="float:left; width:35%;text-align:left;"><h5><b>방문·가입 현황</b></h5></div>
        
-	                           
-	                                <div style="float:right;width:60%;margin-left:10px">
-	                                
-	                                
-	                               <div style="float:left;">총 방문자  </div>&nbsp;
-	                               <div class="test3" style="float:left;"> ${sessionScope.totalCount }</div>
-	                               	<div style="float:left;">명/총 가입자</div>&nbsp;
-	                               	  <div class="test4" style="float:left;"> ${sessionScope.totalMember }</div>
-	                               	  <div style="float:left;">명</div>
-	                               	  
-	                               	  
-	                               	  </div>
-	                                
-	                        
+                              
+                                   <div style="float:right;width:60%;margin-left:10px">
+                                   
+                                   
+                                  <div style="float:left;">총 방문자  </div>&nbsp;
+                                  <div class="test3" style="float:left;"> ${sessionScope.totalCount }</div>
+                                     <div style="float:left;">명/총 가입자</div>&nbsp;
+                                       <div class="test4" style="float:left;"> ${sessionScope.totalMember }</div>
+                                       <div style="float:left;">명</div>
+                                       
+                                       
+                                       </div>
+                                   
+                           
                          
                           <br>
                         
@@ -241,8 +241,8 @@
                             <div style="float:left;margin-bottom:5px;"><h5 style="float:left"><b>주간 매출 현황</b></h5>
                             <div style="float:left; margin-left:20px"> 주간 총 거래건   </div><div class="test1" style="float:left; margin-left:10px">${sumTotalC }</div><div style="float:left;">건 / 매출액</div> <div class="test2" style="display:inline;margin-left:10px">${sumTotalP }</div>원</div>
                             <div class="mr-0" style="float:right;">
-                            	 <c:url var="goSalesList" value="sDateList.do">
-                                    	<c:param name="type" value="N"/>
+                                <c:url var="goSalesList" value="sDateList.do">
+                                       <c:param name="type" value="N"/>
                                   </c:url>
                             <a href="${goSalesList }"><svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-arrow-right-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                             <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
@@ -261,8 +261,8 @@
                         </tr>
                     </thead>
                     <tbody>
-					<c:if test="${!empty pList }">
-                   	<c:forEach var="i" items="${pList }" varStatus="cnt">
+               <c:if test="${!empty pList }">
+                      <c:forEach var="i" items="${pList }" varStatus="cnt">
                         <tr>
                             <td>${i.categoryNo }</td>
                             <td><div class="pay" style="display:inline">${i.totalPayment }</div> 원</td>
@@ -285,11 +285,11 @@
                         <div id="subBox1">
                             <div style="float:left;"><h5><b>미답변 문의</b></h5></div>
                             <c:url var="searchInquiryList" value="searchInquiryList.do">
-								<c:param name="searchType" value="All"/>
-								<c:param name="inquiry_yn" value="No"/>
-								<c:param name="keyword" value=""/>
-								<c:param name="page" value="1"/>
-							</c:url>
+                        <c:param name="searchType" value="All"/>
+                        <c:param name="inquiry_yn" value="No"/>
+                        <c:param name="keyword" value=""/>
+                        <c:param name="page" value="1"/>
+                     </c:url>
                             <div class="mr-0" style="float:right;">
                             <a href="${searchInquiryList }"><svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-arrow-right-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                             <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
@@ -298,23 +298,23 @@
                             </svg></a></div> 
                             <br><br>
                         <table class="table">
-                        	<c:if test="${!empty bList }">
+                           <c:if test="${!empty bList }">
                              <c:forEach var="i" items="${bList }" varStatus="cnt">
                              <c:url var="adminInquiryDetail" value="adminInquiryDetail.do">
-								<c:param name="bBoard_no" value="${i.bBoard_no }"/>
-								<c:param name="page" value="1"/>
-							</c:url>	
-	                            <tr>
-	                                <td style="width:70%; text-align:left"><a href="${adminInquiryDetail }">${i.bTitle }</a></td>
-	                                <td style="width:30%;">${i.bWrite_date }</td>
-	                            </tr>
+                        <c:param name="bBoard_no" value="${i.bBoard_no }"/>
+                        <c:param name="page" value="1"/>
+                     </c:url>   
+                               <tr id="cursor">
+                                   <td style="width:70%; text-align:left"><a href="${adminInquiryDetail }" style="text-decoration:none; color:black;">${i.bTitle }</a></td>
+                                   <td style="width:30%;">${i.bWrite_date }</td>
+                               </tr>
                             </c:forEach>
                             </c:if>
                             <c:if test="${empty bList }">
-	                            <tr>
-	                                <td colspan="2">미답변 내역이 없습니다.</td>
-	                                
-	                            </tr>
+                               <tr>
+                                   <td colspan="2">미답변 내역이 없습니다.</td>
+                                   
+                               </tr>
                             </c:if>
                         </table>
   
@@ -335,21 +335,21 @@
                             <c:if test="${!empty nList }">
                              <c:forEach var="i" items="${nList }" varStatus="cnt">
                              <c:url var="adminNoticeDetail" value="adminNoticeDetail.do">
-								<c:param name="bBoard_no" value="${i.bBoard_no }"/>
-								<c:param name="page" value="1"/>
-							</c:url>								
-	                           	 <tr>
-	                                <td style="width:70%; text-align:left;"><a href="${adminNoticeDetail }">${i.bTitle }</a></td>
-	                                <td style="width:30%;">${i.bWrite_date }</td>
-	                            </tr>
-                           	</c:forEach>
-                           	</c:if>
-                           	<c:if test="${empty nList }">
+                        <c:param name="bBoard_no" value="${i.bBoard_no }"/>
+                        <c:param name="page" value="1"/>
+                     </c:url>                        
+                                  <tr id="cursor">
+                                   <td style="width:70%; text-align:left;"><a href="${adminNoticeDetail }" style="text-decoration:none; color:black;">${i.bTitle }</a></td>
+                                   <td style="width:30%;">${i.bWrite_date }</td>
+                               </tr>
+                              </c:forEach>
+                              </c:if>
+                              <c:if test="${empty nList }">
                          
-	                           	 <tr>
-	                                <td colspan="2">공지사항이 없습니다.</td>
-	                            </tr>
-                           	</c:if>
+                                  <tr>
+                                   <td colspan="2">공지사항이 없습니다.</td>
+                               </tr>
+                              </c:if>
                         </table>
                         </div>
                     </td>
@@ -368,9 +368,9 @@
                              <c:if test="${!empty eList }">
                              <c:forEach var="i" items="${eList }" varStatus="cnt">
                               <c:url var="eventDetail" value="bannerDetail.do">
-									<c:param name="eventNo" value="${i.eventNo }"/>
-									<c:param name="page" value="1"/>
-								</c:url>
+                           <c:param name="eventNo" value="${i.eventNo }"/>
+                           <c:param name="page" value="1"/>
+                        </c:url>
                             <tr id="cursor" onclick="${eventDetail}">
                                 <td style="width:60%; text-align:left">${i.eventName }</td>
                                 <td style="width:40%;">이벤트 상품 ${i.itemCount }개</td>
@@ -398,7 +398,7 @@
         </div><!--하얀바탕-->
     </div><!--회색바탕 div-->
 
-	<input type="hidden" id="cArr" name="cArr" value="${cArr }">
+   <input type="hidden" id="cArr" name="cArr" value="${cArr }">
 
 
 
@@ -408,36 +408,36 @@
  //금액 변환
  
  $(function(){
-	
-	 var test1=$(".test1").text();
-	 var chg1=addComma(test1);
-	 $(".test1").text(chg1);
-	 
-	 
-	 var test2=$(".test2").text();
-	 var chg2=addComma(test2);
-	 $(".test2").text(chg2);
-	 
-	 var test3=$(".test3").text();
-	 var chg3=addComma(test3);
-	 $(".test3").text(chg3);
-	 
-	 
-	 var test4=$(".test4").text();
-	 var chg4=addComma(test4);
-	 $(".test4").text(chg4);
-	
-	 
+   
+    var test1=$(".test1").text();
+    var chg1=addComma(test1);
+    $(".test1").text(chg1);
+    
+    
+    var test2=$(".test2").text();
+    var chg2=addComma(test2);
+    $(".test2").text(chg2);
+    
+    var test3=$(".test3").text();
+    var chg3=addComma(test3);
+    $(".test3").text(chg3);
+    
+    
+    var test4=$(".test4").text();
+    var chg4=addComma(test4);
+    $(".test4").text(chg4);
+   
+    
  })
  
- 	function addComma(num) {
+    function addComma(num) {
              var regexp = /\B(?=(\d{3})+(?!\d))/g;
             return num.toString().replace(regexp, ',');
          }
  
  
- 	//일일 방문자 가입현황 차트
- 	
+    //일일 방문자 가입현황 차트
+    
       google.charts.load('current', {'packages':['corechart']});
       google.charts.setOnLoadCallback(drawChart);
 
@@ -451,16 +451,16 @@
       
 
           data.addRows([
-        	  
-       			  ['${cArr[0].vDay}',${cArr[0].memberNum},${cArr[0].visitorNum}],
-       			  ['${cArr[1].vDay}',${cArr[1].memberNum},${cArr[1].visitorNum}],
-       			  ['${cArr[2].vDay}',${cArr[2].memberNum},${cArr[2].visitorNum}],
-       			  ['${cArr[3].vDay}',${cArr[3].memberNum},${cArr[3].visitorNum}],
-       			  ['${cArr[4].vDay}',${cArr[4].memberNum},${cArr[4].visitorNum}],
-       			  ['${cArr[5].vDay}',${cArr[5].memberNum},${cArr[5].visitorNum}],
-       			  ['${cArr[6].vDay}',${cArr[6].memberNum},${cArr[6].visitorNum}],
-       			  ['${cArr[7].vDay}',${cArr[7].memberNum},${cArr[7].visitorNum}]
-        	  	
+             
+                  ['${cArr[0].vDay}',${cArr[0].memberNum},${cArr[0].visitorNum}],
+                  ['${cArr[1].vDay}',${cArr[1].memberNum},${cArr[1].visitorNum}],
+                  ['${cArr[2].vDay}',${cArr[2].memberNum},${cArr[2].visitorNum}],
+                  ['${cArr[3].vDay}',${cArr[3].memberNum},${cArr[3].visitorNum}],
+                  ['${cArr[4].vDay}',${cArr[4].memberNum},${cArr[4].visitorNum}],
+                  ['${cArr[5].vDay}',${cArr[5].memberNum},${cArr[5].visitorNum}],
+                  ['${cArr[6].vDay}',${cArr[6].memberNum},${cArr[6].visitorNum}],
+                  ['${cArr[7].vDay}',${cArr[7].memberNum},${cArr[7].visitorNum}]
+                
           
           ]);
 

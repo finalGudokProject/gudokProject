@@ -714,10 +714,10 @@ public class ItemServiceImpl implements ItemService {
 		return iDao.insertSubcribeInfo(map);
 	}
 
-	@Override
-	public ArrayList<Subscribe> selectSubscribeStatus(String customerUid) {
-		return iDao.selectSubscribeStatus(customerUid);
-	}
+	/*
+	 * @Override public ArrayList<Subscribe> selectSubscribeStatus(String
+	 * customerUid) { return iDao.selectSubscribeStatus(customerUid); }
+	 */
 
 	@Override
 	public double selectPointRate(int memberNo) {
@@ -735,9 +735,10 @@ public class ItemServiceImpl implements ItemService {
 	}
 
 	@Override
-	public int selectSubList(Integer no) {	
-		return iDao.selectSubList(no);
+	public int selectSubList(Map map) {	
+		return iDao.selectSubList(map);
 	}
+
 
 	@Override
 	public ArrayList<Item> selectHomeRecommendList() {
@@ -824,16 +825,32 @@ public class ItemServiceImpl implements ItemService {
 	}
 
 	@Override
-	public int selectBannerItemCount(String eventNo) {
-		return iDao.selectBannerItemCount(eventNo);
+	public ArrayList<Event> selectCarouselList() {
+		return iDao.selectCarouselList();
 	}
 
 	@Override
-	public ArrayList<Item> selectBannerItemList(PageInfo pi, String eventNo) {
-		return (ArrayList<Item>)iDao.selectBannerItemList(pi, eventNo);
+	   public int selectBannerItemCount(String eventNo) {
+	      return iDao.selectBannerItemCount(eventNo);
+	   }
+
+	   @Override
+	   public ArrayList<Item> selectBannerItemList(PageInfo pi, String eventNo) {
+	      return iDao.selectBannerItemList(pi,eventNo);
+	   }
+
+	@Override
+	public String selectImageName(int no) {
+		return iDao.selectImageName(no);
 	}
 	
-	
-	
-	
+	@Override
+	   public int inInsertImage(Board b) {
+	      return iDao.inInsertImage(b);
+	   }
+
+	@Override
+	public ArrayList<Subscribe> selectSubscribeStatus(Map map) {
+		return iDao.selectSubscribeStatus(map);
+	}
 }

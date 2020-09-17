@@ -452,4 +452,12 @@
 	
 	</update>
 	
+	<select id="selectCarouselList" resultMap="eventResultSet">
+		SELECT *
+		FROM EVENT
+		JOIN BANNER_IMG USING(EVENT_NO)
+		JOIN IMAGE ON(IMAGE_NO2 = IMAGE_NO)
+		WHERE EVENT_STATUS = 'Y'
+	</select>
+	
 </mapper>

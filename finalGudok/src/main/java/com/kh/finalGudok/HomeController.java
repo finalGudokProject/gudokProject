@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.kh.finalGudok.item.model.service.ItemService;
+import com.kh.finalGudok.item.model.vo.Event;
 import com.kh.finalGudok.item.model.vo.Item;
 
 /**
@@ -41,9 +42,11 @@ public class HomeController {
 		ArrayList<Item> recommendMList = iService.selectHomeRecommendMList();
 		ArrayList<Item> recommendFList = iService.selectHomeRecommendFList();
 		ArrayList<Item> recommendCList = iService.selectHomeRecommendCList();
-		
+		ArrayList<Event> carouselList = iService.selectCarouselList();
+
 //		System.out.println(newList);
 //		System.out.println(bestList);
+		System.out.println("캐러셀 : " + carouselList);
 //		System.out.println(recommendList);
 		
 		model.addAttribute("newList", newList);
@@ -52,6 +55,7 @@ public class HomeController {
 		model.addAttribute("recommendMList", recommendMList);
 		model.addAttribute("recommendFList", recommendFList);
 		model.addAttribute("recommendCList", recommendCList);
+		model.addAttribute("carouselList", carouselList);
 		return "home";
 	}
 	

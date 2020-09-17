@@ -217,7 +217,7 @@ input, select,textarea{
         function eventSearch(){
         	var word=$("#word").val();
         	var page=${pi.currentPage};
-        	alert(word);
+        
         	
         	location.href="eList.do?word="+word+"&page="+page;
         	
@@ -278,7 +278,7 @@ input, select,textarea{
            	       		$("tr").on("click",function(){
            	       			var eventNo=$(this).children().eq(1).text();
            	        		 var page=${pi.currentPage };   
-           	        		 alert(eventNo);
+           	        		
            	           		location.href="bannerDetail.do?eventNo="+eventNo+"&page="+page;
            	       		})
            	       	})

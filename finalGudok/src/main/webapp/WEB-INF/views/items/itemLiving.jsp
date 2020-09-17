@@ -17,6 +17,9 @@
 	font-family: 'Jua', sans-serif;
 	color: #495057;
 	}
+	.detailDiv{
+      border : none !important;
+   }
 	
 	.paper{
 		margin:2%;
@@ -319,7 +322,7 @@
 					$(".detailDiv").on("mouseenter", function(){
 						$(this).css({"box-shadow":"1px 1px 20px lightgray", "transition":"0.3s"});
 					}).on("mouseleave", function(){
-						$(this).css({"border":"1px solid lightgray","box-shadow":"none"});
+						$(this).css({"border":"none","box-shadow":"none"});
 					})
 				})
 				
@@ -656,9 +659,7 @@
 		
 		</script>
 		</c:forEach>
-		<c:if test="${empty list }">
 		
-		</c:if>
 		<c:if test="${!empty list}">
          <div class="col-12">
          

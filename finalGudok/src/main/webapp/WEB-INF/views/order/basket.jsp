@@ -117,6 +117,7 @@
 				<tr style="border-bottom:1px solid lightgray;vertical-align:middle;">
 					<input type="hidden" class="iName" value="${c.itemName }">
 					<input type="hidden" class="no" value="${c.itemNo }">
+					<input type="hidden" class="cartArr" value="${contextPath }/resources/uploadFiles/${c.itemRename }">
 					<td class="listChk">
 					
 					<!-- 해당 상품에 할인율이 없다면 -->
@@ -352,7 +353,7 @@
 					
 					/* checkbox가 선택되어 있다면 */
 					if($(this).parent().prev().prev().prev("td").find("input").prop("checked") == true){
-						swal("","선택된 상태로는 수량 변경을 할 수 없습니다.","error");
+						swal({ text : "선택된 상태로는 수량 변경을 할 수 없습니다.", icon : "error", closeOnClickOutside: false,});
 					
 					/* checkbox가 선택되어 있지 않다면 */
 					}else{
@@ -391,7 +392,7 @@
 					
 					/* checkbox가 선택되어 있다면 */
 					if($(this).parent().prev().prev().prev("td").find("input").prop("checked") == true){
-						swal("","선택된 상태로는 수량 변경을 할 수 없습니다.","error");
+						swal({ text : "선택된 상태로는 수량 변경을 할 수 없습니다.", icon : "error", closeOnClickOutside: false,});
 						
 					/* checkbox가 선택되어 있지 않다면 */	
 					}else{
@@ -428,7 +429,7 @@
 							}
 							
 						}else if(amount == 1){
-								swal("","1개 미만은 선택하실 수 없습니다.","error");
+							swal({ text : "1개 미만은 선택하실 수 없습니다.", icon : "error", closeOnClickOutside: false,});
 						}
 					}
 				})
@@ -441,13 +442,14 @@
 				$("#delBtn").on("click", function(){
 					var check = $("input:checkbox[class=chk]:checked").length;
 					if(check == 0){
-						swal("","선택된 상품이 없습니다.","error");
+						swal({ text : "선택된 상품이 없습니다.", icon : "error", closeOnClickOutside: false,});
 					}else{
 						swal({
 							text : check + "개의 상품을 장바구니에서 삭제하시겠습니까?",
 							icon : "warning",
 							buttons : ["예", "아니오"],
 							closeOnEsc : false,
+							closeOnClickOutside: false,
 							dangerMode : true,
 						}).then((result)=>{
 							if(result){
@@ -466,7 +468,7 @@
 									type : "post",
 									success:function(data){
 										if(data == "success"){
-											swal("",check+"개의 상품이 장바구니에서 삭제되었습니다.","success").then((del)=>{
+											swal({ text : check+"개의 상품이 장바구니에서 삭제되었습니다.", icon : "success", closeOnClickOutside: false,}).then((del)=>{
 												if(del){
 													location.reload();
 												}
@@ -502,6 +504,7 @@
 					var name = new Array();
 					var cycle = new Array();
 					var discount = new Array();
+					var imageArr = new Array();
 					
 					var checkItem = $(".chk"); //체크박스 다 가져옴
 					
@@ -520,6 +523,7 @@
 							discount.push($(this).parent().next().next().next().find(".discount").val());
 							cycle.push($(this).parent().next().next().next().next().find("select[name=cartSubs]").val());
 							amount.push($(this).parent().next().next().next().find(".amountT").val());
+							imageArr.push($(this).parent().parent().find(".cartArr").val());
 							
 						}
 					})
@@ -530,17 +534,17 @@
 						alert("주기" + cycle);
 						alert("수량" + amount); */
 					
-					
 					var check = $("input:checkbox[class='chk']:checked").length;
 					var pay = $("#paymentBtn").val().slice(0,-5);
 					if(check == 0){
-						swal("","결제하실 상품을 선택해 주세요.","error");
+						swal({ text : "결제하실 상품을 선택해 주세요.", icon : "error", closeOnClickOutside: false,});
 					}else{
 						swal({
 							text : check + "개의 상품 " + pay + "을 결제하시겠습니까?",
 							icon : "warning",
 							buttons : ["예", "아니오"],
 							closeOnEsc : false,
+							closeOnClickOutside: false,
 							dangerMode : true,
 						}).then((result)=>{
 							if(result){
@@ -552,7 +556,7 @@
 								form.setAttribute('action', "moveToPayment.do");
 								document.charset = "utf-8";
 								params = {"price":price, "name":name, "cycle":cycle, "amount":amount,
-										"itemNo":itemNo, "discount":discount};
+										"itemNo":itemNo, "discount":discount, "image":imageArr};
 								
 								for ( var key in params) {
 									var hiddenField = document.createElement('input');
@@ -565,7 +569,6 @@
 								document.body.appendChild(form);
 								form.submit();
 								
-								swal("","결제 페이지로","success");
 							}
 						})
 					}

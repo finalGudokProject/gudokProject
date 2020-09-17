@@ -148,6 +148,10 @@
 	    padding-bottom: 0;
 	}
 	
+	.detailDiv{
+      border : none !important;
+   }
+	
 	.cardFooter{
 	 	padding-bottom:5%;
 	}
@@ -309,7 +313,7 @@
 					$(".detailDiv").on("mouseenter", function(){
 						$(this).css({"box-shadow":"1px 1px 20px lightgray", "transition":"0.3s"});
 					}).on("mouseleave", function(){
-						$(this).css({"border":"1px solid lightgray","box-shadow":"none"});
+						$(this).css({"border":"none","box-shadow":"none"});
 					})
 				})
 			</script>

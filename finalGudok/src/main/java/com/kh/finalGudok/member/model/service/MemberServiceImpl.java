@@ -569,11 +569,7 @@ public class MemberServiceImpl implements MemberService {
 		return mDao.selectGradeInfo();
 	}
 
-	
 
-	public int selectPointMember(int i) {
-		return mDao.selectPointMember(i);
-	}
 
 	@Override
 	public int updateSubscribeDestination(Delivery d) {
@@ -626,8 +622,12 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-   public int selectMemberPoint(Integer memberNo) {
-      return mDao.selectMemberPoint(memberNo);
-   }
+	   public int selectMemberPoint(Integer memberNo) {
+	      return mDao.selectMemberPoint(memberNo);
+	   }
 
+	@Override
+	   public int selectPointMember(int i) {
+	      return mDao.selectPointMember(i);
+	   }
 }

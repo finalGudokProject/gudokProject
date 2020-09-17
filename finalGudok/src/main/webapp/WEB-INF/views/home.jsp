@@ -46,27 +46,35 @@
         .moveToList:hover{
         	color:black !important;
         }
+        
+        .carousel-item:hover{
+        	cursor:pointer;
+        }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
   </head>
-  <body>
   	
   	<header>
     <jsp:include page="common/menubar.jsp"/>
  	</header>
-
+ 	
 	<section>
       <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
         <div class="carousel-inner">
-          <div class="carousel-item active">
-            <img src="resources/images/carousel2.jpg" class="d-block w-100" alt="...">
-          </div>
-          <div class="carousel-item">
-            <img src="resources/images/flower.jpg" class="d-block w-100" alt="...">
-          </div>
-          <div class="carousel-item">
-            <img src="resources/images/salad.jpg" class="d-block w-100" alt="...">
-          </div>
+       		<c:forEach items="${carouselList }" var="carList" varStatus="status">
+       		<c:if test="${status.index == 0 }">
+         	 <div class="carousel-item active">	
+            	<img src="${contextPath}/resources/uploadFiles/${carList.imageRename }" class="d-block w-100" alt="...">
+            	<input type="hidden" value="${carList.eventNo }">
+          	 </div>
+          	 </c:if>
+          	 <c:if test="${status.index > 0 }">
+         	 <div class="carousel-item">
+            	<img src="${contextPath}/resources/uploadFiles/${carList.imageRename }" class="d-block w-100" alt="...">
+            	<input type="hidden" value="${carList.eventNo }">
+          	 </div>
+          	 </c:if>
+       		</c:forEach>
         </div>
         <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
           <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -77,7 +85,6 @@
           <span class="sr-only">Next</span>
         </a>
       </div>
-
       <br><br><br><br><br>
 
       <div class=cardWrap>
@@ -86,7 +93,7 @@
 
         <c:forEach items="${newList }" var="newList">
         <div class="card" style="width: 18rem;">
-          <a class="moveToDetail"><img src="${contextPath}/resources/uploadFiles/${newList.itemRename}" class="card-img-top" alt="..."></a>
+          <a class="moveToDetail"><img src="${contextPath}/resources/uploadFiles/${newList.itemRename }" class="card-img-top" alt="..."></a>
           <input type="hidden" value="${newList.itemNo }">
           <div class="card-body">
             <p class="card-text">${newList.itemName }</p>
@@ -176,7 +183,6 @@
   	
   <script>
 	  function hotList(){
-			/* alert("핫리스트 실행"); */
 			
 			$.ajax({
 				url:"hotList.do",		
@@ -216,9 +222,9 @@
 		$(function(){
 			hotList();
 			
-			/* setInterval(function(){
+			setInterval(function(){
 				hotList();
-			}, 10000); */
+			}, 10000);
 			
 		})
 
@@ -231,6 +237,17 @@
 		/* alert(itemNo); */
 		location.href="idetail.do?itemNo="+itemNo+"&page=1";
 	});
+  	
+  	
+  	$(function(){
+  		$(".carousel-item").on("click",function(){
+  			var eventNo = $(this).find("input").val();
+  			/* alert(eventNo); */
+
+  	  	location.href="bannerItem.do?eventNo="+eventNo;
+  		})
+  	});
+  	
   	
   </script>
  
